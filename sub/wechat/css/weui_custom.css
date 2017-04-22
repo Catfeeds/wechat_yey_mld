@@ -1,0 +1,28 @@
+@CHARSET "UTF-8";
+.weui-form-preview__bd {
+	color:#000000;
+}
+body{
+	background-color:#F8F8F8;
+}
+/*置顶按钮*/
+.sss_gotop
+{
+	display:none;
+	cursor:pointer;
+	position:fixed;
+	right:7px;
+	bottom:14px;
+	padding:8px;
+	padding-top:10px;
+	padding-left:10px;
+	padding-right:10px;
+	background-color:#EEEEEE;
+	border-radius: 20px;
+	color:#666666;
+}
+.sss_gotop:active
+{
+	
+	background-color:#DDDDDD;
+}
