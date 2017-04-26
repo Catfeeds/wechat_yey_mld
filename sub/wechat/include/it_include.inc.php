@@ -17,7 +17,7 @@ $b_login=false;
 $n_uid=0;
 $S_Session_Id= $_COOKIE ['SESSIONID'];
 if (isset ( $_COOKIE ['SESSIONID'] )) {//检查是否保存了Session
-	//setcookie ( 'SESSIONID', '377be4f48492037e4815e5fe5774cf44',0 ,'/','',false,true);
+	setcookie ( 'SESSIONID', '377be4f48492037e4815e5fe5774cf44',0 ,'/','',false,true);
 	$S_Session_Id= $_COOKIE ['SESSIONID'];
 	if ($_COOKIE ['SESSIONID']=='b0a8f64b9ecbe3750bb36bb77964b110')
 	{

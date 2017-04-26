@@ -21,7 +21,6 @@ class accessToken{
 		$count = $o_syscode->getAllCount();
         $token = $o_syscode->getSysToken(0);
 		$curlUtil = new curlUtil();
-		$openId = $o_userUtil->open_id;
 		//Access Token时效目前只有7200s，这里是判断超时重新生成新的Token
 		$lasttime = $o_syscode->getCreateDate(0);
 		//验证token是否有效
@@ -30,6 +29,7 @@ class accessToken{
 		$a_return=json_decode($s_return, true);
 		//如果超时并且		
     	if (time() > ($lasttime + 7100) ||$a_return['errcode']=='40001'){*/
+		//echo(time());
     	if (time() > ($lasttime + 7100)){
             $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this->appid."&secret=".$this->appsecret;
             $res = $curlUtil->https_request($url);

@@ -30,7 +30,7 @@
 	        </div>
 	    </div>
 	    <div class="sss_gotop" data-placement="left">
-			<img src="images/gotop.png" style="width:23px"/>
+			<img src="<?php echo(RELATIVITY_PATH . 'sub/wechat/')?>images/gotop.png" style="width:23px"/>
 		</div>
 	    <iframe id="ajax_submit_frame" name="ajax_submit_frame" width="0" height="0" marginwidth="0" border="0" frameborder="0" src="about:blank" style="display:none"></iframe>
 	    <script type="text/javascript">
@@ -38,7 +38,19 @@
 			$('.sss_gotop').click(function () {
 				$("body,html").animate({scrollTop:0}, 500);
 			});	
+			
 		});
+	    $(window).scroll(function () {
+		        if($(window).scrollTop()>200)
+				{
+					//显示置顶按钮
+					$('.sss_gotop').fadeIn(300)
+				}else{
+					//隐藏置顶按钮
+					$('.sss_gotop').fadeOut(300)
+				}
+	    	});
+	    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady(){WeixinJSBridge.call('hideOptionMenu');});
 		</script>
 </body>
 </html>

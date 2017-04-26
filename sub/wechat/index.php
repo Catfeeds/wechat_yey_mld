@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 define ( 'RELATIVITY_PATH', '../../' );
 header ( 'Cache-Control: no-cache' );
 header ( 'Pragma: no-cache' );
@@ -19,6 +20,6 @@ if ($_COOKIE ['SESSIONID'] == null) {
 		exit ( 0 );	
 	}
 }
-echo ('<script>location=\'signup.php\'</script>');
+//echo ('<script>location=\'signup.php\'</script>');
 exit ( 0 );
 ?>

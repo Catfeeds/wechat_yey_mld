@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="<?php echo(RELATIVITY_PATH . 'sub/wechat/')?>css/weui.css"/>
     <link rel="stylesheet" href="<?php echo(RELATIVITY_PATH . 'sub/wechat/')?>css/weui_custom.css"/>
     <script type="text/javascript" src="<?php echo(RELATIVITY_PATH . 'sub/wechat/')?>js/jquery-2.1.0.min.js"></script>
-    <script type="text/javascript" src="<?php echo(RELATIVITY_PATH . 'sub/wechat/')?>js/control.fun.js"></script>
     <script type="text/javascript" src="<?php echo(RELATIVITY_PATH . 'sub/wechat/')?>js/dialog.fun.js"></script>
 </head>
 <body ontouchstart>
