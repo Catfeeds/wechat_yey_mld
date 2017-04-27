@@ -1,4 +1,5 @@
 <?php
+exit(0);
 define ( 'RELATIVITY_PATH', '../../' );
 
 header('Content-Type: text/html; charset=UTF-8');

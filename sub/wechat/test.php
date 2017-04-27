@@ -1,4 +1,5 @@
 <?php
+exit();
 define ( 'RELATIVITY_PATH', '../../' );
 header ( 'Cache-Control: no-cache' );
 header ( 'Pragma: no-cache' );

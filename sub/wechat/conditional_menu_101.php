@@ -1,4 +1,5 @@
 <?php
+exit(0);
 //管理员自定义菜单
 define ( 'RELATIVITY_PATH', '../../' );
 ini_set("display_errors", "On");
