@@ -1,7 +1,7 @@
 <?php
 define ( 'RELATIVITY_PATH', '../../' );
 include(dirname(__FILE__)."/include/db_table.class.php");
-define("TOKEN", "xchmsxx");
+define("TOKEN", "mldyey");
 date_default_timezone_set("Asia/Shanghai");
 
 $wechatObj = new wechat();

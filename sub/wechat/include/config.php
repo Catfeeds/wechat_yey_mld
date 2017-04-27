@@ -1,4 +1,4 @@
 <?php 
-	define("APPID", "wxa3f215252330d324");
-	define("APPSECRET", "d6fdea668fb405ddbe7ed30668511341");
+	define("APPID", "wxf38509d7749bb56d");
+	define("APPSECRET", "e3f45a21284916d2e9c848759552b997");
 ?>

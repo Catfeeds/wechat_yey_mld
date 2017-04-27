@@ -58,14 +58,7 @@ class Session extends Bn_Basic {
 		if ($o_user->getAllCount () > 0) {
 			return $o_user->getUid ( 0 );
 		} else {
-			//查找微信的session
-			$o_user = new Base_User_Wechat_Course_View();
-			$o_user->PushWhere ( array ('&&', 'SessionId', '=', $s_sessionid ) );
-			if ($o_user->getAllCount () > 0) {
-				return $o_user->getUid ( 0 );
-			}else{
-				return 0;
-			}			
+			return 0;			
 		}
 	}
 	public function ValidModuleForPage($n_module_id) {
