@@ -409,7 +409,7 @@
 		    <div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">是否有过敏史</label></div>
 				<div class="weui-cell__bd">
-	                <select class="weui-select" id="Vcl_IsGuomin" onchange="change_guomin(this)">
+	                <select class="weui-select" name="Vcl_IsGuomin" id="Vcl_IsGuomin" onchange="change_guomin(this)">
 		                <option value="否">否</option>
 						<option value="是">是</option>
 		            </select>
@@ -428,7 +428,7 @@
 		    	<div class="weui-cell">
 					<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">户籍所在（省/市）</label></div>
 					<div class="weui-cell__bd">
-		                <select class="weui-select" name="Vcl_H_City" id="Vcl_H_City" onchange="change_h_city(this)">
+		                <select class="weui-select" name="Vcl_HCity" id="Vcl_HCity" onchange="change_h_city(this)">
 		                    	<option value="">必选</option>
 					        	<option value="110000000000" selected="selected">北京市</option>
 					        	<option value="120000000000">天津市</option>
@@ -468,7 +468,7 @@
 		        	<div class="weui-cell" id="h_qu">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">户籍所在（市/区）</label></div>
 						<div class="weui-cell__bd">
-			                <select class="weui-select" id="Vcl_H_Area" name="Vcl_H_Area" onchange="change_h_qu(this)">
+			                <select class="weui-select" id="Vcl_HArea" name="Vcl_HArea" onchange="change_h_qu(this)">
 			                    	<option value="">必选</option>
 						        	<option value="110101000000">东城区</option>
 					        		<option value="110102000000" selected="selected">西城区</option>
@@ -493,7 +493,7 @@
 		        	<div class="weui-cell" id="h_jiedao">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">户籍所在街道</label></div>
 						<div class="weui-cell__bd">
-			                <select class="weui-select" id="Vcl_H_Street" name="Vcl_H_Street" onchange="change_h_jiedao(this)">
+			                <select class="weui-select" id="Vcl_HStreet" name="Vcl_HStreet" onchange="change_h_jiedao(this)">
 			                    	<option value="">必选</option>
 						        	<option value="德胜街道">德胜街道</option>
 			                    	<option value="什刹海街道">什刹海街道</option>
@@ -516,7 +516,7 @@
 		        	<div class="weui-cell" id="h_shequ">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">户籍所在社区</label></div>
 						<div class="weui-cell__bd">
-			                <select class="weui-select" id="Vcl_H_Shequ" name="Vcl_H_Shequ">
+			                <select class="weui-select" id="Vcl_HShequ" name="Vcl_HShequ">
 			                    	<option value="">必选</option>
 			                </select>
 			            </div>
@@ -524,7 +524,7 @@
 	        		<div class="weui-cell">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">户籍详细地址</label></div>
 						<div class="weui-cell__bd">
-			                <input class="weui-input"  name="Vcl_H_Add" id="Vcl_H_Add" placeholder="必填">
+			                <input class="weui-input"  name="Vcl_HAdd" id="Vcl_HAdd" placeholder="必填">
 			            </div>
 		        	</div>
 		    </div>
@@ -534,7 +534,7 @@
 			<div class="weui-cell" id="is_same">
 				<div class="weui-cell__hd"><label class="weui-label" style="width:240px;">现住址是否与户籍为同一地址</label></div>
 				<div class="weui-cell__bd">
-	                <select class="weui-select" id="Vcl_Z_Same" name="Vcl_Z_Same" onchange="change_address(this)">
+	                <select class="weui-select" id="Vcl_ZSame" name="Vcl_ZSame" onchange="change_address(this)">
 		                <option selected="selected" value="否">否</option>
 			            <option value="是">是</option>
 		            </select>
@@ -543,72 +543,70 @@
 			    <div class="weui-cell" id="z_city">
 					<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">现住址所在省市</label></div>
 					<div class="weui-cell__bd">
-		                <select class="weui-select" name="Vcl_Z_City" id="Vcl_Z_City" onchange="change_z_city(this)">
-		                    	<option value="">必选</option>
-					        	<option value="110000000000" selected="selected">北京市</option>
-					        	<option value="120000000000">天津市</option>
-					        	<option value="130000000000">河北省</option>
-					        	<option value="140000000000">山西省</option>
-					        	<option value="150000000000">内蒙古自治区</option>
-					        	<option value="210000000000">辽宁省</option>
-					        	<option value="220000000000">吉林省</option>
-					        	<option value="230000000000">黑龙江省</option>
-					        	<option value="310000000000">上海市</option>
-					        	<option value="320000000000">江苏省</option>
-					        	<option value="330000000000">浙江省</option>
-					        	<option value="340000000000">安徽省</option>
-					        	<option value="350000000000">福建省</option>
-					        	<option value="360000000000">江西省</option>
-					        	<option value="370000000000">山东省</option>
-					        	<option value="410000000000">河南省</option>
-					        	<option value="420000000000">湖北省</option>
-					        	<option value="430000000000">湖南省</option>
-					        	<option value="440000000000">广东省</option>
-					        	<option value="450000000000">广西壮族自治区</option>
-					        	<option value="460000000000">海南省</option>
-					        	<option value="500000000000">重庆市</option>
-					        	<option value="510000000000">四川省</option>
-					        	<option value="520000000000">贵州省</option>
-					        	<option value="530000000000">云南省</option>
-					        	<option value="540000000000">西藏自治区</option>
-					        	<option value="610000000000">陕西省</option>
-					        	<option value="620000000000">甘肃省</option>
-					        	<option value="630000000000">青海省</option>
-					        	<option value="640000000000">宁夏回族自治区</option>
-					        	<option value="650000000000">新疆维吾尔自治区</option>
-					        	<option value="6A0000000000">新疆兵团</option>
+		                <select class="weui-select" name="Vcl_ZCity" id="Vcl_ZCity" onchange="change_z_city(this)">
+		                    	<option value="北京市" selected="selected">北京市</option>
+					        	<option value="天津市">天津市</option>
+					        	<option value="河北省">河北省</option>
+					        	<option value="山西省">山西省</option>
+					        	<option value="内蒙古自治区">内蒙古自治区</option>
+					        	<option value="辽宁省">辽宁省</option>
+					        	<option value="吉林省">吉林省</option>
+					        	<option value="黑龙江省">黑龙江省</option>
+					        	<option value="上海市">上海市</option>
+					        	<option value="江苏省">江苏省</option>
+					        	<option value="浙江省">浙江省</option>
+					        	<option value="安徽省">安徽省</option>
+					        	<option value="福建省">福建省</option>
+					        	<option value="江西省">江西省</option>
+					        	<option value="山东省">山东省</option>
+					        	<option value="河南省">河南省</option>
+					        	<option value="湖北省">湖北省</option>
+					        	<option value="湖南省">湖南省</option>
+					        	<option value="广东省">广东省</option>
+					        	<option value="广西壮族自治区">广西壮族自治区</option>
+					        	<option value="海南省">海南省</option>
+					        	<option value="重庆市">重庆市</option>
+					        	<option value="四川省">四川省</option>
+					        	<option value="贵州省">贵州省</option>
+					        	<option value="云南省">云南省</option>
+					        	<option value="西藏自治区">西藏自治区</option>
+					        	<option value="陕西省">陕西省</option>
+					        	<option value="甘肃省">甘肃省</option>
+					        	<option value="青海省">青海省</option>
+					        	<option value="宁夏回族自治区">宁夏回族自治区</option>
+					        	<option value="新疆维吾尔自治区">新疆维吾尔自治区</option>
+					        	<option value="新疆兵团">新疆兵团</option>
 		                </select>
 		            </div>
 	        	</div>
 		        	<div class="weui-cell" id="z_qu">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">现住址所在区</label></div>
 						<div class="weui-cell__bd">
-			                <select class="weui-select" id="Vcl_Z_Area" name="Vcl_Z_Area" onchange="change_z_qu(this)">
-			                    	<option value="">必选</option>
-						        	<option value="110101000000">东城区</option>
-					        		<option value="110102000000" selected="selected">西城区</option>
-					        		<option value="110105000000">朝阳区</option>
-					        		<option value="110106000000">丰台区</option>
-					        		<option value="110107000000">石景山区</option>
-					        		<option value="110108000000">海淀区</option>
-					        		<option value="110109000000">门头沟区</option>
-					        		<option value="110111000000">房山区</option>
-					        		<option value="110112000000">通州区</option>
-					        		<option value="110113000000">顺义区</option>
-					        		<option value="110114000000">昌平区</option>
-					        		<option value="110115000000">大兴区</option>
-					        		<option value="110116000000">怀柔区</option>
-					        		<option value="110117000000">平谷区</option>
-					        		<option value="110228000000">密云县</option>
-					        		<option value="110229000000">延庆县</option>
-					        		<option value="11A1A1000000">燕山区</option>
+			                <select class="weui-select" id="Vcl_ZArea" name="Vcl_ZArea" onchange="change_z_qu(this)">
+			                    	<option value="东城区">东城区</option>
+					        		<option value="西城区" selected="selected">西城区</option>
+					        		<option value="朝阳区">朝阳区</option>
+					        		<option value="丰台区">丰台区</option>
+					        		<option value="石景山区">石景山区</option>
+					        		<option value="海淀区">海淀区</option>
+					        		<option value="门头沟区">门头沟区</option>
+					        		<option value="房山区">房山区</option>
+					        		<option value="通州区">通州区</option>
+					        		<option value="顺义区">顺义区</option>
+					        		<option value="昌平区">昌平区</option>
+					        		<option value="大兴区">大兴区</option>
+					        		<option value="怀柔区">怀柔区</option>
+					        		<option value="平谷区">平谷区</option>
+					        		<option value="密云县">密云县</option>
+					        		<option value="延庆县">延庆县</option>
+					        		<option value="燕山区">燕山区</option>
 			                </select>
 			            </div>
 		        	</div>
 		        	<div class="weui-cell" id="z_jiedao">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">现住址所在街道</label></div>
 						<div class="weui-cell__bd">
-			                <select class="weui-select" id="Vcl_Z_Street" name="Vcl_Z_Street" onchange="change_z_jiedao(this)">
+			                <select class="weui-select" id="Vcl_ZStreet" name="Vcl_ZStreet" onchange="change_z_jiedao(this)">
 			                    	<option value="">必选</option>
 						        	<option value="德胜街道">德胜街道</option>
 			                    	<option value="什刹海街道">什刹海街道</option>
@@ -631,7 +629,7 @@
 		        	<div class="weui-cell" id="z_shequ">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">现住址所在社区</label></div>
 						<div class="weui-cell__bd">
-			                <select class="weui-select" id="Vcl_Z_Shequ" name="Vcl_Z_Shequ">
+			                <select class="weui-select" id="Vcl_ZShequ" name="Vcl_ZShequ">
 			                    	<option value="">必选</option>
 			                </select>
 			            </div>
@@ -639,13 +637,13 @@
 	        		<div class="weui-cell" id="z_address">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">现住址详细地址</label></div>
 						<div class="weui-cell__bd">
-			                <input class="weui-input" name="Vcl_Z_Add" id="Vcl_Z_Add" placeholder="必填">
+			                <input class="weui-input" name="Vcl_ZAdd" id="Vcl_ZAdd" placeholder="必填">
 			            </div>
 		        	</div>
 		        	<div class="weui-cell">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">现住址房屋属性</label></div>
 						<div class="weui-cell__bd">
-			                <select class="weui-select" id="Vcl_Z_Property" name="Vcl_Z_Property" onchange="change_z_property(this)">
+			                <select class="weui-select" id="Vcl_ZProperty" name="Vcl_ZProperty" onchange="change_z_property(this)">
 			                    <option selected="selected" value="直系亲属房产">直系亲属房产</option>
 		                        <option value="租借借用房产">租借借用房产</option>
 			                </select>
@@ -654,13 +652,13 @@
 		        	<div class="weui-cell" id="z_owner">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">产权人姓名</label></div>
 						<div class="weui-cell__bd">
-			                <input class="weui-input" name="Vcl_Z_Owner" id="Vcl_Z_Owner" placeholder="必填">
+			                <input class="weui-input" name="Vcl_ZOwner" id="Vcl_ZOwner" placeholder="必填">
 			            </div>
 		        	</div>
 		        	<div class="weui-cell" id="z_guanxi">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">产权人与孩子关系</label></div>
 						<div class="weui-cell__bd">
-			                <select class="weui-select" id="Vcl_Z_Guanxi" name="Vcl_Z_Guanxi">
+			                <select class="weui-select" id="Vcl_ZGuanxi" name="Vcl_ZGuanxi">
 			                    <option selected="selected" value="父母">父母</option>
 			                    <option value="祖父母或外祖父母">祖父母或外祖父母</option>
 			                    <option value="其他">其他</option>
@@ -674,7 +672,7 @@
 			<div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">关系</label></div>
 				<div class="weui-cell__bd">
-                    <select class="weui-select" name="Vcl_Jh_1_Connection" id="Vcl_Jh_1_Connection">
+                    <select class="weui-select" name="Vcl_Jh1Connection" id="Vcl_Jh1Connection">
 	                    <option selected="selected" value="父亲">父亲</option>
 	                    <option value="母亲">母亲</option>
 	                    <option value="祖父">祖父</option>
@@ -688,13 +686,13 @@
 			<div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
 				<div class="weui-cell__bd">
-                    <input class="weui-input" id="Vcl_Jh_1_Name" name="Vcl_Jh_1_Name" placeholder="必填">
+                    <input class="weui-input" id="Vcl_Jh1Name" name="Vcl_Jh1Name" placeholder="必填">
                 </div>
 	        </div>
 	        <div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">教育程度</label></div>
 				<div class="weui-cell__bd">
-                    <select class="weui-select" name="Vcl_Jh_1_Jiaoyu" id="Vcl_Jh_1_Jiaoyu">
+                    <select class="weui-select" name="Vcl_Jh1Jiaoyu" id="Vcl_Jh1Jiaoyu">
 	                    <option value="">必选</option>
 						<option value="初中及以下">初中及以下</option>
 						<option value="高中及中专">高中及中专</option>
@@ -709,17 +707,18 @@
 	        <div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">工作单位</label></div>
 				<div class="weui-cell__bd">
-                    <input class="weui-input" id="Vcl_Jh_1_Danwei" name="Vcl_Jh_1_Danwei" placeholder="必填">
+                    <input class="weui-input" id="Vcl_Jh1Danwei" name="Vcl_Jh1Danwei" placeholder="必填">
                 </div>
 	        </div>
 		</div>
-		<div class="weui-cells__title">第二法定监护人信息</div>
+		<div class="weui-cells__title">第二法定监护人信息（选填）</div>
 		<div class="weui-cells" style="margin-top:0px;">
 			<div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">关系</label></div>
 				<div class="weui-cell__bd">
-                    <select class="weui-select" name="Vcl_Jh_2_Connection" id="Vcl_Jh_2_Connection">
-	                    <option selected="selected" value="父亲">父亲</option>
+                    <select class="weui-select" name="Vcl_Jh2Connection" id="Vcl_Jh2Connection">
+                    	<option selected="selected" value=""></option>
+	                    <option value="父亲">父亲</option>
 	                    <option value="母亲">母亲</option>
 	                    <option value="祖父">祖父</option>
 	                    <option value="祖母">祖母</option>
@@ -732,14 +731,14 @@
 			<div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
 				<div class="weui-cell__bd">
-                    <input class="weui-input" id="Vcl_Jh_2_Name" name="Vcl_Jh_2_Name" placeholder="必填">
+                    <input class="weui-input" id="Vcl_Jh2Name" name="Vcl_Jh2Name">
                 </div>
 	        </div>
 	        <div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">教育程度</label></div>
 				<div class="weui-cell__bd">
-                    <select class="weui-select" name="Vcl_Jh_2_Jiaoyu" id="Vcl_Jh_2_Jiaoyu">
-	                    <option value="">必选</option>
+                    <select class="weui-select" name="Vcl_Jh2Jiaoyu" id="Vcl_Jh2Jiaoyu">
+	                    <option value=""></option>
 						<option value="初中及以下">初中及以下</option>
 						<option value="高中及中专">高中及中专</option>
 						<option value="技校">技校</option>
@@ -753,7 +752,7 @@
 	        <div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">工作单位</label></div>
 				<div class="weui-cell__bd">
-                    <input class="weui-input" id="Vcl_Jh_2_Danwei" name="Vcl_Jh_2_Danwei" placeholder="必填">
+                    <input class="weui-input" id="Vcl_Jh2Danwei" name="Vcl_Jh2Danwei">
                 </div>
 	        </div>
 		</div>
@@ -762,13 +761,13 @@
 			<div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">监护人手机号</label></div>
 				<div class="weui-cell__bd">
-	                 <input class="weui-input" id="Vcl_Jh_1_Phone" name="Vcl_Jh_1_Phone" placeholder="必填">
+	                 <input class="weui-input" id="Vcl_Jh1Phone" name="Vcl_Jh1Phone" placeholder="必填">
 	            </div>
             </div>
             <div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">家庭固定电话</label></div>
 				<div class="weui-cell__bd">
-	                 <input class="weui-input" id="Vcl_Jh_2_Phone" name="Vcl_Jh_2_Phone" placeholder="选填">
+	                 <input class="weui-input" id="Vcl_Jh2Phone" name="Vcl_Jh2Phone" placeholder="选填">
 	            </div>
             </div>
 		</div>

@@ -1,6 +1,31 @@
 <?php
 require_once RELATIVITY_PATH.'include/db_operate.class.php';
 require_once RELATIVITY_PATH.'include/db_connect.class.php';
+class Admission_Setup extends CRUD
+{
+    protected $Id;
+    protected $DeptId;
+    protected $SigninStart;
+    protected $SigninEnd;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'admission_setup';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'dept_id' => 'DeptId',
+                    'signin_start' => 'SigninStart',
+                    'signin_end' => 'SigninEnd'
+        ));
+    }
+}
 //1111111111111111111111111111111111111111111111
 class Base_Dept extends CRUD
 {
@@ -556,8 +581,7 @@ class Base_User_Files  extends CRUD
 class Student_Info extends CRUD
 {
     protected $StudentId;
-    protected $SigninDraft;
-    protected $CollectionDraft;
+    protected $State;
     protected $Name;
     protected $Sex;
     protected $Birthday;
@@ -588,6 +612,7 @@ class Student_Info extends CRUD
     protected $BirthplaceCode;
     protected $IdQuality;
     protected $IdQualityType;
+    protected $SignupDate;
     protected $InTime;
     protected $OutTime;
     protected $IsLiushou;
@@ -670,8 +695,7 @@ class Student_Info extends CRUD
     {
         return(array(
                     'student_id' => 'StudentId',
-                    'signin_draft' => 'SigninDraft',
-                    'collection_draft' => 'CollectionDraft',
+                    'state' => 'State',
                     'name' => 'Name',
                     'sex' => 'Sex',
                     'birthday' => 'Birthday',
@@ -702,6 +726,7 @@ class Student_Info extends CRUD
                     'birthplace_code' => 'BirthplaceCode',
                     'id_quality' => 'IdQuality',
                     'id_quality_type' => 'IdQualityType',
+                    'signup_date' => 'SignupDate',
                     'in_time' => 'InTime',
                     'out_time' => 'OutTime',
                     'is_liushou' => 'IsLiushou',
@@ -825,5 +850,27 @@ class Base_User_Wechat extends CRUD
         ));
     }
 }
+class Student_City_Code extends CRUD
+{
+    protected $Id;
+    protected $ParentId;
+    protected $Name;
 
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_city_code';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'parent_id' => 'ParentId',
+                    'name' => 'Name'
+        ));
+    }
+}
 ?>

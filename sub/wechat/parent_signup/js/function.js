@@ -27,8 +27,8 @@ function change_nationality(obj)
 			document.getElementById("other_base").style.display='none';
 		}		
 		document.getElementById("h_info").style.display='none';
-		document.getElementById("Vcl_Z_Same").value='否';
-		change_address(document.getElementById("Vcl_Z_Same"))
+		document.getElementById("Vcl_ZSame").value='否';
+		change_address(document.getElementById("Vcl_ZSame"))
 		document.getElementById("is_same").style.display='none';
 	}
 }
@@ -67,7 +67,7 @@ function change_h_city(obj)
 		document.getElementById("h_qu").style.display='none';
 		document.getElementById("h_jiedao").style.display='none';
 		document.getElementById("h_shequ").style.display='none';
-		$('#Vcl_H_Area').html('');
+		$('#Vcl_HArea').html('');
 	}else{
 		var value=obj.value
 		var a_shequ=CITY_I[value];
@@ -76,7 +76,7 @@ function change_h_city(obj)
 		{
 			s_html=s_html+'<option value="'+a_shequ[i][0]+'">'+a_shequ[i][1]+'</option>'
 		}
-		$('#Vcl_H_Area').html(s_html);
+		$('#Vcl_HArea').html(s_html);
 		document.getElementById("h_qu").style.display='';
 		document.getElementById("h_jiedao").style.display='none';
 		document.getElementById("h_shequ").style.display='none';
@@ -90,9 +90,9 @@ function change_h_qu(obj)
 			var s_jedao='<option value="">必选</option><option value="德胜街道">德胜街道</option><option value="什刹海街道">什刹海街道</option><option value="西长安街街道">西长安街街道</option><option value="大栅栏街道">大栅栏街道</option><option value="天桥街道">天桥街道</option><option value="新街口街道">新街口街道</option><option value="金融街街道">金融街街道</option><option value="椿树街道">椿树街道</option><option value="陶然亭街道">陶然亭街道</option><option value="展览路街道">展览路街道</option><option value="月坛街道">月坛街道</option><option value="广内街道">广内街道</option><option value="牛街街道">牛街街道</option><option value="白纸坊街道">白纸坊街道</option><option value="广外街道">广外街道</option>';
 			document.getElementById("h_jiedao").style.display='';
 			
-			$('#Vcl_H_Street').html(s_jedao);
+			$('#Vcl_HStreet').html(s_jedao);
 			document.getElementById("h_shequ").style.display='';
-			$('#Vcl_H_Shequ').html('<option value="">必选</option>');
+			$('#Vcl_HShequ').html('<option value="">必选</option>');
 		}else{
 			var value=obj.value
 			var a_shequ=CITY_II[value];
@@ -100,8 +100,8 @@ function change_h_qu(obj)
 			{
 				document.getElementById("h_jiedao").style.display='none';
 				document.getElementById("h_shequ").style.display='none';
-				$('#Vcl_H_Street').html('');
-				$('#Vcl_H_Shequ').html('');
+				$('#Vcl_HStreet').html('');
+				$('#Vcl_HShequ').html('');
 				return;
 			}
 			var s_html=''
@@ -109,10 +109,10 @@ function change_h_qu(obj)
 			{
 				s_html=s_html+'<option value="'+a_shequ[i][0]+'">'+a_shequ[i][1]+'</option>'
 			}
-			$('#Vcl_H_Street').html(s_html);
+			$('#Vcl_HStreet').html(s_html);
 			document.getElementById("h_jiedao").style.display='';
 			document.getElementById("h_shequ").style.display='none';
-			$('#Vcl_H_Shequ').html('');
+			$('#Vcl_HShequ').html('');
 		}
 	}catch(e){};
 }
@@ -121,7 +121,7 @@ function change_h_jiedao(obj)
 	if (obj.value=="")
 	{
 		var s_html='<option value="">必选</option>'
-		$('#Vcl_H_Shequ').html(s_html);
+		$('#Vcl_HShequ').html(s_html);
 		return
 	}
 	var value=obj.value
@@ -132,7 +132,7 @@ function change_h_jiedao(obj)
 	{
 		s_html=s_html+'<option value="'+a_shequ[i]+'">'+a_shequ[i]+'</option>'
 	}
-	$('#Vcl_H_Shequ').html(s_html);
+	$('#Vcl_HShequ').html(s_html);
 }
 function change_address(obj)
 {
@@ -154,66 +154,33 @@ function change_address(obj)
 }
 function change_z_city(obj)
 {
-	if (obj.value=="")
+	if (obj.value=="北京市")
 	{
-		document.getElementById("z_qu").style.display='none';
-		document.getElementById("z_jiedao").style.display='none';
-		document.getElementById("z_shequ").style.display='none';
-		$('#Vcl_Z_Area').html('');
-	}else{
-		var value=obj.value
-		var a_shequ=CITY_I[value];
-		var s_html=''
-		for(var i=0;i<a_shequ.length;i++)
-		{
-			s_html=s_html+'<option value="'+a_shequ[i][0]+'">'+a_shequ[i][1]+'</option>'
-		}
-		$('#Vcl_Z_Area').html(s_html);
 		document.getElementById("z_qu").style.display='';
+		change_z_qu(document.getElementById("Vcl_Z_rea"))
+	}else{
+		document.getElementById("z_qu").style.display='none';
 		document.getElementById("z_jiedao").style.display='none';
 		document.getElementById("z_shequ").style.display='none';
 	}
 }
 function change_z_qu(obj)
 {
-	try{
-		if (obj.value=="110102000000")
-		{
-			var s_jedao='<option value="">必选</option><option value="德胜街道">德胜街道</option><option value="什刹海街道">什刹海街道</option><option value="西长安街街道">西长安街街道</option><option value="大栅栏街道">大栅栏街道</option><option value="天桥街道">天桥街道</option><option value="新街口街道">新街口街道</option><option value="金融街街道">金融街街道</option><option value="椿树街道">椿树街道</option><option value="陶然亭街道">陶然亭街道</option><option value="展览路街道">展览路街道</option><option value="月坛街道">月坛街道</option><option value="广内街道">广内街道</option><option value="牛街街道">牛街街道</option><option value="白纸坊街道">白纸坊街道</option><option value="广外街道">广外街道</option>';
-			document.getElementById("z_jiedao").style.display='';
-			
-			$('#Vcl_Z_Street').html(s_jedao);
-			document.getElementById("z_shequ").style.display='';
-			$('#Vcl_Z_Shequ').html('<option value="">必选</option>');
-		}else{
-			var value=obj.value
-			var a_shequ=CITY_II[value];
-			if (a_shequ==undefined)
-			{
-				document.getElementById("z_jiedao").style.display='none';
-				document.getElementById("z_shequ").style.display='none';
-				$('#Vcl_Z_Street').html('');
-				$('#Vcl_Z_Shequ').html('');
-				return;
-			}
-			var s_html=''
-			for(var i=0;i<a_shequ.length;i++)
-			{
-				s_html=s_html+'<option value="'+a_shequ[i][0]+'">'+a_shequ[i][1]+'</option>'
-			}
-			$('#Vcl_Z_Street').html(s_html);
-			document.getElementById("z_jiedao").style.display='';
-			document.getElementById("z_shequ").style.display='none';
-			$('#Vcl_Z_Shequ').html('');
-		}
-	}catch(e){};
+	if (obj.value=="西城区")
+	{
+		document.getElementById("z_jiedao").style.display='';
+		document.getElementById("z_shequ").style.display='';
+	}else{
+		document.getElementById("z_jiedao").style.display='none';
+		document.getElementById("z_shequ").style.display='none';
+	}
 }
 function change_z_jiedao(obj)
 {
 	if (obj.value=="")
 	{
 		var s_html='<option value="">必选</option>'
-		$('#Vcl_Z_Shequ').html(s_html);
+		$('#Vcl_ZShequ').html(s_html);
 		return
 	}
 	var value=obj.value
@@ -224,7 +191,7 @@ function change_z_jiedao(obj)
 	{
 		s_html=s_html+'<option value="'+a_shequ[i]+'">'+a_shequ[i]+'</option>'
 	}
-	$('#Vcl_Z_Shequ').html(s_html);
+	$('#Vcl_ZShequ').html(s_html);
 }
 function change_z_property(obj)
 {
@@ -355,22 +322,22 @@ function submit_signin(modify)
 		}
 	}	
 	if (document.getElementById("Vcl_Nationality").value == "中国") {
-		if (document.getElementById("Vcl_H_City").value == "")
+		if (document.getElementById("Vcl_HCity").value == "")
 		{
 			Dialog_Message("请选择户籍信息的 [户籍所在（省/市）] ！")
-			document.getElementById("Vcl_H_Street").focus()
+			document.getElementById("Vcl_HStreet").focus()
 			return
 		}
 		if (document.getElementById("h_qu").innerHTML != "") {
-			if (document.getElementById("Vcl_H_Area").value == "") {
+			if (document.getElementById("Vcl_HArea").value == "") {
 				Dialog_Message("请选择户籍信息的 [户籍所在（市/区）] ！")
-				document.getElementById("Vcl_H_Area").focus()
+				document.getElementById("Vcl_HArea").focus()
 				return
 			}
 		}
 		if ($('#h_jiedao').is(":hidden")==false) {
-			if (document.getElementById("Vcl_H_Street").value == "") {
-				if (document.getElementById("Vcl_H_Area").value == "110102000000" && document.getElementById("Vcl_H_City").value == "110000000000") 
+			if (document.getElementById("Vcl_HStreet").value == "") {
+				if (document.getElementById("Vcl_HArea").value == "110102000000" && document.getElementById("Vcl_HCity").value == "110000000000") 
 				{
 					Dialog_Message("请选择户籍信息的 [户籍所在街道] ！")
 				}
@@ -378,103 +345,103 @@ function submit_signin(modify)
 				{
 					Dialog_Message("请选择户籍信息的 [户籍所在（区/县）] ！")
 				}
-				document.getElementById("Vcl_H_Street").focus()
+				document.getElementById("Vcl_HStreet").focus()
 				return
 			}
 		}	
 		if ($('#h_shequ').is(":hidden")==false) {
-			if (document.getElementById("Vcl_H_Shequ").value == "") {
+			if (document.getElementById("Vcl_HShequ").value == "") {
 				Dialog_Message("请选择户籍信息的 [户籍所在社区] ！")
-				document.getElementById("Vcl_H_Shequ").focus()
+				document.getElementById("Vcl_HShequ").focus()
 				return 
 			}
 		}
-		if (document.getElementById("Vcl_H_Add").value == "") {
+		if (document.getElementById("Vcl_HAdd").value == "") {
 			Dialog_Message("户籍信息的 [户籍详细地址] 不能为空！")
-			document.getElementById("Vcl_H_Add").focus()
+			document.getElementById("Vcl_HAdd").focus()
 			return
 		}
 	}
-	if(document.getElementById("Vcl_Z_Same").value=="否")
+	if(document.getElementById("Vcl_ZSame").value=="否")
 	{
-		if (document.getElementById("Vcl_Z_City").value=="北京市" && document.getElementById("Vcl_Z_Area").value=="西城区")
+		if (document.getElementById("Vcl_ZCity").value=="北京市" && document.getElementById("Vcl_ZArea").value=="西城区")
 		{
-			if (document.getElementById("Vcl_Z_Street").value=="")
+			if (document.getElementById("Vcl_ZStreet").value=="")
 			{
 				Dialog_Message("请选择现住址信息的 [现住址所在街道]！")
-				document.getElementById("Vcl_Z_Street").focus()
+				document.getElementById("Vcl_ZStreet").focus()
 				return
 			}
-			if (document.getElementById("Vcl_Z_Shequ").value=="")
+			if (document.getElementById("Vcl_ZShequ").value=="")
 			{
 				Dialog_Message("请选择现住址信息的 [现住址所在社区]！")
-				document.getElementById("Vcl_Z_Shequ").focus()
+				document.getElementById("Vcl_ZShequ").focus()
 				return
 			}
 		}
-		if (document.getElementById("Vcl_Z_Add").value=="")
+		if (document.getElementById("Vcl_ZAdd").value=="")
 		{
 			Dialog_Message("现住址信息的 [现住址详细地址] 不能为空！")
-			document.getElementById("Vcl_Z_Add").focus()
+			document.getElementById("Vcl_ZAdd").focus()
 			return
 		}
 	}
-	if (document.getElementById("Vcl_Z_Owner").value=="" && document.getElementById("Vcl_Z_Property").value=="直系亲属房产")
+	if (document.getElementById("Vcl_ZOwner").value=="" && document.getElementById("Vcl_ZProperty").value=="直系亲属房产")
 	{
 		window.alert("现住址信息的 [产权人姓名] 不能为空！")
-		document.getElementById("Vcl_Z_Owner").focus()
+		document.getElementById("Vcl_ZOwner").focus()
 		return
 	}
-	if (document.getElementById("Vcl_Jh_1_Name").value=="")
+	if (document.getElementById("Vcl_Jh1Name").value=="")
 	{
 		Dialog_Message("第一法定监护人信息的 [姓名] 不能为空！")
-		document.getElementById("Vcl_Jh_1_Name").focus()
+		document.getElementById("Vcl_Jh1Name").focus()
 		return
 	}	
-	if (document.getElementById("Vcl_Jh_1_Jiaoyu").value=="")
+	if (document.getElementById("Vcl_Jh1Jiaoyu").value=="")
 	{
 		Dialog_Message("请选择第一法定监护人信息的 [教育程度] ！")
-		document.getElementById("Vcl_Jh_1_Jiaoyu").focus()
+		document.getElementById("Vcl_Jh1Jiaoyu").focus()
 		return
 	}
-	if (document.getElementById("Vcl_Jh_1_Danwei").value=="")
+	if (document.getElementById("Vcl_Jh1Danwei").value=="")
 	{
 		Dialog_Message("第一法定监护人信息的 [工作单位] 不能为空！")
-		document.getElementById("Vcl_Jh_1_Danwei").focus()
+		document.getElementById("Vcl_Jh1Danwei").focus()
 		return
 	}			
-	if (document.getElementById("Vcl_Jh_2_Name").value != "") {//如果第二法定监护人姓名不是空，那么
-		if (document.getElementById("Vcl_Jh_2_Connection").value == "") {
+	if (document.getElementById("Vcl_Jh2Name").value != "") {//如果第二法定监护人姓名不是空，那么
+		if (document.getElementById("Vcl_Jh2Connection").value == "") {
 			Dialog_Message("请选择第二法定监护人信息的 [关系] ！")
-			document.getElementById("Vcl_Jh_2_Connection").focus()
+			document.getElementById("Vcl_Jh2Connection").focus()
 			return
 		}		
-		if (document.getElementById("Vcl_Jh_2_Job").value == "") {
+		if (document.getElementById("Vcl_Jh2Job").value == "") {
 			Dialog_Message("请选择第二法定监护人信息的 [职业状况] ！")
-			document.getElementById("Vcl_Jh_2_Job").focus()
+			document.getElementById("Vcl_Jh2Job").focus()
 			return
 		}		
-		if (document.getElementById("Vcl_Jh_2_Jiaoyu").value == "") {
+		if (document.getElementById("Vcl_Jh2Jiaoyu").value == "") {
 			Dialog_Message("请选择第二法定监护人信息的 [教育程度] ！")
-			document.getElementById("Vcl_Jh_2_Jiaoyu").focus()
+			document.getElementById("Vcl_Jh2Jiaoyu").focus()
 			return
 		}
-		if (document.getElementById("Vcl_Jh_2_Phone").value == "") {
+		if (document.getElementById("Vcl_Jh2Phone").value == "") {
 			Dialog_Message("第二法定监护人信息的 [联系电话] 不能为空！")
-			document.getElementById("Vcl_Jh_2_Phone").focus()
+			document.getElementById("Vcl_Jh2Phone").focus()
 			return
 		}
-		if (document.getElementById("Vcl_Jh_2_Danwei").value=="")
+		if (document.getElementById("Vcl_Jh2Danwei").value=="")
 		{
 			Dialog_Message("第二法定监护人信息的 [工作单位全称] 不能为空！")
-			document.getElementById("Vcl_Jh_2_Danwei").focus()
+			document.getElementById("Vcl_Jh2Danwei").focus()
 			return
 		}
 	}	
-	if (document.getElementById("Vcl_Jh_1_Phone").value=="")
+	if (document.getElementById("Vcl_Jh1Phone").value=="")
 	{
 		Dialog_Message("报名联系方式的 [监护人手机号] 不能为空！")
-		document.getElementById("Vcl_Jh_1_Phone").focus()
+		document.getElementById("Vcl_Jh1Phone").focus()
 		return
 	}
 	Common_OpenLoading();
