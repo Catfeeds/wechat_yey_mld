@@ -49,19 +49,19 @@ class Operate extends Bn_Basic {
 		{
 			
 		}else{
-			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请稍后再试！\');' );
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
 		}
-		//sleep(2);
+		sleep(2);
 		$o_setup=new Admission_Setup(1); 
 		$o_date = new DateTime('Asia/Chongqing');
 		$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d');
-		if (strtotime($s_date)<strtotime($o_setup->getSigninStart()))
+		if (strtotime($s_date)<strtotime($o_setup->getSignupStart()))
 		{
-			$this->ReturnMsg('报名开始时间为：'.$o_setup->getSigninStart().' ，请在有效日期内进行报名，谢谢合作。','Name');
+			$this->ReturnMsg('报名开始时间为：'.$o_setup->getSignupStart().' ，请在有效日期内进行报名，谢谢合作。','Name');
 		}
-		if (strtotime($s_date)>strtotime($o_setup->getSigninEnd()))
+		if (strtotime($s_date)>strtotime($o_setup->getSignupEnd()))
 		{
-			$this->ReturnMsg('对不起，报名结束时间为：'.$o_setup->getSigninStart().' ，谢谢合作。','Name');
+			$this->ReturnMsg('对不起，报名结束时间为：'.$o_setup->getSignupStart().' ，谢谢合作。','Name');
 		}
 		$o_stu=new Student_Info();
 		$this->CheckId($n_uid);//验证ID是否有重复
@@ -112,6 +112,32 @@ class Operate extends Bn_Basic {
 		$curlUtil->https_request($s_url, json_encode($data));
 	   	//$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'提交成功！\')');
 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'signup_success.php?id='.$o_stu->getStudentId().'"' );
+	}
+	public function SignupCancel($n_uid)
+	{
+		$a_result=array();
+		if ($n_uid>0)
+		{
+			
+		}else{
+			echo(json_encode ( $a_result ));
+			exit(0);
+		}
+		sleep(1);
+		//先删除关联信息，验证是否有这个信息
+		$o_stu_wechat=new Student_Info_Wechat();
+		$o_stu_wechat->PushWhere ( array ('&&', 'UserId', '=',$n_uid) ); 
+		$o_stu_wechat->PushWhere ( array ('&&', 'StudentId', '=',$this->getPost ( 'id' )) ); 
+		if($o_stu_wechat->getAllCount()>0)
+		{
+			$o_stu_wechat=new Student_Info_Wechat($o_stu_wechat->getId(0));
+			$o_stu_wechat->Deletion();
+			//再删除幼儿信息
+			$o_sut_info=new Student_Info($this->getPost ( 'id' ));
+			$o_sut_info->Deletion();
+		}
+		echo(json_encode ( $a_result ));
+		exit(0);		
 	}
 	protected function setStuInfo($o_stu)
 	{

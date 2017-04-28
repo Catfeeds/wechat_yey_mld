@@ -32,7 +32,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
         <div class="weui-form-preview__bd">
         	<div class="weui-form-preview__item">
                 <label class="weui-form-preview__label">幼儿姓名</label>
-                <em class="weui-form-preview__value"><?php echo($o_stu_wechat->getName($i))?></em>
+                <span class="weui-form-preview__value"><?php echo($o_stu_wechat->getName($i))?></span>
             </div>
 	        <div class="weui-form-preview__item">
 	           <label class="weui-form-preview__label">证件类型</label>
@@ -54,12 +54,20 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	            <label class="weui-form-preview__label">当前状态</label>
 	        <?php 
 	        $s_html='';
-	        
+	        $s_button='';
 	        //状态
 	        switch($o_stu_wechat->getState($i))
 	        {
 	        	case 0:
 	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">提交信息成功，等待通知材料核验</span>';
+	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">修改</a>';
+	        		$o_date = new DateTime('Asia/Chongqing');
+					$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d');
+	        		$o_admission_setup=new Admission_Setup(1);
+	        		if (strtotime($s_date)<=strtotime($o_admission_setup->getSignupEnd()))
+	        		{
+	        			$s_button.='<a class="weui-form-preview__btn weui-form-preview__btn_default" onclick="signup_cancel('.$o_stu_wechat->getStudentId($i).')" style="color:red">取消报名</a>';
+	        		}
 	        		break;
 	        }
 	        echo($s_html);
@@ -67,8 +75,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        </div>
         </div>
         <div class="weui-form-preview__ft">
-         	<a class="weui-form-preview__btn weui-form-preview__btn_primary" onclick="Dialog_Message(\'交费功能暂未开始使用，请耐心等待！\');">修改</a>
-			<a class="weui-form-preview__btn weui-form-preview__btn_default" onclick="signup_cancel('.$o_signup->getId($j).')" style="color:red">取消报名</a>
+         	<?php echo($s_button)?>
 		</div>
     </div>
     <br/>
@@ -77,10 +84,21 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 ?>
 
 <script>
+function signup_cancel(id)
+{
+    Dialog_Confirm('真的要取消报名吗？取消后您的幼儿信息将会永久删除。',function(){
+    	Common_OpenLoading();
+    	var data = 'Ajax_FunName=SignupCancel'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("../include/bn_submit.switch.php", data, function (json) {
+        	window.location.href="my_signup.php?"+Date.parse(new Date());    	
+        })
+    })
+}
 $(function () {
 	
 }); 
 //禁止分享
 document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {WeixinJSBridge.call('hideOptionMenu');});
 </script>  
-<?php require_once 'footer.php';?>
+<?php require_once '../footer.php';?>

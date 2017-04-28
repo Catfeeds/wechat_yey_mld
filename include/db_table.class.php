@@ -5,8 +5,8 @@ class Admission_Setup extends CRUD
 {
     protected $Id;
     protected $DeptId;
-    protected $SigninStart;
-    protected $SigninEnd;
+    protected $SignupStart;
+    protected $SignupEnd;
     protected $TuoSum;
     protected $XiaoSum;
     protected $ZhongSum;
@@ -26,8 +26,8 @@ class Admission_Setup extends CRUD
         return(array(
                     'id' => 'Id',
                     'dept_id' => 'DeptId',
-                    'signin_start' => 'SigninStart',
-                    'signin_end' => 'SigninEnd',
+                    'signup_start' => 'SignupStart',
+                    'signup_end' => 'SignupEnd',
                     'tuo_sum' => 'TuoSum',
                     'xiao_sum' => 'XiaoSum',
                     'zhong_sum' => 'ZhongSum',
