@@ -13,14 +13,42 @@ if ($o_stu_wechat->getAllCount()==0)
 	echo "<script>document.addEventListener('WeixinJSBridgeReady', WeixinJSBridge.call('closeWindow'));</script>"; 
 	exit(0);
 }
+$o_admission_setup=new Admission_Setup(1);
 ?>
     <div class="weui-msg">
         <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
         <div class="weui-msg__text-area">
             <h2 class="weui-msg__title">信息提交成功</h2>
             <p class="weui-msg__desc">幼儿信息已提交成功，请等待下一步提示，谢谢。<br/>
-            本年小班预计招生568人。<br/>
-            	目前已有123人报名小班。</p>
+            	本年<?php echo($o_table->getClassMode())?>预计招生<?php 
+            	switch ($o_table->getClassMode())
+            	{
+            		case '托班':
+            			echo($o_admission_setup->getTuoSum());
+            			break;
+            		case '小班':
+            			echo($o_admission_setup->getXiaoSum());
+            			break;
+            		case '中班':
+            			echo($o_admission_setup->getZhongSum());
+            			break;
+            		case '大班':
+            			echo($o_admission_setup->getDaSum());
+            			break;
+            		case '半日班':
+            			echo($o_admission_setup->getBanriSum());
+            			break;
+            		default:
+            			echo(0);
+            	}
+            	?>人。<br/>
+            	目前已有<?php 
+            	//计算当前报名人数
+            	$o_temp=new Student_Info();
+            	$o_temp->PushWhere ( array ('&&', 'ClassMode', '=',$o_table->getClassMode()) ); 
+            	$o_temp->PushWhere ( array ('&&', 'State', '=',0) ); 
+            	echo($o_temp->getAllCount());
+            	?>人报名<?php echo($o_table->getClassMode())?>。</p>
         </div>
     </div>
     <div class="weui-cells__title">幼儿报名信息</div>
@@ -56,4 +84,4 @@ $(function () {
 //禁止分享
 document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {WeixinJSBridge.call('hideOptionMenu');});
 </script>  
-<?php require_once 'footer.php';?>
+<?php require_once '../footer.php';?>

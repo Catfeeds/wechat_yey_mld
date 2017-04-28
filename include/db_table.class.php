@@ -7,6 +7,11 @@ class Admission_Setup extends CRUD
     protected $DeptId;
     protected $SigninStart;
     protected $SigninEnd;
+    protected $TuoSum;
+    protected $XiaoSum;
+    protected $ZhongSum;
+    protected $DaSum;
+    protected $BanriSum;
 
     protected function DefineKey()
     {
@@ -22,7 +27,12 @@ class Admission_Setup extends CRUD
                     'id' => 'Id',
                     'dept_id' => 'DeptId',
                     'signin_start' => 'SigninStart',
-                    'signin_end' => 'SigninEnd'
+                    'signin_end' => 'SigninEnd',
+                    'tuo_sum' => 'TuoSum',
+                    'xiao_sum' => 'XiaoSum',
+                    'zhong_sum' => 'ZhongSum',
+                    'da_sum' => 'DaSum',
+                    'banri_sum' => 'BanriSum'
         ));
     }
 }
@@ -825,7 +835,249 @@ class Student_Info_Wechat extends CRUD
     }
 }
 
+class Student_Info_Wechat_Wiew extends CRUD
+{
+    protected $StudentId;
+    protected $State;
+    protected $Name;
+    protected $Sex;
+    protected $Birthday;
+    protected $Nation;
+    protected $Only;
+    protected $OnlyCode;
+    protected $IsFirst;
+    protected $HCode;
+    protected $HCity;
+    protected $HArea;
+    protected $HStreet;
+    protected $HAdd;
+    protected $Id;
+    protected $IdType;
+    protected $ZCity;
+    protected $ZProperty;
+    protected $ZArea;
+    protected $ZStreet;
+    protected $ZAdd;
+    protected $Illness;
+    protected $Allergic;
+    protected $DeptId;
+    protected $GradeNumber;
+    protected $ClassNumber;
+    protected $ClassNameDiy;
+    protected $Jiudu;
+    protected $Birthplace;
+    protected $BirthplaceCode;
+    protected $IdQuality;
+    protected $IdQualityType;
+    protected $SignupDate;
+    protected $InTime;
+    protected $OutTime;
+    protected $IsLiushou;
+    protected $IsWugong;
+    protected $IsCanji;
+    protected $CanjiType;
+    protected $IsJisu;
+    protected $IsGuer;
+    protected $IsDibao;
+    protected $DibaoCode;
+    protected $IsZizhu;
+    protected $Nationality;
+    protected $Gangao;
+    protected $IsLieshi;
+    protected $CanjiCode;
+    protected $Jiankang;
+    protected $Xuexing;
+    protected $IsYiwang;
+    protected $IsShoushu;
+    protected $Shoushu;
+    protected $IsYizhi;
+    protected $IsYichuan;
+    protected $IsXiaochuan;
+    protected $IsDianxian;
+    protected $IsJingjue;
+    protected $IsXinzangbing;
+    protected $IsGuomin;
+    protected $Qitabingshi;
+    protected $Beizhu;
+    protected $HShequ;
+    protected $ZShequ;
+    protected $ZSame;
+    protected $HGuanxi;
+    protected $ZOwner;
+    protected $HOwner;
+    protected $ZGuanxi;
+    protected $Jh1Connection;
+    protected $Jh1IsZhixi;
+    protected $Jh1IsCanji;
+    protected $Jh1Name;
+    protected $Jh1Job;
+    protected $Jh1Danwei;
+    protected $Jh1CanjiCode;
+    protected $Jh1IdType;
+    protected $Jh1Jiaoyu;
+    protected $Jh1Id;
+    protected $Jh1Phone;
+    protected $Jh2Connection;
+    protected $Jh2IsZhixi;
+    protected $Jh2IsCanji;
+    protected $Jh2Name;
+    protected $Jh2Job;
+    protected $Jh2Danwei;
+    protected $Jh2CanjiCode;
+    protected $Jh2IdType;
+    protected $Jh2Jiaoyu;
+    protected $Jh2Id;
+    protected $Jh2Phone;
+    protected $JianhuConnection;
+    protected $JianhuName;
+    protected $JianhuPhone;
+    protected $FlagThree;
+    protected $FlagXicheng;
+    protected $FlagSame;
+    protected $FlagOnly;
+    protected $FlagFirst;
+    protected $HospitalName;
+    protected $ClassMode;
+    protected $Compliance;
+    protected $UserId;
+    protected $Nickname;
+    protected $Openid;
+    protected $DelFlag;
+    protected $SessionId;
+    protected $GroupId;
+    protected $Photo;
+    protected $ParentSex;
+    protected $UserName;
+    protected $Phone;
+    protected $Email;
 
+    protected function DefineKey()
+    {
+        return 'student_id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_info_wechat_wiew';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'student_id' => 'StudentId',
+                    'state' => 'State',
+                    'name' => 'Name',
+                    'sex' => 'Sex',
+                    'birthday' => 'Birthday',
+                    'nation' => 'Nation',
+                    'only' => 'Only',
+                    'only_code' => 'OnlyCode',
+                    'is_first' => 'IsFirst',
+                    'h_code' => 'HCode',
+                    'h_city' => 'HCity',
+                    'h_area' => 'HArea',
+                    'h_street' => 'HStreet',
+                    'h_add' => 'HAdd',
+                    'id' => 'Id',
+                    'id_type' => 'IdType',
+                    'z_city' => 'ZCity',
+                    'z_property' => 'ZProperty',
+                    'z_area' => 'ZArea',
+                    'z_street' => 'ZStreet',
+                    'z_add' => 'ZAdd',
+                    'illness' => 'Illness',
+                    'allergic' => 'Allergic',
+                    'dept_id' => 'DeptId',
+                    'grade_number' => 'GradeNumber',
+                    'class_number' => 'ClassNumber',
+                    'class_name_diy' => 'ClassNameDiy',
+                    'jiudu' => 'Jiudu',
+                    'birthplace' => 'Birthplace',
+                    'birthplace_code' => 'BirthplaceCode',
+                    'id_quality' => 'IdQuality',
+                    'id_quality_type' => 'IdQualityType',
+                    'signup_date' => 'SignupDate',
+                    'in_time' => 'InTime',
+                    'out_time' => 'OutTime',
+                    'is_liushou' => 'IsLiushou',
+                    'is_wugong' => 'IsWugong',
+                    'is_canji' => 'IsCanji',
+                    'canji_type' => 'CanjiType',
+                    'is_jisu' => 'IsJisu',
+                    'is_guer' => 'IsGuer',
+                    'is_dibao' => 'IsDibao',
+                    'dibao_code' => 'DibaoCode',
+                    'is_zizhu' => 'IsZizhu',
+                    'nationality' => 'Nationality',
+                    'gangao' => 'Gangao',
+                    'is_lieshi' => 'IsLieshi',
+                    'canji_code' => 'CanjiCode',
+                    'jiankang' => 'Jiankang',
+                    'xuexing' => 'Xuexing',
+                    'is_yiwang' => 'IsYiwang',
+                    'is_shoushu' => 'IsShoushu',
+                    'shoushu' => 'Shoushu',
+                    'is_yizhi' => 'IsYizhi',
+                    'is_yichuan' => 'IsYichuan',
+                    'is_xiaochuan' => 'IsXiaochuan',
+                    'is_dianxian' => 'IsDianxian',
+                    'is_jingjue' => 'IsJingjue',
+                    'is_xinzangbing' => 'IsXinzangbing',
+                    'is_guomin' => 'IsGuomin',
+                    'qitabingshi' => 'Qitabingshi',
+                    'beizhu' => 'Beizhu',
+                    'h_shequ' => 'HShequ',
+                    'z_shequ' => 'ZShequ',
+                    'z_same' => 'ZSame',
+                    'h_guanxi' => 'HGuanxi',
+                    'z_owner' => 'ZOwner',
+                    'h_owner' => 'HOwner',
+                    'z_guanxi' => 'ZGuanxi',
+                    'jh_1_connection' => 'Jh1Connection',
+                    'jh_1_is_zhixi' => 'Jh1IsZhixi',
+                    'jh_1_is_canji' => 'Jh1IsCanji',
+                    'jh_1_name' => 'Jh1Name',
+                    'jh_1_job' => 'Jh1Job',
+                    'jh_1_danwei' => 'Jh1Danwei',
+                    'jh_1_canji_code' => 'Jh1CanjiCode',
+                    'jh_1_id_type' => 'Jh1IdType',
+                    'jh_1_jiaoyu' => 'Jh1Jiaoyu',
+                    'jh_1_id' => 'Jh1Id',
+                    'jh_1_phone' => 'Jh1Phone',
+                    'jh_2_connection' => 'Jh2Connection',
+                    'jh_2_is_zhixi' => 'Jh2IsZhixi',
+                    'jh_2_is_canji' => 'Jh2IsCanji',
+                    'jh_2_name' => 'Jh2Name',
+                    'jh_2_job' => 'Jh2Job',
+                    'jh_2_danwei' => 'Jh2Danwei',
+                    'jh_2_canji_code' => 'Jh2CanjiCode',
+                    'jh_2_id_type' => 'Jh2IdType',
+                    'jh_2_jiaoyu' => 'Jh2Jiaoyu',
+                    'jh_2_id' => 'Jh2Id',
+                    'jh_2_phone' => 'Jh2Phone',
+                    'jianhu_connection' => 'JianhuConnection',
+                    'jianhu_name' => 'JianhuName',
+                    'jianhu_phone' => 'JianhuPhone',
+                    'flag_three' => 'FlagThree',
+                    'flag_xicheng' => 'FlagXicheng',
+                    'flag_same' => 'FlagSame',
+                    'flag_only' => 'FlagOnly',
+                    'flag_first' => 'FlagFirst',
+                    'hospital_name' => 'HospitalName',
+                    'class_mode' => 'ClassMode',
+                    'compliance' => 'Compliance',
+                    'user_id' => 'UserId',
+                    'nickname' => 'Nickname',
+                    'openid' => 'Openid',
+                    'del_flag' => 'DelFlag',
+                    'session_id' => 'SessionId',
+                    'group_id' => 'GroupId',
+                    'photo' => 'Photo',
+                    'parent_sex' => 'ParentSex',
+                    'user_name' => 'UserName',
+                    'phone' => 'Phone',
+                    'email' => 'Email'
+        ));
+    }
+}
 
 class Base_User_Wechat extends CRUD
 {

@@ -6,7 +6,7 @@ require_once '../header.php';
 ?>
  	<div class="page__hd">
         <h1 class="page__title" style="font-size:28px;">报名须知</h1>
-        <p class="page__desc">按钮</p>
+        <p class="page__desc">报名须知文字说明</p>
     </div>
     <div style="padding:15px;">
 		 <a class="weui-btn weui-btn_disabled weui-btn_primary"><span>20</span> 已阅读并同意</a>

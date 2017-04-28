@@ -415,25 +415,15 @@ function submit_signin(modify)
 			Dialog_Message("请选择第二法定监护人信息的 [关系] ！")
 			document.getElementById("Vcl_Jh2Connection").focus()
 			return
-		}		
-		if (document.getElementById("Vcl_Jh2Job").value == "") {
-			Dialog_Message("请选择第二法定监护人信息的 [职业状况] ！")
-			document.getElementById("Vcl_Jh2Job").focus()
-			return
-		}		
+		}			
 		if (document.getElementById("Vcl_Jh2Jiaoyu").value == "") {
 			Dialog_Message("请选择第二法定监护人信息的 [教育程度] ！")
 			document.getElementById("Vcl_Jh2Jiaoyu").focus()
 			return
 		}
-		if (document.getElementById("Vcl_Jh2Phone").value == "") {
-			Dialog_Message("第二法定监护人信息的 [联系电话] 不能为空！")
-			document.getElementById("Vcl_Jh2Phone").focus()
-			return
-		}
 		if (document.getElementById("Vcl_Jh2Danwei").value=="")
 		{
-			Dialog_Message("第二法定监护人信息的 [工作单位全称] 不能为空！")
+			Dialog_Message("第二法定监护人信息的 [工作单位] 不能为空！")
 			document.getElementById("Vcl_Jh2Danwei").focus()
 			return
 		}
