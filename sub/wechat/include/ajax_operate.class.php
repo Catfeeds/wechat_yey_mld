@@ -113,6 +113,31 @@ class Operate extends Bn_Basic {
 	   	//$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'提交成功！\')');
 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'signup_success.php?id='.$o_stu->getStudentId().'"' );
 	}
+	public function SignupModify($n_uid)
+	{
+		if ($n_uid>0)
+		{
+			
+		}else{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
+		}
+		$o_stu=new Student_Info($this->getPost ( 'StudentId' ));
+		$o_setup=new Admission_Setup(1); 
+		//验证是否可以修改
+		$s_date=$this->GetDate();
+		if (strtotime($s_date)>strtotime($o_setup->getSignupEnd()) || $o_stu->getState()!=0)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
+		}
+		sleep(2);	
+		$o_stu->setName($this->getPost ( 'Name' ));
+	    $o_stu->setSex($this->getPost ( 'Sex' ));
+	    if ($this->getPost ( 'Birthday' )=='')$this->ReturnMsg('基本信息的 [出生日期] 不能为空！','Birthday');
+	    $o_stu->setBirthday($this->getPost ( 'Birthday' ));
+	    $o_stu=$this->setStuInfo($o_stu);
+	    $o_stu->Save();	    
+	   	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'修改报名信息成功！\',function(){parent.location="'.$this->getPost ( 'Url' ).'my_signup.php"})');
+	}
 	public function SignupCancel($n_uid)
 	{
 		$a_result=array();

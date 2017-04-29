@@ -157,7 +157,7 @@ function change_z_city(obj)
 	if (obj.value=="北京市")
 	{
 		document.getElementById("z_qu").style.display='';
-		change_z_qu(document.getElementById("Vcl_Z_rea"))
+		change_z_qu(document.getElementById("Vcl_ZArea"))
 	}else{
 		document.getElementById("z_qu").style.display='none';
 		document.getElementById("z_jiedao").style.display='none';
@@ -276,25 +276,10 @@ function submit_signin(modify)
 		document.getElementById("Vcl_Birthday").focus()
 		return
 	}
-	if(modify=='false')
-	{
-
-		if (check_id_submit()==false)
-		{
+	if (modify == 'false') {
+		if (check_id() == false) {
 			document.getElementById("Vcl_ID").focus()
 			return
-		}
-
-	}
-	if (document.getElementById("Vcl_Nationality").value == "中国") {
-		if (document.getElementById("Vcl_Only").value=="是")
-		{
-			if (document.getElementById("Vcl_OnlyCode").value=="")
-			{
-				Dialog_Message("基本信息的 [独生子女证号] 不能为空！")
-				document.getElementById("Vcl_OnlyCode").focus()
-				return
-			}
 		}
 	}
 	if (document.getElementById("Vcl_HospitalName").value=="")
@@ -436,6 +421,11 @@ function submit_signin(modify)
 	}
 	Common_OpenLoading();
 	document.getElementById("submit_form").submit();	 
+}
+function vcl_disabled(obj)
+{
+	$(obj).attr({"disabled":"disabled"});
+	$(obj).css({"color":"#808080"});
 }
 CITY_I=new Array();CITY_II=new Array();CITY_I["110000000000"]=new Array(new Array("110101000000","东城区"),new Array("110102000000","西城区"),new Array("110105000000","朝阳区"),new Array("110106000000","丰台区"),new Array("110107000000","石景山区"),new Array("110108000000","海淀区"),new Array("110109000000","门头沟区"),new Array("110111000000","房山区"),new Array("110112000000","通州区"),new Array("110113000000","顺义区"),new Array("110114000000","昌平区"),new Array("110115000000","大兴区"),new Array("110116000000","怀柔区"),new Array("110117000000","平谷区"),new Array("110228000000","密云县"),new Array("110229000000","延庆县"),new Array("11A1A1000000","燕山区"));
 CITY_I["120000000000"]=new Array(new Array("120101000000","和平区"),new Array("120102000000","河东区"),new Array("120103000000","河西区"),new Array("120104000000","南开区"),new Array("120105000000","河北区"),new Array("120106000000","红桥区"),new Array("120110000000","东丽区"),new Array("120111000000","西青区"),new Array("120112000000","津南区"),new Array("120113000000","北辰区"),new Array("120114000000","武清区"),new Array("120115000000","宝坻区"),new Array("120116000000","滨海新区"),new Array("120221000000","宁河县"),new Array("120223000000","静海县"),new Array("120225000000","蓟县"));
