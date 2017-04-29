@@ -32,7 +32,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                             <div class="row" style="margin-right:-5px;">
 								  <div class="col-lg-6">
 								    <div class="input-group" style="width:300px;" >
-								      <input id="Vcl_KeySignup" type="text" class="form-control" placeholder="幼儿姓名/证件号" value="<?php echo($s_key)?>">
+								      <input id="Vcl_KeySignup" type="text" class="form-control" placeholder="幼儿编号/姓名/证件号" value="<?php echo($s_key)?>">
 								      <span class="input-group-btn">
 								        <button class="btn btn-primary" type="button" onclick="search_for_signup()"><span  class="glyphicon glyphicon-search"></span></button>
 								      </span>

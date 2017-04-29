@@ -19,13 +19,6 @@ $S_Session_Id= $_COOKIE ['SESSIONID'];
 if (isset ( $_COOKIE ['SESSIONID'] )) {//检查是否保存了Session
 	setcookie ( 'SESSIONID', '377be4f48492037e4815e5fe5774cf44',0 ,'/','',false,true);
 	$S_Session_Id= $_COOKIE ['SESSIONID'];
-	if ($_COOKIE ['SESSIONID']=='b0a8f64b9ecbe3750bb36bb77964b110')
-	{
-		$o_date = new DateTime ( 'Asia/Chongqing' );
-		$n_nowTime = $o_date->format ( 'U' );
-		$S_Session_Id = md5 ( $_SERVER ['REMOTE_ADDR'] . $_SERVER ['HTTP_USER_AGENT'] . rand ( 0, 9999 ) . $n_nowTime );
-		setcookie ( 'SESSIONID',$S_Session_Id,0 ,'/','',false,true);
-	}
 	$o_user = new WX_User_Info ();
 	$o_user->PushWhere ( array ('&&', 'SessionId', '=',$S_Session_Id) );
 	if ($o_user->getAllCount () > 0) {

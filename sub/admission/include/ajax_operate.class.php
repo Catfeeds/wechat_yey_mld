@@ -26,6 +26,8 @@ class Operate extends Bn_Basic {
 			$o_user->PushWhere ( array ('&&', 'State', '=',0) );
 			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',0) );
+			$o_user->PushWhere ( array ('||', 'StudentId', 'like',$s_key.'%') );
+			$o_user->PushWhere ( array ('&&', 'State', '=',0) );
 		}else{
 			$o_user->PushWhere ( array ('&&', 'State', '=',0) );
 		}
