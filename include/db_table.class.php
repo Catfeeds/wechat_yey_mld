@@ -12,6 +12,9 @@ class Admission_Setup extends CRUD
     protected $ZhongSum;
     protected $DaSum;
     protected $BanriSum;
+    protected $AuditDate;
+    protected $AuditTime;
+    protected $AuditAddress;
 
     protected function DefineKey()
     {
@@ -32,7 +35,10 @@ class Admission_Setup extends CRUD
                     'xiao_sum' => 'XiaoSum',
                     'zhong_sum' => 'ZhongSum',
                     'da_sum' => 'DaSum',
-                    'banri_sum' => 'BanriSum'
+                    'banri_sum' => 'BanriSum',
+                    'audit_date' => 'AuditDate',
+                    'audit_time' => 'AuditTime',
+                    'audit_address' => 'AuditAddress'
         ));
     }
 }

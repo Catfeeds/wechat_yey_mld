@@ -460,4 +460,126 @@ class WX_Menu_Sub extends CRUD{
                    ));
    }
 }
+class Wechat_Wx_User_Reminder_View extends CRUD
+{
+    protected $Id;
+    protected $UserId;
+    protected $CreateDate;
+    protected $SendDate;
+    protected $MsgId;
+    protected $OpenId;
+    protected $ActivityId;
+    protected $Send;
+    protected $First;
+    protected $Keyword1;
+    protected $Keyword2;
+    protected $Keyword3;
+    protected $Keyword4;
+    protected $Keyword5;
+    protected $Remark;
+    protected $Nickname;
+    protected $Sex;
+    protected $UserName;
+    protected $Company;
+    protected $DeptJob;
+    protected $Address;
+    protected $Openid;
+    protected $Phone;
+    protected $SessionId;
+    protected $RegisterDate;
+    protected $Url;
+    protected $KeywordSum;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_wx_user_reminder_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'user_id' => 'UserId',
+                    'create_date' => 'CreateDate',
+                    'send_date' => 'SendDate',
+                    'msg_id' => 'MsgId',
+                    'open_id' => 'OpenId',
+                    'activity_id' => 'ActivityId',
+                    'send' => 'Send',
+                    'first' => 'First',
+                    'keyword1' => 'Keyword1',
+                    'keyword2' => 'Keyword2',
+                    'keyword3' => 'Keyword3',
+                    'keyword4' => 'Keyword4',
+                    'keyword5' => 'Keyword5',
+                    'remark' => 'Remark',
+                    'nickname' => 'Nickname',
+                    'sex' => 'Sex',
+                    'user_name' => 'UserName',
+                    'company' => 'Company',
+                    'dept_job' => 'DeptJob',
+                    'address' => 'Address',
+                    'openid' => 'Openid',
+                    'phone' => 'Phone',
+                    'session_id' => 'SessionId',
+                    'register_date' => 'RegisterDate',
+        			'url' => 'Url',
+                    'keyword_sum' => 'KeywordSum'
+        ));
+    }
+}
+class Wechat_Wx_User_Reminder extends CRUD
+{
+    protected $Id;
+    protected $UserId;
+    protected $CreateDate;
+    protected $SendDate;
+    protected $MsgId;
+    protected $OpenId;
+    protected $ActivityId;
+    protected $Send;
+    protected $First;
+    protected $Keyword1;
+    protected $Keyword2;
+    protected $Keyword3;
+    protected $Keyword4;
+    protected $Keyword5;
+    protected $Remark;
+    protected $Url;
+    protected $KeywordSum;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_wx_user_reminder';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'user_id' => 'UserId',
+                    'create_date' => 'CreateDate',
+                    'send_date' => 'SendDate',
+                    'msg_id' => 'MsgId',
+                    'open_id' => 'OpenId',
+                    'activity_id' => 'ActivityId',
+                    'send' => 'Send',
+                    'first' => 'First',
+                    'keyword1' => 'Keyword1',
+                    'keyword2' => 'Keyword2',
+                    'keyword3' => 'Keyword3',
+                    'keyword4' => 'Keyword4',
+                    'keyword5' => 'Keyword5',
+                    'remark' => 'Remark',
+        			'url' => 'Url',
+                    'keyword_sum' => 'KeywordSum'
+        ));
+    }
+}
 ?>
