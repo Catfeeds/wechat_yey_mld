@@ -483,7 +483,6 @@ class Wechat_Wx_User_Reminder_View extends CRUD
     protected $Company;
     protected $DeptJob;
     protected $Address;
-    protected $Openid;
     protected $Phone;
     protected $SessionId;
     protected $RegisterDate;
@@ -522,7 +521,6 @@ class Wechat_Wx_User_Reminder_View extends CRUD
                     'company' => 'Company',
                     'dept_job' => 'DeptJob',
                     'address' => 'Address',
-                    'openid' => 'Openid',
                     'phone' => 'Phone',
                     'session_id' => 'SessionId',
                     'register_date' => 'RegisterDate',

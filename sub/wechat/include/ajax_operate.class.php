@@ -515,7 +515,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setCreateDate($this->GetDateNow());
 			$o_msg->setSendDate('0000-00-00');
 			$o_msg->setMsgId('zyiBHFGE22XBtt4cmhaV7abYy9vOpUTNv_yvJr2U-ic');
-			$o_msg->setOpenId('');
+			$o_msg->setOpenId($o_wechat_user->getOpenId($j));
 			$o_msg->setActivityId(0);
 			$o_msg->setSend(0);
 			$o_msg->setFirst('尊敬的幼儿家长您好，您所报名的幼儿：');

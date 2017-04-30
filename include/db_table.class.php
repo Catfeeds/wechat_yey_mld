@@ -947,7 +947,7 @@ class Student_Info_Wechat_Wiew extends CRUD
     protected $Compliance;
     protected $UserId;
     protected $Nickname;
-    protected $Openid;
+    protected $OpenId;
     protected $DelFlag;
     protected $SessionId;
     protected $GroupId;
@@ -1072,7 +1072,7 @@ class Student_Info_Wechat_Wiew extends CRUD
                     'compliance' => 'Compliance',
                     'user_id' => 'UserId',
                     'nickname' => 'Nickname',
-                    'openid' => 'Openid',
+                    'open_id' => 'OpenId',
                     'del_flag' => 'DelFlag',
                     'session_id' => 'SessionId',
                     'group_id' => 'GroupId',
