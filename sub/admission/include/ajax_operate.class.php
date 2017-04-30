@@ -44,12 +44,6 @@ class Operate extends Bn_Basic {
 		$n_count = $o_user->getCount ();
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
-			//如果已经取消关注，需要加标签
-			$s_sign_name='';
-			if ($o_user->getDelFlag ( $i )==1)
-			{
-				$s_sign_name=' <span class="label label-danger">取消关注</span>';
-			}
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '"/>',
 				$o_user->getStudentId ( $i ),
@@ -75,17 +69,77 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'监护人手机', '', 0, 100);
 		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
 	}
+	public function WaitAuditTable($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120102 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Student_Info(); 
+		$s_key=$this->getPost('key');
+		if ($s_key!='')
+		{
+			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$s_key.'%') );
+			$o_user->PushWhere ( array ('&&', 'State', '=',1) );
+			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
+			$o_user->PushWhere ( array ('&&', 'State', '=',1) );
+			$o_user->PushWhere ( array ('||', 'StudentId', 'like',$s_key.'%') );
+			$o_user->PushWhere ( array ('&&', 'State', '=',1) );
+		}else{
+			$o_user->PushWhere ( array ('&&', 'State', '=',1) );
+		}
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			array_push ($a_row, array (
+				$o_user->getStudentId ( $i ),
+				$o_user->getName ( $i ),
+				$o_user->getSex ( $i ),
+				$o_user->getBirthday ( $i ),
+				$o_user->getIdType( $i ),
+				$o_user->getId ( $i ),
+				$o_user->getJh1Name ( $i ),
+				$o_user->getJh1Phone ( $i )
+				));				
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
+		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'证件类型', 'IdType', 0, 60);
+		$a_title=$this->setTableTitle($a_title,'证件号码', 'Id', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'第一监护人', 'Jh1Name', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'监护人手机', '', 0, 100);
+		$this->SendJsonResultForTable($n_allcount,'WaitAuditTable', 'no', $n_page, $a_title, $a_row);
+	}
 	public function SendAuditNotice($n_uid)
 	{	
 		sleep(1);
 		$this->N_PageSize= 50;
 		if (! ($n_uid > 0)) {
 			$this->setReturn('parent.goto_login()');
-		}
-		$o_admission_setup=new Admission_Setup(1);
+		}		
 		$o_user = new Single_User ( $n_uid );
 		if (!$o_user->ValidModule ( 120101 ))return;//如果没有权限，不返回任何值
 		$a_data=json_decode($_POST['Vcl_StuId']);
+		$o_admission_setup=new Admission_Setup(1);
+		$o_system_setup=new Base_Setup(1);
 		for($i=0;$i<count($a_data);$i++)
 		{
 			$o_stu=new Student_Info($a_data[$i]);
@@ -113,7 +167,10 @@ class Operate extends Bn_Basic {
 				    $o_msg->setKeyword3($o_admission_setup->getAuditDate());
 				    $o_msg->setKeyword4($o_admission_setup->getAuditTime());
 				    $o_msg->setKeyword5($o_admission_setup->getAuditAddress());
-				    $o_msg->setRemark('请您按照如上时段、地址进行信息核验，感谢您的配合。');
+				    $o_msg->setRemark('请您按照如上时段、地址进行信息核验，感谢您的配合。
+如需查看您的幼儿报名信息，请点击详情
+			');
+				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup/php');
 				    $o_msg->setKeywordSum(5);
 				    $o_msg->Save();
 				}				

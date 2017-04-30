@@ -27,7 +27,14 @@ if ($o_stu->getAllCount()==0)
 				require_once 'signup_detail.php';
 			?>
 	    <div style="padding:15px;">
-	    	<a id="next" class="weui-btn weui-btn_primary" onclick="submit_signin(true)">提交修改</a>
+	    <?php 
+			if ($o_stu->getState(0)==0)
+			{
+			?>
+				<a id="next" class="weui-btn weui-btn_primary" onclick="submit_signin(true)">提交修改</a>
+			<?php
+			} 
+		?>	    
 	    	<a id="next" class="weui-btn weui-btn_default" onclick="javascript:history.back();">返回</a>
 	    </div>
 	</form>
@@ -178,8 +185,25 @@ if ($o_stu->getAllCount()==0)
 	echo('document.getElementById("Vcl_ClassMode").value="'.$o_stu->getClassMode(0).'";
 	');
 ?>
-vcl_disabled(document.getElementById("Vcl_ID"))
-vcl_disabled(document.getElementById("Vcl_IdType"))
+<?php 
+if ($o_stu->getState(0)!=0)
+{
+	?>
+	for(var i = 4; i < document.getElementsByTagName("input").length; i++){
+		vcl_disabled(document.getElementsByTagName("input")[i])
+	}
+	for(var i = 0; i < document.getElementsByTagName("select").length; i++){
+		vcl_disabled(document.getElementsByTagName("select")[i])
+	}
+	<?php
+}else{
+	?>
+	vcl_disabled(document.getElementById("Vcl_ID"))
+	vcl_disabled(document.getElementById("Vcl_IdType"))	
+	<?php
+}
+?>
+
 
 
 </script>

@@ -59,7 +59,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        switch($o_stu_wechat->getState($i))
 	        {
 	        	case 0:
-	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">提交信息成功，等待通知材料核验</span>';
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">提交信息成功，等待通知信息核验</span>';
 	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">修改</a>';
 	        		$o_date = new DateTime('Asia/Chongqing');
 					$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d');
@@ -68,6 +68,14 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        		{
 	        			$s_button.='<a class="weui-form-preview__btn weui-form-preview__btn_default" onclick="signup_cancel('.$o_stu_wechat->getStudentId($i).')" style="color:red">取消报名</a>';
 	        		}
+	        		break;
+	        	case 1:
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待进行信息核验</span>';
+	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		break;
+	        	case 2:
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">信息核验通过，等待见面</span>';
+	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
 	        		break;
 	        }
 	        echo($s_html);

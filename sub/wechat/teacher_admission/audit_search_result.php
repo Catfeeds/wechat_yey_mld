@@ -197,10 +197,10 @@ if ($o_stu->getState(0)>1)
 ?>
 	for(var i = 4; i < document.getElementsByTagName("input").length; i++){
 		vcl_disabled(document.getElementsByTagName("input")[i])
-	} 
+	}
 	for(var i = 0; i < document.getElementsByTagName("select").length; i++){
 		vcl_disabled(document.getElementsByTagName("select")[i])
-	} 	
+	}
 </script>
 <?php
 require_once '../footer.php';

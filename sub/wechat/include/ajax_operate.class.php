@@ -135,7 +135,7 @@ class Operate extends Bn_Basic {
 		$s_date=$this->GetDate();
 		if (strtotime($s_date)>strtotime($o_setup->getSignupEnd()) || $o_stu->getState()!=0)
 		{
-			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，报名已经截止，不能修改幼儿信息！\');' );
 		}
 		sleep(2);	
 		$o_stu->setName($this->getPost ( 'Name' ));
@@ -499,7 +499,40 @@ class Operate extends Bn_Basic {
 		}
 		$o_stu=new Student_Info($this->getPost ( 'StudentId' ));
 		$o_stu->setState(2);
-		$o_stu->Save();		    
+		$o_stu->Save();	
+		//发送模板消息
+		$o_admission_setup=new Admission_Setup(1);
+		$o_system_setup=new Base_Setup(1);
+		//获取幼儿关联的微信
+		$o_wechat_user=new Student_Info_Wechat_Wiew();
+		$o_wechat_user->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId()) );
+		for($j=0;$j<$o_wechat_user->getAllCount();$j++)
+		{
+			/*
+			//添加消息队列
+			$o_msg=new Wechat_Wx_User_Reminder();
+			$o_msg->setUserId($o_wechat_user->getUserId($j));
+			$o_msg->setCreateDate($this->GetDateNow());
+			$o_msg->setSendDate('0000-00-00');
+			$o_msg->setMsgId('zyiBHFGE22XBtt4cmhaV7abYy9vOpUTNv_yvJr2U-ic');
+			$o_msg->setOpenId('');
+			$o_msg->setActivityId(0);
+			$o_msg->setSend(0);
+			$o_msg->setFirst('尊敬的幼儿家长您好，您所报名的幼儿：');
+			$o_msg->setKeyword1($o_stu->getStudentId());
+			$o_msg->setKeyword2($o_stu->getName());
+			$o_msg->setKeyword3($o_admission_setup->getAuditDate());
+			$o_msg->setKeyword4($o_admission_setup->getAuditTime());
+			$o_msg->setKeyword5($o_admission_setup->getAuditAddress());
+			$o_msg->setRemark('请您按照如上时段、地址进行信息核验，感谢您的配合。
+
+如需查看您的幼儿报名信息，请点击详情
+			');
+			$o_msg->setKeywordSum(5);
+			$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup/php');
+			$o_msg->Save();
+			*/
+		}	    
 	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'audit_search_success.php"');
 	}
 	

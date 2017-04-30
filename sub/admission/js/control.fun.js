@@ -4,12 +4,30 @@ $(function(){
 	    if(keycode == '13'){  
 	    	search_for_signup()   
 	    }  
+	}); 
+	$('#Vcl_KeyWaitAudit').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_wait_audit()   
+	    }  
 	});  
 })
 function search_for_signup()
 {
 	var fun='StudentSignupTable';
 	var id='Vcl_KeySignup'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value),'');    
+}
+function search_for_wait_audit()
+{
+	var fun='WaitAuditTable';
+	var id='Vcl_KeyWaitAudit'
 	$('.small_loading').fadeIn(100);
 	$.cookie(fun+"Page",1);
 	$.cookie(fun+"Key",document.getElementById(id).value);
@@ -52,7 +70,7 @@ function select_submit()
 		return
 	}
 	document.getElementById('Vcl_StuId').value=arrayToJson(a_data)
-	dialog_confirm("确认通知选中幼儿监护人吗？<br/><br/>确认后：<br/>1. 幼儿监护人的微信将收到信息核验通知。<br/>2. 选中的幼儿报名信息将会进入等待信息核验模块。<br/>3. 本页面将会被刷新。<br/><br/>注：操作过程中，请不要关闭或刷新浏览器。",function (){document.getElementById('submit_form').submit();loading_show();});
+	dialog_confirm("确认通知选中幼儿监护人吗？<br/><br/>确认后：<br/>1. 幼儿监护人的微信将收到信息核验通知。<br/>2. 选中的幼儿报名信息将会进入“<b>等待信息核验</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：操作过程中，请不要关闭或刷新浏览器。",function (){document.getElementById('submit_form').submit();loading_show();});
 }
 function arrayToJson(o) {
     var r = [];
