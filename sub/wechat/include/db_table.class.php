@@ -487,7 +487,7 @@ class Wechat_Wx_User_Reminder_View extends CRUD
     protected $SessionId;
     protected $RegisterDate;
     protected $Url;
-    protected $KeywordSum;
+    protected $KeywordSum; 
 
     protected function DefineKey()
     {

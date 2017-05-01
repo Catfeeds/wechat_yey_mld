@@ -15,13 +15,15 @@ if($o_stu_wechat->getAllCount()==0)
 	</div>
 	<?php
 }
-for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
-{
-	?>
+?>
 	 <div class="page__hd">
         <h1 class="page__title" style="font-size:28px;">我的幼儿报名</h1>
         <p class="page__desc">简要说明</p>
     </div>
+<?php
+for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
+{
+	?>
     <div class="weui-form-preview">
         <div class="weui-form-preview__hd">
             <div class="weui-form-preview__item">

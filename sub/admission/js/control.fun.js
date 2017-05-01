@@ -70,7 +70,7 @@ function select_submit()
 		return
 	}
 	document.getElementById('Vcl_StuId').value=arrayToJson(a_data)
-	dialog_confirm("确认通知选中幼儿监护人吗？<br/><br/>确认后：<br/>1. 幼儿监护人的微信将收到信息核验通知。<br/>2. 选中的幼儿报名信息将会进入“<b>等待信息核验</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：操作过程中，请不要关闭或刷新浏览器。",function (){document.getElementById('submit_form').submit();loading_show();});
+	dialog_confirm("确认通知选中幼儿监护人吗？<br/><br/>确认后：<br/>1. 幼儿监护人的微信将收到信息核验通知。<br/>2. 选中的幼儿报名信息将会进入“<b>等待信息核验</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
 }
 function arrayToJson(o) {
     var r = [];

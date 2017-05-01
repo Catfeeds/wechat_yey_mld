@@ -12,7 +12,6 @@ if ($o_temp->getAllCount()==0)
 }
 //判断幼儿信息状态，如果不为小于1，那么提示为通知核验
 
-//先判断这个幼儿是否在名下
 $o_stu=new Student_Info_Wechat_Wiew();
 $o_stu->PushWhere ( array ('&&', 'StudentId', '=',$_GET['id']) ); 
 if ($o_stu->getAllCount()==0)

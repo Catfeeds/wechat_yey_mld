@@ -145,7 +145,7 @@ class Operate extends Bn_Basic {
 			$o_stu=new Student_Info($a_data[$i]);
 			if ($o_stu->getState()==0)
 			{
-				//$o_stu->setState(1);
+				$o_stu->setState(1);
 				$o_stu->Save();
 				//获取幼儿关联的微信
 				$o_wechat_user=new Student_Info_Wechat_Wiew();
@@ -168,9 +168,9 @@ class Operate extends Bn_Basic {
 				    $o_msg->setKeyword4($o_admission_setup->getAuditTime());
 				    $o_msg->setKeyword5($o_admission_setup->getAuditAddress());
 				    $o_msg->setRemark('请您按照如上时段、地址进行信息核验，感谢您的配合。
-如需查看您的幼儿报名信息，请点击详情
-			');
-				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup/php');
+				    
+如需查看幼儿报名信息，请点击详情');
+				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup.php');
 				    $o_msg->setKeywordSum(5);
 				    $o_msg->Save();
 				}				

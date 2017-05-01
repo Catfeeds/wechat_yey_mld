@@ -149,7 +149,6 @@ function change_address(obj)
 		document.getElementById("z_jiedao").style.display='';
 		document.getElementById("z_shequ").style.display='';
 		document.getElementById("z_address").style.display='';
-		
 	}
 }
 function change_z_city(obj)
@@ -266,14 +265,9 @@ function submit_signin(modify)
 {
 	if (document.getElementById("Vcl_Name").value=="")
 	{
-		Dialog_Message("基本信息的 [幼儿姓名] 不能为空！")
-		document.getElementById("Vcl_Name").focus()
-		return
-	}
-	if (document.getElementById("Vcl_Birthday").value=="")
-	{
-		Dialog_Message("基本信息的 [出生日期] 不能为空！")
-		document.getElementById("Vcl_Birthday").focus()
+		Dialog_Message("基本信息的 [幼儿姓名] 不能为空！",function(){
+			document.getElementById("Vcl_Name").focus()
+		})		
 		return
 	}
 	if (modify == 'false') {
@@ -282,18 +276,28 @@ function submit_signin(modify)
 			return
 		}
 	}
+	if (document.getElementById("Vcl_Birthday").value=="")
+	{
+		Dialog_Message("基本信息的 [出生日期] 不能为空！",function(){
+			document.getElementById("Vcl_Birthday").focus()
+		})		
+		return
+	}
+	
 	if (document.getElementById("Vcl_HospitalName").value=="")
 	{
-		Dialog_Message("健康信息的 [预防接种医院] 不能为空！")
-		document.getElementById("Vcl_HospitalName").focus()
+		Dialog_Message("健康信息的 [预防接种医院] 不能为空！",function(){
+			document.getElementById("Vcl_HospitalName").focus()
+		})		
 		return
 	}
 	if (document.getElementById("Vcl_IsYiwang").value=="是")
 	{
 		if (document.getElementById("Vcl_Illness").value=="")
 		{
-			Dialog_Message("请选择健康信息的 [以往病史] ！")
-			document.getElementById("Vcl_Illness").focus()
+			Dialog_Message("请选择健康信息的 [以往病史] ！",function(){
+				document.getElementById("Vcl_Illness").focus()
+			})
 			return
 		}
 	}
@@ -301,22 +305,25 @@ function submit_signin(modify)
 	{
 		if (document.getElementById("Vcl_Allergic").value=="")
 		{
-			Dialog_Message("健康信息的 [过敏源] 不能为空！")
-			document.getElementById("Vcl_Allergic").focus()
+			Dialog_Message("健康信息的 [过敏源] 不能为空！",function(){
+				document.getElementById("Vcl_Allergic").focus()			
+			})
 			return
 		}
 	}	
 	if (document.getElementById("Vcl_Nationality").value == "中国") {
 		if (document.getElementById("Vcl_HCity").value == "")
 		{
-			Dialog_Message("请选择户籍信息的 [户籍所在（省/市）] ！")
-			document.getElementById("Vcl_HStreet").focus()
+			Dialog_Message("请选择户籍信息的 [户籍所在（省/市）] ！",function(){
+				document.getElementById("Vcl_HStreet").focus()
+			})			
 			return
 		}
 		if (document.getElementById("h_qu").innerHTML != "") {
 			if (document.getElementById("Vcl_HArea").value == "") {
-				Dialog_Message("请选择户籍信息的 [户籍所在（市/区）] ！")
-				document.getElementById("Vcl_HArea").focus()
+				Dialog_Message("请选择户籍信息的 [户籍所在（市/区）] ！",function(){
+					document.getElementById("Vcl_HArea").focus()
+				})				
 				return
 			}
 		}
@@ -324,26 +331,31 @@ function submit_signin(modify)
 			if (document.getElementById("Vcl_HStreet").value == "") {
 				if (document.getElementById("Vcl_HArea").value == "110102000000" && document.getElementById("Vcl_HCity").value == "110000000000") 
 				{
-					Dialog_Message("请选择户籍信息的 [户籍所在街道] ！")
+					Dialog_Message("请选择户籍信息的 [户籍所在街道] ！",function(){
+						document.getElementById("Vcl_HStreet").focus()
+					})
 				}
 				else
 				{
-					Dialog_Message("请选择户籍信息的 [户籍所在（区/县）] ！")
+					Dialog_Message("请选择户籍信息的 [户籍所在（区/县）] ！",function(){
+						document.getElementById("Vcl_HStreet").focus()
+					})
 				}
-				document.getElementById("Vcl_HStreet").focus()
 				return
 			}
 		}	
 		if ($('#h_shequ').is(":hidden")==false) {
 			if (document.getElementById("Vcl_HShequ").value == "") {
-				Dialog_Message("请选择户籍信息的 [户籍所在社区] ！")
-				document.getElementById("Vcl_HShequ").focus()
+				Dialog_Message("请选择户籍信息的 [户籍所在社区] ！",function(){
+					document.getElementById("Vcl_HShequ").focus()
+				})				
 				return 
 			}
 		}
 		if (document.getElementById("Vcl_HAdd").value == "") {
-			Dialog_Message("户籍信息的 [户籍详细地址] 不能为空！")
-			document.getElementById("Vcl_HAdd").focus()
+			Dialog_Message("户籍信息的 [户籍详细地址] 不能为空！",function(){
+				document.getElementById("Vcl_HAdd").focus()
+			})			
 			return
 		}
 	}
@@ -353,70 +365,81 @@ function submit_signin(modify)
 		{
 			if (document.getElementById("Vcl_ZStreet").value=="")
 			{
-				Dialog_Message("请选择现住址信息的 [现住址所在街道]！")
-				document.getElementById("Vcl_ZStreet").focus()
+				Dialog_Message("请选择现住址信息的 [现住址所在街道]！",function(){
+					document.getElementById("Vcl_ZStreet").focus()
+				})				
 				return
 			}
 			if (document.getElementById("Vcl_ZShequ").value=="")
 			{
-				Dialog_Message("请选择现住址信息的 [现住址所在社区]！")
-				document.getElementById("Vcl_ZShequ").focus()
+				Dialog_Message("请选择现住址信息的 [现住址所在社区]！",function(){
+					document.getElementById("Vcl_ZShequ").focus()
+				})				
 				return
 			}
 		}
 		if (document.getElementById("Vcl_ZAdd").value=="")
 		{
-			Dialog_Message("现住址信息的 [现住址详细地址] 不能为空！")
-			document.getElementById("Vcl_ZAdd").focus()
+			Dialog_Message("现住址信息的 [现住址详细地址] 不能为空！",function(){
+				document.getElementById("Vcl_ZAdd").focus()
+			})			
 			return
 		}
 	}
 	if (document.getElementById("Vcl_ZOwner").value=="" && document.getElementById("Vcl_ZProperty").value=="直系亲属房产")
 	{
-		window.alert("现住址信息的 [产权人姓名] 不能为空！")
-		document.getElementById("Vcl_ZOwner").focus()
+		Dialog_Message.alert("现住址信息的 [产权人姓名] 不能为空！",function(){
+			document.getElementById("Vcl_ZOwner").focus()
+		})		
 		return
 	}
 	if (document.getElementById("Vcl_Jh1Name").value=="")
 	{
-		Dialog_Message("第一法定监护人信息的 [姓名] 不能为空！")
-		document.getElementById("Vcl_Jh1Name").focus()
+		Dialog_Message("第一法定监护人信息的 [姓名] 不能为空！",function(){
+			document.getElementById("Vcl_Jh1Name").focus()
+		})		
 		return
 	}	
 	if (document.getElementById("Vcl_Jh1Jiaoyu").value=="")
 	{
-		Dialog_Message("请选择第一法定监护人信息的 [教育程度] ！")
-		document.getElementById("Vcl_Jh1Jiaoyu").focus()
+		Dialog_Message("请选择第一法定监护人信息的 [教育程度] ！",function(){
+			document.getElementById("Vcl_Jh1Jiaoyu").focus()
+		})		
 		return
 	}
 	if (document.getElementById("Vcl_Jh1Danwei").value=="")
 	{
-		Dialog_Message("第一法定监护人信息的 [工作单位] 不能为空！")
-		document.getElementById("Vcl_Jh1Danwei").focus()
+		Dialog_Message("第一法定监护人信息的 [工作单位] 不能为空！",function(){
+			document.getElementById("Vcl_Jh1Danwei").focus()
+		})		
 		return
 	}			
 	if (document.getElementById("Vcl_Jh2Name").value != "") {//如果第二法定监护人姓名不是空，那么
 		if (document.getElementById("Vcl_Jh2Connection").value == "") {
-			Dialog_Message("请选择第二法定监护人信息的 [关系] ！")
-			document.getElementById("Vcl_Jh2Connection").focus()
+			Dialog_Message("请选择第二法定监护人信息的 [关系] ！",function(){
+				document.getElementById("Vcl_Jh2Connection").focus()
+			})			
 			return
 		}			
 		if (document.getElementById("Vcl_Jh2Jiaoyu").value == "") {
-			Dialog_Message("请选择第二法定监护人信息的 [教育程度] ！")
-			document.getElementById("Vcl_Jh2Jiaoyu").focus()
+			Dialog_Message("请选择第二法定监护人信息的 [教育程度] ！",function(){
+				document.getElementById("Vcl_Jh2Jiaoyu").focus()
+			})			
 			return
 		}
 		if (document.getElementById("Vcl_Jh2Danwei").value=="")
 		{
-			Dialog_Message("第二法定监护人信息的 [工作单位] 不能为空！")
-			document.getElementById("Vcl_Jh2Danwei").focus()
+			Dialog_Message("第二法定监护人信息的 [工作单位] 不能为空！",function(){
+				document.getElementById("Vcl_Jh2Danwei").focus()
+			})			
 			return
 		}
 	}	
 	if (document.getElementById("Vcl_Jh1Phone").value=="")
 	{
-		Dialog_Message("报名联系方式的 [监护人手机号] 不能为空！")
-		document.getElementById("Vcl_Jh1Phone").focus()
+		Dialog_Message("报名联系方式的 [监护人手机号] 不能为空！",function(){
+			document.getElementById("Vcl_Jh1Phone").focus()
+		})		
 		return
 	}
 	Common_OpenLoading();
