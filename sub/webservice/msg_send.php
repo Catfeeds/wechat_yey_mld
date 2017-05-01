@@ -21,7 +21,7 @@ if ($n_count>10)
 for($i=0;$i<$n_count;$i++)
 {
 	$o_temp=new Wechat_Wx_User_Reminder($o_reminder->getId($i));
-	//$o_temp->setSend(1);
+	$o_temp->setSend(1);
 	$o_date = new DateTime ( 'Asia/Chongqing' );
 	$o_temp->setSendDate($o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ) . ' ' . $o_date->format ( 'H' ) . ':' . $o_date->format ( 'i' ) . ':' . $o_date->format ( 's' ));
 	$o_temp->Save();

@@ -11,6 +11,24 @@ $(function(){
 	    	search_for_wait_audit()   
 	    }  
 	});  
+	$('#Vcl_KeyAuditPass').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_audit_pass()   
+	    }  
+	});
+	$('#Vcl_KeyMeetResult').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_meet_result()   
+	    }  
+	}); 
+	$('#Vcl_KeyHealthWait').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_health_wait()   
+	    }  
+	});  
 })
 function search_for_signup()
 {
@@ -28,6 +46,42 @@ function search_for_wait_audit()
 {
 	var fun='WaitAuditTable';
 	var id='Vcl_KeyWaitAudit'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value),'');    
+}
+function search_for_audit_pass()
+{
+	var fun='AuditPassTable';
+	var id='Vcl_KeyAuditPass'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value),'');    
+}
+function search_for_meet_result()
+{
+	var fun='MeetResultTable';
+	var id='Vcl_KeyMeetResult'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value),'');    
+}
+function search_for_health_wait()
+{
+	var fun='HealthWaitTable';
+	var id='Vcl_KeyHealthWait'
 	$('.small_loading').fadeIn(100);
 	$.cookie(fun+"Page",1);
 	$.cookie(fun+"Key",document.getElementById(id).value);
@@ -71,6 +125,44 @@ function select_submit()
 	}
 	document.getElementById('Vcl_StuId').value=arrayToJson(a_data)
 	dialog_confirm("确认通知选中幼儿监护人吗？<br/><br/>确认后：<br/>1. 幼儿监护人的微信将收到信息核验通知。<br/>2. 选中的幼儿报名信息将会进入“<b>等待信息核验</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
+}
+function meet_select_submit()
+{
+	var a_data=[];
+	for(var i=0;i<$('tbody input[type=checkbox]').length;i++)
+	{
+		obj=$('tbody input[type=checkbox]')[i]
+		if (obj.checked)
+		{
+			a_data.push(obj.value);
+		}
+	}
+	if(a_data.length==0)
+	{
+		dialog_message("请先选择报名信息！")
+		return
+	}
+	document.getElementById('Vcl_StuId').value=arrayToJson(a_data)
+	dialog_confirm("确认通知选中幼儿监护人进行幼儿体检吗？<br/><br/>确认后：<br/>1. 幼儿监护人的微信将收到体检通知。<br/>2. 选中的幼儿报名信息将会进入“<b>等待体检审核</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
+}
+function health_select_submit()
+{
+	var a_data=[];
+	for(var i=0;i<$('tbody input[type=checkbox]').length;i++)
+	{
+		obj=$('tbody input[type=checkbox]')[i]
+		if (obj.checked)
+		{
+			a_data.push(obj.value);
+		}
+	}
+	if(a_data.length==0)
+	{
+		dialog_message("请先选择报名信息！")
+		return
+	}
+	document.getElementById('Vcl_StuId').value=arrayToJson(a_data)
+	dialog_confirm("确认通知选中幼儿监护人进行幼儿信息完善吗？<br/><br/>确认后：<br/>1. 幼儿监护人的微信将收到体检通知。<br/>2. 监护人完善信息后，将会自动收到录取通知。<br/>3. 选中的幼儿报名信息将会进入“<b>等待完善信息</b>”模块。<br/>4. 本页面将会被刷新。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
 }
 function arrayToJson(o) {
     var r = [];

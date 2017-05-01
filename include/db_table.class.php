@@ -698,6 +698,8 @@ class Student_Info extends CRUD
     protected $HospitalName;
     protected $ClassMode;
     protected $Compliance;
+    protected $MeetItem;
+    protected $MeetRemark;
 
     protected function DefineKey()
     {
@@ -811,7 +813,9 @@ class Student_Info extends CRUD
                     'flag_first' => 'FlagFirst',
                     'hospital_name' => 'HospitalName',
                     'class_mode' => 'ClassMode',
-                    'compliance' => 'Compliance'
+                    'compliance' => 'Compliance',
+                    'meet_item' => 'MeetItem',
+                    'meet_remark' => 'MeetRemark'
         ));
     }
 }
@@ -1084,7 +1088,29 @@ class Student_Info_Wechat_Wiew extends CRUD
         ));
     }
 }
+class Student_Info_Meet_Item extends CRUD
+{
+    protected $Id;
+    protected $Name;
+    protected $Number;
 
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_info_meet_item';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'name' => 'Name',
+        			'number' => 'Number'
+        ));
+    }
+}
 class Base_User_Wechat extends CRUD
 {
     protected $Id;

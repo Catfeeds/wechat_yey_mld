@@ -79,6 +79,14 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">信息核验通过，等待见面</span>';
 	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
 	        		break;
+	        	case 3:
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">完成见面，等待通知体检</span>';
+	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		break;
+	        	case 4:
+	        		$s_html='<span class="weui-form-preview__value" style="color:#FFA200">等待向幼儿园提交体检报告</span>';
+	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		break;
 	        }
 	        echo($s_html);
 	        ?>

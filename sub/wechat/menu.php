@@ -1,5 +1,5 @@
 <?php
-exit(0);
+//exit(0);
 define ( 'RELATIVITY_PATH', '../../' );
 
 header('Content-Type: text/html; charset=UTF-8');
@@ -12,37 +12,32 @@ $ACC_TOKEN= $token->access_token;
 $data='{ 
     "button": [
         {
-            "type":"view",
-          	"name":"学生信息",
-          	"url":"http://xchmsxx.xchjw.cn/sub/wechat/student_idcard.php"
+          	"name":"了解马幼",
+          	"sub_button": [
+                {
+                    "type": "view", 
+                    "name": "园所简介", 
+                    "url": "http://mp.weixin.qq.com/s/RKoaM3d1omY5Z4tPplITcw" 
+                }
+            ]
         }, 
         {
-            "type":"view",
-          	"name":"家长须知",
-          	"url":"http://mp.weixin.qq.com/s/yQyiyTlGHI1p6hsVl_I_Jg"
+            "type":"click",
+          	"name":"幼儿教育",
+          	"key": "2"
         }, 
         {
-            "name": "在线报名", 
+            "name": "社会公众", 
             "sub_button": [
                 {
                     "type": "view", 
-                    "name": "马上报名", 
-                    "url": "http://xchmsxx.xchjw.cn/sub/wechat/signup.php" 
+                    "name": "在线报名", 
+                    "url": "http://wx.mldyey.com/sub/wechat/parent_signup/signup_agreement.php" 
                 }, 
                 {
 					"type": "view", 
-                    "name": "等待录取", 
-                    "url": "http://xchmsxx.xchjw.cn/sub/wechat/waiting_signup.php" 
-                }, 
-                {
-                    "type": "view", 
-                    "name": "等待交费", 
-                    "url": "http://xchmsxx.xchjw.cn/sub/wechat/waiting_pay.php" 
-                 }, 
-                {
-                    "type": "view", 
-                    "name": "交费记录", 
-                    "url": "http://xchmsxx.xchjw.cn/sub/wechat/record_pay.php" 
+                    "name": "我的报名", 
+                    "url": "http://wx.mldyey.com/sub/wechat/parent_signup/my_signup.php" 
                 }
             ]
         }

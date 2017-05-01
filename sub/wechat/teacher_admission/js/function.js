@@ -5,3 +5,10 @@ function audit_approve()
 		document.getElementById("submit_form").submit();
 	})
 }
+function meet_submit()
+{
+	Dialog_Confirm("真的要提交见面结果吗？",function(){
+		Common_OpenLoading();
+		document.getElementById("submit_form").submit();
+	})
+}

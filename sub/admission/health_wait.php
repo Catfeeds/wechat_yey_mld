@@ -1,10 +1,10 @@
 <?php
 define ( 'RELATIVITY_PATH', '../../' );
-define ( 'MODULEID', 120101);
+define ( 'MODULEID', 120105);
 $O_Session = '';
 require_once RELATIVITY_PATH . 'include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'head.php';
-$s_fun='StudentSignupTable';
+$s_fun='HealthWaitTable';
 $s_item='StudentId';
 $s_page=1;
 $s_sort='A';
@@ -22,28 +22,27 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 					<form action="include/bn_submit.switch.php" id="submit_form" method="post" target="submit_form_frame">
 						<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 						<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
-						<input type="hidden" name="Vcl_FunName" value="SendAuditNotice"/>
+						<input type="hidden" name="Vcl_FunName" value="SendHealthNotice"/>
 						<input type="hidden" name="Vcl_StuId" id="Vcl_StuId"/>
 					</form>
 
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
-                            <div class="caption">等待信息核验列表</div>
+                            <div class="caption">等待提交审核列表</div>
                             <div class="row" style="margin-right:-5px;">
 								  <div class="col-lg-6">
 								    <div class="input-group" style="width:300px;" >
-								      <input id="Vcl_KeySignup" type="text" class="form-control" placeholder="幼儿编号/姓名/证件号" value="<?php echo($s_key)?>">
+								      <input id="Vcl_KeyHealthWait" type="text" class="form-control" placeholder="幼儿编号/姓名/证件号" value="<?php echo($s_key)?>">
 								      <span class="input-group-btn">
-								        <button class="btn btn-primary" type="button" onclick="search_for_signup()"><span  class="glyphicon glyphicon-search"></span></button>
+								        <button class="btn btn-primary" type="button" onclick="search_for_htalth_wait()"><span  class="glyphicon glyphicon-search"></span></button>
 								      </span>
 								    </div>
 								  </div>
 								</div>
-								<button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="window.open('output_all.php?state=0','_blank')">
+								<button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="window.open('output_all.php?state=3','_blank')">
                                 <span  class="glyphicon glyphicon-floppy-save"></span>&nbsp;导出全部</button>
-								<button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="select_submit()">
-                                <span  class="glyphicon glyphicon-ok"></span>&nbsp;发送核验通知</button>
-                                
+                                <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="health_select_submit()">
+                                <span  class="glyphicon glyphicon-ok"></span>&nbsp;发送完善幼儿信息通知</button>
                             </div>
                         <table class="table table-striped">
                             <thead>
