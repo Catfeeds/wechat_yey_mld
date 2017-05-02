@@ -39,7 +39,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								    </div>
 								  </div>
 								</div>
-								<button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="window.open('output_all.php?state=3','_blank')">
+								<button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="window.open('output_all.php?state=4','_blank')">
                                 <span  class="glyphicon glyphicon-floppy-save"></span>&nbsp;导出全部</button>
                                 <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="health_select_submit()">
                                 <span  class="glyphicon glyphicon-ok"></span>&nbsp;发送完善幼儿信息通知</button>

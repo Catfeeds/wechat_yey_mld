@@ -98,17 +98,29 @@ function OutputList($S_State,$s_filename) {
 	//班级信息
 	$objPHPExcel->getActiveSheet()->SetCellValue('AM1', '报名班级类型');
 	$objPHPExcel->getActiveSheet()->SetCellValue('AN1', '是否服从班级类型调剂');
-	$a_item=array('AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD');
+	$a_item=array('AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI');
 	//如果是3，已见面，那么要添加相应的列
 	if($S_State==3)
 	{
+		$objPHPExcel->getActiveSheet()->SetCellValue('AO1', '幼儿见面审核员');
 		$o_item=new Student_Info_Meet_Item();
+		$o_item->PushWhere ( array ('&&', 'Type', '=','幼儿见面') ); 
 	    $o_item->PushOrder ( array ('Number','A') );
 	    for($i=0;$i<$o_item->getAllCount();$i++)
 	    {
-	    	$objPHPExcel->getActiveSheet()->SetCellValue($a_item[$i].'1', $o_item->getName($i));
+	    	$objPHPExcel->getActiveSheet()->SetCellValue($a_item[$i].'1', $o_item->getType($i).'-'.$o_item->getName($i));
 	    }
-	    $objPHPExcel->getActiveSheet()->SetCellValue($a_item[$i].'1','见面结果备注');
+	    $objPHPExcel->getActiveSheet()->SetCellValue($a_item[$i].'1','幼儿见面-备注');
+	    $objPHPExcel->getActiveSheet()->SetCellValue($a_item[($i+1)].'1', '家长见面审核员');
+		$o_item=new Student_Info_Meet_Item();
+		$o_item->PushWhere ( array ('&&', 'Type', '=','家长见面') ); 
+	    $o_item->PushOrder ( array ('Number','A') );
+	    $n_temp=$i+2;
+	    for($i=0;$i<$o_item->getAllCount();$i++)
+	    {
+	    	$objPHPExcel->getActiveSheet()->SetCellValue($a_item[($i+$n_temp)].'1', $o_item->getType($i).'-'.$o_item->getName($i));
+	    }
+	    $objPHPExcel->getActiveSheet()->SetCellValue($a_item[($i+$n_temp)].'1','家长见面-备注');
 	}
 	$o_dept = new Student_Info ();
 	$o_dept->PushWhere ( array ('&&', 'State', '=', $S_State ) );
@@ -191,21 +203,25 @@ function OutputList($S_State,$s_filename) {
 		$objPHPExcel->getActiveSheet()->SetCellValue('AN'.$n_row, $o_dept->getCompliance( $i ));
 		if($S_State==3)
 		{
+			$objPHPExcel->getActiveSheet()->SetCellValue('AO'.$n_row,$o_dept->getMeetAuditorName( $i ));
 			//读取幼儿的见面结果
 			$a_result=json_decode($o_dept->getMeetItem($i));
-			$o_item=new Student_Info_Meet_Item();
-		    $o_item->PushOrder ( array ('Number','A') );
-		    for($j=0;$j<$o_item->getAllCount();$j++)
+		    for($j=0;$j<count($a_result);$j++)
 		    {
-		    	//如果在里面，显示“是”，否则是“否”
-		    	if(in_array($o_item->getId($j), $a_result))
-		    	{
-		    		$objPHPExcel->getActiveSheet()->SetCellValue($a_item[$j].$n_row, '是');
-		    	}else{
-		    		$objPHPExcel->getActiveSheet()->SetCellValue($a_item[$j].$n_row, '否');
-		    	}		    	
+		    	$a_temp=$a_result[$j];
+		    	$objPHPExcel->getActiveSheet()->SetCellValue($a_item[$j].$n_row,$a_temp->value);		    	
 		    }
 		    $objPHPExcel->getActiveSheet()->SetCellValue($a_item[$j].$n_row,$o_dept->getMeetRemark($i));
+		    $objPHPExcel->getActiveSheet()->SetCellValue($a_item[($j+1)].$n_row,$o_dept->getMeetParentAuditorName( $i ));
+		    $n_temp=$j+2;
+			//读取幼儿的见面结果
+			$a_result=json_decode($o_dept->getMeetParentItem($i));
+		    for($j=0;$j<count($a_result);$j++)
+		    {
+		    	$a_temp=$a_result[$j];
+		    	$objPHPExcel->getActiveSheet()->SetCellValue($a_item[($j+$n_temp)].$n_row,$a_temp->value);		    	
+		    }
+		    $objPHPExcel->getActiveSheet()->SetCellValue($a_item[($j+$n_temp)].$n_row,$o_dept->getMeetParentRemark($i));
 		}
 	}	
 	$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);

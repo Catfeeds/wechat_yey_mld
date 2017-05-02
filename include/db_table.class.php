@@ -698,8 +698,14 @@ class Student_Info extends CRUD
     protected $HospitalName;
     protected $ClassMode;
     protected $Compliance;
+    protected $MeetAuditorId;
+    protected $MeetAuditorName;
     protected $MeetItem;
     protected $MeetRemark;
+    protected $MeetParentAuditorId;
+    protected $MeetParentAuditorName;
+    protected $MeetParentItem;
+    protected $MeetParentRemark;
 
     protected function DefineKey()
     {
@@ -814,8 +820,14 @@ class Student_Info extends CRUD
                     'hospital_name' => 'HospitalName',
                     'class_mode' => 'ClassMode',
                     'compliance' => 'Compliance',
+                    'meet_auditor_id' => 'MeetAuditorId',
+                    'meet_auditor_name' => 'MeetAuditorName',
                     'meet_item' => 'MeetItem',
-                    'meet_remark' => 'MeetRemark'
+                    'meet_remark' => 'MeetRemark',
+                    'meet_parent_auditor_id' => 'MeetParentAuditorId',
+                    'meet_parent_auditor_name' => 'MeetParentAuditorName',
+                    'meet_parent_item' => 'MeetParentItem',
+                    'meet_parent_remark' => 'MeetParentRemark'
         ));
     }
 }
@@ -1091,8 +1103,9 @@ class Student_Info_Wechat_Wiew extends CRUD
 class Student_Info_Meet_Item extends CRUD
 {
     protected $Id;
-    protected $Name;
     protected $Number;
+    protected $Name;
+    protected $Type;
 
     protected function DefineKey()
     {
@@ -1106,8 +1119,9 @@ class Student_Info_Meet_Item extends CRUD
     {
         return(array(
                     'id' => 'Id',
+                    'number' => 'Number',
                     'name' => 'Name',
-        			'number' => 'Number'
+                    'type' => 'Type'
         ));
     }
 }
@@ -1131,6 +1145,45 @@ class Base_User_Wechat extends CRUD
                     'id' => 'Id',
                     'uid' => 'Uid',
                     'wechat_id' => 'WechatId'
+        ));
+    }
+}
+class Base_User_Wechat_View extends CRUD
+{
+    protected $Id;
+    protected $Uid;
+    protected $Name;
+    protected $Username;
+    protected $State;
+    protected $Deleted;
+    protected $WechatId;
+    protected $Nickname;
+    protected $Sex;
+    protected $OpenId;
+    protected $SessionId;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_user_wechat_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'uid' => 'Uid',
+                    'name' => 'Name',
+                    'username' => 'Username',
+                    'state' => 'State',
+                    'deleted' => 'Deleted',
+                    'wechat_id' => 'WechatId',
+                    'nickname' => 'Nickname',
+                    'sex' => 'Sex',
+                    'open_id' => 'OpenId',
+                    'session_id' => 'SessionId'
         ));
     }
 }

@@ -100,7 +100,9 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	<?php
 }
 ?>
-
+	<div style="padding:15px; padding-top:0px">
+		<a id="next" class="weui-btn weui-btn_primary" href="signup_agreement.php">+ 马上报名</a>
+	</div>
 <script>
 function signup_cancel(id)
 {

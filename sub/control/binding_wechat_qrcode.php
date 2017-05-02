@@ -14,8 +14,8 @@ if ($o_role->getAllCount()>0)
 	switch ($o_role->getWechatGroupId())
 	{
 		case '101':
-		  $url=urldecode($o_system->getHomeUrl().'sub/wechat/wechat_teacher/binding_account.php?id='.$_GET['id']);
-		  QRcode::png($url,false,QR_ECLEVEL_H,10,2,false);
+		  $url=urldecode($o_system->getHomeUrl().'sub/wechat/teacher_admission/binding_account.php?id='.$_GET['id']);
+		  QRcode::png($url,false,QR_ECLEVEL_H,10,2,false); 
 		  break; 
 	}
 }else{

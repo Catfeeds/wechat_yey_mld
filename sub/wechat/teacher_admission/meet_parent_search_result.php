@@ -16,13 +16,19 @@ $o_stu->PushWhere ( array ('&&', 'StudentId', '=',$_GET['id']) );
 if ($o_stu->getAllCount()==0)
 {
 	//没有结果
-	echo "<script>location.href='meet_search_failed.php?id=1'</script>"; 
+	echo "<script>location.href='meet_parent_search_failed.php?id=1'</script>"; 
 	exit(0);
 }
 if ($o_stu->getState(0)<2)
 {
 	//没有通知信息核验
-	echo "<script>location.href='meet_search_failed.php?id=2'</script>"; 
+	echo "<script>location.href='meet_parent_search_failed.php?id=2'</script>"; 
+	exit(0);
+}
+if ($o_stu->getState(0)>2)
+{
+	//已经通过信息核验
+	echo "<script>location.href='meet_parent_search_failed.php?id=3'</script>"; 
 	exit(0);
 }
 ?>
@@ -30,7 +36,7 @@ if ($o_stu->getState(0)<2)
 	<form action="../include/bn_submit.switch.php" id="submit_form" method="post" target="ajax_submit_frame" onsubmit="this.submit()">
 		<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 		<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
-		<input type="hidden" name="Vcl_FunName" value="MeetSubmit"/>
+		<input type="hidden" name="Vcl_FunName" value="MeetParentSubmit"/>
 		<input type="hidden" name="Vcl_StudentId" value="<?php echo($_GET['id'])?>"/>
 		<div class="weui-cells__title">基本信息</div>
 		<div class="weui-form-preview">
@@ -66,7 +72,7 @@ if ($o_stu->getState(0)<2)
 	    <div class="weui-cells__title">见面结果选项</div>
 	    <?php 
 	    $o_item=new Student_Info_Meet_Item();
-	    $o_item->PushWhere ( array ('&&', 'Type', '=','幼儿见面') ); 
+	    $o_item->PushWhere ( array ('&&', 'Type', '=','家长见面') ); 
 	    $o_item->PushOrder ( array ('Number','A') );   
 	    for($i=0;$i<$o_item->getAllCount();$i++)
 	    {	    	
@@ -126,7 +132,7 @@ if ($o_stu->getState(0)<2)
         </div>
 	    <div style="padding:15px;">
 	    	<a id="next" class="weui-btn weui-btn_primary" onclick="meet_submit()">提交见面结果</a>
-	    	<a id="next" class="weui-btn weui-btn_default" onclick="location='meet_search.php?'+Date.parse(new Date())">取消</a>
+	    	<a id="next" class="weui-btn weui-btn_default" onclick="location='meet_parent_search.php?'+Date.parse(new Date())">取消</a>
 	    </div>
 	</form>
 <script type="text/javascript" src="<?php echo(RELATIVITY_PATH.'sub/wechat/parent_signup/')?>js/function.js"></script>

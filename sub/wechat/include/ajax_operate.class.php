@@ -521,7 +521,7 @@ class Operate extends Bn_Basic {
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
 		}
 		//验证是否为绑定用户
-		$o_stu_wechat=new Base_User_Wechat();
+		$o_stu_wechat=new Base_User_Wechat_View(); 
 		$o_stu_wechat->PushWhere ( array ('&&', 'WechatId', '=',$n_uid) ); 
 		if($o_stu_wechat->getAllCount()==0)
 		{
@@ -532,21 +532,67 @@ class Operate extends Bn_Basic {
 		//填写见面结果
 		$a_result=array();
 		$o_item=new Student_Info_Meet_Item();
+		$o_item->PushWhere ( array ('&&', 'Type', '=','幼儿见面') ); 
 	    $o_item->PushOrder ( array ('Number','A') );
 	    for($i=0;$i<$o_item->getAllCount();$i++)
 	    {
-	    	if ($this->getPost ( 'Item_'.$o_item->getId($i))=='on')
-	    	{
-	    		array_push($a_result, $o_item->getId($i));
-	    	}    	
+	    	array_push($a_result, array('id'=>$o_item->getId($i),'value'=>$this->getPost ( 'Item_'.$o_item->getId($i))));   	
 	    }
 	    if (count($a_result)==0)
 	    {
 	    	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'对不起，请选择见面结果！\');' );
 	    }
+	    $o_stu->setMeetAuditorId($o_stu_wechat->getUid(0));
+	    $o_stu->setMeetAuditorName($o_stu_wechat->getName(0));
 	    $o_stu->setMeetItem(json_encode($a_result));
 	    $o_stu->setMeetRemark($this->getPost ( 'Remark' ));
-		$o_stu->Save();	
+		$o_stu->Save();
+		//发送模板消息
+		$o_admission_setup=new Admission_Setup(1);
+		$o_system_setup=new Base_Setup(1);
+		//获取幼儿关联的微信
+		$o_wechat_user=new Student_Info_Wechat_Wiew();
+		$o_wechat_user->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId()) );
+		for($j=0;$j<$o_wechat_user->getAllCount();$j++)
+		{
+			//立即发送模板消息
+		}	    
+	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'meet_search_success.php"');
+	}
+	public function MeetParentSubmit($n_uid)
+	{
+		if ($n_uid>0)
+		{
+			
+		}else{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
+		}
+		//验证是否为绑定用户
+		$o_stu_wechat=new Base_User_Wechat_View(); 
+		$o_stu_wechat->PushWhere ( array ('&&', 'WechatId', '=',$n_uid) ); 
+		if($o_stu_wechat->getAllCount()==0)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
+		}
+		$o_stu=new Student_Info($this->getPost ( 'StudentId' ));
+		//填写见面结果
+		$a_result=array();
+		$o_item=new Student_Info_Meet_Item();
+		$o_item->PushWhere ( array ('&&', 'Type', '=','家长见面') ); 
+	    $o_item->PushOrder ( array ('Number','A') );
+	    for($i=0;$i<$o_item->getAllCount();$i++)
+	    {
+	    	array_push($a_result, array('id'=>$o_item->getId($i),'value'=>$this->getPost ( 'Item_'.$o_item->getId($i))));   	
+	    }
+	    if (count($a_result)==0)
+	    {
+	    	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'对不起，请选择见面结果！\');' );
+	    }
+	    $o_stu->setMeetParentAuditorId($o_stu_wechat->getUid(0));
+	    $o_stu->setMeetParentAuditorName($o_stu_wechat->getName(0));
+	    $o_stu->setMeetParentItem(json_encode($a_result));
+	    $o_stu->setMeetParentRemark($this->getPost ( 'Remark' ));
+		$o_stu->Save();
 		//发送模板消息
 		$o_admission_setup=new Admission_Setup(1);
 		$o_system_setup=new Base_Setup(1);
