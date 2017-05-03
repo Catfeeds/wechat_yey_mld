@@ -363,12 +363,151 @@
 							<option value="无">无</option>
 	                </select>
 	            </div>
+	        </div>	    
+		    <div class="weui-cell country_change">
+				<div class="weui-cell__hd"><label class="weui-label">港澳台侨</label></div>
+				<div class="weui-cell__bd">
+		            <select class="weui-select" name="Vcl_Gangao" id="Vcl_Gangao">
+	                		<option selected="selected" value="非港澳台侨">非港澳台侨</option>
+			        		<option value="香港同胞">香港同胞</option>
+							<option value="香港同胞亲属">香港同胞亲属</option>
+							<option value="澳门同胞">澳门同胞</option>
+							<option value="澳门同胞亲属">澳门同胞亲属</option>
+							<option value="台湾同胞">台湾同胞</option>
+							<option value="台湾同胞亲属">台湾同胞亲属</option>
+							<option value="华侨">华侨</option>
+							<option value="侨眷">侨眷</option>
+							<option value="归侨">归侨</option>
+							<option value="归侨子女">归侨子女</option>
+							<option value="归国留学人员">归国留学人员</option>
+	                        <option value="非华裔中国人">非华裔中国人</option>
+	                        <option value="外籍华裔人">外籍华裔人</option>
+	                        <option value="外国人">外国人</option>
+	                        <option value="其他">其他</option>
+		              </select>
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change">
+				<div class="weui-cell__hd"><label class="weui-label">是否独生子女</label></div>
+				<div class="weui-cell__bd">
+		            <select class="weui-select" name="Vcl_Only" id="Vcl_Only" onchange="change_only(this)">
+	                		<option value="是">是</option>
+							<option value="否">否</option>
+		              </select>
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change" id="only_code">
+				<div class="weui-cell__hd"><label class="weui-label">独生子女证号</label></div>
+				<div class="weui-cell__bd">
+                    <input class="weui-input" id="Vcl_OnlyCode" name="Vcl_OnlyCode" placeholder="必填">
+                </div>
 	        </div>
+	        <div class="weui-cell country_change" id="first" style="display:none">
+				<div class="weui-cell__hd"><label class="weui-label">是否头胎</label></div>
+				<div class="weui-cell__bd">
+		             <select class="weui-select" name="Vcl_IsFirst" id="Vcl_IsFirst">
+	                		<option value="是">是</option>
+							<option value="否">否</option>
+		              </select>
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change">
+				<div class="weui-cell__hd"><label class="weui-label">是否烈士子女</label></div>
+				<div class="weui-cell__bd">
+		             <select class="weui-select" name="Vcl_IsLieshi" id="Vcl_IsLieshi">
+		             		<option value="否">否</option>
+	                		<option value="是">是</option>							
+		              </select>
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change">
+				<div class="weui-cell__hd"><label class="weui-label">是否孤儿</label></div>
+				<div class="weui-cell__bd">
+		             <select class="weui-select" name="Vcl_IsGuer" id="Vcl_IsGuer">
+		             		<option value="否">否</option>
+	                		<option value="是">是</option>							
+		              </select>
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change">
+				<div class="weui-cell__hd"><label class="weui-label" style="width:210px;">是否进城务工人员随迁子女</label></div>
+				<div class="weui-cell__bd">
+		             <select class="weui-select" name="Vcl_IsWugong" id="Vcl_IsWugong">
+		             		<option value="否">否</option>
+	                		<option value="是">是</option>							
+		              </select>
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change">
+				<div class="weui-cell__hd"><label class="weui-label">是否留守儿童</label></div>
+				<div class="weui-cell__bd">
+		             <select class="weui-select" name="Vcl_IsLiushou" id="Vcl_IsLiushou">
+		             		<option value="非留守儿童">非留守儿童</option>
+							<option value="单亲留守儿童">单亲留守儿童</option>
+							<option value="双亲留守儿童">双亲留守儿童</option>							
+		              </select>
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change">
+				<div class="weui-cell__hd"><label class="weui-label">是否低保</label></div>
+				<div class="weui-cell__bd">
+		             <select class="weui-select" name="Vcl_IsDibao" id="Vcl_IsDibao" onchange="change_isdibao(this)">
+		             		<option value="否">否</option>
+							<option value="是">是</option>							
+		              </select>
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change" id="dibao" style="display:none">
+				<div class="weui-cell__hd"><label class="weui-label">低保证号</label></div>
+				<div class="weui-cell__bd">
+		             <input class="weui-input" id="Vcl_DibaoCode" name="Vcl_DibaoCode" placeholder="必填">
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change">
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">是否正在接收资助</label></div>
+				<div class="weui-cell__bd">
+		             <select class="weui-select" name="Vcl_IsZizhu" id="Vcl_IsZizhu">
+		             		<option value="否">否</option>
+							<option value="是">是</option>							
+		              </select>
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change">
+				<div class="weui-cell__hd"><label class="weui-label">是否残疾儿童</label></div>
+				<div class="weui-cell__bd">
+		             <select class="weui-select" name="Vcl_IsCanji" id="Vcl_IsCanji" onchange="change_iscanji(this)">
+		             		<option value="否">否</option>
+							<option value="是">是</option>							
+		              </select>
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change" id="canji" style="display:none">
+				<div class="weui-cell__hd"><label class="weui-label">残疾幼儿类别</label></div>
+				<div class="weui-cell__bd">
+		             <select class="weui-select" name="Vcl_CanjiType" id="Vcl_CanjiType">
+		             		<option value="">必选</option>
+							<option value="视力残疾">视力残疾</option>
+							<option value="听力残疾">听力残疾</option>
+							<option value="言语残疾">言语残疾</option>
+							<option value="肢体残疾">肢体残疾</option>
+							<option value="智力残疾">智力残疾</option>
+							<option value="精神残疾">精神残疾</option>
+							<option value="多重残疾">多重残疾</option>
+							<option value="其他残疾">其他残疾</option>						
+		              </select>
+		        </div>
+		    </div>
+		    <div class="weui-cell country_change" id="canji_code" style="display:none">
+				<div class="weui-cell__hd"><label class="weui-label" style="width:125px;">残疾证号</label></div>
+				<div class="weui-cell__bd">
+                    <input class="weui-input" id="Vcl_CanjiCode" name="Vcl_CanjiCode" placeholder="必填">
+                </div>
+	        </div>  
 	    </div>
 	    <div class="weui-cells__title">健康信息</div>
 		<div class="weui-cells" style="margin-top:0px;">
 			<div class="weui-cell">
-				<div class="weui-cell__hd"><label class="weui-label">总体健康状况</label></div>
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">总体健康状况</label></div>
 				<div class="weui-cell__bd">
 	                <select class="weui-select" name="Vcl_Jiankang" id="Vcl_Jiankang">
 		                <option value="健康或良好">健康或良好</option>
@@ -379,13 +518,30 @@
 	            </div>
 		    </div>
 		    <div class="weui-cell">
-				<div class="weui-cell__hd"><label class="weui-label" style="width:125px;">预防接种医院</label></div>
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">预防接种医院</label></div>
 				<div class="weui-cell__bd">
                     <input class="weui-input" id="Vcl_HospitalName" name="Vcl_HospitalName" placeholder="必填">
                 </div>
 	        </div>
+	         <div class="weui-cell">
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">血型</label></div>
+				<div class="weui-cell__bd">
+	                <select class="weui-select" name="Vcl_Xuexing" id="Vcl_Xuexing">
+		                <option value="未知血型">未知血型</option>
+						<option value="A血型">A血型</option>
+						<option value="B血型">B血型</option>
+						<option value="AB血型">AB血型</option>
+						<option value="O血型">O血型</option>
+						<option value="RH阳性血型">RH阳性血型</option>
+						<option value="RH阴性血型">RH阴性血型</option>
+						<option value="HLA血型">HLA血型</option>
+						<option value="未定血型">未定血型</option>
+						<option value="其他血型">其他血型</option>
+		            </select>
+	            </div>
+		    </div>
 	        <div class="weui-cell">
-				<div class="weui-cell__hd"><label class="weui-label">是否有以往病史</label></div>
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">是否有以往病史</label></div>
 				<div class="weui-cell__bd">
 	                <select class="weui-select" name="Vcl_IsYiwang" id="Vcl_IsYiwang" onchange="change_yiwang(this)">
 		                <option value="否">否</option>
@@ -394,7 +550,7 @@
 	            </div>
 		    </div>
 		    <div class="weui-cell" id="yiwang" style="display:none">
-				<div class="weui-cell__hd"><label class="weui-label">以往病史</label></div>
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">以往病史</label></div>
 				<div class="weui-cell__bd">
 	                <select class="weui-select" name="Vcl_Illness" id="Vcl_Illness">
 		                <option value="">必选</option>
@@ -407,7 +563,31 @@
 	            </div>
 		    </div>
 		    <div class="weui-cell">
-				<div class="weui-cell__hd"><label class="weui-label">是否有过敏史</label></div>
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">是否有手术史</label></div>
+				<div class="weui-cell__bd">
+	                <select class="weui-select" name="Vcl_IsShoushu" id="Vcl_IsShoushu" onchange="change_shoushu(this)">
+		                <option value="否">否</option>
+						<option value="是">是</option>
+		            </select>
+	            </div>
+		    </div>
+		    <div class="weui-cell" style="display:none" id="shoushu">
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">手术名称</label></div>
+				<div class="weui-cell__bd">
+	                <input class="weui-input" id="Vcl_Shoushu" name="Vcl_Shoushu" placeholder="必填">
+	            </div>
+		    </div>
+		    <div class="weui-cell">
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">是否有器官移植史</label></div>
+				<div class="weui-cell__bd">
+	                <select class="weui-select" name="Vcl_IsYizhi" id="Vcl_IsYizhi">
+		                <option value="否">否</option>
+						<option value="是">是</option>
+		            </select>
+	            </div>
+		    </div>
+		    <div class="weui-cell">
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">是否有过敏史</label></div>
 				<div class="weui-cell__bd">
 	                <select class="weui-select" name="Vcl_IsGuomin" id="Vcl_IsGuomin" onchange="change_guomin(this)">
 		                <option value="否">否</option>
@@ -416,15 +596,109 @@
 	            </div>
 		    </div>
 		    <div class="weui-cell" id="guomin" style="display:none">
-				<div class="weui-cell__hd"><label class="weui-label">过敏源</label></div>
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">过敏源</label></div>
 				<div class="weui-cell__bd">
 	                <input class="weui-input" id="Vcl_Allergic" name="Vcl_Allergic" placeholder="必填">
+	            </div>
+		    </div>
+		    <div class="weui-cell">
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">是否有族遗传病史</label></div>
+				<div class="weui-cell__bd">
+	                <select class="weui-select" name="Vcl_IsYichuan" id="Vcl_IsYichuan" onchange="change_yichuan(this)">
+		                <option value="否">否</option>
+						<option value="是">是</option>
+		            </select>
+	            </div>
+		    </div>
+		    <div class="weui-cell" id="yichuan" style="display:none">
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">家族遗传病史名称</label></div>
+				<div class="weui-cell__bd">
+	                <input class="weui-input" id="Vcl_Qitabingshi" name="Vcl_Qitabingshi" placeholder="必填">
+	            </div>
+		    </div>
+		    <div class="weui-cell">
+				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">备注</label></div>
+				<div class="weui-cell__bd">
+	                <input class="weui-input" id="Vcl_Beizhu" name="Vcl_Beizhu" placeholder="选填">
 	            </div>
 		    </div>
 	    </div>
 	    <div id="h_info">
 		    <div class="weui-cells__title">户籍信息</div>
 		    <div class="weui-cells" style="margin-top:0px;">
+		    	<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">出生所在（省/市）</label></div>
+					<div class="weui-cell__bd">
+		                <select class="weui-select" name="Vcl_C_City" id="Vcl_C_City" onchange="change_c_city(this)">
+		                    	<option value="">必选</option>
+					        	<option value="110000000000">北京市</option>
+					        	<option value="120000000000">天津市</option>
+					        	<option value="130000000000">河北省</option>
+					        	<option value="140000000000">山西省</option>
+					        	<option value="150000000000">内蒙古自治区</option>
+					        	<option value="210000000000">辽宁省</option>
+					        	<option value="220000000000">吉林省</option>
+					        	<option value="230000000000">黑龙江省</option>
+					        	<option value="310000000000">上海市</option>
+					        	<option value="320000000000">江苏省</option>
+					        	<option value="330000000000">浙江省</option>
+					        	<option value="340000000000">安徽省</option>
+					        	<option value="350000000000">福建省</option>
+					        	<option value="360000000000">江西省</option>
+					        	<option value="370000000000">山东省</option>
+					        	<option value="410000000000">河南省</option>
+					        	<option value="420000000000">湖北省</option>
+					        	<option value="430000000000">湖南省</option>
+					        	<option value="440000000000">广东省</option>
+					        	<option value="450000000000">广西壮族自治区</option>
+					        	<option value="460000000000">海南省</option>
+					        	<option value="500000000000">重庆市</option>
+					        	<option value="510000000000">四川省</option>
+					        	<option value="520000000000">贵州省</option>
+					        	<option value="530000000000">云南省</option>
+					        	<option value="540000000000">西藏自治区</option>
+					        	<option value="610000000000">陕西省</option>
+					        	<option value="620000000000">甘肃省</option>
+					        	<option value="630000000000">青海省</option>
+					        	<option value="640000000000">宁夏回族自治区</option>
+					        	<option value="650000000000">新疆维吾尔自治区</option>
+					        	<option value="6A0000000000">新疆兵团</option>
+		                </select>
+		            </div>
+	        	</div>
+	        	<div class="weui-cell" id="c_area" style="display:none">
+					<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">出生所在（市/区）</label></div>
+					<div class="weui-cell__bd">
+		                <select class="weui-select" name="Vcl_C_Area" id="Vcl_C_Area" onchange="change_c_area(this)">
+		                </select>
+		            </div>
+	        	</div>
+	        	<div class="weui-cell" id="c_street" style="display:none">
+					<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">出生所在（区/县）</label></div>
+					<div class="weui-cell__bd">
+		                <select class="weui-select" name="Vcl_C_Street" id="Vcl_C_Street">
+		                </select>
+		            </div>
+	        	</div>
+	        	<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">户口性质</label></div>
+					<div class="weui-cell__bd">
+		                <select class="weui-select" name="Vcl_IdQuality" id="Vcl_IdQuality" onchange="change_qulity(this)">
+			                <option value="非农业户口">非农业户口</option>
+							<option value="农业户口">农业户口</option>
+			            </select>
+		            </div>
+			    </div>
+			    <div class="weui-cell" id="quality_type">
+					<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">非农业户口类型</label></div>
+					<div class="weui-cell__bd">
+		                <select class="weui-select" name="Vcl_IdQualityType" id="Vcl_IdQualityType">
+			                <option value="城市">城市</option>
+							<option value="县城">县城</option>
+							<option value="乡镇">乡镇</option>
+			            </select>
+		            </div>
+			    </div>
 		    	<div class="weui-cell">
 					<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">户籍所在（省/市）</label></div>
 					<div class="weui-cell__bd">

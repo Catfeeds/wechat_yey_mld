@@ -49,10 +49,50 @@ if ($o_stu->getAllCount()==0)
 	');
 	echo('document.getElementById("Vcl_Birthday").value="'.$o_stu->getBirthday(0).'";
 	');
+	if ($o_stu->getNationality(0)=='中国')
+	{
+		echo('document.getElementById("Vcl_Only").value="'.$o_stu->getOnly(0).'";
+		');
+		echo('document.getElementById("Vcl_OnlyCode").value="'.$o_stu->getOnlyCode(0).'";
+		');
+		echo('document.getElementById("Vcl_Nation").value="'.$o_stu->getNation(0).'";
+		');
+		echo('change_only(document.getElementById("Vcl_Only"));
+		');
+		if ($o_stu->getOnly()=='否')echo('document.getElementById("Vcl_IsFirst").value="'.$o_stu->getIsFirst(0).'";
+		');
+		echo('document.getElementById("Vcl_IsLieshi").value="'.$o_stu->getIsLieshi(0).'";
+		');
+		echo('document.getElementById("Vcl_IsGuer").value="'.$o_stu->getIsGuer(0).'";
+		');
+		echo('document.getElementById("Vcl_IsWugong").value="'.$o_stu->getIsWugong(0).'";'
+		);
+		echo('document.getElementById("Vcl_IsDibao").value="'.$o_stu->getIsDibao(0).'";
+		');
+		echo('document.getElementById("Vcl_IsLiushou").value="'.$o_stu->getIsLiushou(0).'";
+		');
+		echo('change_isdibao(document.getElementById("Vcl_IsDibao"));
+		');
+		if ($o_stu->getIsDibao()=='是')echo('document.getElementById("Vcl_DibaoCode").value="'.$o_stu->getDibaoCode(0).'";
+		');
+		echo('document.getElementById("Vcl_IsZizhu").value="'.$o_stu->getIsZizhu(0).'";
+		');
+	    echo('document.getElementById("Vcl_IsCanji").value="'.$o_stu->getIsCanji(0).'";
+	    ');
+		echo('change_iscanji(document.getElementById("Vcl_IsCanji"));
+		');
+		if($o_stu->getIsCanji()=='是')
+		{
+			echo('document.getElementById("Vcl_CanjiType").value="'.$o_stu->getCanjiType(0).'";');
+			echo('document.getElementById("Vcl_CanjiCode").value="'.$o_stu->getCanjiCode(0).'";');		
+		}
+	}
 //健康信息
 	echo('document.getElementById("Vcl_Jiankang").value="'.$o_stu->getJiankang(0).'";
 	');
 	echo('document.getElementById("Vcl_HospitalName").value="'.$o_stu->getHospitalName(0).'";
+	');
+	echo('document.getElementById("Vcl_Xuexing").value="'.$o_stu->getXuexing(0).'";
 	');
 	echo('document.getElementById("Vcl_IsYiwang").value="'.$o_stu->getIsYiwang(0).'";
 	');
@@ -60,18 +100,64 @@ if ($o_stu->getAllCount()==0)
 	');
 	if($o_stu->getIsYiwang(0)=='是')echo('document.getElementById("Vcl_Illness").value="'.$o_stu->getIllness(0).'";
 	');
+	echo('document.getElementById("Vcl_IsShoushu").value="'.$o_stu->getIsShoushu(0).'";
+	');
+	echo('change_shoushu(document.getElementById("Vcl_IsShoushu"));
+	');
+	if($o_stu->getIsShoushu()=='是')echo('document.getElementById("Vcl_Shoushu").value="'.$o_stu->getShoushu(0).'";
+	');
+	echo('document.getElementById("Vcl_IsYizhi").value="'.$o_stu->getIsYizhi(0).'";');
 	echo('document.getElementById("Vcl_IsGuomin").value="'.$o_stu->getIsGuomin(0).'";
 	');
 	echo('change_guomin(document.getElementById("Vcl_IsGuomin"));
 	');
 	if($o_stu->getIsGuomin(0)=='是')echo('document.getElementById("Vcl_Allergic").value="'.$o_stu->getAllergic(0).'";
+	');	
+	echo('document.getElementById("Vcl_IsYichuan").value="'.$o_stu->getIsYichuan(0).'";
 	');
+	echo('change_yichuan(document.getElementById("Vcl_IsYichuan"));
+	');
+	if($o_stu->getIsYichuan()=='是')echo('document.getElementById("Vcl_Qitabingshi").value="'.$o_stu->getQitabingshi(0).'";
+	');
+	echo('document.getElementById("Vcl_Beizhu").value="'.$o_stu->getBeizhu(0).'";
+	');
+//户籍信息
 	echo('document.getElementById("Vcl_Nationality").value="'.$o_stu->getNationality(0).'";
 	');
 	if ($o_stu->getNationality(0)=='中国')
 	{
-		echo('document.getElementById("Vcl_Nation").value="'.$o_stu->getNation(0).'";
-		');		
+		//获取出生地编号
+		$o_birh_place_code1=new Student_City_Code($o_stu->getBirthplaceCode(0));
+		$o_birh_place_code2=new Student_City_Code($o_birh_place_code1->getParentId());
+		
+		if ($o_birh_place_code2->getParentId()!='')
+		{
+			//说明是三级，否则是两级
+			$o_birh_place_code3=new Student_City_Code($o_birh_place_code2->getParentId());
+			echo('document.getElementById("Vcl_C_City").value="'.$o_birh_place_code3->getId().'";
+			');
+			echo('change_c_city(document.getElementById("Vcl_C_City"));
+			');
+			echo('document.getElementById("Vcl_C_Area").value="'.$o_birh_place_code2->getId().'";
+			');
+			echo('change_c_area(document.getElementById("Vcl_C_Area"));
+			');
+			echo('document.getElementById("Vcl_C_Street").value="'.$o_birh_place_code1->getId().'";
+			');
+		}else{
+			echo('document.getElementById("Vcl_C_City").value="'.$o_birh_place_code2->getId().'";
+			');
+			echo('change_c_city(document.getElementById("Vcl_C_City"));
+			');
+			echo('try{document.getElementById("Vcl_C_Area").value="'.$o_birh_place_code1->getId().'"}catch(e){};
+			');
+		}
+		echo('document.getElementById("Vcl_IdQuality").value="'.$o_stu->getIdQuality(0).'";
+		');
+		echo('change_qulity(document.getElementById("Vcl_IdQuality"));
+		');
+		if($o_stu->getIdQuality()=='非农业户口')echo('document.getElementById("Vcl_IdQualityType").value="'.$o_stu->getIdQualityType(0).'";
+		');
 		//获取户籍编号
 		$o_h_code1=new Student_City_Code($o_stu->getHCode(0));
 		$o_h_code2=new Student_City_Code($o_h_code1->getParentId());
@@ -187,10 +273,10 @@ if ($o_stu->getState(0)!=0)
 {
 	?>
 	for(var i = 4; i < document.getElementsByTagName("input").length; i++){
-		vcl_disabled(document.getElementsByTagName("input")[i])
+		//vcl_disabled(document.getElementsByTagName("input")[i])
 	}
 	for(var i = 0; i < document.getElementsByTagName("select").length; i++){
-		vcl_disabled(document.getElementsByTagName("select")[i])
+		//vcl_disabled(document.getElementsByTagName("select")[i])
 	}
 	<?php
 }else{

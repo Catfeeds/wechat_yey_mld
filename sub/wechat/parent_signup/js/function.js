@@ -20,6 +20,10 @@ function change_nationality(obj)
 		}		
 		document.getElementById("h_info").style.display='';
 		document.getElementById("is_same").style.display='';
+		$('.country_change').css({'display':''})
+		change_only(document.getElementById("Vcl_Only"))
+		change_isdibao(document.getElementById("Vcl_IsDibao"))
+		change_iscanji(document.getElementById("Vcl_IsCanji"))
 	}else{
 		document.getElementById("nation").style.display='none';
 		try {
@@ -30,6 +34,62 @@ function change_nationality(obj)
 		document.getElementById("Vcl_ZSame").value='否';
 		change_address(document.getElementById("Vcl_ZSame"))
 		document.getElementById("is_same").style.display='none';
+		$('.country_change').css({'display':'none'})
+	}
+}
+function change_only(obj)
+{
+	if (obj.value=="否")
+	{
+		try {
+			document.getElementById("first").style.display='';
+		} 
+		catch (e) {}		
+		document.getElementById("only_code").style.display='none';
+	}else{
+		try {
+			document.getElementById("first").style.display='none';
+		} 
+		catch (e) {}
+		document.getElementById("only_code").style.display='';
+	}
+}
+function change_isdibao(obj)
+{
+	if (obj.value=="是")
+	{
+		document.getElementById("dibao").style.display='';
+	}else{
+		document.getElementById("dibao").style.display='none';
+	}
+}
+function change_iscanji(obj)
+{
+	if (obj.value=="是")
+	{
+		document.getElementById("canji").style.display='';
+		document.getElementById("canji_code").style.display='';
+	}else{
+		document.getElementById("canji").style.display='none';
+		document.getElementById("canji_code").style.display='none';
+	}
+}
+function change_shoushu(obj)
+{
+	if (obj.value=="是")
+	{
+		document.getElementById("shoushu").style.display='';
+	}else{
+		document.getElementById("shoushu").style.display='none';
+	}
+}
+function change_yichuan(obj)
+{
+	if (obj.value=="是")
+	{
+		document.getElementById("yichuan").style.display='';
+	}else{
+		document.getElementById("yichuan").style.display='none';
 	}
 }
 function change_address(obj)
@@ -149,6 +209,56 @@ function change_address(obj)
 		document.getElementById("z_jiedao").style.display='';
 		document.getElementById("z_shequ").style.display='';
 		document.getElementById("z_address").style.display='';
+	}
+}
+function change_c_city(obj)
+{
+	if (obj.value=="")
+	{
+		document.getElementById("c_street").style.display="none"
+		document.getElementById("c_area").style.display="none"
+		return
+	}
+	var value=obj.value
+	var a_shequ=CITY_I[value];
+	var s_html='<option value="">必选</option>'
+	for(var i=0;i<a_shequ.length;i++)
+	{
+		s_html=s_html+'<option value="'+a_shequ[i][0]+'">'+a_shequ[i][1]+'</option>'
+	}
+	$('#Vcl_C_Area').html(s_html);
+	document.getElementById("c_area").style.display=""
+	document.getElementById("c_street").style.display="none"
+}
+function change_c_area(obj)
+{
+	if (obj.value=="")
+	{
+		document.getElementById("c_street").style.display="none"
+		return
+	}
+	var value=obj.value
+	var a_shequ=CITY_II[value];
+	if (a_shequ==undefined)
+	{
+		document.getElementById("c_street").style.display="none"
+		return;
+	}
+	var s_html='<option value="">必选</option>'
+	for(var i=0;i<a_shequ.length;i++)
+	{
+		s_html=s_html+'<option value="'+a_shequ[i][0]+'">'+a_shequ[i][1]+'</option>'
+	}
+	$('#Vcl_C_Street').html(s_html);
+	document.getElementById("c_street").style.display=""
+}
+function change_qulity(obj)
+{
+	if (obj.value=="非农业户口")
+	{
+		document.getElementById("quality_type").style.display='';
+	}else{
+		document.getElementById("quality_type").style.display='none';
 	}
 }
 function change_z_city(obj)
