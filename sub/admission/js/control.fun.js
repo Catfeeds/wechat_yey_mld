@@ -28,7 +28,19 @@ $(function(){
 	    if(keycode == '13'){  
 	    	search_for_health_wait()   
 	    }  
-	});  
+	}); 
+	$('#Vcl_KeyInfoWait').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_info_wait()   
+	    }  
+	}); 
+	$('#Vcl_KeyAdmission').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_admission()   
+	    }  
+	}); 
 })
 function search_for_signup()
 {
@@ -82,6 +94,30 @@ function search_for_health_wait()
 {
 	var fun='HealthWaitTable';
 	var id='Vcl_KeyHealthWait'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value),'');    
+}
+function search_for_info_wait()
+{
+	var fun='InfoWaitTable';
+	var id='Vcl_KeyInfoWait'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value),'');    
+}
+function search_for_Admission()
+{
+	var fun='AdmissionTable';
+	var id='Vcl_KeyAdmission'
 	$('.small_loading').fadeIn(100);
 	$.cookie(fun+"Page",1);
 	$.cookie(fun+"Key",document.getElementById(id).value);

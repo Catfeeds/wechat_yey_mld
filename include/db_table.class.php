@@ -15,6 +15,11 @@ class Admission_Setup extends CRUD
     protected $AuditDate;
     protected $AuditTime;
     protected $AuditAddress;
+    protected $MeetDate;
+    protected $MeetTime;
+    protected $MeetAddress;
+    protected $HealthTime;
+    protected $HealthAddress;
 
     protected function DefineKey()
     {
@@ -38,7 +43,12 @@ class Admission_Setup extends CRUD
                     'banri_sum' => 'BanriSum',
                     'audit_date' => 'AuditDate',
                     'audit_time' => 'AuditTime',
-                    'audit_address' => 'AuditAddress'
+                    'audit_address' => 'AuditAddress',
+                    'meet_date' => 'MeetDate',
+                    'meet_time' => 'MeetTime',
+                    'meet_address' => 'MeetAddress',
+                    'health_time' => 'HealthTime',
+                    'health_address' => 'HealthAddress'
         ));
     }
 }
@@ -698,6 +708,8 @@ class Student_Info extends CRUD
     protected $HospitalName;
     protected $ClassMode;
     protected $Compliance;
+    protected $AuditorId;
+    protected $AuditorName;
     protected $MeetAuditorId;
     protected $MeetAuditorName;
     protected $MeetItem;
@@ -820,6 +832,8 @@ class Student_Info extends CRUD
                     'hospital_name' => 'HospitalName',
                     'class_mode' => 'ClassMode',
                     'compliance' => 'Compliance',
+                    'auditor_id' => 'AuditorId',
+                    'auditor_name' => 'AuditorName',
                     'meet_auditor_id' => 'MeetAuditorId',
                     'meet_auditor_name' => 'MeetAuditorName',
                     'meet_item' => 'MeetItem',

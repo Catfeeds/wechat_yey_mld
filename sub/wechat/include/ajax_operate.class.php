@@ -93,9 +93,9 @@ class Operate extends Bn_Basic {
 	    $o_parent=new WX_User_Info($n_uid);
 		$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
 		$data = array(
-	    	'touser' => $o_parent->getOpenId, // openid是发送消息的基础
+	    	'touser' => $o_parent->getOpenId(), // openid是发送消息的基础
 			'template_id' => 'L8T0fmVRo37YWdRIm1oUNbD_Fb2fNZAEIdI6iPDQdKA', // 模板id
-			'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/signup_list.php', // 点击跳转地址
+			'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup.php', // 点击跳转地址
 			'topcolor' => '#FF0000', // 顶部颜色
 			'data' => array(
 				'first' => array('value' => '尊敬的家长您好，您所报名的如下信息：'),
@@ -491,24 +491,55 @@ class Operate extends Bn_Basic {
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
 		}
 		//验证是否为绑定用户
-		$o_stu_wechat=new Base_User_Wechat();
+		$o_stu_wechat=new Base_User_Wechat_View();
 		$o_stu_wechat->PushWhere ( array ('&&', 'WechatId', '=',$n_uid) ); 
 		if($o_stu_wechat->getAllCount()==0)
 		{
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
 		}
 		$o_stu=new Student_Info($this->getPost ( 'StudentId' ));
+		if ($o_stu->getState()!=1)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
+		}
+		$o_stu->setAuditorId($o_stu_wechat->getUid(0));
+	    $o_stu->setAuditorName($o_stu_wechat->getName(0));
 		$o_stu->setState(2);
 		$o_stu->Save();	
 		//发送模板消息
 		$o_admission_setup=new Admission_Setup(1);
 		$o_system_setup=new Base_Setup(1);
+		$o_sysinfo=new Base_Setup(1);
+		require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';		    
+		$o_token=new accessToken();
 		//获取幼儿关联的微信
 		$o_wechat_user=new Student_Info_Wechat_Wiew();
 		$o_wechat_user->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId()) );
 		for($j=0;$j<$o_wechat_user->getAllCount();$j++)
 		{
-			//立即发送模板消息
+			//立即发送见面信息模板消息
+			$curlUtil = new curlUtil();
+		    $o_parent=new WX_User_Info($o_wechat_user->getUserId($j));
+			$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
+			$data = array(
+		    	'touser' => $o_parent->getOpenId(), // openid是发送消息的基础
+				'template_id' => 'xDyL_p1-lzHT2YUhl8SWQvPdohhid4HzYQQiO0kOFas', // 模板id
+				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup.php', // 点击跳转地址
+				'topcolor' => '#FF0000', // 顶部颜色
+				'data' => array(
+					'first' => array('value' => '已收到您的报名信息如下，并核验通过：'),
+					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
+					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
+					'keyword3' => array('value' => $o_admission_setup->getMeetDate(),'color'=>'#173177'),
+					'keyword4' => array('value' => $o_admission_setup->getMeetTime(),'color'=>'#173177'),
+					'keyword5' => array('value' => $o_admission_setup->getMeetAddress(),'color'=>'#173177'),
+					'remark' => array('value' => '请按以上时间携带幼儿参加见面，谢谢。
+					
+	如需查看报名信息，请点击详情。')
+				)
+				);
+			$curlUtil->https_request($s_url, json_encode($data));
+			
 		}	    
 	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'audit_search_success.php"');
 	}
@@ -528,6 +559,10 @@ class Operate extends Bn_Basic {
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
 		}
 		$o_stu=new Student_Info($this->getPost ( 'StudentId' ));
+		if ($o_stu->getState()!=2)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
+		}
 		$o_stu->setState(3);
 		//填写见面结果
 		$a_result=array();
@@ -546,17 +581,7 @@ class Operate extends Bn_Basic {
 	    $o_stu->setMeetAuditorName($o_stu_wechat->getName(0));
 	    $o_stu->setMeetItem(json_encode($a_result));
 	    $o_stu->setMeetRemark($this->getPost ( 'Remark' ));
-		$o_stu->Save();
-		//发送模板消息
-		$o_admission_setup=new Admission_Setup(1);
-		$o_system_setup=new Base_Setup(1);
-		//获取幼儿关联的微信
-		$o_wechat_user=new Student_Info_Wechat_Wiew();
-		$o_wechat_user->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId()) );
-		for($j=0;$j<$o_wechat_user->getAllCount();$j++)
-		{
-			//立即发送模板消息
-		}	    
+		$o_stu->Save();  
 	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'meet_search_success.php"');
 	}
 	public function MeetParentSubmit($n_uid)
@@ -575,6 +600,10 @@ class Operate extends Bn_Basic {
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
 		}
 		$o_stu=new Student_Info($this->getPost ( 'StudentId' ));
+		if ($o_stu->getState()!=2 && $o_stu->getState()!=3)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！\');' );
+		}
 		//填写见面结果
 		$a_result=array();
 		$o_item=new Student_Info_Meet_Item();
