@@ -35,7 +35,7 @@ if ($o_stu->getAllCount()==0)
 			<?php
 			} 
 		?>	    
-	    	<a id="next" class="weui-btn weui-btn_default" onclick="javascript:history.back();">返回</a>
+	    	<a id="next" class="weui-btn weui-btn_default" onclick="location='my_signup.php?'+Date.parse(new Date())">返回</a>
 	    </div>
 	</form>
 <script type="text/javascript" src="js/function.js"></script>

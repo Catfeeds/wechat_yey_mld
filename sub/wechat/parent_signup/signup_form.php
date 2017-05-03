@@ -17,7 +17,7 @@ require_once '../header.php';
 			?>
 	    <div style="padding:15px;">
 	    	<a id="next" class="weui-btn weui-btn_primary" onclick="submit_signin(false)">提交报名信息</a>
-	    	<a id="next" class="weui-btn weui-btn_default" onclick="document.addEventListener('WeixinJSBridgeReady', WeixinJSBridge.call('closeWindow'));">关闭</a>
+	    	<a id="next" class="weui-btn weui-btn_default" onclick="location='my_signup.php?'+Date.parse(new Date())">取消</a>
 	    </div>
 	</form>
 <script type="text/javascript" src="js/function.js"></script>
