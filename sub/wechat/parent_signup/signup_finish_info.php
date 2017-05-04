@@ -17,7 +17,7 @@ if ($o_stu->getAllCount()==0)
 		<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 		<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
 		<input type="hidden" name="Vcl_FunName" value="SignupFinishInfo"/>
-		<input type="hidden" name="Vcl_Draft" value="0"/>
+		<input type="hidden" name="Vcl_Draft" id="Vcl_Draft" value="0"/>
 		<input type="hidden" name="Vcl_StudentId" value="<?php echo($_GET['id'])?>"/>
 			<?php 
 				require_once 'signup_finish_info_detail.php';
@@ -81,7 +81,7 @@ if ($o_stu->getAllCount()==0)
 	    ');
 		echo('change_iscanji(document.getElementById("Vcl_IsCanji"));
 		');
-		if($o_stu->getIsCanji()=='是')
+		if($o_stu->getIsCanji(0)=='是')
 		{
 			echo('document.getElementById("Vcl_CanjiType").value="'.$o_stu->getCanjiType(0).'";');
 			echo('document.getElementById("Vcl_CanjiCode").value="'.$o_stu->getCanjiCode(0).'";');		
@@ -104,7 +104,7 @@ if ($o_stu->getAllCount()==0)
 	');
 	echo('change_shoushu(document.getElementById("Vcl_IsShoushu"));
 	');
-	if($o_stu->getIsShoushu()=='是')echo('document.getElementById("Vcl_Shoushu").value="'.$o_stu->getShoushu(0).'";
+	if($o_stu->getIsShoushu(0)=='是')echo('document.getElementById("Vcl_Shoushu").value="'.$o_stu->getShoushu(0).'";
 	');
 	echo('document.getElementById("Vcl_IsYizhi").value="'.$o_stu->getIsYizhi(0).'";');
 	echo('document.getElementById("Vcl_IsGuomin").value="'.$o_stu->getIsGuomin(0).'";
@@ -117,7 +117,7 @@ if ($o_stu->getAllCount()==0)
 	');
 	echo('change_yichuan(document.getElementById("Vcl_IsYichuan"));
 	');
-	if($o_stu->getIsYichuan()=='是')echo('document.getElementById("Vcl_Qitabingshi").value="'.$o_stu->getQitabingshi(0).'";
+	if($o_stu->getIsYichuan(0)=='是')echo('document.getElementById("Vcl_Qitabingshi").value="'.$o_stu->getQitabingshi(0).'";
 	');
 	echo('document.getElementById("Vcl_Beizhu").value="'.$o_stu->getBeizhu(0).'";
 	');
@@ -134,22 +134,22 @@ if ($o_stu->getAllCount()==0)
 		{
 			//说明是三级，否则是两级
 			$o_birh_place_code3=new Student_City_Code($o_birh_place_code2->getParentId());
-			echo('document.getElementById("Vcl_C_City").value="'.$o_birh_place_code3->getId().'";
+			echo('document.getElementById("Vcl_CCity").value="'.$o_birh_place_code3->getId().'";
 			');
-			echo('change_c_city(document.getElementById("Vcl_C_City"));
+			echo('change_c_city(document.getElementById("Vcl_CCity"));
 			');
-			echo('document.getElementById("Vcl_C_Area").value="'.$o_birh_place_code2->getId().'";
+			echo('document.getElementById("Vcl_CArea").value="'.$o_birh_place_code2->getId().'";
 			');
-			echo('change_c_area(document.getElementById("Vcl_C_Area"));
+			echo('change_c_area(document.getElementById("Vcl_CArea"));
 			');
-			echo('document.getElementById("Vcl_C_Street").value="'.$o_birh_place_code1->getId().'";
+			echo('document.getElementById("Vcl_CStreet").value="'.$o_birh_place_code1->getId().'";
 			');
 		}else{
-			echo('document.getElementById("Vcl_C_City").value="'.$o_birh_place_code2->getId().'";
+			echo('document.getElementById("Vcl_CCity").value="'.$o_birh_place_code2->getId().'";
 			');
-			echo('change_c_city(document.getElementById("Vcl_C_City"));
+			echo('change_c_city(document.getElementById("Vcl_CCity"));
 			');
-			echo('try{document.getElementById("Vcl_C_Area").value="'.$o_birh_place_code1->getId().'"}catch(e){};
+			echo('try{document.getElementById("Vcl_CArea").value="'.$o_birh_place_code1->getId().'"}catch(e){};
 			');
 		}
 		echo('document.getElementById("Vcl_IdQuality").value="'.$o_stu->getIdQuality(0).'";
@@ -158,6 +158,7 @@ if ($o_stu->getAllCount()==0)
 		');
 		if($o_stu->getIdQuality()=='非农业户口')echo('document.getElementById("Vcl_IdQualityType").value="'.$o_stu->getIdQualityType(0).'";
 		');
+		
 		//获取户籍编号
 		$o_h_code1=new Student_City_Code($o_stu->getHCode(0));
 		$o_h_code2=new Student_City_Code($o_h_code1->getParentId());
@@ -196,10 +197,13 @@ if ($o_stu->getAllCount()==0)
 			}
 		}		
 		echo('document.getElementById("Vcl_HAdd").value="'.$o_stu->getHAdd(0).'";');
+		echo('document.getElementById("Vcl_HOwner").value="'.$o_stu->getHOwner(0).'";');
+		echo('document.getElementById("Vcl_HGuanxi").value="'.$o_stu->getHGuanxi(0).'";');
 	}else{
 		echo('change_nationality(document.getElementById("Vcl_Nationality"));
 		');
 	}
+	//现住址
 	echo('document.getElementById("Vcl_ZSame").value="'.$o_stu->getZSame(0).'";
 	');
 	echo('change_address(document.getElementById("Vcl_ZSame"));
@@ -229,20 +233,32 @@ if ($o_stu->getAllCount()==0)
 		echo('document.getElementById("Vcl_ZAdd").value="'.$o_stu->getZAdd(0).'";
 		');		
 	}
-	echo('document.getElementById("Vcl_ZProperty").value="'.$o_stu->getZProperty(0).'";
-	');
-	echo('change_z_property(document.getElementById("Vcl_ZProperty"));
-	');
 	if ($o_stu->getZProperty(0)=='直系亲属房产')
 	{
+		echo('document.getElementById("Vcl_ZProperty").value="'.$o_stu->getZProperty(0).'";
+		');
 		echo('document.getElementById("Vcl_ZOwner").value="'.$o_stu->getZOwner(0).'";
 		');
 		echo('document.getElementById("Vcl_ZGuanxi").value="'.$o_stu->getZGuanxi(0).'";
 		');	
-	}	
+	}else{
+		echo('document.getElementById("Vcl_ZProperty").value="租借借用房产";
+		');
+	}
+	echo('change_z_property(document.getElementById("Vcl_ZProperty"));
+	');
+	//监护人
 	echo('document.getElementById("Vcl_Jh1Connection").value="'.$o_stu->getJh1Connection(0).'";
 	');
 	echo('document.getElementById("Vcl_Jh1Name").value="'.$o_stu->getJh1Name(0).'";
+	');
+	echo('document.getElementById("Vcl_Jh1IdType").value="'.$o_stu->getJh1IdType(0).'";
+	');
+	echo('document.getElementById("Vcl_Jh1ID").value="'.$o_stu->getJh1Id(0).'";
+	');
+	echo('document.getElementById("Vcl_Jh1IsZhixi").value="'.$o_stu->getJh1IsZhixi(0).'";
+	');
+	echo('document.getElementById("Vcl_Jh1Job").value="'.$o_stu->getJh1Job(0).'";
 	');
 	echo('document.getElementById("Vcl_Jh1Danwei").value="'.$o_stu->getJh1Danwei(0).'";
 	');
@@ -250,45 +266,64 @@ if ($o_stu->getAllCount()==0)
 	');
 	echo('document.getElementById("Vcl_Jh1Phone").value="'.$o_stu->getJh1Phone(0).'";
 	');
+	echo('document.getElementById("Vcl_Jh1IsCanji").value="'.$o_stu->getJh1IsCanji(0).'";
+	');
+	echo('change_canjizheng1(document.getElementById("Vcl_Jh1IsCanji"));
+	');
+	if($o_stu->getJh1IsCanji(0)=="是")
+	{
+		echo('document.getElementById("Vcl_Jh1CanjiCode").value="'.$o_stu->getJh1CanjiCode(0).'";');
+	}
 	if ($o_stu->getJh2Name(0)!='')
 	{
 		echo('document.getElementById("Vcl_Jh2Connection").value="'.$o_stu->getJh2Connection(0).'";
 		');
 		echo('document.getElementById("Vcl_Jh2Name").value="'.$o_stu->getJh2Name(0).'";
 		');
+		echo('document.getElementById("Vcl_Jh2IdType").value="'.$o_stu->getJh2IdType(0).'";
+		');
+		echo('document.getElementById("Vcl_Jh2ID").value="'.$o_stu->getJh2Id(0).'";
+		');
+		echo('document.getElementById("Vcl_Jh2IsZhixi").value="'.$o_stu->getJh2IsZhixi(0).'";
+		');
+		echo('document.getElementById("Vcl_Jh2Job").value="'.$o_stu->getJh2Job(0).'";
+		');
 		echo('document.getElementById("Vcl_Jh2Danwei").value="'.$o_stu->getJh2Danwei(0).'";
 		');
 		echo('document.getElementById("Vcl_Jh2Jiaoyu").value="'.$o_stu->getJh2Jiaoyu(0).'";
 		');
+		echo('document.getElementById("Vcl_Jh2Phone").value="'.$o_stu->getJh2Phone(0).'";
+		');
+		echo('document.getElementById("Vcl_Jh2IsCanji").value="'.$o_stu->getJh2IsCanji(0).'";
+		');
+		echo('change_canjizheng2(document.getElementById("Vcl_Jh2IsCanji"));
+		');
+		if($o_stu->getJh2IsCanji(0)=="是")
+		{
+			echo('document.getElementById("Vcl_Jh2CanjiCode").value="'.$o_stu->getJh2CanjiCode(0).'";');
+		}
 	}
-	echo('document.getElementById("Vcl_Jh2Phone").value="'.$o_stu->getJh2Phone(0).'";
-	');
-	echo('document.getElementById("Vcl_Compliance").value="'.$o_stu->getCompliance(0).'";
-	');
-	echo('document.getElementById("Vcl_ClassMode").value="'.$o_stu->getClassMode(0).'";
-	');
+	if ($o_stu->getJianhuName(0)!='')
+	{
+		echo('document.getElementById("Vcl_JianhuConnection").value="'.$o_stu->getJianhuConnection(0).'";');
+		echo('document.getElementById("Vcl_JianhuName").value="'.$o_stu->getJianhuName(0).'";');
+		echo('document.getElementById("Vcl_JianhuPhone").value="'.$o_stu->getJianhuPhone(0).'";');
+	}
 ?>
-<?php 
-if ($o_stu->getState(0)!=0)
-{
-	?>
-	for(var i = 4; i < document.getElementsByTagName("input").length; i++){
-		//vcl_disabled(document.getElementsByTagName("input")[i])
+	for(var i = 5; i < document.getElementsByTagName("input").length; i++){
+		vcl_disabled(document.getElementsByTagName("input")[i])
 	}
 	for(var i = 0; i < document.getElementsByTagName("select").length; i++){
-		//vcl_disabled(document.getElementsByTagName("select")[i])
+		vcl_disabled(document.getElementsByTagName("select")[i])
 	}
-	<?php
-}else{
-	?>
-	vcl_disabled(document.getElementById("Vcl_ID"))
-	vcl_disabled(document.getElementById("Vcl_IdType"))	
-	<?php
-}
+<?php 
+	if ($o_stu->getState(0)==5)
+	{
+		?>
+		$('.finish_info').removeAttr("disabled");
+		<?php
+	}
 ?>
-
-
-
 </script>
 <?php
 require_once '../footer.php';

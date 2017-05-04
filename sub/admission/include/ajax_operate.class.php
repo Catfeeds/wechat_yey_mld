@@ -371,28 +371,27 @@ class Operate extends Bn_Basic {
 				$o_wechat_user->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId()) );
 				for($j=0;$j<$o_wechat_user->getAllCount();$j++)
 				{
-					/*
 					//添加消息队列
 					$o_msg=new Wechat_Wx_User_Reminder();
 				    $o_msg->setUserId($o_wechat_user->getUserId($j));
 				    $o_msg->setCreateDate($this->GetDateNow());
 				    $o_msg->setSendDate('0000-00-00');
-				    $o_msg->setMsgId('G65H0lMOkcISb0Ql_AKJAhPmoPeid9JQvwD0TdC-eRA');
+				    $o_msg->setMsgId('9HS_7HRwN7e3zgiGNC7T-UVSIBrAjfQtArcmZoLTYMw');
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
-				    $o_msg->setFirst('尊敬的幼儿家长您好，您所报名的幼儿：');
+				    $o_msg->setFirst('尊敬的幼儿家长您好，您的幼儿体检已经通过，请完善幼儿信息：');
 				    $o_msg->setKeyword1($o_stu->getStudentId());//幼儿编号
 				    $o_msg->setKeyword2($o_stu->getName());//幼儿姓名
-				    $o_msg->setKeyword3($o_admission_setup->getAuditDate());//体检时间
-				    $o_msg->setKeyword4($o_admission_setup->getAuditTime());//体检地点
-				    $o_msg->setRemark('请您按照如上时段、地址进行信息核验，感谢您的配合。
+				    $o_msg->setKeyword3($o_stu->getIdType());//证件类型
+				    $o_msg->setKeyword4($o_stu->getId());//体检地点
+				    $o_msg->setRemark('完善信息后，您将会收到录取通知。
 				    
-如需查看幼儿报名信息，请点击详情');
+请点击详情，完善幼儿信息。');
 				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup.php');
 				    $o_msg->setKeywordSum(4);
 				    $o_msg->Save();
-				    */
+				    
 				}				
 			}
 		}

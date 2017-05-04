@@ -4,7 +4,7 @@ abstract class DB_Connect
 {
    private $S_DatabaseServer = '127.0.0.1:3306';
    private $S_UserName = 'root';
-   private $S_PassWord = 'bjsql.com.cn';
+   private $S_PassWord = 'chutaoIsss';
    private $S_DataBaseName = 'wechat_yey_mld';
    protected $O_Result;
    protected $S_Id;

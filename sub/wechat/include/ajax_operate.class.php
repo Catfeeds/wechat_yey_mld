@@ -146,6 +146,263 @@ class Operate extends Bn_Basic {
 	    $o_stu->Save();	    
 	   	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'修改报名信息成功！\',function(){parent.location="'.$this->getPost ( 'Url' ).'my_signup.php?"+Date.parse(new Date())})');
 	}
+	public function SignupFinishInfo($n_uid)
+	{
+		sleep(2);
+		if ($n_uid>0)
+		{
+			
+		}else{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
+		}
+		//验证是否为本微信用户
+		$o_stu_wechat=new Student_Info_Wechat();
+		$o_stu_wechat->PushWhere ( array ('&&', 'UserId', '=',$n_uid) ); 
+		$o_stu_wechat->PushWhere ( array ('&&', 'StudentId', '=',$this->getPost ( 'StudentId' )) ); 
+		if($o_stu_wechat->getAllCount()==0)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1002]\');' );
+		}
+		$o_stu=new Student_Info($this->getPost ( 'StudentId' ));		
+		$o_setup=new Admission_Setup(1); 
+		//验证是否可以修改
+		if ($o_stu->getState()!=5)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1005]\');' );
+		}			
+		$s_country=$o_stu->getNationality();
+		$s_jh2name=$o_stu->getJh2Name();
+		$s_zProperty=$o_stu->getZProperty();
+		if ($s_zProperty!='直系亲属房产')//修正住址房产属性
+		{
+			$o_stu->getZProperty('租借借用房产');
+		}
+		if ($this->getPost ( 'Draft' )==0)$o_stu->setState(6);
+		$o_stu->setGangao($this->getPost ( 'Gangao' ));
+		if($s_country=='中国')
+		{
+			$o_stu->setOnly($this->getPost ( 'Only' ));
+		    if ($this->getPost ( 'Only' )=='否')
+		    {
+		    	$o_stu->setIsFirst($this->getPost ( 'IsFirst' ));
+		    	$o_stu->setOnlyCode('');
+		    }else{
+		    	$o_stu->setOnlyCode($this->getPost ( 'OnlyCode' ));
+		    	$o_stu->setIsFirst('');
+		    }
+		    $o_stu->setIsLieshi($this->getPost ( 'IsLieshi' )); 
+		    $o_stu->setIsGuer($this->getPost ( 'IsGuer' ));
+		    $o_stu->setIsWugong($this->getPost ( 'IsWugong' ));
+		    $o_stu->setIsLiushou($this->getPost ( 'IsLiushou' ));
+		    $o_stu->setIsDibao($this->getPost ( 'IsDibao' ));
+			//是否低保，要低保证号
+		    if ($this->getPost ( 'IsDibao' )=='是')
+		    {
+		    	if ($this->getPost ( 'DibaoCode' )=='')$this->ReturnMsg('基本信息的 [低保证号]不能为空 ！','DibaoCode');
+		    	$o_stu->setDibaoCode($this->getPost ( 'DibaoCode' ));
+		    }else{
+		    	$o_stu->setDibaoCode('');
+		    }
+		    $o_stu->setIsZizhu($this->getPost ( 'IsZizhu' ));
+		    $o_stu->setIsCanji($this->getPost ( 'IsCanji' ));
+		    //验证残疾儿童
+		    if ($this->getPost ( 'IsCanji' )=='是')
+		    {
+		    	if ($this->getPost ( 'CanjiType' )=='')$this->ReturnMsg('请选择基本信息的 [残疾幼儿类别] ！','CanjiType');
+		    	if ($this->getPost ( 'CanjiCode' )=='')$this->ReturnMsg('基本信息的 [幼儿残疾证号] 不能为空！','CanjiCode');
+		    	$o_stu->setCanjiType($this->getPost ( 'CanjiType' ));
+		    	$o_stu->setCanjiCode($this->getPost ( 'CanjiCode' ));
+		    }else{
+		    	$o_stu->setCanjiType('');
+		    	$o_stu->setCanjiCode('');
+		    }
+		}else{
+		    $o_stu->setOnly('');
+		    $o_stu->setOnlyCode('');
+		    $o_stu->setIsFirst('');
+		    $o_stu->setIsLieshi(''); 
+		    $o_stu->setIsGuer('');
+		    $o_stu->setIsWugong('');
+		    $o_stu->setIsLiushou('');
+		    $o_stu->setIsDibao('');
+		    $o_stu->setDibaoCode('');
+		    $o_stu->setIsZizhu('');
+		    $o_stu->setIsCanji('');
+		    $o_stu->setCanjiType('');
+		    $o_stu->setCanjiCode('');
+		}
+		$o_stu->setXuexing($this->getPost ( 'Xuexing' ));
+		$o_stu->setIsShoushu($this->getPost ( 'IsShoushu' ));
+	    //验证手术名称
+	    if ($this->getPost ( 'IsShoushu' )=='是')
+	    {
+	    	if ($this->getPost ( 'Shoushu' )=='')$this->ReturnMsg('健康信息的 [手术名称] 不能为空！','Shoushu');
+	    	$o_stu->setShoushu($this->getPost ( 'Shoushu' ));
+	    }else{
+	    	$o_stu->setShoushu('');
+	    }
+	    $o_stu->setIsYizhi($this->getPost ( 'IsYizhi' ));
+	    $o_stu->setIsYichuan($this->getPost ( 'IsYichuan' ));
+	    //验证遗传
+	    if ($this->getPost ( 'IsYichuan' )=='是')
+	    {
+	    	if ($this->getPost ( 'Qitabingshi' )=='')$this->ReturnMsg('健康信息的 [家族遗传病史名称] 不能为空！','Qitabingshi');
+	    	$o_stu->setQitabingshi($this->getPost ( 'Qitabingshi' ));
+	    }else{
+	    	$o_stu->setQitabingshi('');
+	    }
+	    $o_stu->setBeizhu($this->getPost ( 'Beizhu' ));
+	    if($s_country=='中国')
+	    {
+	    	$s_birthpace='';
+	    	$s_birthpacecode='';
+		    if ($this->getPost ( 'CCity' )=='')$this->ReturnMsg('请选择户籍信息的 [出生所在（省/市）] ！','CCity');
+		    //获取城市名称
+		    $o_city=new Student_City_Code($this->getPost ( 'CCity' )); 
+		    $s_birthpace=$o_city->getName();
+		    if (isset($_POST['Vcl_CArea']))
+		    {
+		    	if ($this->getPost ( 'CArea' )=='')$this->ReturnMsg('请选择户籍信息的 [出生所在（市/区）] ！','CArea');
+		    	$o_city=new Student_City_Code($this->getPost ( 'CArea' )); 
+		    	$s_birthpace.=$o_city->getName();
+		    	$s_birthpacecode=$this->getPost ( 'CArea' );
+		    }
+	    	if (isset($_POST['Vcl_CStreet']))
+		    {
+		    	if ($this->getPost ( 'CStreet' )=='')$this->ReturnMsg('请选择户籍信息的 [出生所在（区/县）] ！','CArea');
+		    	$o_city=new Student_City_Code($this->getPost ( 'CStreet' )); 
+		    	$s_birthpace.=$o_city->getName();
+		    	$s_birthpacecode=$this->getPost ( 'CStreet' );
+		    } 
+		    $o_stu->setBirthplace($s_birthpace);
+		    $o_stu->setBirthplaceCode($s_birthpacecode);
+		    $o_stu->setIdQuality($this->getPost ( 'IdQuality' ));
+		    if ($this->getPost ( 'IdQuality' )=='非农业户口')
+		    {
+		    	$o_stu->setIdQualityType($this->getPost ( 'IdQualityType' ));
+		    }else{
+		    	$o_stu->setIdQualityType('');
+		    }
+		    if ($this->getPost ( 'HOwner' )=='')$this->ReturnMsg('户籍信息的 [户主姓名] 不能为空！','H_Owner');
+		    $o_stu->setHOwner($this->getPost ( 'HOwner' ));
+		    $o_stu->setHGuanxi($this->getPost ( 'HGuanxi' ));
+	    }else{
+	    	$o_stu->setBirthplace('');
+		    $o_stu->setIdQuality('');
+		    $o_stu->setIdQualityType(''); 
+		    $o_stu->setHOwner('');
+		    $o_stu->setHGuanxi('');   
+	    }
+		//验证第一法定监护人信息
+		$o_stu->setJh1IdType($this->getPost ( 'Jh1IdType' ));
+		if($this->getPost ( 'Jh1IdType' )=='居民身份证')
+		{
+			if ($this->validation_filter_id_card($this->getPost ( 'Jh1ID' ))==false)$this->ReturnMsg('第一法定监护人信息的 [身份证] 输入错误！','Jh1ID');//验证幼儿ID是否合法
+		}
+	    $o_stu->setJh1Id($this->getPost ( 'Jh1ID' ));
+	    $o_stu->setJh1IsZhixi($this->getPost ( 'Jh1IsZhixi' ));
+	    if ($this->getPost ( 'Jh1Job' )=='')$this->ReturnMsg('请选择第一法定监护人信息的 [职业状况] ！','Jh1Job');
+	    $o_stu->setJh1Job($this->getPost ( 'Jh1Job' ));
+	    if ($this->getPost ( 'Jh1Phone' )=='')$this->ReturnMsg('第一法定监护人信息的 [联系电话] 不能为空！','Jh1Phone');
+	    $o_stu->setJh1Phone($this->getPost ( 'Jh1Phone' ));
+	    $o_stu->setJh1IsCanji($this->getPost ( 'Jh1IsCanji' ));
+	    if ($this->getPost ( 'Jh1IsCanji' )=='是')
+	    {
+	    	$o_stu->setJh1CanjiCode($this->getPost ( 'Jh1CanjiCode' ));
+	    }else{
+	    	$o_stu->setJh1CanjiCode('');
+	    }
+	    //验证第二法定监护人信息,如果姓名填写了，那么其他信息也要填写
+		if ($s_jh2name!='' || $this->getPost ( 'Jh2Name' )!='')
+		{
+		    if ($this->getPost ( 'Jh2IdType' )=='')$this->ReturnMsg('请选择第二法定监护人信息的 [证件类型] ！','Jh2IdType');
+			$o_stu->setJh2IdType($this->getPost ( 'Jh2IdType' ));
+			if($this->getPost ( 'Jh2IdType' )=='居民身份证')
+			{
+				if ($this->validation_filter_id_card($this->getPost ( 'Jh2ID' ))==false)$this->ReturnMsg('第二法定监护人信息的 [身份证] 输入错误！','Jh2ID');//验证幼儿ID是否合法
+			}
+		    $o_stu->setJh2Id($this->getPost ( 'Jh2ID' ));
+		    if ($this->getPost ( 'Jh2IsZhixi' )=='')$this->ReturnMsg('请选择第二法定监护人信息的 [是否是直系亲属] ！','Jh2IsZhixi');
+		    $o_stu->setJh2IsZhixi($this->getPost ( 'Jh2IsZhixi' ));
+		    if ($this->getPost ( 'Jh2Job' )=='')$this->ReturnMsg('请选择第二法定监护人信息的 [职业状况] ！','Jh2Job');
+		    $o_stu->setJh2Job($this->getPost ( 'Jh2Job' ));
+		    if ($this->getPost ( 'Jh2Phone' )=='')$this->ReturnMsg('第二法定监护人信息的 [联系电话] 不能为空！','Jh2Phone');
+		    $o_stu->setJh2Phone($this->getPost ( 'Jh2Phone' ));
+		    $o_stu->setJh2IsCanji($this->getPost ( 'Jh2IsCanji' ));
+		    if ($this->getPost ( 'Jh2IsCanji' )=='')$this->ReturnMsg('请选择第二法定监护人信息的 [是否残疾] ！','Jh2IsCanji');
+		    if ($this->getPost ( 'Jh2IsCanji' )=='是')
+		    {
+		    	$o_stu->setJh2CanjiCode($this->getPost ( 'Jh2CanjiCode' ));
+		    }else{
+		    	$o_stu->setJh2CanjiCode('');
+		    }
+		    if ($this->getPost ( 'Jh2Name' )!='')
+		    {
+		    	$o_stu->setJh2Connection($this->getPost ( 'Jh2Connection' )); 
+			    if ($this->getPost ( 'Jh2Name' )=='')$this->ReturnMsg('第二法定监护人信息的 [姓名] 不能为空！','Jh2Name');
+			    $o_stu->setJh2Name($this->getPost ( 'Jh2Name' ));				
+			    if ($this->getPost ( 'Jh2Jiaoyu' )=='')$this->ReturnMsg('请选择第二法定监护人信息的 [教育程度] ！','Jh2Jiaoyu');
+			    $o_stu->setJh2Jiaoyu($this->getPost ( 'Jh2Jiaoyu' ));
+			    if ($this->getPost ( 'Jh2Danwei' )=='')$this->ReturnMsg('请选择第二法定监护人信息的 [工作单位全称] ！','Jh2Danwei');
+			    $o_stu->setJh2Danwei($this->getPost ( 'Jh2Danwei' ));
+		    }
+		}else{
+			$o_stu->setJh2Connection(''); 
+			$o_stu->setJh2Name('');
+			$o_stu->setJh2IdType('');
+			$o_stu->setJh2Id('');
+		    $o_stu->setJh2IsZhixi('');
+			$o_stu->setJh2Job('');
+			$o_stu->setJh2Jiaoyu('');
+		    $o_stu->setJh2IsCanji('');
+		    $o_stu->setJh2IsDanwei('');
+		    $o_stu->setJh2Phone('');
+			$o_stu->setJh2CanjiCode('');
+		}
+		if($this->getPost ( 'JianhuName' )!='')
+		{
+			if ($this->getPost ( 'JianhuConnection' )=='')$this->ReturnMsg('请选择其他监护人信息的 [关系] ！','JianhuConnection');
+			$o_stu->setJianhuConnection($this->getPost ( 'JianhuConnection' ));
+	    	if ($this->getPost ( 'JianhuName' )=='')$this->ReturnMsg('其他监护人信息的 [姓名] 不能为空！','JianhuName');
+			$o_stu->setJianhuName($this->getPost ( 'JianhuName' ));
+			if ($this->getPost ( 'JianhuPhone' )=='')$this->ReturnMsg('其他监护人信息的 [联系电话] 不能为空！','JianhuPhone');
+	    	$o_stu->setJianhuPhone($this->getPost ( 'JianhuPhone' ));
+		}else{
+			$o_stu->setJianhuConnection('');
+			$o_stu->setJianhuName('');
+	    	$o_stu->setJianhuPhone('');
+		}
+	    $o_stu->Save();
+	    if ($this->getPost ( 'Draft' )==0)
+	    {
+	    	//发送消息模板
+	    	//发送信息提交成功提醒
+		    require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';
+			$o_token=new accessToken();
+			$curlUtil = new curlUtil();
+		    $o_parent=new WX_User_Info($n_uid);
+			$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
+			$data = array(
+		    	'touser' => $o_parent->getOpenId(), // openid是发送消息的基础
+				'template_id' => 'PR6GLFfeBP6xz_gR30cbMEkDILTvarzXMA7QEeMSFWg', // 模板id
+				'url' => '', // 点击跳转地址
+				'topcolor' => '#FF0000', // 顶部颜色
+				'data' => array(
+					'first' => array('value' => '您的报名已经成功录取！'),
+					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
+					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
+					'keyword3' => array('value' => $o_stu->getIdType(),'color'=>'#173177'),
+					'keyword4' => array('value' => $o_stu->getId(),'color'=>'#173177'),
+					'keyword5' => array('value' => $o_stu->getClassMode(),'color'=>'#173177'),
+					'remark' => array('value' => '请携带您的幼儿进行报到，如有问题请联系学校相关人员，谢谢。')
+				)
+				);
+			$curlUtil->https_request($s_url, json_encode($data));
+	    	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'提交正式信息成功！\',function(){parent.location="'.$this->getPost ( 'Url' ).'my_signup.php?"+Date.parse(new Date())})');
+	    }else{
+	    	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'保存草稿成功！\',function(){parent.location="'.$this->getPost ( 'Url' ).'my_signup.php?"+Date.parse(new Date())})');
+	    }	   	
+	}
 	public function SignupCancel($n_uid)
 	{
 		$a_result=array();
@@ -374,7 +631,6 @@ class Operate extends Bn_Basic {
 		    $o_stu->setJh2Jiaoyu($this->getPost ( 'Jh2Jiaoyu' ));
 		    if ($this->getPost ( 'Jh2Danwei' )=='')$this->ReturnMsg('请选择第二法定监护人信息的 [工作单位全称] ！','Jh2Danwei');
 		    $o_stu->setJh2Danwei($this->getPost ( 'Jh2Danwei' ));
-		    $o_stu->setJh2Phone($this->getPost ( 'Jh2Phone' ));
 		    $o_stu->setJh2IsCanji('');
 		    $o_stu->setJh2CanjiCode('');
 		}else{
@@ -385,8 +641,8 @@ class Operate extends Bn_Basic {
 		    $o_stu->setJh2IsZhixi('');
 			$o_stu->setJh2Job('');
 			$o_stu->setJh2Jiaoyu('');
-			$o_stu->setJh2Phone('');
 		    $o_stu->setJh2IsCanji('');
+		    $o_stu->setJh2Danwei('');
 			$o_stu->setJh2CanjiCode('');
 		}
 		$o_stu->setJianhuConnection('');
@@ -394,6 +650,7 @@ class Operate extends Bn_Basic {
 	    $o_stu->setJianhuPhone('');
 	    if ($this->getPost ( 'Jh1Phone' )=='')$this->ReturnMsg('报名联系方式的 [监护人手机号] 不能为空！','Jh1Phone');
 	    $o_stu->setJh1Phone($this->getPost ( 'Jh1Phone' ));
+	    $o_stu->setJh2Phone($this->getPost ( 'Jh2Phone' ));
 	    //设置flag
 	    //是否满三岁，出生日期加3年，必须小于今年的8月31日
 	    $a_year=array();

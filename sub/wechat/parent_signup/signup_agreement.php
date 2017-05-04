@@ -14,6 +14,23 @@ require_once '../header.php';
 		 <a onclick="document.addEventListener('WeixinJSBridgeReady', WeixinJSBridge.call('closeWindow'));" class="weui-btn weui-btn_default">不同意</a>
 	</div>
 <script>
+$(function(){
+<?php 
+//判断是否为合法报名时段
+$o_setup=new Admission_Setup(1); 
+$o_date = new DateTime('Asia/Chongqing');
+$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d');
+if (strtotime($s_date)<strtotime($o_setup->getSignupStart()))
+{
+	echo('Dialog_Message("报名开始时间为：'.$o_setup->getSignupStart().' ，请在有效日期内进行报名。",function(){location=\'my_signup.php\'});
+	');
+}
+if (strtotime($s_date)>strtotime($o_setup->getSignupEnd()))
+{
+	echo('Dialog_Message("报名已截至，截至时间：<br/>'.$o_setup->getSignupStart().' ",function(){location=\'my_signup.php\'});');
+}
+?>
+});
 count_down(21)
 function count_down(a) {
     if (a == 1) {                

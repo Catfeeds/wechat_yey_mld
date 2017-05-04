@@ -91,6 +91,10 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        		$s_html='<span class="weui-form-preview__value" style="color:#FFA200">等待完善幼儿信息</span>';
 	        		$s_button='<a href="signup_finish_info.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">马上完善信息</a>';
 	        		break;
+	        	case 6:
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">已录取</span>';
+	        		$s_button='<a href="signup_finish_info.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		break;
 	        }
 	        echo($s_html);
 	        ?>

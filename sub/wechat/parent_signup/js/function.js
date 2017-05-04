@@ -226,8 +226,9 @@ function change_c_city(obj)
 	{
 		s_html=s_html+'<option value="'+a_shequ[i][0]+'">'+a_shequ[i][1]+'</option>'
 	}
-	$('#Vcl_C_Area').html(s_html);
+	$('#Vcl_CArea').html(s_html);
 	document.getElementById("c_area").style.display=""
+	$('#Vcl_CStreet').html('');
 	document.getElementById("c_street").style.display="none"
 }
 function change_c_area(obj)
@@ -249,7 +250,7 @@ function change_c_area(obj)
 	{
 		s_html=s_html+'<option value="'+a_shequ[i][0]+'">'+a_shequ[i][1]+'</option>'
 	}
-	$('#Vcl_C_Street').html(s_html);
+	$('#Vcl_CStreet').html(s_html);
 	document.getElementById("c_street").style.display=""
 }
 function change_qulity(obj)
@@ -313,6 +314,24 @@ function change_z_property(obj)
 		document.getElementById("z_guanxi").style.display='';
 	}
 }
+function change_canjizheng1(obj)
+{
+	if (obj.value=="是")
+	{
+		document.getElementById("canjizheng1").style.display='';
+	}else{
+		document.getElementById("canjizheng1").style.display='none';
+	}
+}
+function change_canjizheng2(obj)
+{
+	if (obj.value=="是")
+	{
+		document.getElementById("canjizheng2").style.display='';
+	}else{
+		document.getElementById("canjizheng2").style.display='none';
+	}
+}
 function check_id(){
 	//
 	var documentType=document.getElementById("Vcl_IdType").value;
@@ -355,6 +374,85 @@ function check_id(){
 	  }
 	  document.getElementById("Vcl_CheckId").value=studentCardNo;
 	  document.getElementById("submit_form_checkid").submit();
+}
+function check_1_id(){
+	var documentType=document.getElementById("Vcl_Jh1IdType").value;
+	//var documentType=$("#Vcl_IdType").val();
+	//如果证件类型为 居民身份证 则校验身份证是否有效
+	if(documentType=='居民身份证'){
+	 	var studentCardNo = document.getElementById("Vcl_Jh1ID").value;
+		if(studentCardNo!="" || studentCardNo!=null){
+		   if(studentCardNo.length != 15 && studentCardNo.length != 18){
+		   		//document.getElementById("Vcl_Birthday").value="";
+			   Dialog_Message("第一法定监护人信息的 [身份证] 长度应为15或者18位")
+		        return false;
+		   }else{
+		   		var newCardNoAdd = checkId(studentCardNo.toLowerCase());
+				if("身份证输入错误！" == newCardNoAdd){
+					Dialog_Message("第一法定监护人信息的 [身份证] 输入错误！");
+		            return false;
+		    	}
+		   		var sexValue = (newCardNoAdd.slice(14,17)%2 ? '男' : '女');
+		      	var birthdayValue = newCardNoAdd.slice(6,10) +"-"+ newCardNoAdd.slice(10,12) +"-"+ newCardNoAdd.slice(12,14);
+			    //document.getElementById("Vcl_Birthday").value=birthdayValue;
+			    var checkStr = "0123456789xX";
+			    var reg = /^[0-9xX]+$/;
+
+			    if (!reg.test(studentCardNo))
+			    {
+			    	Dialog_Message("第一法定监护人信息的 [身份证] 格式错误，只能由数字或X组成。");   
+					return false;  
+				}
+				//document.getElementById("Vcl_Sex").value=sexValue;
+		   	}
+		 }
+	  }else{
+	  	var studentCardNo = document.getElementById("Vcl_Jh1ID").value;
+		if(studentCardNo==""){
+			Dialog_Message("第一法定监护人信息的 [证件号] 不能为空值！");
+		  	return false;
+	  	}
+	  }	 
+}
+function check_2_id(){
+	var documentType=document.getElementById("Vcl_Jh2IdType").value;
+	//var documentType=$("#Vcl_IdType").val();
+	//如果证件类型为 居民身份证 则校验身份证是否有效
+	if(documentType=='居民身份证'){
+	 	var studentCardNo = document.getElementById("Vcl_Jh2ID").value;
+		if(studentCardNo!="" || studentCardNo!=null){
+		   if(studentCardNo.length != 15 && studentCardNo.length != 18){
+		   		//document.getElementById("Vcl_Birthday").value="";
+			   Dialog_Message("第二法定监护人信息的 [身份证] 长度应为15或者18位")
+		        return false;
+		   }else{
+		   		var newCardNoAdd = checkId(studentCardNo.toLowerCase());
+				if("身份证输入错误！" == newCardNoAdd){
+					Dialog_Message("第二法定监护人信息的 [身份证] 输入错误！");
+		            return false;
+		    	}
+		   		var sexValue = (newCardNoAdd.slice(14,17)%2 ? '男' : '女');
+		      	var birthdayValue = newCardNoAdd.slice(6,10) +"-"+ newCardNoAdd.slice(10,12) +"-"+ newCardNoAdd.slice(12,14);
+			    //document.getElementById("Vcl_Birthday").value=birthdayValue;
+			    var checkStr = "0123456789xX";
+			    var reg = /^[0-9xX]+$/;
+				
+				
+			    if (!reg.test(studentCardNo))
+			    {
+			    	Dialog_Message("第二法定监护人信息的 [身份证] 格式错误，只能由数字或X组成。");   
+					return false;  
+				}
+				//document.getElementById("Vcl_Sex").value=sexValue;
+		   	}
+		 }
+	  }else{
+	  	var studentCardNo = document.getElementById("Vcl_Jh2ID").value;
+		if(studentCardNo==""){
+			Dialog_Message("第二法定监护人信息的 [证件号] 不能为空值！");
+		  	return false;
+	  	}
+	  }	 
 }
 function checkId(pId){
     var arrVerifyCode = [1,0,"x",9,8,7,6,5,4,3,2];
@@ -555,10 +653,208 @@ function submit_signin(modify)
 	Common_OpenLoading();
 	document.getElementById("submit_form").submit();	 
 }
+function submit_signin_finish_info(draft)
+{
+	document.getElementById("Vcl_Draft").value=draft
+	if (document.getElementById("Vcl_Nationality").value == "中国") {
+		if (document.getElementById("Vcl_Only").value=="是")
+		{
+			if (document.getElementById("Vcl_OnlyCode").value=="")
+			{
+				Dialog_Message("基本信息的 [独生子女证号] 不能为空！",function(){
+					document.getElementById("Vcl_OnlyCode").focus()
+				})
+				return
+			}
+		}
+		if (document.getElementById("Vcl_IsDibao").value == "是") {
+			if (document.getElementById("Vcl_DibaoCode").value == "") {
+				Dialog_Message("基本信息的 [低保证号]不能为空 ！",function(){
+					document.getElementById("Vcl_DibaoCode").focus()
+				})	
+				return
+			}
+		}
+		if (document.getElementById("Vcl_IsCanji").value == "是") {
+			if (document.getElementById("Vcl_CanjiType").value == "") {
+				Dialog_Message("请选择基本信息的 [残疾幼儿类别] ！",function(){
+					document.getElementById("Vcl_CanjiType").focus()
+				})	
+				return
+			}
+			if (document.getElementById("Vcl_CanjiCode").value == "") {
+				Dialog_Message("基本信息的 [幼儿残疾证号] 不能为空！",function(){
+					document.getElementById("Vcl_CanjiCode").focus()
+				})	
+				return
+			}
+		}
+	}
+	if (document.getElementById("Vcl_IsShoushu").value=="是")
+	{
+		if (document.getElementById("Vcl_Shoushu").value=="")
+		{
+			Dialog_Message("健康信息的 [手术名称] 不能为空！",function(){
+				document.getElementById("Vcl_Shoushu").focus()
+			})				
+			return
+		}
+	}
+	if (document.getElementById("Vcl_IsYichuan").value=="是")
+	{
+		if (document.getElementById("Vcl_Qitabingshi").value=="")
+		{
+			Dialog_Message("健康信息的 [家族遗传病史名称] 不能为空！",function(){
+				document.getElementById("Vcl_Qitabingshi").focus()
+			})				
+			return
+		}
+	}
+	if (document.getElementById("Vcl_Nationality").value == "中国") {
+		//判断出生地
+		if (document.getElementById("Vcl_CCity").value == "") {
+			Dialog_Message("请选择户籍信息的 [出生所在（省/市）] ！",function(){
+				document.getElementById("Vcl_CCity").focus()
+			})				
+			return
+		}
+		if ($('#c_area').is(":hidden")==false) {
+			if (document.getElementById("Vcl_CArea").value == "") {
+				Dialog_Message("请选择户籍信息的 [出生所在（市/区）] ！",function(){
+					document.getElementById("Vcl_CArea").focus()
+				})				
+				return
+			}
+		}
+		if ($('#c_street').is(":hidden")==false) {
+			if (document.getElementById("Vcl_CStreet").value == "") {
+				Dialog_Message("请选择户籍信息的 [出生所在（区/县）] ！",function(){
+					document.getElementById("Vcl_CStreet").focus()
+				})				
+				return
+			}
+		}
+		if (document.getElementById("Vcl_HOwner").value == "") {
+			Dialog_Message("户籍信息的 [户主姓名] 不能为空！",function(){
+				document.getElementById("Vcl_HOwner").focus()
+			})				
+			return
+		}
+	}
+	if (check_1_id()==false)
+	{
+		return
+	}
+	if (document.getElementById("Vcl_Jh1Job").value=="")
+	{
+		Dialog_Message("请选择第一法定监护人信息的 [职业状况] ！",function(){
+			document.getElementById("Vcl_Jh1Job").focus()
+		})				
+		return
+	}
+	if (document.getElementById("Vcl_Jh1Phone").value=="")
+	{
+		Dialog_Message("第一法定监护人信息的 [联系电话] 不能为空！",function(){
+			document.getElementById("Vcl_Jh1Phone").focus()
+		})				
+		return
+	}
+	if (document.getElementById("Vcl_Jh2Name").value != "") //如果第二法定监护人姓名不是空，那么
+	{
+		if (document.getElementById("Vcl_Jh2Connection").value == "") {
+			Dialog_Message("请选择第二法定监护人信息的 [关系] ！",function(){
+				document.getElementById("Vcl_Jh2Connection").focus()
+			})				
+			return
+		}
+		if (document.getElementById("Vcl_Jh2Name").value == "") {
+			Dialog_Message("第二法定监护人信息的 [姓名] 不能为空！",function(){
+				document.getElementById("Vcl_Jh2Name").focus()
+			})				
+			return
+		}
+		if (document.getElementById("Vcl_Jh2IdType").value == "") {
+			Dialog_Message("请选择第二法定监护人信息的 [证件类型] ！",function(){
+				document.getElementById("Vcl_Jh2IdType").focus()
+			})				
+			return
+		}
+		if (check_2_id() == false) {			
+			return
+		}
+		if (document.getElementById("Vcl_Jh2IsZhixi").value == "") {
+			Dialog_Message("请选择第二法定监护人信息的 [是否是直系亲属] ！",function(){
+				document.getElementById("Vcl_Jh2IsZhixi").focus()
+			})				
+			return
+		}
+		if (document.getElementById("Vcl_Jh2Job").value == "") {
+			Dialog_Message("请选择第二法定监护人信息的 [职业状况] ！",function(){
+				document.getElementById("Vcl_Jh2Job").focus()
+			})				
+			return
+		}
+		if (document.getElementById("Vcl_Jh2Danwei").value=="")
+		{
+			Dialog_Message("第二法定监护人信息的 [工作单位全称] 不能为空！",function(){
+				document.getElementById("Vcl_Jh2Danwei").focus()
+			})				
+			return
+		}
+		if (document.getElementById("Vcl_Jh2Jiaoyu").value == "") {
+			Dialog_Message("请选择第二法定监护人信息的 [教育程度] ！",function(){
+				document.getElementById("Vcl_Jh2Jiaoyu").focus()
+			})				
+			return
+		}
+		if (document.getElementById("Vcl_Jh2Phone").value == "") {
+			Dialog_Message("第二法定监护人信息的 [联系电话] 不能为空！",function(){
+				document.getElementById("Vcl_Jh2Phone").focus()
+			})				
+			return
+		}
+		if (document.getElementById("Vcl_Jh2IsCanji").value == "") {
+			Dialog_Message("请选择第二法定监护人信息的 [是否残疾] ！",function(){
+				document.getElementById("Vcl_Jh2IsCanji").focus()
+			})				
+			return
+		}	
+	}
+	if (document.getElementById("Vcl_JianhuName").value!="")
+	{
+		if (document.getElementById("Vcl_JianhuConnection").value=="")
+		{
+			Dialog_Message("请选择其他监护人信息的 [关系] ！",function(){
+				document.getElementById("Vcl_JianhuConnection").focus()
+			})				
+			return
+		}
+		if (document.getElementById("Vcl_JianhuPhone").value=="")
+		{
+			Dialog_Message("其他监护人信息的 [联系电话] 不能为空！",function(){
+				document.getElementById("Vcl_JianhuPhone").focus()
+			})				
+			return
+		}
+	}
+	if (draft==0)
+	{
+		Dialog_Confirm('请注意：提交后将不可修改，请仔细核对。是否继续正式提交？',function(){
+			Common_OpenLoading();
+			document.getElementById("submit_form").submit();	
+		});
+	}
+	if (draft==1)
+	{
+		Dialog_Confirm('请注意：您现在保存的是草稿，只有提交正式信息后，幼儿园才能收到您的幼儿信息。是否继续保存草稿？',function(){
+			Common_OpenLoading();
+			document.getElementById("submit_form").submit();	
+		});
+	}	
+}
 function vcl_disabled(obj)
 {
-	$(obj).attr({"disabled":"disabled"});
-	//$(obj).css({"color":"#ffffff"});
+	$(obj).attr({"disabled":"disabled"});	
 }
 CITY_I=new Array();CITY_II=new Array();CITY_I["110000000000"]=new Array(new Array("110101000000","东城区"),new Array("110102000000","西城区"),new Array("110105000000","朝阳区"),new Array("110106000000","丰台区"),new Array("110107000000","石景山区"),new Array("110108000000","海淀区"),new Array("110109000000","门头沟区"),new Array("110111000000","房山区"),new Array("110112000000","通州区"),new Array("110113000000","顺义区"),new Array("110114000000","昌平区"),new Array("110115000000","大兴区"),new Array("110116000000","怀柔区"),new Array("110117000000","平谷区"),new Array("110228000000","密云县"),new Array("110229000000","延庆县"),new Array("11A1A1000000","燕山区"));
 CITY_I["120000000000"]=new Array(new Array("120101000000","和平区"),new Array("120102000000","河东区"),new Array("120103000000","河西区"),new Array("120104000000","南开区"),new Array("120105000000","河北区"),new Array("120106000000","红桥区"),new Array("120110000000","东丽区"),new Array("120111000000","西青区"),new Array("120112000000","津南区"),new Array("120113000000","北辰区"),new Array("120114000000","武清区"),new Array("120115000000","宝坻区"),new Array("120116000000","滨海新区"),new Array("120221000000","宁河县"),new Array("120223000000","静海县"),new Array("120225000000","蓟县"));

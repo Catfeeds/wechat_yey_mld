@@ -645,7 +645,8 @@
 						<div class="weui-cell__bd">
 			                <select class="weui-select" id="Vcl_ZProperty" name="Vcl_ZProperty" onchange="change_z_property(this)">
 			                    <option selected="selected" value="直系亲属房产">直系亲属房产</option>
-		                        <option value="租借借用房产">租借借用房产</option>
+		                        <option value="租用直管公房">租用直管公房</option>
+		                        <option value="租用借用其他房产">租用借用其他房产</option>
 			                </select>
 			            </div>
 		        	</div>
