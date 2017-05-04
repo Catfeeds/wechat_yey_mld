@@ -385,6 +385,7 @@ class Operate extends Bn_Basic {
 				    $o_msg->setKeyword2($o_stu->getName());//幼儿姓名
 				    $o_msg->setKeyword3($o_stu->getIdType());//证件类型
 				    $o_msg->setKeyword4($o_stu->getId());//体检地点
+				    $o_msg->setKeyword5('');//体检地点
 				    $o_msg->setRemark('完善信息后，您将会收到录取通知。
 				    
 请点击详情，完善幼儿信息。');

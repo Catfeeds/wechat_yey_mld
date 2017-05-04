@@ -792,7 +792,7 @@ class Operate extends Bn_Basic {
 					'keyword5' => array('value' => $o_admission_setup->getMeetAddress(),'color'=>'#173177'),
 					'remark' => array('value' => '请按以上时间携带幼儿参加见面，谢谢。
 					
-	如需查看报名信息，请点击详情。')
+如需查看报名信息，请点击详情。')
 				)
 				);
 			$curlUtil->https_request($s_url, json_encode($data));
