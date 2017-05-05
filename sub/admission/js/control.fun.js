@@ -221,3 +221,8 @@ function arrayToJson(o) {
     }
     return o.toString();
   }
+function setup_modify()
+{	
+	loading_show();
+	$('#submit_form').submit();
+}

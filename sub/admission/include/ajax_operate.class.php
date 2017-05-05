@@ -580,6 +580,35 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'监护人手机', '', 0, 100);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0, 65);
 		$this->SendJsonResultForTable($n_allcount,'AdmissionTable', 'yes', $n_page, $a_title, $a_row);
+	}	
+	public function AdmissionSetup($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		sleep(1);
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120108 ))return; //如果没有权限，不返回任何值
+		$o_setup=new Admission_Setup(1);
+		$o_setup->setDeptId($this->getPost('DeptId'));
+		$o_setup->setTuoSum($this->getPost('TuoSum'));
+		$o_setup->setXiaoSum($this->getPost('XiaoSum'));
+		$o_setup->setDaSum($this->getPost('DaSum'));
+		$o_setup->setZhongSum($this->getPost('ZhongSum'));
+		$o_setup->setBanriSum($this->getPost('BanriSum'));
+		$o_setup->setSignupStart($this->getPost('SignupStart'));
+		$o_setup->setSignupEnd($this->getPost('SignupEnd'));
+		$o_setup->setAuditDate($this->getPost('AuditDate'));
+		$o_setup->setAuditTime($this->getPost('AuditTime'));
+		$o_setup->setAuditAddress($this->getPost('AuditAddress'));
+		$o_setup->setMeetDate($this->getPost('MeetDate'));
+		$o_setup->setMeetTime($this->getPost('MeetTime'));
+		$o_setup->setMeetAddress($this->getPost('MeetAddress'));
+		$o_setup->setHealthTime($this->getPost('HealthTime'));
+		$o_setup->setHealthAddress($this->getPost('HealthAddress'));
+		$o_setup->Save();
+		
+		$this->setReturn ( 'parent.form_return("dialog_success(\'修改招生设置成功。\')");' );
 	}
 }
 
