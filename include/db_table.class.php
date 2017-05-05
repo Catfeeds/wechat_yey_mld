@@ -874,7 +874,6 @@ class Student_Info_Wechat extends CRUD
         ));
     }
 }
-
 class Student_Info_Wechat_Wiew extends CRUD
 {
     protected $StudentId;
@@ -990,6 +989,8 @@ class Student_Info_Wechat_Wiew extends CRUD
     protected $UserName;
     protected $Phone;
     protected $Email;
+    protected $SignupPhone;
+    protected $SignupPhoneBackup;
 
     protected function DefineKey()
     {
@@ -1114,7 +1115,9 @@ class Student_Info_Wechat_Wiew extends CRUD
                     'parent_sex' => 'ParentSex',
                     'user_name' => 'UserName',
                     'phone' => 'Phone',
-                    'email' => 'Email'
+                    'email' => 'Email',
+                    'signup_phone' => 'SignupPhone',
+                    'signup_phone_backup' => 'SignupPhoneBackup'
         ));
     }
 }

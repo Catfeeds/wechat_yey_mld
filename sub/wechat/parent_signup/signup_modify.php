@@ -165,7 +165,7 @@ if ($o_stu->getAllCount()==0)
 	');
 	echo('document.getElementById("Vcl_Jh1Jiaoyu").value="'.$o_stu->getJh1Jiaoyu(0).'";
 	');
-	echo('document.getElementById("Vcl_Jh1Phone").value="'.$o_stu->getJh1Phone(0).'";
+	echo('document.getElementById("Vcl_SignupPhone").value="'.$o_stu->getSignupPhone(0).'";
 	');
 	if ($o_stu->getJh2Name(0)!='')
 	{
@@ -178,7 +178,7 @@ if ($o_stu->getAllCount()==0)
 		echo('document.getElementById("Vcl_Jh2Jiaoyu").value="'.$o_stu->getJh2Jiaoyu(0).'";
 		');
 	}
-	echo('document.getElementById("Vcl_Jh2Phone").value="'.$o_stu->getJh2Phone(0).'";
+	echo('document.getElementById("Vcl_SignupPhoneBackup").value="'.$o_stu->getSignupPhoneBackup(0).'";
 	');
 	echo('document.getElementById("Vcl_Compliance").value="'.$o_stu->getCompliance(0).'";
 	');
