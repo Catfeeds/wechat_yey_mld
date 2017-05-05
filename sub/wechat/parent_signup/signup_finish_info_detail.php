@@ -1072,7 +1072,7 @@
 	        <div class="weui-cell" id="canjizheng1" style="display:none">
 				<div class="weui-cell__hd"><label class="weui-label">残疾证号</label></div>
 				<div class="weui-cell__bd">
-                    <input class="weui-input finish_info" id=Vcl_Jh1CanjiCode name="Vcl_Jh1CanjiCode" placeholder="选填">
+                    <input class="weui-input finish_info" id="Vcl_Jh1CanjiCode" name="Vcl_Jh1CanjiCode" placeholder="选填">
                 </div>
 	        </div>
 		</div>

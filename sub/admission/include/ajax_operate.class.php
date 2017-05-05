@@ -554,6 +554,8 @@ class Operate extends Bn_Basic {
 		$n_count = $o_user->getCount ();
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
+			$a_button = array ();
+			array_push ( $a_button, array ('查看', "window.open('print.php?student_id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
 			array_push ($a_row, array (
 				$o_user->getStudentId ( $i ),
 				$o_user->getName ( $i ),
@@ -563,6 +565,7 @@ class Operate extends Bn_Basic {
 				$o_user->getId ( $i ),
 				$o_user->getJh1Name ( $i ),
 				$o_user->getJh1Phone ( $i ),
+				$a_button
 				));				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
@@ -575,7 +578,8 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'证件号码', 'Id', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'第一监护人', 'Jh1Name', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'监护人手机', '', 0, 100);
-		$this->SendJsonResultForTable($n_allcount,'AdmissionTable', 'no', $n_page, $a_title, $a_row);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0, 65);
+		$this->SendJsonResultForTable($n_allcount,'AdmissionTable', 'yes', $n_page, $a_title, $a_row);
 	}
 }
 
