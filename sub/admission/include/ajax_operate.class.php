@@ -278,7 +278,7 @@ class Operate extends Bn_Basic {
 				    $o_msg->setUserId($o_wechat_user->getUserId($j));
 				    $o_msg->setCreateDate($this->GetDateNow());
 				    $o_msg->setSendDate('0000-00-00');
-				    $o_msg->setMsgId('zyiBHFGE22XBtt4cmhaV7abYy9vOpUTNv_yvJr2U-ic');
+				    $o_msg->setMsgId($this->getWechatSetup('MSGTMP_02'));
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
@@ -327,7 +327,7 @@ class Operate extends Bn_Basic {
 				    $o_msg->setUserId($o_wechat_user->getUserId($j));
 				    $o_msg->setCreateDate($this->GetDateNow());
 				    $o_msg->setSendDate('0000-00-00');
-				    $o_msg->setMsgId('G65H0lMOkcISb0Ql_AKJAhPmoPeid9JQvwD0TdC-eRA');
+				    $o_msg->setMsgId($this->getWechatSetup('MSGTMP_04'));
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
@@ -376,7 +376,7 @@ class Operate extends Bn_Basic {
 				    $o_msg->setUserId($o_wechat_user->getUserId($j));
 				    $o_msg->setCreateDate($this->GetDateNow());
 				    $o_msg->setSendDate('0000-00-00');
-				    $o_msg->setMsgId('9HS_7HRwN7e3zgiGNC7T-UVSIBrAjfQtArcmZoLTYMw');
+				    $o_msg->setMsgId($this->getWechatSetup('MSGTMP_05'));
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);

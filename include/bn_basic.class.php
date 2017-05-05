@@ -3,7 +3,7 @@ require_once RELATIVITY_PATH . 'include/db_table.class.php';
 require_once RELATIVITY_PATH . 'include/it_systext.class.php';
 require_once RELATIVITY_PATH . 'include/language_cn.php';
 class Bn_Basic {
-	protected $S_Root = '/sss/';
+	protected $S_Root = '/';
 	protected $B_Operate = false;
 	protected $S_ErrorReasion; //出错提示
 	protected $B_Success = true;
@@ -15,7 +15,13 @@ class Bn_Basic {
 	protected $S_UserPhoto;
 	protected $O_SelectItem=null;
 	protected $N_SelectItemCount=0;
-	function FilterUserInput($string) {
+	public function getWechatSetup($s_key)
+	{
+		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+		$o_setup=new Wechat_Wx_Setup($s_key);
+		return $o_setup->getValue();		
+	}
+	public function FilterUserInput($string) {
 		//过滤< > />
 		$string=str_replace('<', '', $string);
 		$string=str_replace('>', '', $string);

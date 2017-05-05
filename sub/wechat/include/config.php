@@ -1,4 +1,6 @@
-<?php 
-	define("APPID", "wxf38509d7749bb56d");
-	define("APPSECRET", "e3f45a21284916d2e9c848759552b997");
+<?php
+	require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
+	$o_bn_base=new Bn_Basic();
+	define("APPID",$o_bn_base->getWechatSetup('APPID'));
+	define("APPSECRET",$o_bn_base->getWechatSetup('APPSECRET'));
 ?>

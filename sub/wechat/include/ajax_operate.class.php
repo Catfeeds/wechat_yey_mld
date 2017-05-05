@@ -94,7 +94,7 @@ class Operate extends Bn_Basic {
 		$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
 		$data = array(
 	    	'touser' => $o_parent->getOpenId(), // openid是发送消息的基础
-			'template_id' => 'L8T0fmVRo37YWdRIm1oUNbD_Fb2fNZAEIdI6iPDQdKA', // 模板id
+			'template_id' =>$this->getWechatSetup('MSGTMP_01'), // 模板id
 			'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup.php', // 点击跳转地址
 			'topcolor' => '#FF0000', // 顶部颜色
 			'data' => array(
@@ -384,7 +384,7 @@ class Operate extends Bn_Basic {
 			$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
 			$data = array(
 		    	'touser' => $o_parent->getOpenId(), // openid是发送消息的基础
-				'template_id' => 'PR6GLFfeBP6xz_gR30cbMEkDILTvarzXMA7QEeMSFWg', // 模板id
+				'template_id' => $this->getWechatSetup('MSGTMP_06'), // 模板id
 				'url' => '', // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
@@ -780,7 +780,7 @@ class Operate extends Bn_Basic {
 			$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
 			$data = array(
 		    	'touser' => $o_parent->getOpenId(), // openid是发送消息的基础
-				'template_id' => 'xDyL_p1-lzHT2YUhl8SWQvPdohhid4HzYQQiO0kOFas', // 模板id
+				'template_id' => $this->getWechatSetup('MSGTMP_03'), // 模板id
 				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup.php', // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(

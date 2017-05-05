@@ -41,9 +41,11 @@ $o_token=new accessToken();
 $curlUtil = new curlUtil();
 $s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
 $o_date = new DateTime ( 'Asia/Chongqing' );
+require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
+$o_bn_base=new Bn_Basic();
 $data = array(
 		'touser' => $o_wx_user->getOpenId(), // openid是发送消息的基础
-		'template_id' => '4-JOAnmh2z2-FHeGOuwCPlHGgRJte8UrU9LHz5yPAEo', // 模板id
+		'template_id' => $o_bn_base->getWechatSetup('MSGTMP_08'), // 模板id
 		'url' => $o_sys_info->getHomeUrl().'sub/wechat/wechat_teacher/binding_account_successful.php', // 点击跳转地址
 		'topcolor' => '#FF0000', // 顶部颜色
 		'data' => array(

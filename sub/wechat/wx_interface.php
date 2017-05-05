@@ -1,7 +1,9 @@
 <?php
 define ( 'RELATIVITY_PATH', '../../' );
 include(dirname(__FILE__)."/include/db_table.class.php");
-define("TOKEN", "mldyey");
+require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
+$o_bn_base=new Bn_Basic();
+define("TOKEN",$o_bn_base->getWechatSetup('TOKEN'));
 date_default_timezone_set("Asia/Shanghai");
 
 $wechatObj = new wechat();

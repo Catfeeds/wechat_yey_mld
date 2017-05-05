@@ -529,6 +529,29 @@ class Wechat_Wx_User_Reminder_View extends CRUD
         ));
     }
 }
+class Wechat_Wx_Setup extends CRUD
+{
+    protected $Key;
+    protected $Value;
+    protected $Explain;
+
+    protected function DefineKey()
+    {
+        return 'key';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_wx_setup';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'key' => 'Key',
+                    'value' => 'Value',
+                    'explain' => 'Explain'
+        ));
+    }
+}
 class Wechat_Wx_User_Reminder extends CRUD
 {
     protected $Id;
