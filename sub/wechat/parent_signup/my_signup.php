@@ -10,11 +10,11 @@ $o_stu_wechat->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
 if($o_stu_wechat->getAllCount()==0)
 {
 	?>
-	<div class="weui-footer" style="padding-top:100px;">
+	<div class="weui-footer" style="padding-top:100px;padding-bottom:100px;">
 		<p class="weui-footer__text" style="font-size:1.5em">没有幼儿报名信息</p>
 	</div>
 	<?php
-}
+}else{
 ?>
 	 <div class="page__hd">
         <h1 class="page__title" style="font-size:28px;">我的幼儿报名</h1>
@@ -106,6 +106,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
     </div>
     <br/>
 	<?php
+}
 }
 ?>
 	<div style="padding:15px; padding-top:0px">
