@@ -643,10 +643,17 @@ function submit_signin(modify)
 			return
 		}
 	}	
-	if (document.getElementById("Vcl_Jh1Phone").value=="")
+	if (document.getElementById("Vcl_SignupPhone").value=="")
 	{
 		Dialog_Message("报名联系方式的 [监护人手机号] 不能为空！",function(){
-			document.getElementById("Vcl_Jh1Phone").focus()
+			document.getElementById("Vcl_SignupPhone").focus()
+		})		
+		return
+	}
+	if (document.getElementById("Vcl_SignupPhoneBackup").value=="")
+	{
+		Dialog_Message("报名联系方式的 [备用联系电话] 不能为空！",function(){
+			document.getElementById("Vcl_SignupPhoneBackup").focus()
 		})		
 		return
 	}

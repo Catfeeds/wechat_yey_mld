@@ -648,9 +648,10 @@ class Operate extends Bn_Basic {
 		$o_stu->setJianhuConnection('');
 		$o_stu->setJianhuName('');
 	    $o_stu->setJianhuPhone('');
-	    if ($this->getPost ( 'Jh1Phone' )=='')$this->ReturnMsg('报名联系方式的 [监护人手机号] 不能为空！','Jh1Phone');
-	    $o_stu->setJh1Phone($this->getPost ( 'Jh1Phone' ));
-	    $o_stu->setJh2Phone($this->getPost ( 'Jh2Phone' ));
+	    if ($this->getPost ( 'SignupPhone' )=='')$this->ReturnMsg('报名联系方式的 [监护人手机号] 不能为空！','Jh1Phone');
+	    $o_stu->setSignupPhone($this->getPost ( 'SignupPhone' ));
+	    if ($this->getPost ( 'SignupPhoneBackup' )=='')$this->ReturnMsg('报名联系方式的 [备用联系电话] 不能为空！','Jh1Phone');
+	    $o_stu->setSignupPhoneBackup($this->getPost ( 'SignupPhoneBackup' ));
 	    //设置flag
 	    //是否满三岁，出生日期加3年，必须小于今年的8月31日
 	    $a_year=array();

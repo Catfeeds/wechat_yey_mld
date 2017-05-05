@@ -197,8 +197,8 @@ function OutputList($S_State,$s_filename) {
 		$objPHPExcel->getActiveSheet()->SetCellValue('AI'.$n_row, $o_dept->getJh2Jiaoyu( $i ));
 		$objPHPExcel->getActiveSheet()->SetCellValue('AJ'.$n_row, $o_dept->getJh2Danwei( $i ));
 		//联系信息
-		$objPHPExcel->getActiveSheet()->SetCellValue('AK'.$n_row, $o_dept->getJh1Phone( $i ));
-		$objPHPExcel->getActiveSheet()->SetCellValue('AL'.$n_row, $o_dept->getJh2Phone( $i ));
+		$objPHPExcel->getActiveSheet()->SetCellValue('AK'.$n_row, $o_dept->getSignupPhone( $i ));
+		$objPHPExcel->getActiveSheet()->SetCellValue('AL'.$n_row, $o_dept->getSignupPhoneBackup( $i ));
 		//附加信息信息		
 		$objPHPExcel->getActiveSheet()->SetCellValue('AM'.$n_row, $o_dept->getClassMode( $i ));
 		$objPHPExcel->getActiveSheet()->SetCellValue('AN'.$n_row, $o_dept->getCompliance( $i ));

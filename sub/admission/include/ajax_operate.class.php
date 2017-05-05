@@ -53,7 +53,7 @@ class Operate extends Bn_Basic {
 				$o_user->getIdType( $i ),
 				$o_user->getId ( $i ),
 				$o_user->getJh1Name ( $i ),
-				$o_user->getJh1Phone ( $i )
+				$o_user->getSignupPhone ( $i )
 				));				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
@@ -113,7 +113,7 @@ class Operate extends Bn_Basic {
 				$o_user->getIdType( $i ),
 				$o_user->getId ( $i ),
 				$o_user->getJh1Name ( $i ),
-				$o_user->getJh1Phone ( $i )
+				$o_user->getSignupPhone ( $i )
 				));				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
@@ -172,7 +172,7 @@ class Operate extends Bn_Basic {
 				$o_user->getIdType( $i ),
 				$o_user->getId ( $i ),
 				$o_user->getJh1Name ( $i ),
-				$o_user->getJh1Phone ( $i ),
+				$o_user->getSignupPhone ( $i ),
 				$o_user->getAuditorName ( $i )
 				));				
 		}
@@ -234,7 +234,7 @@ class Operate extends Bn_Basic {
 				$o_user->getIdType( $i ),
 				$o_user->getId ( $i ),
 				$o_user->getJh1Name ( $i ),
-				$o_user->getJh1Phone ( $i )
+				$o_user->getSignupPhone ( $i )
 				));				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
@@ -443,7 +443,7 @@ class Operate extends Bn_Basic {
 				$o_user->getIdType( $i ),
 				$o_user->getId ( $i ),
 				$o_user->getJh1Name ( $i ),
-				$o_user->getJh1Phone ( $i )
+				$o_user->getSignupPhone ( $i )
 				));				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
@@ -503,7 +503,7 @@ class Operate extends Bn_Basic {
 				$o_user->getIdType( $i ),
 				$o_user->getId ( $i ),
 				$o_user->getJh1Name ( $i ),
-				$o_user->getJh1Phone ( $i )
+				$o_user->getSignupPhone ( $i )
 				));				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
@@ -564,7 +564,7 @@ class Operate extends Bn_Basic {
 				$o_user->getIdType( $i ),
 				$o_user->getId ( $i ),
 				$o_user->getJh1Name ( $i ),
-				$o_user->getJh1Phone ( $i ),
+				$o_user->getSignupPhone ( $i ),
 				$a_button
 				));				
 		}

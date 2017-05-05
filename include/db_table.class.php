@@ -705,6 +705,8 @@ class Student_Info extends CRUD
     protected $FlagSame;
     protected $FlagOnly;
     protected $FlagFirst;
+    protected $SignupPhone;
+    protected $SignupPhoneBackup;
     protected $HospitalName;
     protected $ClassMode;
     protected $Compliance;
@@ -829,6 +831,8 @@ class Student_Info extends CRUD
                     'flag_same' => 'FlagSame',
                     'flag_only' => 'FlagOnly',
                     'flag_first' => 'FlagFirst',
+                    'signup_phone' => 'SignupPhone',
+                    'signup_phone_backup' => 'SignupPhoneBackup',
                     'hospital_name' => 'HospitalName',
                     'class_mode' => 'ClassMode',
                     'compliance' => 'Compliance',

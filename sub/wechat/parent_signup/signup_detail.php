@@ -762,13 +762,13 @@
 			<div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">监护人手机号</label></div>
 				<div class="weui-cell__bd">
-	                 <input class="weui-input" id="Vcl_Jh1Phone" name="Vcl_Jh1Phone" type="number" pattern="[0-9]*" placeholder="必填">
+	                 <input class="weui-input" id="Vcl_SignupPhone" name="Vcl_SignupPhone" type="number" pattern="[0-9]*" placeholder="必填">
 	            </div>
             </div>
             <div class="weui-cell">
-				<div class="weui-cell__hd"><label class="weui-label">家庭固定电话</label></div>
+				<div class="weui-cell__hd"><label class="weui-label">备用联系电话</label></div>
 				<div class="weui-cell__bd">
-	                 <input class="weui-input" id="Vcl_Jh2Phone" name="Vcl_Jh2Phone" placeholder="选填">
+	                 <input class="weui-input" id="Vcl_SignupPhoneBackup" name="Vcl_SignupPhoneBackup" placeholder="必填">
 	            </div>
             </div>
 		</div>
