@@ -420,10 +420,39 @@ class Operate extends Bn_Basic {
 		$o_stu_wechat->PushWhere ( array ('&&', 'StudentId', '=',$this->getPost ( 'id' )) ); 
 		if($o_stu_wechat->getAllCount()>0)
 		{
+			$o_sut_info=new Student_Info($this->getPost ( 'id' ));
+			//信息删除必须是状态等于零
+			if($o_sut_info->getState()!=0)
+			{
+				echo(json_encode ( $a_result ));
+				exit(0);
+			}
 			$o_stu_wechat=new Student_Info_Wechat($o_stu_wechat->getId(0));
 			$o_stu_wechat->Deletion();
-			//再删除幼儿信息
-			$o_sut_info=new Student_Info($this->getPost ( 'id' ));
+			//再删除幼儿信息			
+			//发送删除信息模板消息
+		    require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';
+		    $o_sysinfo=new Base_Setup(1);
+			$o_token=new accessToken();
+			$curlUtil = new curlUtil();
+		    $o_parent=new WX_User_Info($n_uid);
+			$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
+			$data = array(
+		    	'touser' => $o_parent->getOpenId(), // openid是发送消息的基础
+				'template_id' =>$this->getWechatSetup('MSGTMP_07'), // 模板id
+				'url' => '', // 点击跳转地址
+				'topcolor' => '#FF0000', // 顶部颜色
+				'data' => array(
+					'first' => array('value' => '您好，您已经成功将下面信息删除：'),
+					'keyword1' => array('value' => $o_sut_info->getStudentId(),'color'=>'#173177'),
+					'keyword2' => array('value' => $o_sut_info->getName(),'color'=>'#173177'),
+					'keyword3' => array('value' => $o_sut_info->getIdType(),'color'=>'#173177'),
+					'keyword4' => array('value' => $o_sut_info->getId(),'color'=>'#173177'),
+					'keyword5' => array('value' => $this->GetDateNow(),'color'=>'#173177'),
+					'remark' => array('value' => '如有问题，请联系我们，谢谢！')
+				)
+				);
+			$curlUtil->https_request($s_url, json_encode($data));
 			$o_sut_info->Deletion();
 		}
 		echo(json_encode ( $a_result ));

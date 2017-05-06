@@ -420,12 +420,14 @@ function filter($str)
             </td>
             <td colspan="10" style="font-weight:normal;font-size:12px;">
           <?php 
+          filter($o_stu->getZCity ().''.$o_stu->getZArea ().''.$o_stu->getZStreet().''.$o_stu->getZShequ());
+          /*
           if ($o_stu->getZSame()=='是')
           {
           	filter($o_stu->getZCity ().''.$o_stu->getZArea ().''.$o_stu->getZStreet().''.$o_stu->getZShequ());
           }else{
           	filter($o_stu->getHCity ().''.$o_stu->getHArea ().''.$o_stu->getHStreet().''.$o_stu->getHShequ());
-          }
+          }*/
           ?>
             </td>
         </tr>
@@ -435,12 +437,14 @@ function filter($str)
             </td>
             <td colspan="15" style="font-weight:normal;font-size:12px;">
             <?php 
+            filter($o_stu->getZAdd ());
+            /*
             if ($o_stu->getZSame()=='是')
             {
             	filter($o_stu->getHAdd ());
             }else{
             	filter($o_stu->getHAdd ());
-            }
+            }*/
             ?>
             </td>
         </tr>

@@ -46,7 +46,7 @@ $o_bn_base=new Bn_Basic();
 $data = array(
 		'touser' => $o_wx_user->getOpenId(), // openid是发送消息的基础
 		'template_id' => $o_bn_base->getWechatSetup('MSGTMP_08'), // 模板id
-		'url' => $o_sys_info->getHomeUrl().'sub/wechat/wechat_teacher/binding_account_successful.php', // 点击跳转地址
+		'url' => $o_sys_info->getHomeUrl().'sub/wechat/teacher_admission/binding_account_successful.php', // 点击跳转地址
 		'topcolor' => '#FF0000', // 顶部颜色
 		'data' => array(
 			'first' => array('value' =>'您的微信已经成功绑定系统后台账号。
