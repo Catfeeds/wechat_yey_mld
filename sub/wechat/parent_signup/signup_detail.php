@@ -778,11 +778,15 @@
 				<div class="weui-cell__hd"><label class="weui-label">班级类型</label></div>
 				<div class="weui-cell__bd">
                     <select class="weui-select" name="Vcl_ClassMode" id="Vcl_ClassMode">
-                    	<option value="托班">托班</option>
-	                    <option value="小班" selected="selected">小班</option>
-						<option value="中班">中班</option>
-						<option value="大班">大班</option>
-						<option value="半日班">半日班</option>
+                    <?php 
+                    //根据系统设置，显示选项
+                    $o_admission_setup=new Admission_Setup(1);
+                    if ($o_admission_setup->getTuoSum()>0)echo('<option value="托班">托班</option>');
+                    if ($o_admission_setup->getXiaoSum()>0)echo('<option value="小班" selected="selected">小班</option>');
+                    if ($o_admission_setup->getZhongSum()>0)echo('<option value="中班">中班</option>');
+                    if ($o_admission_setup->getDaSum()>0)echo('<option value="大班">大班</option>');
+                    if ($o_admission_setup->getBanriSum()>0)echo('<option value="半日班">半日班</option>');
+                    ?>
 	                </select>
                 </div>
 	        </div>

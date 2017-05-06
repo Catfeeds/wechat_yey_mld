@@ -7,7 +7,7 @@ require_once RELATIVITY_PATH . 'head.php';
 
 ExportMainTitle(MODULEID,$O_Session->getUid());
 //获取子模块菜单
-$o_setup=new Admission_Setup(1);
+$o_admission_setup=new Admission_Setup(1);
 ?>
 					<div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
@@ -103,22 +103,22 @@ $o_setup=new Admission_Setup(1);
 <script src="<?php echo(RELATIVITY_PATH)?>js/bootstrap/js/date/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
 <script src="<?php echo(RELATIVITY_PATH)?>js/bootstrap/js/date/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
 <script type="text/javascript">
-$('#Vcl_DeptId').val('<?php echo($o_setup->getDeptId())?>');
-$('#Vcl_TuoSum').val('<?php echo($o_setup->getTuoSum())?>');
-$('#Vcl_XiaoSum').val('<?php echo($o_setup->getXiaoSum())?>');
-$('#Vcl_ZhongSum').val('<?php echo($o_setup->getZhongSum())?>');
-$('#Vcl_DaSum').val('<?php echo($o_setup->getDaSum())?>');
-$('#Vcl_BanriSum').val('<?php echo($o_setup->getBanriSum())?>');
-$('#Vcl_SignupStart').val('<?php echo($o_setup->getSignupStart())?>');
-$('#Vcl_SignupEnd').val('<?php echo($o_setup->getSignupEnd())?>');
-$('#Vcl_AuditDate').val('<?php echo($o_setup->getAuditDate())?>');
-$('#Vcl_AuditTime').val('<?php echo($o_setup->getAuditTime())?>');
-$('#Vcl_AuditAddress').val('<?php echo($o_setup->getAuditAddress())?>');
-$('#Vcl_MeetDate').val('<?php echo($o_setup->getMeetDate())?>');
-$('#Vcl_MeetTime').val('<?php echo($o_setup->getMeetTime())?>');
-$('#Vcl_MeetAddress').val('<?php echo($o_setup->getMeetAddress())?>');
-$('#Vcl_HealthTime').val('<?php echo($o_setup->getHealthTime())?>');
-$('#Vcl_HealthAddress').val('<?php echo($o_setup->getHealthAddress())?>');
+$('#Vcl_DeptId').val('<?php echo($o_admission_setup->getDeptId())?>');
+$('#Vcl_TuoSum').val('<?php echo($o_admission_setup->getTuoSum())?>');
+$('#Vcl_XiaoSum').val('<?php echo($o_admission_setup->getXiaoSum())?>');
+$('#Vcl_ZhongSum').val('<?php echo($o_admission_setup->getZhongSum())?>');
+$('#Vcl_DaSum').val('<?php echo($o_admission_setup->getDaSum())?>');
+$('#Vcl_BanriSum').val('<?php echo($o_admission_setup->getBanriSum())?>');
+$('#Vcl_SignupStart').val('<?php echo($o_admission_setup->getSignupStart())?>');
+$('#Vcl_SignupEnd').val('<?php echo($o_admission_setup->getSignupEnd())?>');
+$('#Vcl_AuditDate').val('<?php echo($o_admission_setup->getAuditDate())?>');
+$('#Vcl_AuditTime').val('<?php echo($o_admission_setup->getAuditTime())?>');
+$('#Vcl_AuditAddress').val('<?php echo($o_admission_setup->getAuditAddress())?>');
+$('#Vcl_MeetDate').val('<?php echo($o_admission_setup->getMeetDate())?>');
+$('#Vcl_MeetTime').val('<?php echo($o_admission_setup->getMeetTime())?>');
+$('#Vcl_MeetAddress').val('<?php echo($o_admission_setup->getMeetAddress())?>');
+$('#Vcl_HealthTime').val('<?php echo($o_admission_setup->getHealthTime())?>');
+$('#Vcl_HealthAddress').val('<?php echo($o_admission_setup->getHealthAddress())?>');
 $('.form_date').datetimepicker({
     language:  'zh-CN',
     weekStart: 1,
