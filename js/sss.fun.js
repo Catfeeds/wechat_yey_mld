@@ -23,6 +23,8 @@ try {
 			$(".sss_main_box").css('margin-left', '30px');
 		}
 		get_sys_msg_num();
+		get_sys_time();
+		setInterval('get_sys_time()',60000)
 		$("[data-toggle='tooltip']").tooltip({
 			delay: {
 				show: 500,
@@ -452,6 +454,13 @@ function get_nav(model_id)
 			}
 		}
     })  	
+}
+function get_sys_time()
+{
+    var data='Ajax_FunName=GetSysTime';//后台方法
+    $.getJSON(RootPath+"include/bn_submit.switch.php",data,function (json){
+		$('#sys_time').html('<span style="color:#74B9E7">'+json.time+'</span>')
+    })	
 }
 $(document).scroll(function(){
 	show_sub_table_title();

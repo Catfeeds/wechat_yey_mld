@@ -80,7 +80,18 @@ class Operate extends Bn_Basic {
 		}
 		echo(json_encode ($a_result));
 	}
-	
+	public function GetSysTime($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$this->GetDateNow();
+		$o_date = new DateTime ( 'Asia/Chongqing' );
+		$a_result = array (
+					'time' =>$o_date->format ( 'Y' ) . '-' . (int)$o_date->format ( 'm' ) . '-' . (int)$o_date->format ( 'd' ) . ' ' . $o_date->format ( 'H' ) . ':' . $o_date->format ( 'i' )
+				);
+		echo(json_encode ($a_result));
+	}	
 	public function SysMsgDelete($n_uid)
 	{
 		if (! ($n_uid > 0)) {

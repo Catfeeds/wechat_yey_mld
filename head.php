@@ -159,8 +159,7 @@ $o_setup=new Base_Setup(1);
                     <p>
                        <?php echo(Text::Key('Welcome'))?></p>
                     <p id="name" style="font-size: 18px;"><?php echo($o_user->getName())?></p>
-                    <p>
-                        <span class="label label-success" style="font-weight: normal"><?php echo(Text::Key('Online'))?></span></p>
+                    <p id="sys_time"></p>
                 </div>
 				<p class="sss_nav_packup" onclick="show_nav_wide()"><span class="glyphicon glyphicon-pushpin"></span></p>
             </div>
