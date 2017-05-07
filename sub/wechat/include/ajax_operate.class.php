@@ -51,7 +51,7 @@ class Operate extends Bn_Basic {
 		}else{
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
 		}
-		sleep(2);
+		sleep(0);
 		$o_setup=new Admission_Setup(1); 
 		$o_date = new DateTime('Asia/Chongqing');
 		$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d');
@@ -67,6 +67,7 @@ class Operate extends Bn_Basic {
 		$this->CheckId($n_uid);//验证ID是否有重复
 		if ($this->getPost ( 'Name' )=='')$this->ReturnMsg('基本信息的 [幼儿姓名] 不能为空！','Name');
 		$o_stu->setName($this->getPost ( 'Name' ));
+		$o_stu->setSignupDate($this->GetDate());
 	    $o_stu->setSex($this->getPost ( 'Sex' ));
 	    $o_stu->setIdType($this->getPost ( 'IdType' ));
 		//验证幼儿ID是否合法

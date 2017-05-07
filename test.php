@@ -1,4 +1,6 @@
 <?php
+//file_put_contents('photo.jpg',file_get_contents("http://wx.mldyey.com/userdata/logo/logo.png"));
+//echo(file_get_contents("http://wx.mldyey.com/userdata/logo/logo.png"));
 exit();
 $s_date = '2017-05-06 09:00:00';
 $result = array ();

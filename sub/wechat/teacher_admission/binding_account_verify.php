@@ -32,6 +32,14 @@ $o_wx_user->Save();
 require_once RELATIVITY_PATH . 'sub/wechat/include/userGroup.class.php';
 $o_group = new userGroup();
 $o_group->updateGroup($o_wx_user->getOpenId(), $o_role->getWechatGroupId());
+//下载微信头像到本地，将后台用户的头像替换为微信头像
+$o_user=new Base_User_Photo($o_table->getUid());
+if ($o_user->getPhoto()=='' || $o_user->getPhoto()=='images/photo_default.png' || count(explode('http', $o_user->getPhoto()))==2)
+{
+	$o_user->setPath ($o_wx_user->getPhoto());
+	$o_user->Save();
+}
+//file_put_contents(RELATIVITY_PATH. 'userdata/photo/' . md5($o_table->getUid().'ctisss') . '/photo.jpg',file_get_contents($o_wx_user->getPhoto()));
 //给微信服务号，推送一个消息模板
 require_once RELATIVITY_PATH . 'include/db_view.class.php';
 $o_user=new View_User_Info($_GET['id']);

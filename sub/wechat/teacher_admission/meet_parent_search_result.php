@@ -25,7 +25,7 @@ if ($o_stu->getState(0)<2)
 	echo "<script>location.href='meet_parent_search_failed.php?id=2'</script>"; 
 	exit(0);
 }
-if ($o_stu->getState(0)>2)
+if ($o_stu->getState(0)>3)
 {
 	//已经通过信息核验
 	echo "<script>location.href='meet_parent_search_failed.php?id=3'</script>"; 

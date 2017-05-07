@@ -111,7 +111,13 @@ $o_setup=new Base_Setup(1);
 			{
 				echo(RELATIVITY_PATH.'images/photo_default.png');
 			}else{
-				echo(RELATIVITY_PATH.$o_user->getPhoto());
+				if(count(explode('http', $o_user->getPhoto()))>1)
+				{
+					echo($o_user->getPhoto());
+				}
+				else{
+					echo(RELATIVITY_PATH.$o_user->getPhoto());
+				}				
 			}?>" alt="" />
         </div>
         <div class="sss_top_right_menu_btn">
@@ -140,7 +146,13 @@ $o_setup=new Base_Setup(1);
 			{
 				echo(RELATIVITY_PATH.'images/photo_default.png');
 			}else{
-				echo(RELATIVITY_PATH.$o_user->getPhoto());
+				if(count(explode('http', $o_user->getPhoto()))>1)
+				{
+					echo($o_user->getPhoto());
+				}
+				else{
+					echo(RELATIVITY_PATH.$o_user->getPhoto());
+				}	
 			}?>" alt="" />
                 </div>
                 <div class="sss_nav_top_right">
