@@ -36,14 +36,22 @@ if ($o_stu->getState(0)>1)
 	<form action="../include/bn_submit.switch.php" id="submit_form" method="post" target="ajax_submit_frame" onsubmit="this.submit()">
 		<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 		<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
-		<input type="hidden" name="Vcl_FunName" value="AuditApprove"/>
+		<input type="hidden" id="Vcl_FunName" name="Vcl_FunName" value="AuditApprove"/>
 		<input type="hidden" name="Vcl_StudentId" value="<?php echo($_GET['id'])?>"/>
 			<?php 
 				require_once RELATIVITY_PATH . 'sub/wechat/parent_signup/signup_detail.php';
 			?>
+		<div class="weui-cells__title">信息核验不通过原因</div>
+		<div class="weui-cells weui-cells_checkbox" style="margin-top:0px;">
+	        <div class="weui-cell">
+	            <div class="weui-cell__bd">
+	                <input class="weui-input" type="text" id="Vcl_AuditRemark" name="Vcl_AuditRemark" placeholder="（选填）"/>
+	            </div>
+	        </div>
+        </div>
 	    <div style="padding:15px;">
 	    	<a id="next" class="weui-btn weui-btn_primary" onclick="audit_approve()">通过核验</a>
-	    	<a id="next" class="weui-btn weui-btn_default" onclick="location='audit_search.php?'+Date.parse(new Date())">取消</a>
+	    	<a id="next" class="weui-btn weui-btn_default" onclick="audit_reject()">核验不通过</a>
 	    </div>
 	</form>
 <script type="text/javascript" src="<?php echo(RELATIVITY_PATH.'sub/wechat/parent_signup/')?>js/function.js"></script>
@@ -200,6 +208,7 @@ if ($o_stu->getState(0)>1)
 	for(var i = 0; i < document.getElementsByTagName("select").length; i++){
 		vcl_disabled(document.getElementsByTagName("select")[i])
 	}
+	$('#Vcl_AuditRemark').removeAttr("disabled");
 </script>
 <?php
 require_once '../footer.php';

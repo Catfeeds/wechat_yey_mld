@@ -771,7 +771,6 @@ class Operate extends Bn_Basic {
 	}
 	public function AuditApprove($n_uid)
 	{
-		sleep(1);
 		if ($n_uid>0)
 		{
 			
@@ -792,6 +791,7 @@ class Operate extends Bn_Basic {
 		}
 		$o_stu->setAuditorId($o_stu_wechat->getUid(0));
 	    $o_stu->setAuditorName($o_stu_wechat->getName(0));
+	    $o_stu->setAuditRemark($this->getPost ( 'AuditRemark' ));
 		$o_stu->setState(2);
 		$o_stu->Save();	
 		//发送模板消息
@@ -830,6 +830,33 @@ class Operate extends Bn_Basic {
 			
 		}	    
 	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'audit_search_success.php"');
+	}
+	public function AuditReject($n_uid)
+	{
+		sleep(1);
+		if ($n_uid>0)
+		{
+			
+		}else{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
+		}
+		//验证是否为绑定用户
+		$o_stu_wechat=new Base_User_Wechat_View();
+		$o_stu_wechat->PushWhere ( array ('&&', 'WechatId', '=',$n_uid) ); 
+		if($o_stu_wechat->getAllCount()==0)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1003]\');' );
+		}
+		$o_stu=new Student_Info($this->getPost ( 'StudentId' ));
+		if ($o_stu->getState()!=1)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1004]\');' );
+		}
+		$o_stu->setAuditorId($o_stu_wechat->getUid(0));
+	    $o_stu->setAuditorName($o_stu_wechat->getName(0));
+	    $o_stu->setAuditRemark($this->getPost ( 'AuditRemark' ));
+		$o_stu->Save();	
+	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'audit_search.php?"+Date.parse(new Date())');
 	}
 	public function MeetSubmit($n_uid)
 	{
@@ -920,7 +947,7 @@ class Operate extends Bn_Basic {
 		{
 			//立即发送模板消息
 		}	    
-	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'meet_search_success.php"');
+	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'meet_parent_search_success.php"');
 	}
 	
 }

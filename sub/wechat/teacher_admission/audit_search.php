@@ -2,6 +2,14 @@
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='幼儿信息核验';
+//想判断教师权限，是否为绑定用户
+$o_temp=new Base_User_Wechat();
+$o_temp->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) ); 
+if ($o_temp->getAllCount()==0)
+{
+	echo "<script>location.href='access_failed.php'</script>"; 
+	exit(0);
+}
 require_once '../header.php';
 ?>
 <style>

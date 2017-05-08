@@ -99,11 +99,12 @@ function OutputList($S_State,$s_filename) {
 	$objPHPExcel->getActiveSheet()->SetCellValue('AM1', '报名班级类型');
 	$objPHPExcel->getActiveSheet()->SetCellValue('AN1', '是否服从班级类型调剂');
 	$objPHPExcel->getActiveSheet()->SetCellValue('AO1', '信息核验员');
-	$a_item=array('AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI');
+	$objPHPExcel->getActiveSheet()->SetCellValue('AP1', '核验备注');
+	$a_item=array('AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI');
 	//如果是3，已见面，那么要添加相应的列
 	if($S_State>=3)
 	{
-		$objPHPExcel->getActiveSheet()->SetCellValue('AP1', '幼儿见面审核员');
+		$objPHPExcel->getActiveSheet()->SetCellValue('AQ1', '幼儿见面审核员');
 		$o_item=new Student_Info_Meet_Item();
 		$o_item->PushWhere ( array ('&&', 'Type', '=','幼儿见面') ); 
 	    $o_item->PushOrder ( array ('Number','A') );
@@ -203,9 +204,10 @@ function OutputList($S_State,$s_filename) {
 		$objPHPExcel->getActiveSheet()->SetCellValue('AM'.$n_row, $o_dept->getClassMode( $i ));
 		$objPHPExcel->getActiveSheet()->SetCellValue('AN'.$n_row, $o_dept->getCompliance( $i ));
 		$objPHPExcel->getActiveSheet()->SetCellValue('AO'.$n_row, $o_dept->getAuditorName( $i ));
+		$objPHPExcel->getActiveSheet()->SetCellValue('AP'.$n_row, $o_dept->getAuditRemark( $i ));
 		if($S_State>=3)
 		{
-			$objPHPExcel->getActiveSheet()->SetCellValue('AP'.$n_row,$o_dept->getMeetAuditorName( $i ));
+			$objPHPExcel->getActiveSheet()->SetCellValue('AQ'.$n_row,$o_dept->getMeetAuditorName( $i ));
 			//读取幼儿的见面结果
 			$a_result=json_decode($o_dept->getMeetItem($i));
 		    for($j=0;$j<count($a_result);$j++)

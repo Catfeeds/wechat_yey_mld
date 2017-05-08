@@ -5,6 +5,12 @@ function audit_approve()
 		document.getElementById("submit_form").submit();
 	})
 }
+function audit_reject()
+{
+	$('#Vcl_FunName').val('AuditReject');
+	Common_OpenLoading();
+	document.getElementById("submit_form").submit();
+}
 function meet_submit()
 {
 	Dialog_Confirm("真的要提交见面结果吗？",function(){

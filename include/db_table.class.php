@@ -712,6 +712,7 @@ class Student_Info extends CRUD
     protected $Compliance;
     protected $AuditorId;
     protected $AuditorName;
+    protected $AuditRemark;
     protected $MeetAuditorId;
     protected $MeetAuditorName;
     protected $MeetItem;
@@ -838,8 +839,9 @@ class Student_Info extends CRUD
                     'compliance' => 'Compliance',
                     'auditor_id' => 'AuditorId',
                     'auditor_name' => 'AuditorName',
+        			'audit_remark' => 'AuditRemark',
                     'meet_auditor_id' => 'MeetAuditorId',
-                    'meet_auditor_name' => 'MeetAuditorName',
+                    'meet_auditor_name' => 'MeetAuditorName',        			
                     'meet_item' => 'MeetItem',
                     'meet_remark' => 'MeetRemark',
                     'meet_parent_auditor_id' => 'MeetParentAuditorId',
