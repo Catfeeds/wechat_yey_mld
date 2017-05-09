@@ -111,7 +111,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'封面', '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'摘要', '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0, 65);
-		$this->SendJsonResultForTable($n_allcount, 'MsgTable', 'yes', $n_page, $a_title, $a_row);
+		$this->SendJsonResultForTable($n_allcount, 'ImgmsgTable', 'yes', $n_page, $a_title, $a_row);
 	}
 	public function ImgTable($n_uid)
 	{

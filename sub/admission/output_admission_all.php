@@ -56,7 +56,7 @@ function OutputList($S_State,$s_filename) {
 	$objPHPExcel->getActiveSheet()->SetCellValue('G1', '国籍');
 	$objPHPExcel->getActiveSheet()->SetCellValue('H1', '民族');
 	$objPHPExcel->getActiveSheet()->SetCellValue('I1', '港澳台侨');
-	$objPHPExcel->getActiveSheet()->SetCellValue('J1', '是否独生子女');
+	$objPHPExcel->getActiveSheet()->SetCellValue('J1', '是否有独生子女证');
 	$objPHPExcel->getActiveSheet()->SetCellValue('K1', '独生子女证号');
 	$objPHPExcel->getActiveSheet()->SetCellValue('L1', '是否头胎');
 	$objPHPExcel->getActiveSheet()->SetCellValue('M1', '是否烈士子女');

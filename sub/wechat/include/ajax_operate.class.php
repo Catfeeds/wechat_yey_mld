@@ -473,8 +473,9 @@ class Operate extends Bn_Basic {
 		if($this->getPost ( 'Nationality' )=='中国')
 		{
 			$o_stu->setNation($this->getPost ( 'Nation' ));
-		    $o_stu->setOnly('是');
+		    $o_stu->setOnly('否');
 		    $o_stu->setOnlyCode('');
+		    $o_stu->setIsFirst('是');
 		    $o_stu->setIsLieshi('否'); 
 		    $o_stu->setIsGuer('否');
 		    $o_stu->setIsWugong('否');

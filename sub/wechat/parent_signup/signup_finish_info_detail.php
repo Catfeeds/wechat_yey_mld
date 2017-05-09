@@ -388,21 +388,21 @@
 		        </div>
 		    </div>
 		    <div class="weui-cell country_change">
-				<div class="weui-cell__hd"><label class="weui-label">是否独生子女</label></div>
+				<div class="weui-cell__hd"><label class="weui-label" style="width:170px;">是否有独生子女证</label></div>
 				<div class="weui-cell__bd">
 		            <select class="weui-select finish_info" name="Vcl_Only" id="Vcl_Only" onchange="change_only(this)">
+		            		<option value="否">否</option>
 	                		<option value="是">是</option>
-							<option value="否">否</option>
 		              </select>
 		        </div>
 		    </div>
-		    <div class="weui-cell country_change" id="only_code">
+		    <div class="weui-cell country_change" id="only_code" style="display:none">
 				<div class="weui-cell__hd"><label class="weui-label">独生子女证号</label></div>
 				<div class="weui-cell__bd">
                     <input class="weui-input finish_info" id="Vcl_OnlyCode" name="Vcl_OnlyCode" placeholder="必填">
                 </div>
 	        </div>
-	        <div class="weui-cell country_change" id="first" style="display:none">
+	        <div class="weui-cell country_change" id="first">
 				<div class="weui-cell__hd"><label class="weui-label">是否头胎</label></div>
 				<div class="weui-cell__bd">
 		             <select class="weui-select finish_info" name="Vcl_IsFirst" id="Vcl_IsFirst">
