@@ -5,7 +5,7 @@ header ( 'Pragma: no-cache' );
 header ( 'Expires: Thu, 01 Jan 1970 00:00:00 GMT' );
 header ( 'Last-Modified:' . gmdate ( 'D, d M Y H:i:s' ) . ' GMT' );
 header ( 'content-type:text/html; charset=utf-8' );
-$db = @mysql_connect('127.0.0.1:3306', 'root', 'bjsql.com.cn');
+$db = @mysql_connect('127.0.0.1:3306', 'root', 'chutaoIsss');
 $table='student_info_wechat_wiew';
 mysql_select_db('wechat_yey_mld', $db);
 mysql_query("SET NAMES 'utf8'");

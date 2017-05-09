@@ -512,12 +512,30 @@
 			                        <option value="广外街道">广外街道</option>
 			                </select>
 			            </div>
-		        	</div>
+		        	</div>		        	
 		        	<div class="weui-cell" id="h_shequ">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">户籍所在社区</label></div>
 						<div class="weui-cell__bd">
 			                <select class="weui-select" id="Vcl_HShequ" name="Vcl_HShequ">
 			                    	<option value="">必选</option>
+			                </select>
+			            </div>
+		        	</div>
+		        	<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">户籍是否为集体户</label></div>
+						<div class="weui-cell__bd">
+			                <select class="weui-select" id="Vcl_HIsGroup" name="Vcl_HIsGroup">
+			                    	<option value="否">否</option>
+						        	<option value="是">是</option>
+			                </select>
+			            </div>
+		        	</div>
+		        	<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label" style="width:170px;">幼儿与父母户籍一致</label></div>
+						<div class="weui-cell__bd">
+			                <select class="weui-select" id="Vcl_HIsYizhi" name="Vcl_HIsYizhi">
+			                		<option value="是">是</option>
+			                    	<option value="否">否</option>						        	
 			                </select>
 			            </div>
 		        	</div>
@@ -691,6 +709,26 @@
                 </div>
 	        </div>
 	        <div class="weui-cell">
+				<div class="weui-cell__hd"><label class="weui-label">职业状况</label></div>
+				<div class="weui-cell__bd">
+                    <select class="weui-select finish_info" name="Vcl_Jh1Job" id="Vcl_Jh1Job">
+	                    	<option value="">必选</option>
+							<option value="机关或事业单位干部职工">机关或事业单位干部职工</option>
+							<option value="专业技术人员">专业技术人员</option>
+							<option value="退休">退休</option>
+							<option value="企业管理人员">企业管理人员</option>
+							<option value="一般企业职工">一般企业职工</option>
+							<option value="私企老板或个体户">私企老板或个体户</option>
+							<option value="文教科技人员">文教科技人员</option>
+							<option value="学生">学生</option>
+							<option value="下岗/失业人员">下岗/失业人员</option>
+							<option value="军人/警察">军人/警察</option>
+							<option value="务农人员">务农人员</option>
+							<option value="其他">其他</option>
+	                </select>
+                </div>
+	        </div>
+	        <div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">教育程度</label></div>
 				<div class="weui-cell__bd">
                     <select class="weui-select" name="Vcl_Jh1Jiaoyu" id="Vcl_Jh1Jiaoyu">
@@ -733,6 +771,26 @@
 				<div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
 				<div class="weui-cell__bd">
                     <input class="weui-input" id="Vcl_Jh2Name" name="Vcl_Jh2Name">
+                </div>
+	        </div>
+	        <div class="weui-cell">
+				<div class="weui-cell__hd"><label class="weui-label">职业状况</label></div>
+				<div class="weui-cell__bd">
+                    <select class="weui-select finish_info" name="Vcl_Jh2Job" id="Vcl_Jh2Job">
+	                    	<option value=""></option>
+							<option value="机关或事业单位干部职工">机关或事业单位干部职工</option>
+							<option value="专业技术人员">专业技术人员</option>
+							<option value="退休">退休</option>
+							<option value="企业管理人员">企业管理人员</option>
+							<option value="一般企业职工">一般企业职工</option>
+							<option value="私企老板或个体户">私企老板或个体户</option>
+							<option value="文教科技人员">文教科技人员</option>
+							<option value="学生">学生</option>
+							<option value="下岗/失业人员">下岗/失业人员</option>
+							<option value="军人/警察">军人/警察</option>
+							<option value="务农人员">务农人员</option>
+							<option value="其他">其他</option>
+	                </select>
                 </div>
 	        </div>
 	        <div class="weui-cell">

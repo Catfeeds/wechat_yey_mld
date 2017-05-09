@@ -1016,7 +1016,7 @@
 	        <div class="weui-cell">
 				<div class="weui-cell__hd"><label class="weui-label">职业状况</label></div>
 				<div class="weui-cell__bd">
-                    <select class="weui-select finish_info" name="Vcl_Jh1Job" id="Vcl_Jh1Job">
+                    <select class="weui-select" name="Vcl_Jh1Job" id="Vcl_Jh1Job">
 	                    	<option value="">必选</option>
 							<option value="机关或事业单位干部职工">机关或事业单位干部职工</option>
 							<option value="专业技术人员">专业技术人员</option>

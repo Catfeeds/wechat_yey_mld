@@ -536,7 +536,7 @@ class Operate extends Bn_Basic {
 		    $o_stu->setBirthplace('');
 		    $o_stu->setBirthplaceCode('');
 		    $o_stu->setIdQuality('非农业户口');		 
-		    $o_stu->setIdQualityType('城市');		    
+		    $o_stu->setIdQualityType('城市');		    	    
 		    $o_city=new Student_City_Code($this->getPost ( 'HCity' ));    
 		    $o_stu->setHCity($o_city->getName());
 		    //验证户籍信息
@@ -568,6 +568,8 @@ class Operate extends Bn_Basic {
 			    	$o_stu->setHStreet($o_city->getName());
 			    } 
 		    }  
+		    $o_stu->setHIsGroup($this->getPost ( 'HIsGroup' ));
+		    $o_stu->setHIsYizhi($this->getPost ( 'HIsYizhi' ));
 		    if ($this->getPost ( 'HAdd' )=='')$this->ReturnMsg('户籍信息的 [户籍详细地址] 不能为空！','HAdd');
 		    $o_stu->setHAdd($this->getPost ( 'HAdd' ));
 		    $o_stu->setHOwner('');
@@ -584,6 +586,8 @@ class Operate extends Bn_Basic {
 		    $o_stu->setHStreet('');
 		    $o_stu->setHShequ('');
 		    $o_stu->setHStreet('');
+		    $o_stu->setHIsGroup('');
+		    $o_stu->setHIsYizhi('');
 		    $o_stu->setHAdd('');
 		    $o_stu->setHOwner('');
 		    $o_stu->setHGuanxi('');
@@ -640,7 +644,8 @@ class Operate extends Bn_Basic {
 		$o_stu->setJh1IdType('居民身份证');		
 	    $o_stu->setJh1Id('');
 	    $o_stu->setJh1IsZhixi('是');
-	    $o_stu->setJh1Job('');
+	    if ($this->getPost ( 'Jh1Job' )=='')$this->ReturnMsg('请选择第一法定监护人信息的 [职业状况] ！','Jh1Job');
+	    $o_stu->setJh1Jiaoyu($this->getPost ( 'Jh1Job' ));	
 	    if ($this->getPost ( 'Jh1Jiaoyu' )=='')$this->ReturnMsg('请选择第一法定监护人信息的 [教育程度] ！','Jh1Jiaoyu');
 	    $o_stu->setJh1Jiaoyu($this->getPost ( 'Jh1Jiaoyu' ));	
 	     if ($this->getPost ( 'Jh1Danwei' )=='')$this->ReturnMsg('请选择第一法定监护人信息的 [工作单位全称] ！','Jh1Danwei');
@@ -655,8 +660,9 @@ class Operate extends Bn_Basic {
 		    $o_stu->setJh2Name($this->getPost ( 'Jh2Name' ));
 			$o_stu->setJh2IdType('');
 		    $o_stu->setJh2Id('');
-		    $o_stu->setJh2IsZhixi('');
-		    $o_stu->setJh2Job('');		    
+		    $o_stu->setJh2IsZhixi('');	 
+		    if ($this->getPost ( 'Jh2Job' )=='')$this->ReturnMsg('请选择第二法定监护人信息的 [职业状况] ！','Jh2Job');
+	    	$o_stu->setJh2Job($this->getPost ( 'Jh2Job' ));	   
 		    if ($this->getPost ( 'Jh2Jiaoyu' )=='')$this->ReturnMsg('请选择第二法定监护人信息的 [教育程度] ！','Jh2Jiaoyu');
 		    $o_stu->setJh2Jiaoyu($this->getPost ( 'Jh2Jiaoyu' ));
 		    if ($this->getPost ( 'Jh2Danwei' )=='')$this->ReturnMsg('请选择第二法定监护人信息的 [工作单位全称] ！','Jh2Danwei');

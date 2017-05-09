@@ -111,8 +111,13 @@ if ($o_stu->getAllCount()==0)
 				echo('document.getElementById("Vcl_HShequ").value="'.$o_stu->getHShequ(0).'";
 				');
 			}
-		}		
-		echo('document.getElementById("Vcl_HAdd").value="'.$o_stu->getHAdd(0).'";');
+		}
+		echo('document.getElementById("Vcl_HIsGroup").value="'.$o_stu->getHIsGroup(0).'";
+		');	
+		echo('document.getElementById("Vcl_HIsYizhi").value="'.$o_stu->getHIsYizhi(0).'";
+		');		
+		echo('document.getElementById("Vcl_HAdd").value="'.$o_stu->getHAdd(0).'";
+		');
 	}else{
 		echo('change_nationality(document.getElementById("Vcl_Nationality"));
 		');
@@ -163,6 +168,8 @@ if ($o_stu->getAllCount()==0)
 	');
 	echo('document.getElementById("Vcl_Jh1Danwei").value="'.$o_stu->getJh1Danwei(0).'";
 	');
+	echo('document.getElementById("Vcl_Jh1Job").value="'.$o_stu->getJh1Job(0).'";
+	');
 	echo('document.getElementById("Vcl_Jh1Jiaoyu").value="'.$o_stu->getJh1Jiaoyu(0).'";
 	');
 	echo('document.getElementById("Vcl_SignupPhone").value="'.$o_stu->getSignupPhone(0).'";
@@ -174,6 +181,8 @@ if ($o_stu->getAllCount()==0)
 		echo('document.getElementById("Vcl_Jh2Name").value="'.$o_stu->getJh2Name(0).'";
 		');
 		echo('document.getElementById("Vcl_Jh2Danwei").value="'.$o_stu->getJh2Danwei(0).'";
+		');
+		echo('document.getElementById("Vcl_Jh2Job").value="'.$o_stu->getJh2Job(0).'";
 		');
 		echo('document.getElementById("Vcl_Jh2Jiaoyu").value="'.$o_stu->getJh2Jiaoyu(0).'";
 		');

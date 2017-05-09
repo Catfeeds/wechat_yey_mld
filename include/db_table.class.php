@@ -705,6 +705,8 @@ class Student_Info extends CRUD
     protected $FlagSame;
     protected $FlagOnly;
     protected $FlagFirst;
+    protected $HIsGroup;
+    protected $HIsYizhi;
     protected $SignupPhone;
     protected $SignupPhoneBackup;
     protected $HospitalName;
@@ -832,6 +834,8 @@ class Student_Info extends CRUD
                     'flag_same' => 'FlagSame',
                     'flag_only' => 'FlagOnly',
                     'flag_first' => 'FlagFirst',
+                    'h_is_group' => 'HIsGroup',
+                    'h_is_yizhi' => 'HIsYizhi',
                     'signup_phone' => 'SignupPhone',
                     'signup_phone_backup' => 'SignupPhoneBackup',
                     'hospital_name' => 'HospitalName',
@@ -839,9 +843,9 @@ class Student_Info extends CRUD
                     'compliance' => 'Compliance',
                     'auditor_id' => 'AuditorId',
                     'auditor_name' => 'AuditorName',
-        			'audit_remark' => 'AuditRemark',
+                    'audit_remark' => 'AuditRemark',
                     'meet_auditor_id' => 'MeetAuditorId',
-                    'meet_auditor_name' => 'MeetAuditorName',        			
+                    'meet_auditor_name' => 'MeetAuditorName',
                     'meet_item' => 'MeetItem',
                     'meet_remark' => 'MeetRemark',
                     'meet_parent_auditor_id' => 'MeetParentAuditorId',
@@ -993,6 +997,8 @@ class Student_Info_Wechat_Wiew extends CRUD
     protected $Email;
     protected $SignupPhone;
     protected $SignupPhoneBackup;
+    protected $HIsYizhi;
+    protected $HIsGroup;
 
     protected function DefineKey()
     {
@@ -1119,7 +1125,9 @@ class Student_Info_Wechat_Wiew extends CRUD
                     'phone' => 'Phone',
                     'email' => 'Email',
                     'signup_phone' => 'SignupPhone',
-                    'signup_phone_backup' => 'SignupPhoneBackup'
+                    'signup_phone_backup' => 'SignupPhoneBackup',
+                    'h_is_yizhi' => 'HIsYizhi',
+                    'h_is_group' => 'HIsGroup'
         ));
     }
 }

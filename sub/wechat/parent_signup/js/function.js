@@ -305,13 +305,13 @@ function change_z_jiedao(obj)
 }
 function change_z_property(obj)
 {
-	if (obj.value=="租借借用房产")
+	if (obj.value=="直系亲属房产")
 	{
-		document.getElementById("z_owner").style.display='none';
-		document.getElementById("z_guanxi").style.display='none';
-	}else{
 		document.getElementById("z_owner").style.display='';
 		document.getElementById("z_guanxi").style.display='';
+	}else{
+		document.getElementById("z_owner").style.display='none';
+		document.getElementById("z_guanxi").style.display='none';
 	}
 }
 function change_canjizheng1(obj)
@@ -596,7 +596,7 @@ function submit_signin(modify)
 	}
 	if (document.getElementById("Vcl_ZOwner").value=="" && document.getElementById("Vcl_ZProperty").value=="直系亲属房产")
 	{
-		Dialog_Message.alert("现住址信息的 [产权人姓名] 不能为空！",function(){
+		Dialog_Message("现住址信息的 [产权人姓名] 不能为空！",function(){
 			document.getElementById("Vcl_ZOwner").focus()
 		})		
 		return
@@ -608,6 +608,13 @@ function submit_signin(modify)
 		})		
 		return
 	}	
+	if (document.getElementById("Vcl_Jh1Job").value=="")
+	{
+		Dialog_Message("请选择第一法定监护人信息的 [职业状况] ！",function(){
+			document.getElementById("Vcl_Jh1Job").focus()
+		})		
+		return
+	}
 	if (document.getElementById("Vcl_Jh1Jiaoyu").value=="")
 	{
 		Dialog_Message("请选择第一法定监护人信息的 [教育程度] ！",function(){
@@ -628,7 +635,14 @@ function submit_signin(modify)
 				document.getElementById("Vcl_Jh2Connection").focus()
 			})			
 			return
-		}			
+		}	
+		if (document.getElementById("Vcl_Jh2Job").value=="")
+		{
+			Dialog_Message("请选择第一法定监护人信息的 [职业状况] ！",function(){
+				document.getElementById("Vcl_Jh2Job").focus()
+			})		
+			return
+		}
 		if (document.getElementById("Vcl_Jh2Jiaoyu").value == "") {
 			Dialog_Message("请选择第二法定监护人信息的 [教育程度] ！",function(){
 				document.getElementById("Vcl_Jh2Jiaoyu").focus()
