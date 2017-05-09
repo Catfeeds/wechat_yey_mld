@@ -800,6 +800,8 @@ class Operate extends Bn_Basic {
 	    $o_stu->setAuditRemark($this->getPost ( 'AuditRemark' ));
 		$o_stu->setState(2);
 		$o_stu->Save();	
+		//获得见面时段
+		
 		//发送模板消息
 		$o_admission_setup=new Admission_Setup(1);
 		$o_system_setup=new Base_Setup(1);
@@ -825,7 +827,7 @@ class Operate extends Bn_Basic {
 					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
 					'keyword3' => array('value' => $o_admission_setup->getMeetDate(),'color'=>'#173177'),
-					'keyword4' => array('value' => $o_admission_setup->getMeetTime(),'color'=>'#173177'),
+					'keyword4' => array('value' => $this->getMeetTime($o_admission_setup->getMeetTime()),'color'=>'#173177'),
 					'keyword5' => array('value' => $o_admission_setup->getMeetAddress(),'color'=>'#173177'),
 					'remark' => array('value' => '请按以上时间携带幼儿参加见面，谢谢。
 					
@@ -836,6 +838,21 @@ class Operate extends Bn_Basic {
 			
 		}	    
 	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'audit_search_success.php"');
+	}
+	private function getMeetTime($s_time)
+	{
+		//读取见面设置
+		$o_table=new Admission_Time();
+		$o_table->PushOrder ( array ('Id', 'A' ) );
+        for($i=0;$i<$o_table->getAllCount();$i++)
+        {
+        	if ($o_table->getUseSum($i)<$o_table->getSum($i))
+        	{
+        		$o_table->SumAdd1($o_table->getId($i));
+        		$s_time=$o_table->getTime($i);
+        	}
+        }
+        return $s_time;
 	}
 	public function AuditReject($n_uid)
 	{

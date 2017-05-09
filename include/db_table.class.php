@@ -52,6 +52,35 @@ class Admission_Setup extends CRUD
         ));
     }
 }
+class Admission_Time extends CRUD
+{
+    protected $Id;
+    protected $Time;
+    protected $Sum;
+    protected $UseSum;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'admission_time';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'time' => 'Time',
+                    'sum' => 'Sum',
+                    'use_sum' => 'UseSum'
+        ));
+    }
+	public function SumAdd1($n_id)
+	{
+		$this->Execute ( 'UPDATE `admission_time` SET `sum` = `sum` + 1 where `id`='.$n_id );		
+	}
+}
 //1111111111111111111111111111111111111111111111
 class Base_Dept extends CRUD
 {

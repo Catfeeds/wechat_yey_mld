@@ -608,7 +608,25 @@ class Operate extends Bn_Basic {
 		$o_setup->setHealthAddress($this->getPost('HealthAddress'));
 		$o_setup->Save();
 		
-		$this->setReturn ( 'parent.form_return("dialog_success(\'修改招生设置成功。\')");' );
+		$this->setReturn ( 'parent.form_return("dialog_success(\'保存招生设置成功。\')");' );
+	}
+	public function AdmissionSetupMeetTime($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		sleep(1);
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120109 ))return; //如果没有权限，不返回任何值
+		$o_table=new Admission_Time();
+        for($i=0;$i<$o_table->getAllCount();$i++)
+        {
+        	$o_temp=new Admission_Time($o_table->getId($i));
+        	$o_temp->setTime($this->getPost('Time_'.$o_table->getId($i)));
+        	$o_temp->setSum($this->getPost('Sum_'.$o_table->getId($i)));
+        	$o_temp->Save();
+        }
+		$this->setReturn ( 'parent.form_return("dialog_success(\'保存见面时段设置成功。\')");' );
 	}
 }
 

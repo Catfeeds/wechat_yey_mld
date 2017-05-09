@@ -28,23 +28,23 @@ $o_admission_setup=new Admission_Setup(1);
 	                     	</div>
 	                     	<div class="item">
 	                     		<label><span class="must">*</span> 托班招生人数：</label>
-	                     		<input name="Vcl_TuoSum" maxlength="20" id="Vcl_TuoSum" type="text" style="width:100%" onkeyup="value=value.replace(/[^0-9.]/g,'')" placeholder="必填" class="form-control"/>
+	                     		<input name="Vcl_TuoSum" maxlength="20" id="Vcl_TuoSum" type="text" style="width:100%" onkeyup="value=value.replace(/[^0-9]/g,'')" placeholder="必填" class="form-control"/>
 	                     	</div>  
 	                     	<div class="item">
 	                     		<label><span class="must">*</span> 小班招生人数：</label>
-	                     		<input name="Vcl_XiaoSum" maxlength="20" id="Vcl_XiaoSum" type="text" style="width:100%" onkeyup="value=value.replace(/[^0-9.]/g,'')" placeholder="必填" class="form-control"/>
+	                     		<input name="Vcl_XiaoSum" maxlength="20" id="Vcl_XiaoSum" type="text" style="width:100%" onkeyup="value=value.replace(/[^0-9]/g,'')" placeholder="必填" class="form-control"/>
 	                     	</div>  
 	                     	<div class="item">
 	                     		<label><span class="must">*</span> 中班招生人数：</label>
-	                     		<input name="Vcl_ZhongSum" maxlength="20" id="Vcl_ZhongSum" type="text" style="width:100%" onkeyup="value=value.replace(/[^0-9.]/g,'')" placeholder="必填" class="form-control"/>
+	                     		<input name="Vcl_ZhongSum" maxlength="20" id="Vcl_ZhongSum" type="text" style="width:100%" onkeyup="value=value.replace(/[^0-9]/g,'')" placeholder="必填" class="form-control"/>
 	                     	</div>  
 	                     	<div class="item">
 	                     		<label><span class="must">*</span> 大班招生人数：</label>
-	                     		<input name="Vcl_DaSum" maxlength="20" id="Vcl_DaSum" type="text" style="width:100%" onkeyup="value=value.replace(/[^0-9.]/g,'')" placeholder="必填" class="form-control"/>
+	                     		<input name="Vcl_DaSum" maxlength="20" id="Vcl_DaSum" type="text" style="width:100%" onkeyup="value=value.replace(/[^0-9]/g,'')" placeholder="必填" class="form-control"/>
 	                     	</div>  
 	                     	<div class="item">
 	                     		<label><span class="must">*</span> 半日班招生人数：</label>
-	                     		<input name="Vcl_BanriSum" maxlength="20" id="Vcl_BanriSum" type="text" style="width:100%" onkeyup="value=value.replace(/[^0-9.]/g,'')" placeholder="必填" class="form-control"/>
+	                     		<input name="Vcl_BanriSum" maxlength="20" id="Vcl_BanriSum" type="text" style="width:100%" onkeyup="value=value.replace(/[^0-9]/g,'')" placeholder="必填" class="form-control"/>
 	                     	</div>  
 	                     	<div class="item">
 	                     		<label><span class="must">*</span> 开始报名日期：</label>
