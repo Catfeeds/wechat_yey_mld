@@ -78,7 +78,7 @@ class Admission_Time extends CRUD
     }
 	public function SumAdd1($n_id)
 	{
-		$this->Execute ( 'UPDATE `admission_time` SET `sum` = `sum` + 1 where `id`='.$n_id );		
+		$this->Execute ( 'UPDATE `admission_time` SET `use_sum` = `use_sum` + 1 where `id`='.$n_id );		
 	}
 }
 //1111111111111111111111111111111111111111111111

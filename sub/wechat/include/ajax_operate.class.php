@@ -801,8 +801,6 @@ class Operate extends Bn_Basic {
 	    $o_stu->setAuditRemark($this->getPost ( 'AuditRemark' ));
 		$o_stu->setState(2);
 		$o_stu->Save();	
-		//获得见面时段
-		
 		//发送模板消息
 		$o_admission_setup=new Admission_Setup(1);
 		$o_system_setup=new Base_Setup(1);
@@ -849,8 +847,8 @@ class Operate extends Bn_Basic {
         {
         	if ($o_table->getUseSum($i)<$o_table->getSum($i))
         	{
-        		$o_table->SumAdd1($o_table->getId($i));
         		$s_time=$o_table->getTime($i);
+        		$o_table->SumAdd1($o_table->getId($i));
         	}
         }
         return $s_time;

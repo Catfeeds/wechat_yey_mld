@@ -8,7 +8,7 @@ $str = '20';
 $key = 'www.bjsql.com';
 $s_data = encrypt ( $str, 'E', $key );
 $request_data = array('deptid'=>$s_data);
-$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/download_class.php',$request_data));
+$a_result=json_decode(https_request('http://yeygl.xchjw.cn/sub/webservice/download_class.php',$request_data));
 if($a_result->Flag==1)
 {
 	$a_data=$a_result->Data;

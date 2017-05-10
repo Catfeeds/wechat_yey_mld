@@ -85,6 +85,7 @@ $(function(){
         	location='audit_search_result.php?id='+$('#searchInput').val();
         }        
     });
+
 });
 </script>
 <?php
