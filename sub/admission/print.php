@@ -174,7 +174,7 @@ function filter($str)
                港澳台侨
             </td>
             <td colspan="4">
-           是否独生子女
+          是否有独生子女证
             </td>
             <td colspan="4">
            是否烈士子女
