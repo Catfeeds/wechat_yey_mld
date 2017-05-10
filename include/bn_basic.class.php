@@ -219,6 +219,55 @@ class Bn_Basic {
 		$s_content = str_replace ( '  ', '&nbsp;&nbsp;', $s_content );
 		return $s_content;
 	}
+	public function HttpRequest($url, $data = null) {//发送请求，同事支持https的post与get
+		$curl = curl_init ();
+		curl_setopt ( $curl, CURLOPT_URL, $url );
+		curl_setopt ( $curl, CURLOPT_SSL_VERIFYPEER, FALSE );
+		curl_setopt ( $curl, CURLOPT_SSL_VERIFYHOST, FALSE );
+		if (! empty ( $data )) {
+			curl_setopt ( $curl, CURLOPT_POST, 1 );
+			curl_setopt ( $curl, CURLOPT_POSTFIELDS, $data );
+		}
+		curl_setopt ( $curl, CURLOPT_RETURNTRANSFER, 1 );
+		$output = curl_exec ( $curl );
+		curl_close ( $curl );
+		return $output;
+	}
+	public function Encrypt($string, $operation, $key = '') {//加密解密，$operation=E是加密 =D是解密
+		$key = md5 ( $key );
+		$key_length = strlen ( $key );
+		$string = $operation == 'D' ? base64_decode ( $string ) : substr ( md5 ( $string . $key ), 0, 8 ) . $string;
+		$string_length = strlen ( $string );
+		$rndkey = $box = array ();
+		$result = '';
+		for($i = 0; $i <= 255; $i ++) {
+			$rndkey [$i] = ord ( $key [$i % $key_length] );
+			$box [$i] = $i;
+		}
+		for($j = $i = 0; $i < 256; $i ++) {
+			$j = ($j + $box [$i] + $rndkey [$i]) % 256;
+			$tmp = $box [$i];
+			$box [$i] = $box [$j];
+			$box [$j] = $tmp;
+		}
+		for($a = $j = $i = 0; $i < $string_length; $i ++) {
+			$a = ($a + 1) % 256;
+			$j = ($j + $box [$a]) % 256;
+			$tmp = $box [$a];
+			$box [$a] = $box [$j];
+			$box [$j] = $tmp;
+			$result .= chr ( ord ( $string [$i] ) ^ ($box [($box [$a] + $box [$j]) % 256]) );
+		}
+		if ($operation == 'D') {
+			if (substr ( $result, 0, 8 ) == substr ( md5 ( substr ( $result, 8 ) . $key ), 0, 8 )) {
+				return substr ( $result, 8 );
+			} else {
+				return '';
+			}
+		} else {
+			return str_replace ( '=', '', base64_encode ( $result ) );
+		}
+	}
 	public function UnAilterTextArea($s_text) {
 		$s_content = $s_text;
 		$s_content = str_replace ( "<br/>", "\n", $s_content );
