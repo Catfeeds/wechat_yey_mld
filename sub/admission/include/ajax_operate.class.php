@@ -24,12 +24,20 @@ class Operate extends Bn_Basic {
 		{
 			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'StudentId', 'like',$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}else{
 			$o_user->PushWhere ( array ('&&', 'State', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
@@ -85,12 +93,20 @@ class Operate extends Bn_Basic {
 		{
 			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',1) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',1) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'StudentId', 'like',$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',1) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}else{
 			$o_user->PushWhere ( array ('&&', 'State', '=',1) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
@@ -144,12 +160,20 @@ class Operate extends Bn_Basic {
 		{
 			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',2) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',2) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'StudentId', 'like',$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',2) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}else{
 			$o_user->PushWhere ( array ('&&', 'State', '=',2) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
@@ -205,12 +229,20 @@ class Operate extends Bn_Basic {
 		{
 			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',4) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',4) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'StudentId', 'like',$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',4) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}else{
 			$o_user->PushWhere ( array ('&&', 'State', '=',4) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
@@ -414,12 +446,20 @@ class Operate extends Bn_Basic {
 		{
 			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',3) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',3) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'StudentId', 'like',$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',3) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}else{
 			$o_user->PushWhere ( array ('&&', 'State', '=',3) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
@@ -475,12 +515,20 @@ class Operate extends Bn_Basic {
 		{
 			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',5) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',5) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'StudentId', 'like',$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',5) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}else{
 			$o_user->PushWhere ( array ('&&', 'State', '=',5) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
@@ -534,12 +582,20 @@ class Operate extends Bn_Basic {
 		{
 			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',6) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',6) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 			$o_user->PushWhere ( array ('||', 'StudentId', 'like',$s_key.'%') );
 			$o_user->PushWhere ( array ('&&', 'State', '=',6) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}else{
 			$o_user->PushWhere ( array ('&&', 'State', '=',6) );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+			$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
 		}
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录

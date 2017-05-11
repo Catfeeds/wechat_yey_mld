@@ -885,7 +885,37 @@ class Student_Info extends CRUD
     }
 }
 //1111111111111111111111111111111111111111111111
+class Student_Class extends CRUD
+{
+    protected $ClassId;
+    protected $SchoolId;
+    protected $Grade;
+    protected $ClassNumber;
+    protected $ClassName;
 
+    protected function DefineKey()
+    {
+        return 'class_id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_class';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'class_id' => 'ClassId',
+                    'school_id' => 'SchoolId',
+                    'grade' => 'Grade',
+                    'class_number' => 'ClassNumber',
+                    'class_name' => 'ClassName'
+        ));
+    }
+	public function DeleteAll()
+	{
+		$this->Execute ( 'TRUNCATE TABLE  `student_class`');		
+	}
+}
 class Student_Info_Wechat extends CRUD
 {
     protected $Id;

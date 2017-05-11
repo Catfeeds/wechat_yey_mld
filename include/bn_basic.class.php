@@ -219,7 +219,7 @@ class Bn_Basic {
 		$s_content = str_replace ( '  ', '&nbsp;&nbsp;', $s_content );
 		return $s_content;
 	}
-	public function HttpRequest($url, $data = null) {//发送请求，同事支持https的post与get
+	public function HttpsRequest($url, $data = null) {//发送请求，同事支持https的post与get
 		$curl = curl_init ();
 		curl_setopt ( $curl, CURLOPT_URL, $url );
 		curl_setopt ( $curl, CURLOPT_SSL_VERIFYPEER, FALSE );

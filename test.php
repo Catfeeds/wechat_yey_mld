@@ -4,7 +4,7 @@ header ( 'Pragma: no-cache' );
 header ( 'Expires: Thu, 01 Jan 1970 00:00:00 GMT' );
 header ( 'Last-Modified:' . gmdate ( 'D, d M Y H:i:s' ) . ' GMT' );
 header ( 'content-type:text/html; charset=utf-8' );
-$str = '20';
+$str = '20'; 
 $key = 'www.bjsql.com';
 $s_data = encrypt ( $str, 'E', $key );
 $request_data = array('deptid'=>$s_data);
@@ -12,7 +12,7 @@ $a_result=json_decode(https_request('http://yeygl.xchjw.cn/sub/webservice/downlo
 if($a_result->Flag==1)
 {
 	$a_data=$a_result->Data;
-	echo(count($a_data));
+	echo(print_r($a_data));
 }else{
 	echo($a_result->Msg);
 }
