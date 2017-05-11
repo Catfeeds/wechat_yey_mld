@@ -638,7 +638,7 @@ function submit_signin(modify)
 		}	
 		if (document.getElementById("Vcl_Jh2Job").value=="")
 		{
-			Dialog_Message("请选择第一法定监护人信息的 [职业状况] ！",function(){
+			Dialog_Message("请选择第二法定监护人信息的 [职业状况] ！",function(){
 				document.getElementById("Vcl_Jh2Job").focus()
 			})		
 			return

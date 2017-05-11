@@ -302,8 +302,6 @@ class Operate extends Bn_Basic {
 		}
 	    $o_stu->setJh1Id($this->getPost ( 'Jh1ID' ));
 	    $o_stu->setJh1IsZhixi($this->getPost ( 'Jh1IsZhixi' ));
-	    if ($this->getPost ( 'Jh1Job' )=='')$this->ReturnMsg('请选择第一法定监护人信息的 [职业状况] ！','Jh1Job');
-	    $o_stu->setJh1Job($this->getPost ( 'Jh1Job' ));
 	    if ($this->getPost ( 'Jh1Phone' )=='')$this->ReturnMsg('第一法定监护人信息的 [联系电话] 不能为空！','Jh1Phone');
 	    $o_stu->setJh1Phone($this->getPost ( 'Jh1Phone' ));
 	    $o_stu->setJh1IsCanji($this->getPost ( 'Jh1IsCanji' ));
