@@ -4,18 +4,25 @@ header ( 'Pragma: no-cache' );
 header ( 'Expires: Thu, 01 Jan 1970 00:00:00 GMT' );
 header ( 'Last-Modified:' . gmdate ( 'D, d M Y H:i:s' ) . ' GMT' );
 header ( 'content-type:text/html; charset=utf-8' );
-$str = '20'; 
 $key = 'www.bjsql.com';
-$s_data = encrypt ( $str, 'E', $key );
-$request_data = array('deptid'=>$s_data);
-$a_result=json_decode(https_request('http://yeygl.xchjw.cn/sub/webservice/download_class.php',$request_data));
+$license = 'MNJIHKI6525489';
+$s_data = encrypt ( $license, 'E', $key );
+$request_data = array('License'=>$s_data,'StudentId'=>encrypt ('9769', 'E', $key ));
+//$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/download_class.php',$request_data));
+//$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_stu_id.php',$request_data));
+//$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_single_stu_info.php',$request_data));
+/*
+$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_graduate_id.php',$request_data));
 if($a_result->Flag==1)
 {
 	$a_data=$a_result->Data;
-	echo(print_r($a_data));
+	echo(count($a_data));
+	//echo($a_data);
 }else{
 	echo($a_result->Msg);
 }
+*/
+echo(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_single_graduate_info.php',$request_data));
 function https_request($url, $data = null) {
 	$curl = curl_init ();
 	curl_setopt ( $curl, CURLOPT_URL, $url );
