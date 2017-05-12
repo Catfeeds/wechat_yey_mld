@@ -22,7 +22,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 					<form action="include/bn_submit.switch.php" id="submit_form" method="post" target="submit_form_frame">
 						<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 						<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
-						<input type="hidden" name="Vcl_FunName" value="SendHealthNotice"/>
+						<input type="hidden" id="Vcl_FunName" name="Vcl_FunName" value="SendHealthNotice"/>
 						<input type="hidden" name="Vcl_StuId" id="Vcl_StuId"/>
 					</form>
 
@@ -41,6 +41,8 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								</div>
 								<button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="window.open('output_all.php?state=3','_blank')">
                                 <span  class="glyphicon glyphicon-floppy-save"></span>&nbsp;导出全部</button>
+                                <button id="user_add_btn" type="button" class="btn btn-danger" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="select_submit_reject()">
+                                <span  class="glyphicon glyphicon glyphicon-remove"></span>&nbsp;不通过</button>
                                 <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="meet_select_submit()">
                                 <span  class="glyphicon glyphicon-ok"></span>&nbsp;发送体检通知</button>
                             </div>

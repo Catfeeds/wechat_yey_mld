@@ -12,7 +12,9 @@ if ($o_stu->getAllCount()==0)
 	echo "<script>location.href='my_signup.php'</script>"; 
 	exit(0);
 }
-
+$o_date = new DateTime('Asia/Chongqing');
+$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d');
+$o_admission_setup=new Admission_Setup(1);
 ?>
 	<form action="../include/bn_submit.switch.php" id="submit_form_checkid" method="post" target=ajax_submit_frame>
 		<input type="hidden" name="Vcl_FunName" value="CheckId"/>
@@ -28,7 +30,7 @@ if ($o_stu->getAllCount()==0)
 			?>
 	    <div style="padding:15px;">
 	    <?php 
-			if ($o_stu->getState(0)==0)
+			if ($o_stu->getState(0)==0 && $o_stu->getReject(0)==0 && strtotime($s_date)<=strtotime($o_admission_setup->getSignupEnd()))
 			{
 			?>
 				<a id="next" class="weui-btn weui-btn_primary" onclick="submit_signin(true)">提交修改</a>
@@ -195,8 +197,13 @@ if ($o_stu->getAllCount()==0)
 	');
 ?>
 <?php 
-if ($o_stu->getState(0)!=0)
+if ($o_stu->getState(0)==0 && $o_stu->getReject(0)==0 && strtotime($s_date)<=strtotime($o_admission_setup->getSignupEnd()))
 {
+	?>
+	vcl_disabled(document.getElementById("Vcl_ID"))
+	vcl_disabled(document.getElementById("Vcl_IdType"))
+	<?php
+}else{
 	?>
 	for(var i = 4; i < document.getElementsByTagName("input").length; i++){
 		vcl_disabled(document.getElementsByTagName("input")[i])
@@ -204,11 +211,6 @@ if ($o_stu->getState(0)!=0)
 	for(var i = 0; i < document.getElementsByTagName("select").length; i++){
 		vcl_disabled(document.getElementsByTagName("select")[i])
 	}
-	<?php
-}else{
-	?>
-	vcl_disabled(document.getElementById("Vcl_ID"))
-	vcl_disabled(document.getElementById("Vcl_IdType"))	
 	<?php
 }
 ?>

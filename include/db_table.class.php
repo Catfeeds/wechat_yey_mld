@@ -639,6 +639,7 @@ class Student_Info extends CRUD
 {
     protected $StudentId;
     protected $State;
+    protected $Reject;
     protected $Name;
     protected $Sex;
     protected $Birthday;
@@ -768,6 +769,7 @@ class Student_Info extends CRUD
         return(array(
                     'student_id' => 'StudentId',
                     'state' => 'State',
+        			'reject' => 'Reject',
                     'name' => 'Name',
                     'sex' => 'Sex',
                     'birthday' => 'Birthday',
@@ -944,6 +946,7 @@ class Student_Info_Wechat extends CRUD
 class Student_Info_Wechat_Wiew extends CRUD
 {
     protected $StudentId;
+    protected $Reject;
     protected $State;
     protected $Name;
     protected $Sex;
@@ -1074,6 +1077,7 @@ class Student_Info_Wechat_Wiew extends CRUD
         return(array(
                     'student_id' => 'StudentId',
                     'state' => 'State',
+        			'reject' => 'Reject',
                     'name' => 'Name',
                     'sex' => 'Sex',
                     'birthday' => 'Birthday',

@@ -798,6 +798,7 @@ class Operate extends Bn_Basic {
 	    $o_stu->setAuditorName($o_stu_wechat->getName(0));
 	    $o_stu->setAuditRemark($this->getPost ( 'AuditRemark' ));
 		$o_stu->setState(2);
+		$o_stu->setReject(0);
 		$o_stu->Save();	
 		//发送模板消息
 		$o_admission_setup=new Admission_Setup(1);
@@ -900,6 +901,7 @@ class Operate extends Bn_Basic {
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1004]\');' );
 		}
 		$o_stu->setState(3);
+		$o_stu->setReject(0);
 		//填写见面结果
 		$a_result=array();
 		$o_item=new Student_Info_Meet_Item();

@@ -19,10 +19,16 @@ if($_COOKIE [$s_fun.'Item'])
 ExportMainTitle(MODULEID,$O_Session->getUid());
 //获取子模块菜单
 ?>
+					<form action="include/bn_submit.switch.php" id="submit_form" method="post" target="submit_form_frame">
+						<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
+						<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
+						<input type="hidden" id="Vcl_FunName" name="Vcl_FunName" value="SignupReject"/>
+						<input type="hidden" name="Vcl_StuId" id="Vcl_StuId"/>
+					</form>
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
                             <div class="caption">已通过信息核验列表</div>
-                            <div class="row" style="margin-right:-5px;">
+                            	<div class="row" style="margin-right:-5px;">
 								  <div class="col-lg-6">
 								    <div class="input-group" style="width:300px;" >
 								      <input id="Vcl_KeyAuditPass" type="text" class="form-control" placeholder="幼儿编号/姓名/证件号" value="<?php echo($s_key)?>">
@@ -34,6 +40,8 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								</div>
 								<button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="window.open('output_all.php?state=2','_blank')">
                                 <span  class="glyphicon glyphicon-floppy-save"></span>&nbsp;导出全部</button>
+                                <button id="user_add_btn" type="button" class="btn btn-danger" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="select_submit_reject()">
+                                <span  class="glyphicon glyphicon glyphicon-remove"></span>&nbsp;不通过</button>
                             </div>
                         <table class="table table-striped">
                             <thead>

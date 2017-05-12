@@ -69,23 +69,50 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        		if (strtotime($s_date)<=strtotime($o_admission_setup->getSignupEnd()))
 	        		{
 	        			$s_button.='<a class="weui-form-preview__btn weui-form-preview__btn_default" onclick="signup_cancel('.$o_stu_wechat->getStudentId($i).')" style="color:red">取消报名</a>';
+	        		}else{
+	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		}
+	        		if($o_stu_wechat->getReject($i)==1)
+	        		{
+	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">信息初审未通过</span>';
+	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
 	        		}
 	        		break;
 	        	case 1:
 	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待进行信息核验</span>';
 	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		if($o_stu_wechat->getReject($i)==1)
+	        		{
+	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">信息核验未通过</span>';
+	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		}
 	        		break;
 	        	case 2:
 	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">信息核验通过，等待见面</span>';
 	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		if($o_stu_wechat->getReject($i)==1)
+	        		{
+	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">幼儿见面未参加</span>';
+	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		}
 	        		break;
 	        	case 3:
 	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">完成见面，等待通知体检</span>';
 	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		if($o_stu_wechat->getReject($i)==1)
+	        		{
+	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">幼儿见面未录取</span>';
+	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		}
 	        		break;
 	        	case 4:
 	        		$s_html='<span class="weui-form-preview__value" style="color:#FFA200">等待向幼儿园提交体检报告</span>';
 	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		if($o_stu_wechat->getReject($i)==1)
+	        		{
+	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">幼儿体检未通过</span>';
+	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">查看幼儿信息</a>';
+	        		}
 	        		break;
 	        	case 5:
 	        		$s_html='<span class="weui-form-preview__value" style="color:#FFA200">等待完善幼儿信息</span>';

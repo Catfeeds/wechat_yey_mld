@@ -122,6 +122,7 @@ class Operate extends Bn_Basic {
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
 			array_push ($a_row, array (
+				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
 				$o_user->getStudentId ( $i ),
 				$o_user->getName ( $i ),
 				$o_user->getSex ( $i ),
@@ -134,6 +135,7 @@ class Operate extends Bn_Basic {
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'<input style="margin-top:0px;" type="checkbox" onclick="select_all(this)"/> 全选', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
@@ -189,6 +191,7 @@ class Operate extends Bn_Basic {
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
 			array_push ($a_row, array (
+				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
 				$o_user->getStudentId ( $i ),
 				$o_user->getName ( $i ),
 				$o_user->getSex ( $i ),
@@ -202,6 +205,7 @@ class Operate extends Bn_Basic {
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'<input style="margin-top:0px;" type="checkbox" onclick="select_all(this)"/> 全选', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
@@ -299,6 +303,7 @@ class Operate extends Bn_Basic {
 			if ($o_stu->getState()==0)
 			{
 				$o_stu->setState(1);
+				$o_stu->setReject(0);
 				$o_stu->Save();
 				//获取幼儿关联的微信
 				$o_wechat_user=new Student_Info_Wechat_Wiew();
@@ -364,6 +369,7 @@ class Operate extends Bn_Basic {
 			if ($o_stu->getState()==3)
 			{
 				$o_stu->setState(4);
+				$o_stu->setReject(0);
 				$o_stu->Save();
 				//获取幼儿关联的微信
 				$o_wechat_user=new Student_Info_Wechat_Wiew();
@@ -413,6 +419,7 @@ class Operate extends Bn_Basic {
 			if ($o_stu->getState()==4)
 			{
 				$o_stu->setState(5);
+				$o_stu->setReject(0);
 				$o_stu->Save();
 				//获取幼儿关联的微信
 				$o_wechat_user=new Student_Info_Wechat_Wiew();
@@ -699,6 +706,25 @@ class Operate extends Bn_Basic {
         	$o_temp->Save();
         }
 		$this->setReturn ( 'parent.form_return("dialog_success(\'保存见面时段设置成功。\')");' );
+	}
+	public function SignupReject($n_uid)
+	{	
+		sleep(1);
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}		
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120100 ))return;//如果没有权限，不返回任何值
+		$a_data=json_decode($_POST['Vcl_StuId']);
+		$o_admission_setup=new Admission_Setup(1);
+		$o_system_setup=new Base_Setup(1);
+		for($i=0;$i<count($a_data);$i++)
+		{
+			$o_stu=new Student_Info($a_data[$i]);
+			$o_stu->setReject(1);
+			$o_stu->Save();
+		}
+		$this->setReturn ( 'parent.form_return("dialog_success(\'操作成功！\')");' );
 	}
 }
 
