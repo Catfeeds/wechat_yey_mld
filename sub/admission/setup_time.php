@@ -10,7 +10,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                         <div class="panel-heading">
                         <div class="caption">
                         <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> 
-                        	见面时段设置
+                        	时段设置
                             </div>
                             </div>
                     </div>
@@ -19,8 +19,34 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 						<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
 						<input type="hidden" name="Vcl_FunName" value="AdmissionSetupMeetTime"/>
                     	<div class="sss_form">
+                    		<div class="item">
+	                     		<label>幼儿信息核验时段 ：</label>
+	                     	</div>
                     	<?php 
                     		$o_table=new Admission_Time();
+                    		$o_table->PushWhere ( array ('&&', 'Type', '=', 'audit' ) );
+                    		$o_table->PushOrder ( array ('Id', 'A' ) );
+                    		for($i=0;$i<$o_table->getAllCount();$i++)
+                    		{
+                    			?>
+	                    	<div class="item">
+		                    	<div class="input-group">
+		                    		<span class="input-group-addon" id="basic-addon1"><?php echo(($i+1))?></span>
+								  <span class="input-group-addon" id="basic-addon1" style="border-right:0px;">时段</span>
+								  <input name="Vcl_Time_<?php echo($o_table->getId($i))?>" type="text" class="form-control" value="<?php echo($o_table->getTime($i))?>" placeholder="例如：08:30-09:00" aria-describedby="basic-addon1">
+								  <span class="input-group-addon" id="basic-addon1" style="border-left:0px;border-right:0px;">核验人数上限</span>
+								  <input name="Vcl_Sum_<?php echo($o_table->getId($i))?>" type="text" class="form-control" value="<?php echo($o_table->getSum($i))?>" onkeyup="value=value.replace(/[^0-9]/g,'')" placeholder="数字" aria-describedby="basic-addon1">
+								</div>
+							</div>
+                    			<?php
+                    		}
+                    	?>
+                    		<div class="item">
+	                     		<label>幼儿见面时段 ：</label>
+	                     	</div>
+                    	<?php 
+                    		$o_table=new Admission_Time();
+                    		$o_table->PushWhere ( array ('&&', 'Type', '=', 'meet' ) );
                     		$o_table->PushOrder ( array ('Id', 'A' ) );
                     		for($i=0;$i<$o_table->getAllCount();$i++)
                     		{

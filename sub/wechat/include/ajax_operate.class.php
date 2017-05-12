@@ -840,6 +840,7 @@ class Operate extends Bn_Basic {
 	{
 		//读取见面设置
 		$o_table=new Admission_Time();
+		$o_table->PushWhere ( array ('&&', 'Type', '=', 'meet' ) );
 		$o_table->PushOrder ( array ('Id', 'A' ) );
         for($i=0;$i<$o_table->getAllCount();$i++)
         {

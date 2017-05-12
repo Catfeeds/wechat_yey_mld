@@ -318,7 +318,7 @@ class Operate extends Bn_Basic {
 				    $o_msg->setKeyword1($o_stu->getStudentId());
 				    $o_msg->setKeyword2($o_stu->getName());
 				    $o_msg->setKeyword3($o_admission_setup->getAuditDate());
-				    $o_msg->setKeyword4($o_admission_setup->getAuditTime());
+				    $o_msg->setKeyword4($this->getAuditTime($o_admission_setup->getAuditTime()));
 				    $o_msg->setKeyword5($o_admission_setup->getAuditAddress());
 				    $o_msg->setRemark('请您按照如上时段、地址进行信息核验，感谢您的配合。
 				    
@@ -330,6 +330,22 @@ class Operate extends Bn_Basic {
 			}
 		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发送信息核验通知成功！\',function(){parent.table_refresh(\'StudentSignupTable\')})");' );
+	}
+	private function getAuditTime($s_time)
+	{
+		//读取见面设置
+		$o_table=new Admission_Time();
+		$o_table->PushWhere ( array ('&&', 'Type', '=', 'Audit' ) );
+		$o_table->PushOrder ( array ('Id', 'A' ) );
+        for($i=0;$i<$o_table->getAllCount();$i++)
+        {
+        	if ($o_table->getUseSum($i)<$o_table->getSum($i))
+        	{
+        		$s_time=$o_table->getTime($i);
+        		$o_table->SumAdd1($o_table->getId($i));
+        	}
+        }
+        return $s_time;
 	}
 	public function SendHealthNotice($n_uid)
 	{	

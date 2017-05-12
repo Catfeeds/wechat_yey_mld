@@ -58,6 +58,7 @@ class Admission_Time extends CRUD
     protected $Time;
     protected $Sum;
     protected $UseSum;
+    protected $Type;
 
     protected function DefineKey()
     {
@@ -73,6 +74,7 @@ class Admission_Time extends CRUD
                     'id' => 'Id',
                     'time' => 'Time',
                     'sum' => 'Sum',
+        			'type' => 'Type',
                     'use_sum' => 'UseSum'
         ));
     }
