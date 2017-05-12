@@ -1,3 +1,8 @@
-UPDATE `wechat_base_module` SET `path`='sub/admission/admission_time.php', `parent_module_id`='120100', `mini_icon_id`='120100' WHERE (`module_id`='120109');
-UPDATE `wechat_base_module` SET `path`='sub/admission/admission_meet_time.php' WHERE (`module_id`='120109');
-UPDATE `wechat_base_module` SET `path`='sub/admission/setup_meet_time.php' WHERE (`module_id`='120109');
+/******** background process starts here ********/
+            ignore_user_abort(true);//在关闭连接后，继续运行php脚本
+            /******** background process ********/
+            set_time_limit(0);
+        }
+        else {
+            fastcgi_finish_request();
+        }

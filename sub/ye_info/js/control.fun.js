@@ -25,7 +25,7 @@ function start_sync_class()
 			$('#step_1_progress').css('width','100%')//进度变成100
 			$('#step_1_icon').css('display','')//显示对勾
 			//开始下一个
-			dialog_success('恭喜您，幼儿信息同步成功');
+			dialog_success('恭喜您，幼儿信息同步成功！');
 			$('#refresh_btn').css('display','');
 			//$('#start_sync_btn').removeAttr("disabled");
 		}
