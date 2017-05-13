@@ -547,7 +547,7 @@
 		        	</div>
 		    </div>
 		</div> 
-		<div class="weui-cells__title">现住址信息（房产信息）</div>
+		<div class="weui-cells__title">现住址信息</div>
 		<div class="weui-cells" style="margin-top:0px;">
 			<div class="weui-cell" id="is_same">
 				<div class="weui-cell__hd"><label class="weui-label" style="width:240px;">现住址是否与户籍为同一地址</label></div>
@@ -675,7 +675,7 @@
 			            </div>
 		        	</div>
 		        	<div class="weui-cell" id="z_guanxi">
-						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">产权人与孩子关系</label></div>
+						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">产权人与幼儿关系</label></div>
 						<div class="weui-cell__bd">
 			                <select class="weui-select" id="Vcl_ZGuanxi" name="Vcl_ZGuanxi">
 			                    <option selected="selected" value="父母">父母</option>

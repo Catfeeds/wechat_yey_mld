@@ -26,47 +26,27 @@ $data='{
                 },
                 {
                 	"type":"click",
-		          	"name":"师资力量",
-		          	"key": "2"
-                },
-                {
-                	"type":"click",
-		          	"name":"电子游园",
-		          	"key": "2"
-                },
-                {
-                	"type":"click",
 		          	"name":"联系方式",
 		          	"key": "2"
                 }
             ]
         }, 
         {
-            "name":"公益活动",
+            "name":"育教资讯",
           	"sub_button": [
                 {
                     "type":"click",
-		          	"name":"广外社区",
+		          	"name":"师友活动",
 		          	"key": "2"
                 },
                 {
                 	"type":"click",
-		          	"name":"党员工建",
+		          	"name":"卫生保健",
 		          	"key": "2"
                 },
                 {
                 	"type":"click",
-		          	"name":"学习培养",
-		          	"key": "2"
-                },
-                {
-                	"type":"click",
-		          	"name":"师生活动",
-		          	"key": "2"
-                },
-                {
-                	"type":"click",
-		          	"name":"特色主题",
+		          	"name":"家园社区",
 		          	"key": "2"
                 }
             ]
@@ -81,17 +61,7 @@ $data='{
                 },
                 {
                 	"type":"click",
-		          	"name":"家园共育",
-		          	"key": "2"
-                },
-                {
-                	"type":"click",
-		          	"name":"卫生保健",
-		          	"key": "2"
-                },
-                {
-                	"type":"click",
-		          	"name":"成长发育",
+		          	"name":"社会招聘",
 		          	"key": "2"
                 }
             ]

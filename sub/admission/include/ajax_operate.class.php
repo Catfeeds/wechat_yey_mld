@@ -319,14 +319,16 @@ class Operate extends Bn_Basic {
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
-				    $o_msg->setFirst('尊敬的幼儿家长您好，您所报名的幼儿：');
+				    $o_msg->setFirst('如下幼儿初步审核已经通过，请您按时间地点携带核验资料进行信息核验，错过视为自行放弃报名资格。
+');
 				    $o_msg->setKeyword1($o_stu->getStudentId());
 				    $o_msg->setKeyword2($o_stu->getName());
 				    $o_msg->setKeyword3($o_admission_setup->getAuditDate());
 				    $o_msg->setKeyword4($this->getAuditTime($o_admission_setup->getAuditTime()));
 				    $o_msg->setKeyword5($o_admission_setup->getAuditAddress());
-				    $o_msg->setRemark('请您按照如上时段、地址进行信息核验，感谢您的配合。
-				    
+				    $o_msg->setRemark('
+核验资料：居民户口簿、房产证明、免疫预防接种证等。
+
 如需查看幼儿报名信息，请点击详情');
 				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup.php');
 				    $o_msg->setKeywordSum(5);
@@ -385,7 +387,8 @@ class Operate extends Bn_Basic {
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
-				    $o_msg->setFirst('尊敬的幼儿家长您好，您所报名的幼儿：');
+				    $o_msg->setFirst('如下幼儿已经通过幼儿见面，请您按时间地点携带幼儿进行体检，如错过体检视为自行放弃报名资格。
+');
 				    $o_msg->setKeyword1($o_stu->getStudentId());//幼儿编号
 				    $o_msg->setKeyword2($o_stu->getName());//幼儿姓名
 				    $o_msg->setKeyword3($o_admission_setup->getHealthTime());//体检时间

@@ -1,14 +1,69 @@
 <?php
+/*
+ * 幼儿信息与教委信息采集系统同步
+ */
+ignore_user_abort(true);//在关闭连接后，继续运行php脚本
+set_time_limit(0);
+define('RELATIVITY_PATH', '../../'); //定义相对路径
 header ( 'Cache-Control: no-cache' );
 header ( 'Pragma: no-cache' );
 header ( 'Expires: Thu, 01 Jan 1970 00:00:00 GMT' );
 header ( 'Last-Modified:' . gmdate ( 'D, d M Y H:i:s' ) . ' GMT' );
 header ( 'content-type:text/html; charset=utf-8' );
+/*
+ * 设置同步所需验证信息
+ */
 $key = 'www.bjsql.com';
 $license = 'MNJIHKI6525489';
-$s_data = encrypt ( $license, 'E', $key );
-$request_data = array('License'=>$s_data,'StudentId'=>encrypt ('37186', 'E', $key ));
-//$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/download_class.php',$request_data));
+$s_url = 'http://yeygl.xchjw.cn/sub/webservice/';
+$license = encrypt ( $license, 'E', $key );
+/*
+ * 获取系统配置
+ */
+require_once RELATIVITY_PATH . 'include/db_table.class.php';
+//获取当前系统DeptId编号
+$o_setup=new Admission_Setup(1);
+$s_deptid=$o_setup->getDeptId();
+/*
+ * 下载班级信息
+ */
+$request_data = array ('License' => $license );
+$a_result_data = json_decode ( https_request ( $s_url . 'download_class.php', $request_data ) );
+if ($a_result_data->Flag == 1) {
+	$a_data = $a_result_data->Data;
+	//开始同步本地班级数据
+	for($i = 0; $i < count ( $a_data ); $i ++) {
+		$a_temp = $a_data [$i];
+		//如果班级ID存在，那么跳过，否则新建
+		$o_class = new Student_Class ();
+		$o_class->PushWhere ( array ('&&', 'ClassId', '=', $a_temp->ClassId ) );
+		if ($o_class->getAllCount()>0)
+		{
+			continue;
+		}
+		$o_class = new Student_Class ();
+		$o_class->setClassId ( $a_temp->ClassId );
+		$o_class->setSchoolId ( $s_deptid );
+		$o_class->setClassNumber ( 0 );
+		$o_class->setClassName ( $a_temp->ClassName );
+		$o_class->setGrade ( $a_temp->Grade );
+		$o_class->Save ();
+	}
+	LOG::STU_SYNC('success,下载班级信息成功');
+} else {
+	if ($a_result_data == '') {
+		LOG::STU_SYNC('error,下载班级信息：信息采集系统服务器未响应');
+	} else {
+		LOG::STU_SYNC('error,下载班级信息： 错误代码：' . $a_result_data->Msg);
+	}
+	LOG::STU_SYNC('error,下载班级信息错误，终止同');
+	exit();
+}
+/*
+ * 获取已毕业幼儿信息 
+ */
+echo ('finish');
+
 //$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_stu_id.php',$request_data));
 //$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_single_stu_info.php',$request_data));
 /*
@@ -23,7 +78,7 @@ if($a_result->Flag==1)
 	echo($a_result->Msg);
 }
 */
-echo(https_request('http://yeygl.xchjw.cn/sub/webservice/download_class.php',$request_data));
+//echo(https_request('http://yeygl.xchjw.cn/sub/webservice/download_class.php',$request_data));
 function https_request($url, $data = null) {
 	$curl = curl_init ();
 	curl_setopt ( $curl, CURLOPT_URL, $url );

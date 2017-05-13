@@ -10,15 +10,20 @@ $o_stu_wechat->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
 if($o_stu_wechat->getAllCount()==0)
 {
 	?>
-	<div class="weui-footer" style="padding-top:100px;padding-bottom:100px;">
-		<p class="weui-footer__text" style="font-size:1.5em">没有幼儿报名信息</p>
+	<div class="weui-footer" style="padding-top:100px;padding-bottom:100px;padding-left:30px;padding-right:30px;">
+		<p class="weui-footer__text" style="font-size:1.5em">
+		注意事项：
+		</p>
+		<p class="weui-footer__text" style="font-size:1.5em;text-align:left;margin-top:15px;">
+		幼儿报名所使用的微信号既是幼儿招生各阶段通知、验证的唯一号码，也是幼儿入园后家园联系的途径，敬请注意。
+		</p>
 	</div>
 	<?php
 }else{
 ?>
 	 <div class="page__hd">
         <h1 class="page__title" style="font-size:28px;">我的幼儿报名</h1>
-        <p class="page__desc">简要说明</p>
+        <p class="page__desc">幼儿报名所使用的微信号既是幼儿招生各阶段通知、验证的唯一号码，也是幼儿入园后家园联系的途径，敬请注意。</p>
     </div>
 <?php
 for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
@@ -142,7 +147,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 <script>
 function signup_cancel(id)
 {
-    Dialog_Confirm('真的要取消报名吗？取消后您的幼儿信息将会永久删除。',function(){
+    Dialog_Confirm('真的要取消报名吗？取消后您的幼儿信息将会删除。',function(){
     	Common_OpenLoading();
     	var data = 'Ajax_FunName=SignupCancel'; //后台方法
         data = data + '&id=' + id;

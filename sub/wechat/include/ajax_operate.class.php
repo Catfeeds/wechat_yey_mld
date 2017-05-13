@@ -99,13 +99,15 @@ class Operate extends Bn_Basic {
 			'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup.php', // 点击跳转地址
 			'topcolor' => '#FF0000', // 顶部颜色
 			'data' => array(
-				'first' => array('value' => '尊敬的家长您好，您所报名的如下信息：'),
+				'first' => array('value' => '尊敬的家长您好，您所报名的如下信息：
+'),
 				'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 				'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
 				'keyword3' => array('value' => $o_stu->getIdType(),'color'=>'#173177'),
 				'keyword4' => array('value' => $o_stu->getId(),'color'=>'#173177'),
 				'keyword5' => array('value' => $o_stu->getSignupDate(),'color'=>'#173177'),
-				'remark' => array('value' => '我们已收到，请您耐心等待下一步提示，谢谢。
+				'remark' => array('value' => '
+请您于2017年6月16日前关注报名状态。谢谢。
 				
 如需修改幼儿报名信息，请点击详情。')
 			)
@@ -387,13 +389,15 @@ class Operate extends Bn_Basic {
 				'url' => '', // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
-					'first' => array('value' => '您的报名已经成功录取！'),
+					'first' => array('value' => '您所报名的如下幼儿已经被我园录取，请按时带幼儿进行注册，未能按时注册视为自动放弃报名资格。
+'),
 					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
 					'keyword3' => array('value' => $o_stu->getIdType(),'color'=>'#173177'),
 					'keyword4' => array('value' => $o_stu->getId(),'color'=>'#173177'),
 					'keyword5' => array('value' => $o_stu->getClassMode(),'color'=>'#173177'),
-					'remark' => array('value' => '请携带您的幼儿进行报到，如有问题请联系学校相关人员，谢谢。')
+					'remark' => array('value' => '注册时间：2017年8月25日 08：30
+注册地点：北京市西城区红莲中里10号。')
 				)
 				);
 			$curlUtil->https_request($s_url, json_encode($data));
@@ -442,13 +446,15 @@ class Operate extends Bn_Basic {
 				'url' => '', // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
-					'first' => array('value' => '您好，您已经成功将下面信息删除：'),
+					'first' => array('value' => '您好，您已经成功将下面信息删除：
+'),
 					'keyword1' => array('value' => $o_sut_info->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_sut_info->getName(),'color'=>'#173177'),
 					'keyword3' => array('value' => $o_sut_info->getIdType(),'color'=>'#173177'),
 					'keyword4' => array('value' => $o_sut_info->getId(),'color'=>'#173177'),
 					'keyword5' => array('value' => $this->GetDateNow(),'color'=>'#173177'),
-					'remark' => array('value' => '如有问题，请联系我们，谢谢！')
+					'remark' => array('value' => '
+感谢您的参与，谢谢！')
 				)
 				);
 			$curlUtil->https_request($s_url, json_encode($data));
@@ -821,13 +827,15 @@ class Operate extends Bn_Basic {
 				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup.php', // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
-					'first' => array('value' => '已收到您的报名信息如下，并核验通过：'),
+					'first' => array('value' => '如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，错过视为自行放弃报名资格。
+'),
 					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
 					'keyword3' => array('value' => $o_admission_setup->getMeetDate(),'color'=>'#173177'),
 					'keyword4' => array('value' => $this->getMeetTime($o_admission_setup->getMeetTime()),'color'=>'#173177'),
 					'keyword5' => array('value' => $o_admission_setup->getMeetAddress(),'color'=>'#173177'),
-					'remark' => array('value' => '请按以上时间携带幼儿参加见面，谢谢。
+					'remark' => array('value' => '
+注意事项：居民户口簿、房产证明、免疫预防接种证等。
 					
 如需查看报名信息，请点击详情。')
 				)

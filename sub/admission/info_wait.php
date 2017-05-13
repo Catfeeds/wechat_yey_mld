@@ -22,7 +22,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
                             <div class="caption">等待完善信息列表</div>
-                            <div class="row" style="margin-right:-5px;">
+                            <div class="row">
 								  <div class="col-lg-6">
 								    <div class="input-group" style="width:300px;" >
 								      <input id="Vcl_KeyInfoWait" type="text" class="form-control" placeholder="幼儿编号/姓名/证件号" value="<?php echo($s_key)?>">

@@ -1,5 +1,9 @@
 <?php
 error_reporting(0);
+ini_set('date.timezone','Asia/Shanghai');
+require_once RELATIVITY_PATH . 'include/log.class.php';//初始化日志
+$logHandler= new CLogFileHandler(RELATIVITY_PATH.'userdata/log/log.csv');
+Log::Init($logHandler, 15);
 require_once RELATIVITY_PATH . 'include/db_connect.class.php';
 abstract class CRUD extends DB_Connect {
 	protected $Key;
