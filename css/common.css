@@ -158,7 +158,6 @@ img
 {
 	overflow:auto;
 	}
-
 /*头部*/
 .sss_top
 {
@@ -451,7 +450,9 @@ img
     border-right: 0px solid #ddd;
     margin-bottom:0px;
     border-radius: 0px;
-    }
+	border-color: transparent;
+	border:0px;
+    }	
 .sss_main .sss_main_sub .panel-heading
 {
     background-color:#FFFFFF;
@@ -493,7 +494,9 @@ img
 .sss_page
 {
     border-bottom: 1px solid #ddd;
+	border-top: 1px solid #ddd;
     overflow:hidden;
+	width:100%;
     }
 .sss_page .explain
 {
@@ -538,6 +541,32 @@ img
 	opacity:.7;
 	box-shadow:0px 6px 12px rgba(0,0,0,0.175);*/
 	display:none;
+}
+.sss_main .sss_main_sub .sss_sub_table .table_nav{
+	width:15%;
+	float:left;
+	border-right: 1px solid #ffffff;
+}
+.sss_main .sss_main_sub .sss_sub_table .table_nav div{
+	padding: 10px 15px;
+	cursor:pointer;
+	transition-duration: 0.3s;
+	background-color: #f9f9f9;
+	border-bottom: 1px solid #ffffff;
+}
+.sss_main .sss_main_sub .sss_sub_table .table_nav div.on{
+	background-color:#3498DB;
+	color:#ffffff;
+}
+.sss_main .sss_main_sub .sss_sub_table .table_nav div:hover{
+	background-color:#3498DB;
+	color:#ffffff;
+}
+.sss_main .sss_main_sub .sss_sub_table .table_nav+table{
+	width:85%;
+}
+.sss_main .sss_main_sub .sss_sub_table .table>tbody>tr>td{
+	border-top: 1px solid #ffffff;
 }
 /*表单*/
 .sss_form

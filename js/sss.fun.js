@@ -60,7 +60,12 @@ try {
     	});
 		$('.sss_gotop').click(function () {
 			$("body,html").animate({scrollTop:0}, 500);
-		});	
+		});
+		//Table导航的按钮切换效果
+		$('.sss_main .sss_main_sub .sss_sub_table .table_nav div').click(function () {
+			$($(this).siblings()).removeClass('on');
+			$(this).addClass('on')
+		});
 	});
 	verify_browser()
 }catch(e){}
@@ -409,6 +414,13 @@ function show_sub_table_title()
 			var width=$('.sss_sub_table .table thead tr th:nth-child('+i+')').width();
 			$('.sss_main .sss_main_sub .sss_main_sub_top .tablehead table thead tr th:nth-child('+i+')').width(width)
 		}
+		//如果有表格导航，那么需要修正宽度
+		if ($('.sss_main .sss_main_sub .sss_sub_table .table_nav').length>0)
+		{	
+			//获取table_nav的宽度
+			var width=$('.sss_main .sss_main_sub .sss_sub_table .table_nav').width();
+			$('.sss_main .sss_main_sub .sss_main_sub_top .tablehead').css('margin-left',width+'px')
+		}		
 		$('.sss_main .sss_main_sub .sss_main_sub_top .tablehead').show();
 	}else{
 		$('.sss_main .sss_main_sub .sss_main_sub_top .tablehead').hide();

@@ -7,60 +7,92 @@ require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
 require_once RELATIVITY_PATH . 'include/bn_user.class.php';
 require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
 class Operate extends Bn_Basic {
-	protected $N_PageSize= 25;
-	public function SyncClass($n_uid)
-	{
+	protected $N_PageSize= 50;
+	public function YeInfo($n_uid)
+	{	
 		if (! ($n_uid > 0)) {
 			$this->setReturn('parent.goto_login()');
 		}
-		sleep(1);
 		$o_user = new Single_User ( $n_uid );
-		if (!$o_user->ValidModule ( 120203 ))return; //如果没有权限，不返回任何值
-		//获取当前系统DeptId编号
-		$o_setup=new Admission_Setup(1);
-		$s_deptid=$o_setup->getDeptId();
-		$s_data = $this->Encrypt ( $s_deptid, 'E', KEY );
-		$request_data = array('deptid'=>$s_data);
-		$a_result_data=json_decode($this->HttpsRequest('http://yeygl.xchjw.cn/sub/webservice/download_class.php',$request_data));
-		if($a_result_data->Flag==1)
+		if (!$o_user->ValidModule ( 120201 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Student_Onboard_Info_Class_View();
+		$s_key=$this->getPost('key');
+		if ($s_key!='')
 		{
-			$a_data=$a_result_data->Data;
-			if (count($a_data)>0)
+			if ($this->getPost('other_key')!='')
 			{
-				//先清空班				
-				$o_class=new Student_Class();
-				$o_class->DeleteAll();
-			}
-			//开始同步本地班级数据
-			for($i=0;$i<count($a_data);$i++)
-			{
-				$a_temp=$a_data[$i];	
-				$o_class=new Student_Class();
-				$o_class->setClassId($a_temp->ClassId);
-				$o_class->setSchoolId($s_deptid);
-				$o_class->setClassNumber(0);
-				$o_class->setClassName($a_temp->ClassName);
-				$o_class->setGrade($a_temp->Grade);
-				$o_class->Save();		
-			}			
-			$a_result = array (
-	        	'flag'=>1,
-	        ); 
-		}else{
-			if ($a_result_data=='')
-			{
-				$a_result = array (
-	        		'flag'=>0,
-	        		'msg'=>'信息采集系统服务器未响应，请重试！'
-        		);
+				$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$this->getPost('other_key').'%') );
+				$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',$s_key) );
+				$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$this->getPost('other_key').'%') );
+				$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',$s_key) );
 			}else{
-				$a_result = array (
-	        		'flag'=>0,
-	        		'msg'=>'错误代码：'.$a_result_data->Msg
-        		);
+				$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',$s_key) );
+			}				
+		}else{
+			if ($this->getPost('other_key')!='')
+			{
+				$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$this->getPost('other_key').'%') );
+				$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$this->getPost('other_key').'%') );
+			}			
+		}
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			//区分年级
+			switch ($o_user->getGrade($i))
+			{
+				case 0:
+					$s_grade_name='半日班';
+						break;
+				case 1:
+					$s_grade_name='托班';
+						break;
+				case 2:
+					$s_grade_name='小班';
+					break;
+				case 3:
+					$s_grade_name='中班';
+					break;
+				case 4:
+					$s_grade_name='大班';
+					break;
 			}
-		}           
-		echo(json_encode ($a_result));
+			$a_button = array ();
+			array_push ( $a_button, array ('查看', "window.open('print.php?student_id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),
+				$o_user->getName ( $i ),
+				$s_grade_name.'('.$o_user->getClassName ( $i ).')',
+				$o_user->getSex ( $i ),
+				$o_user->getBirthday ( $i ),
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType( $i ).'</span>',
+				$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh1Phone ( $i ).'</span>',
+				$a_button
+				));				
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassId', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
+		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'证件号码', '', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'第一监护人', '', 0, 100);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0, 65);
+		$this->SendJsonResultForTable($n_allcount,'YeInfo', 'yes', $n_page, $a_title, $a_row);
 	}
 }
 
