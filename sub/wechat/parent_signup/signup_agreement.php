@@ -5,7 +5,7 @@ $s_title='报名须知';
 require_once '../header.php';
 ?>
  	<div class="page__hd" style="padding:15px;">
-        <h1 class="page__title" style="font-size:25px;">马连道幼儿园2016年招生公告</h1>
+        <h1 class="page__title" style="font-size:25px;text-align:center;padding-top:20px;padding-bottom:15px;">2016年招生公告</h1>
         <p class="page__desc">
 根据上级指示精神，现对我园2016年招生工作公告如下：<br/><br/>
 一、招生年龄范围：<br/>
