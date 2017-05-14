@@ -22,7 +22,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 ?>
 
                     <div class="panel panel-default sss_sub_table">
-                        <div class="panel-heading">
+                        <div class="panel-heading" style="overflow:inherit;height:43px;">
                             <div class="caption">在园幼儿信息列表</div>                            
                             <div class="row">
 								  <div class="col-lg-6">
@@ -34,10 +34,20 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								    </div>
 								  </div>
 								</div>
-						</div>
+								<div class="btn-group output" style="float:right;outline: medium none;margin-left:10px;display:none">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    导出 <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" style="transition-duration: 0.3s;">
+    <li><a href="#">Excel 全国系统数据项</a></li>
+    <li><a href="#">Excel 花名册</a></li>
+    <li><a href="#">PDF 幼儿信息</a></li>
+  </ul>
+</div>
+								</div>
 						<div class="table_nav">
-							<div class="<?php if($s_key=='')echo('on')?>" onclick="table_sort('<?php echo($s_fun)?>','Name','A',1,'','')">
-								全部幼儿
+							<div class="<?php if($s_key=='')echo('on')?>" onclick="change_table_nav('<?php echo($s_fun)?>','')">
+								所有信息
 							</div>
 							<?php 
 							 $o_table = new Student_Class();
@@ -71,7 +81,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 							 			break;
 							 	}
 							 	?>
-							 	<div class="<?php echo($s_class)?>" onclick="table_sort('<?php echo($s_fun)?>','Name','A',1,'<?php echo($o_table->getClassId($i))?>','')">
+							 	<div class="<?php echo($s_class)?>" onclick="change_table_nav('<?php echo($s_fun)?>','<?php echo($o_table->getClassId($i))?>')">
 							 	<?php echo($s_grade_name.'('.$o_table->getClassName($i).')');?>
 							 	</div>
 							 	<?php
@@ -94,6 +104,31 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 		
 <script>
 //clear_cookie('YeInfoList');//清除cookie为了让每次点击进去都显示新的，而不是待缓存的。
+function change_table_nav(fun,class_id)
+{
+	table_sort(fun,'Name','A',1,class_id,'');
+	$('#Vcl_KeyYeInfo').val('');
+	if (class_id!='')
+	{
+		//显示导出按钮
+		$('.output').css('display','black');
+	}else{
+		//不显示导出按钮
+		$('.output').css('display','none');
+	}
+}
+set_btu_state('<?php echo($s_key)?>');
+function set_btu_state(class_id)
+{
+	if (class_id!='')
+	{
+		//显示导出按钮
+		$('.output').css('display','black');
+	}else{
+		//不显示导出按钮
+		$('.output').css('display','none');
+	}
+}
 var table='<?php echo($s_fun)?>';
 </script>
 <?php

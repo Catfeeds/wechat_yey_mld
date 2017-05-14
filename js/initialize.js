@@ -25,6 +25,7 @@ var RootPath='/';
             'js/bootstrap/css/bootstrap.min.css',
             'js/bootstrap/css/bootstrap-select.min.css',
             'js/bootstrap/js/icheck/skins/all.css',
+			'js/awesome/css/font-awesome.min.css',
             'css/public.css',
 			'css/common.css'
         ],

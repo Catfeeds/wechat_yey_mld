@@ -24,9 +24,7 @@ class Operate extends Bn_Basic {
 			if ($this->getPost('other_key')!='')
 			{
 				$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$this->getPost('other_key').'%') );
-				$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',$s_key) );
 				$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$this->getPost('other_key').'%') );
-				$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',$s_key) );
 			}else{
 				$o_user->PushWhere ( array ('&&', 'ClassNumber', '=',$s_key) );
 			}				
