@@ -70,7 +70,8 @@ class Operate extends Bn_Basic {
 					break;
 			}
 			$a_button = array ();
-			array_push ( $a_button, array ('查看', "window.open('print.php?student_id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
+			array_push ( $a_button, array ('查看', "window.open('print.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
+			array_push ( $a_button, array ('下载PDF', "window.open('download_pdf_single.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
 				$o_user->getName ( $i ),
@@ -86,12 +87,12 @@ class Operate extends Bn_Basic {
 		$a_title = array ();
 		$a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassId', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
+		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassId', 0, 90);
+		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'证件号码', '', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'第一监护人', '', 0, 100);
-		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0, 65);
+		$a_title=$this->setTableTitle($a_title,'证件号码', '', 0, 90);
+		$a_title=$this->setTableTitle($a_title,'第一监护人', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,75);
 		$this->SendJsonResultForTable($n_allcount,'YeInfo', 'yes', $n_page, $a_title, $a_row);
 	}
 }

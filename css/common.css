@@ -551,7 +551,7 @@ img
 	padding: 10px 15px;
 	cursor:pointer;
 	transition-duration: 0.3s;
-	background-color: #f9f9f9;
+	background-color: #EEEEEE;
 	border-bottom: 1px solid #ffffff;
 }
 .sss_main .sss_main_sub .sss_sub_table .table_nav div.on{
@@ -564,6 +564,7 @@ img
 }
 .sss_main .sss_main_sub .sss_sub_table .table_nav+table{
 	width:85%;
+	float:right;
 }
 .sss_main .sss_main_sub .sss_sub_table .table>tbody>tr>td{
 	border-top: 1px solid #ffffff;

@@ -35,7 +35,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  </div>
 								</div>
 						</div>
-						<div class="table_nav" style="width:10%;">
+						<div class="table_nav">
 							<div class="<?php if($s_key=='')echo('on')?>" onclick="table_sort('<?php echo($s_fun)?>','Name','A',1,'','')">
 								全部幼儿
 							</div>
@@ -78,7 +78,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 							 }
 							?>
 						</div>
-                        <table class="table table-striped" style="width:90%;">
+                        <table class="table table-striped">
                             <thead>
                                 <tr></tr>
                             </thead>

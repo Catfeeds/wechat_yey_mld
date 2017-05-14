@@ -419,10 +419,27 @@ function show_sub_table_title()
 		{	
 			//获取table_nav的宽度
 			var width=$('.sss_main .sss_main_sub .sss_sub_table .table_nav').width();
+			//如果导航太长，需要当滚动条到底时能显示出来
+			var nav_height=$('.sss_main .sss_main_sub .sss_sub_table .table_nav').height()+50
+			var footer_height=81
+			var window_height=$(document).height()-$(document).scrollTop();
+			if ((nav_height+footer_height)>window_height)
+			{
+				//如果底部定过导航，那么需要将导航网上移动
+				nav_height=window_height-footer_height-nav_height
+				//window.alert($(document).height()-$(document).scrollTop())
+				$('.sss_main .sss_main_sub .sss_sub_table .table_nav').css('margin-top',($(document).scrollTop()-176-footer_height+3)+'px')
+			}else{
+				$('.sss_main .sss_main_sub .sss_sub_table .table_nav').css('margin-top',($(document).scrollTop()-176)+'px')
+			}			
 			$('.sss_main .sss_main_sub .sss_main_sub_top .tablehead').css('margin-left',width+'px')
 		}		
 		$('.sss_main .sss_main_sub .sss_main_sub_top .tablehead').show();
 	}else{
+		if ($('.sss_main .sss_main_sub .sss_sub_table .table_nav').length>0)
+		{
+			$('.sss_main .sss_main_sub .sss_sub_table .table_nav').css('margin-top','0px')
+		}		
 		$('.sss_main .sss_main_sub .sss_main_sub_top .tablehead').hide();
 		$('.sss_main .sss_main_sub .sss_main_sub_top .tablehead').html('');
 	}

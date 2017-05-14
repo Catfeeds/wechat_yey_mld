@@ -378,6 +378,7 @@ class Operate extends Bn_Basic {
 	    {
 	    	//发送消息模板
 	    	//发送信息提交成功提醒
+	    	$o_sysinfo=new Base_Setup(1);
 		    require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';
 			$o_token=new accessToken();
 			$curlUtil = new curlUtil();
@@ -386,7 +387,7 @@ class Operate extends Bn_Basic {
 			$data = array(
 		    	'touser' => $o_parent->getOpenId(), // openid是发送消息的基础
 				'template_id' => $this->getWechatSetup('MSGTMP_06'), // 模板id
-				'url' => '', // 点击跳转地址
+				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup.php', // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
 					'first' => array('value' => '您所报名的如下幼儿已经被我园录取，请按时带幼儿进行注册，未能按时注册视为自动放弃报名资格。
@@ -397,7 +398,9 @@ class Operate extends Bn_Basic {
 					'keyword4' => array('value' => $o_stu->getId(),'color'=>'#173177'),
 					'keyword5' => array('value' => $o_stu->getClassMode(),'color'=>'#173177'),
 					'remark' => array('value' => '注册时间：2017年8月25日 08：30
-注册地点：北京市西城区红莲中里10号。')
+注册地点：北京市西城区红莲中里10号。
+				
+如需查看报名信息，请点击详情。')
 				)
 				);
 			$curlUtil->https_request($s_url, json_encode($data));
