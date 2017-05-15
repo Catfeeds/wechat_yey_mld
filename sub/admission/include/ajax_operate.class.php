@@ -55,13 +55,11 @@ class Operate extends Bn_Basic {
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
 				$o_user->getStudentId ( $i ),
-				$o_user->getName ( $i ),
-				$o_user->getSex ( $i ),
+				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
-				$o_user->getIdType( $i ),
-				$o_user->getId ( $i ),
-				$o_user->getJh1Name ( $i ),
-				$o_user->getSignupPhone ( $i )
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
+				$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getSignupPhone ( $i ).'</span>',
+				$o_user->getSignupPhoneBackup ( $i )
 				));				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
@@ -69,12 +67,10 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'<input style="margin-top:0px;" type="checkbox" onclick="select_all(this)"/> 全选', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
 		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'证件类型', 'IdType', 0, 60);
-		$a_title=$this->setTableTitle($a_title,'证件号码', 'Id', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'第一监护人', 'Jh1Name', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'监护人手机', '', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
 		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function WaitAuditTable($n_uid)
@@ -121,16 +117,20 @@ class Operate extends Bn_Basic {
 		$n_count = $o_user->getCount ();
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
+			$s_remark='';
+			if ($o_user->getAuditorName ( $i )!='')
+			{
+				$s_remark=$o_user->getAuditorName ( $i ).'<br/><span style="color:#999999">备注：'.$o_user->getAuditorRemark ( $i ).'</span>';
+			}
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
 				$o_user->getStudentId ( $i ),
-				$o_user->getName ( $i ),
-				$o_user->getSex ( $i ),
+				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
-				$o_user->getIdType( $i ),
-				$o_user->getId ( $i ),
-				$o_user->getJh1Name ( $i ),
-				$o_user->getSignupPhone ( $i )
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
+				$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getSignupPhone ( $i ).'</span>',
+				$o_user->getSignupPhoneBackup ( $i ),
+				$s_remark
 				));				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
@@ -138,13 +138,12 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'<input style="margin-top:0px;" type="checkbox" onclick="select_all(this)"/> 全选', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
 		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'证件类型', 'IdType', 0, 60);
-		$a_title=$this->setTableTitle($a_title,'证件号码', 'Id', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'第一监护人', 'Jh1Name', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'监护人手机', '', 0, 100);
-		$this->SendJsonResultForTable($n_allcount,'WaitAuditTable', 'no', $n_page, $a_title, $a_row);
+		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'信息核验员', '', 0, 80);
+		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function AuditPassTable($n_uid)
 	{	
@@ -193,13 +192,11 @@ class Operate extends Bn_Basic {
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
 				$o_user->getStudentId ( $i ),
-				$o_user->getName ( $i ),
-				$o_user->getSex ( $i ),
+				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
-				$o_user->getIdType( $i ),
-				$o_user->getId ( $i ),
-				$o_user->getJh1Name ( $i ),
-				$o_user->getSignupPhone ( $i ),
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
+				$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getSignupPhone ( $i ).'</span>',
+				$o_user->getSignupPhoneBackup ( $i ),
 				$o_user->getAuditorName ( $i )
 				));				
 		}
@@ -208,14 +205,12 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'<input style="margin-top:0px;" type="checkbox" onclick="select_all(this)"/> 全选', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
 		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'证件类型', 'IdType', 0, 60);
-		$a_title=$this->setTableTitle($a_title,'证件号码', 'Id', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'第一监护人', 'Jh1Name', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'监护人手机', '', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'信息核验员', '', 0, 80);
-		$this->SendJsonResultForTable($n_allcount,'AuditPassTable', 'no', $n_page, $a_title, $a_row);
+		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function HealthWaitTable($n_uid)
 	{	
@@ -264,13 +259,11 @@ class Operate extends Bn_Basic {
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
 				$o_user->getStudentId ( $i ),
-				$o_user->getName ( $i ),
-				$o_user->getSex ( $i ),
+				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
-				$o_user->getIdType( $i ),
-				$o_user->getId ( $i ),
-				$o_user->getJh1Name ( $i ),
-				$o_user->getSignupPhone ( $i )
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
+				$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getSignupPhone ( $i ).'</span>',
+				$o_user->getSignupPhoneBackup ( $i )
 				));				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
@@ -278,13 +271,11 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'<input style="margin-top:0px;" type="checkbox" onclick="select_all(this)"/> 全选', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
 		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'证件类型', 'IdType', 0, 60);
-		$a_title=$this->setTableTitle($a_title,'证件号码', 'Id', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'第一监护人', 'Jh1Name', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'监护人手机', '', 0, 100);
-		$this->SendJsonResultForTable($n_allcount,'HealthWaitTable', 'no', $n_page, $a_title, $a_row);
+		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
+		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function SendAuditNotice($n_uid)
 	{	
@@ -501,15 +492,14 @@ class Operate extends Bn_Basic {
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
 			array_push ($a_row, array (
-				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '"/>',
+				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
 				$o_user->getStudentId ( $i ),
-				$o_user->getName ( $i ),
-				$o_user->getSex ( $i ),
+				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
-				$o_user->getIdType( $i ),
-				$o_user->getId ( $i ),
-				$o_user->getJh1Name ( $i ),
-				$o_user->getSignupPhone ( $i )
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
+				$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getSignupPhone ( $i ).'</span>',
+				$o_user->getSignupPhoneBackup ( $i ),
+				$o_user->getMeetAuditorName ( $i )
 				));				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
@@ -517,13 +507,12 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'<input style="margin-top:0px;" type="checkbox" onclick="select_all(this)"/> 全选', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
 		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'证件类型', 'IdType', 0, 60);
-		$a_title=$this->setTableTitle($a_title,'证件号码', 'Id', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'第一监护人', 'Jh1Name', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'监护人手机', '', 0, 100);
-		$this->SendJsonResultForTable($n_allcount,'MeetResultTable', 'no', $n_page, $a_title, $a_row);
+		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'见面审核员', '', 0, 80);
+		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function InfoWaitTable($n_uid)
 	{	
@@ -570,27 +559,25 @@ class Operate extends Bn_Basic {
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
 			array_push ($a_row, array (
+				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
 				$o_user->getStudentId ( $i ),
-				$o_user->getName ( $i ),
-				$o_user->getSex ( $i ),
+				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
-				$o_user->getIdType( $i ),
-				$o_user->getId ( $i ),
-				$o_user->getJh1Name ( $i ),
-				$o_user->getSignupPhone ( $i )
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
+				$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getSignupPhone ( $i ).'</span>',
+				$o_user->getSignupPhoneBackup ( $i )
 				));				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'<input style="margin-top:0px;" type="checkbox" onclick="select_all(this)"/> 全选', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
 		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'证件类型', 'IdType', 0, 60);
-		$a_title=$this->setTableTitle($a_title,'证件号码', 'Id', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'第一监护人', 'Jh1Name', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'监护人手机', '', 0, 100);
-		$this->SendJsonResultForTable($n_allcount,'InfoWaitTable', 'no', $n_page, $a_title, $a_row);
+		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
+		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function AdmissionTable($n_uid)
 	{	
@@ -639,29 +626,25 @@ class Operate extends Bn_Basic {
 			$a_button = array ();
 			array_push ( $a_button, array ('查看', "window.open('print.php?student_id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
 			array_push ($a_row, array (
+				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
 				$o_user->getStudentId ( $i ),
-				$o_user->getName ( $i ),
-				$o_user->getSex ( $i ),
+				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
-				$o_user->getIdType( $i ),
-				$o_user->getId ( $i ),
-				$o_user->getJh1Name ( $i ),
-				$o_user->getSignupPhone ( $i ),
-				$a_button
-				));				
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
+				$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getSignupPhone ( $i ).'</span>',
+				$o_user->getSignupPhoneBackup ( $i )
+				));			
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'<input style="margin-top:0px;" type="checkbox" onclick="select_all(this)"/> 全选', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 60);
 		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'证件类型', 'IdType', 0, 60);
-		$a_title=$this->setTableTitle($a_title,'证件号码', 'Id', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'第一监护人', 'Jh1Name', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'监护人手机', '', 0, 100);
-		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0, 65);
-		$this->SendJsonResultForTable($n_allcount,'AdmissionTable', 'yes', $n_page, $a_title, $a_row);
+		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
+		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
 	}	
 	public function AdmissionSetup($n_uid)
 	{

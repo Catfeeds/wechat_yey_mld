@@ -1784,6 +1784,7 @@ class Student_Info_Wechat_Wiew extends CRUD
     protected $SignupPhoneBackup;
     protected $HIsYizhi;
     protected $HIsGroup;
+    protected $AuditorName;
 
     protected function DefineKey()
     {
@@ -1913,6 +1914,7 @@ class Student_Info_Wechat_Wiew extends CRUD
                     'signup_phone' => 'SignupPhone',
                     'signup_phone_backup' => 'SignupPhoneBackup',
                     'h_is_yizhi' => 'HIsYizhi',
+        			'auditor_name' => 'AuditorName',
                     'h_is_group' => 'HIsGroup'
         ));
     }

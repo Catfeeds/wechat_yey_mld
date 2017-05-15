@@ -821,6 +821,7 @@ class Operate extends Bn_Basic {
 		for($j=0;$j<$o_wechat_user->getAllCount();$j++)
 		{
 			//立即发送见面信息模板消息
+			$s_meet_time=$this->getMeetTime($o_admission_setup->getMeetTime());
 			$curlUtil = new curlUtil();
 		    $o_parent=new WX_User_Info($o_wechat_user->getUserId($j));
 			$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
@@ -835,7 +836,7 @@ class Operate extends Bn_Basic {
 					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
 					'keyword3' => array('value' => $o_admission_setup->getMeetDate(),'color'=>'#173177'),
-					'keyword4' => array('value' => $this->getMeetTime($o_admission_setup->getMeetTime()),'color'=>'#173177'),
+					'keyword4' => array('value' => $s_meet_time,'color'=>'#173177'),
 					'keyword5' => array('value' => $o_admission_setup->getMeetAddress(),'color'=>'#173177'),
 					'remark' => array('value' => '
 注意事项：居民户口簿、房产证明、免疫预防接种证等。
@@ -844,7 +845,29 @@ class Operate extends Bn_Basic {
 				)
 				);
 			$curlUtil->https_request($s_url, json_encode($data));
-			
+			//保存到消息提醒，共用户可查阅
+			$o_msg=new Wechat_Wx_User_Reminder();
+			$o_msg->setUserId($o_wechat_user->getUserId($j));
+			$o_msg->setCreateDate($this->GetDateNow());
+			$o_msg->setSendDate($this->GetDate());
+			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_03'));
+			$o_msg->setOpenId($o_parent->getOpenId());
+			$o_msg->setActivityId(0);
+			$o_msg->setSend(1);
+			$o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，错过视为自行放弃报名资格。
+');
+			$o_msg->setKeyword1($o_stu->getStudentId());
+			$o_msg->setKeyword2($o_stu->getName());
+			$o_msg->setKeyword3($o_admission_setup->getMeetDate());
+			$o_msg->setKeyword4($s_meet_time);
+			$o_msg->setKeyword5($o_admission_setup->getMeetAddress());
+			$o_msg->setRemark('
+注意事项：居民户口簿、房产证明、免疫预防接种证等。
+					
+如需查看报名信息，请点击详情。');
+			$o_msg->setUrl('');
+			$o_msg->setKeywordSum(5);
+			$o_msg->Save();
 		}	    
 	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'audit_search_success.php"');
 	}
@@ -887,7 +910,12 @@ class Operate extends Bn_Basic {
 		}
 		$o_stu->setAuditorId($o_stu_wechat->getUid(0));
 	    $o_stu->setAuditorName($o_stu_wechat->getName(0));
-	    $o_stu->setAuditRemark($this->getPost ( 'AuditRemark' ));
+	    if ($this->getPost ( 'AuditRemark' )=='')
+	    {
+	    	$o_stu->setAuditRemark('空');//把这里强制写上文字，是非了能区分，哪些没通过，哪些没来
+	    }else{
+	    	$o_stu->setAuditRemark($this->getPost ( 'AuditRemark' ));
+	    }   
 		$o_stu->Save();	
 	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'audit_search.php?"+Date.parse(new Date())');
 	}

@@ -36,7 +36,7 @@ $data='{
           	"sub_button": [
                 {
                     "type":"click",
-		          	"name":"师友活动",
+		          	"name":"师幼活动",
 		          	"key": "2"
                 },
                 {
