@@ -167,7 +167,6 @@ class Operate extends Bn_Basic {
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1002]\');' );
 		}
 		$o_stu=new Student_Info($this->getPost ( 'StudentId' ));		
-		$o_setup=new Admission_Setup(1); 
 		//验证是否可以修改
 		if ($o_stu->getState()!=5)
 		{
@@ -378,6 +377,7 @@ class Operate extends Bn_Basic {
 	    {
 	    	//发送消息模板
 	    	//发送信息提交成功提醒
+	    	$o_admission_setup=new Admission_Setup(1);
 	    	$o_sysinfo=new Base_Setup(1);
 		    require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';
 			$o_token=new accessToken();
@@ -404,6 +404,25 @@ class Operate extends Bn_Basic {
 				)
 				);
 			$curlUtil->https_request($s_url, json_encode($data));
+			//保存到消息提醒，共用户可查阅
+			$o_msg=new Wechat_Wx_User_Reminder();
+			$o_msg->setUserId($n_uid);
+			$o_msg->setCreateDate($this->GetDateNow());
+			$o_msg->setSendDate($this->GetDate());
+			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_06'));
+			$o_msg->setOpenId($o_parent->getOpenId());
+			$o_msg->setActivityId(0);
+			$o_msg->setSend(1);
+			$o_msg->setFirst('您所报名的如下幼儿已经被我园录取，请按时带幼儿进行注册，未能按时注册视为自动放弃报名资格。');
+			$o_msg->setKeyword1($o_stu->getStudentId());
+			$o_msg->setKeyword2($o_stu->getName());
+			$o_msg->setKeyword3($o_stu->getIdType());
+			$o_msg->setKeyword4($o_stu->getId());
+			$o_msg->setKeyword5($o_stu->getClassMode());
+			$o_msg->setRemark('注册时间：2017年8月25日 08：30<br/>注册地点：北京市西城区红莲中里10号。');
+			$o_msg->setUrl('');
+			$o_msg->setKeywordSum(5);
+			$o_msg->Save();
 	    	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'提交正式信息成功！\',function(){parent.location="'.$this->getPost ( 'Url' ).'my_signup.php?"+Date.parse(new Date())})');
 	    }else{
 	    	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'保存草稿成功！\',function(){parent.location="'.$this->getPost ( 'Url' ).'my_signup.php?"+Date.parse(new Date())})');
@@ -811,7 +830,6 @@ class Operate extends Bn_Basic {
 		$o_stu->Save();	
 		//发送模板消息
 		$o_admission_setup=new Admission_Setup(1);
-		$o_system_setup=new Base_Setup(1);
 		$o_sysinfo=new Base_Setup(1);
 		require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';		    
 		$o_token=new accessToken();
@@ -854,17 +872,13 @@ class Operate extends Bn_Basic {
 			$o_msg->setOpenId($o_parent->getOpenId());
 			$o_msg->setActivityId(0);
 			$o_msg->setSend(1);
-			$o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，错过视为自行放弃报名资格。
-');
+			$o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，错过视为自行放弃报名资格。');
 			$o_msg->setKeyword1($o_stu->getStudentId());
 			$o_msg->setKeyword2($o_stu->getName());
 			$o_msg->setKeyword3($o_admission_setup->getMeetDate());
 			$o_msg->setKeyword4($s_meet_time);
 			$o_msg->setKeyword5($o_admission_setup->getMeetAddress());
-			$o_msg->setRemark('
-注意事项：居民户口簿、房产证明、免疫预防接种证等。
-					
-如需查看报名信息，请点击详情。');
+			$o_msg->setRemark('注意事项：居民户口簿、房产证明、免疫预防接种证等。');
 			$o_msg->setUrl('');
 			$o_msg->setKeywordSum(5);
 			$o_msg->Save();
