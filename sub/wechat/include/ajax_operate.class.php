@@ -387,7 +387,7 @@ class Operate extends Bn_Basic {
 			$data = array(
 		    	'touser' => $o_parent->getOpenId(), // openid是发送消息的基础
 				'template_id' => $this->getWechatSetup('MSGTMP_06'), // 模板id
-				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup.php', // 点击跳转地址
+				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId(), // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
 					'first' => array('value' => '您所报名的如下幼儿已经被我园录取，请按时带幼儿进行注册，未能按时注册视为自动放弃报名资格。

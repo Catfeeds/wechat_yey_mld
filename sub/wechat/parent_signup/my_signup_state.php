@@ -154,6 +154,10 @@ switch($o_stu->getState(0))
     		 	</div>
 		';
 		break;
+	default:
+		echo "<script>location.href='my_signup.php'</script>"; 
+		exit(0);
+		break;
 }
 ?>
 <style>
@@ -178,9 +182,41 @@ switch($o_stu->getState(0))
                 <?php echo($s_html)?>
                 <div class="weui-media-box weui-media-box_text">
                     <h4 class="weui-media-box__title"><?php echo(str_replace('如需查看幼儿报名信息，请点击详情', '', $o_reminder->getRemark(0)))?></h4>
-                </div>
-            </div>
-            
+                    <?php 
+                    if ($o_stu->getState(0)==4)
+                    {
+                    ?>
+                	<h4 class="weui-media-box__title" style="text-align:center;font-size:22px;padding-top:15px;padding-bottom:15px;"><b>体检注意事项</b></h4>
+                    <h4 class="weui-media-box__title" style="font-size:14px;color:#333333">
+1. 请家长尽量按照园所通知的体检日期进行体检，做到分散检查，避免单日过度拥挤。<br/><br/>
+2. 幼儿入园体检化验需空腹，请幼儿在体检前8小时禁食、禁奶，如体检当日已进食，请择日抽血。<br/><br/>
+3. 如幼儿生病或正在接受药物治疗，请在身体恢复正常后预约入园体检，预约电话83541354。<br/><br/>
+4. 请家长尽量携带幼儿医保卡就诊挂号，减少等待时间、避免手写出现错误信息。<br/><br/>
+5. 体检报告由幼儿园统一领取。<br/><br/>
+体检时间：2017年7月12日上午7:30<br/>
+体检机构：西城妇幼保健院-儿保中心<br/>
+机构地址：平原里小区19号（健宫医院对面）<br/>
+公交车站：自新路北（83路;133路;381路;特14路;专13路）
+					</h4>
+					<?php 
+                    }
+					?>
+					<?php 
+                    if ($o_stu->getState(0)==6)
+                    {
+                    ?>
+                	<h4 class="weui-media-box__title" style="text-align:center;font-size:22px;padding-top:15px;padding-bottom:15px;"><b>报到注册注意事项</b></h4>
+                    <h4 class="weui-media-box__title" style="font-size:14px;color:#333333">
+1. 请您到工商银行的任意一个网点用幼儿的名字办理一张用于收费业务的银行卡，同时开通此卡的网上银行功能。<br/><br/>
+2. 用A4纸复印以上银行卡的正面（带卡号面），在空白处写上持卡人的姓名、卡号、家长手机号，注册登记时交到幼儿园财务室。<br/><br/>
+3. 携带幼儿保健记录本（需到原来管理的保健科迁出）并于注册登记时交到幼儿园保健室。<br/><br/>
+4. 用A4纸复印预防接种证，并于注册登记时交到幼儿园保健室。
+					</h4>
+					<?php 
+                    }
+					?>
+                </div>    
+            </div>            
         </div>
      </div>
      <br/>

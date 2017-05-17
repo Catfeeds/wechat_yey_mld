@@ -385,7 +385,7 @@ class Operate extends Bn_Basic {
 				    $o_msg->setRemark('请您按照如上时段、地址进行信息核验，感谢您的配合。
 				    
 如需查看幼儿报名信息，请点击详情');
-				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup.php');
+				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId().'');
 				    $o_msg->setKeywordSum(4);
 				    $o_msg->Save();
 				}				
