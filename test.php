@@ -7,7 +7,7 @@ header ( 'content-type:text/html; charset=utf-8' );
 $key = 'www.bjsql.com';
 $license = 'MNJIHKI6525489';
 $s_data = encrypt ( $license, 'E', $key );
-$request_data = array('License'=>$s_data,'StudentId'=>encrypt ('37186', 'E', $key ));
+
 //$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/download_class.php',$request_data));
 //$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_stu_id.php',$request_data));
 //$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_single_stu_info.php',$request_data));
@@ -23,7 +23,54 @@ if($a_result->Flag==1)
 	echo($a_result->Msg);
 }
 */
-echo(https_request('http://yeygl.xchjw.cn/sub/webservice/download_class.php',$request_data));
+
+/*
+ * 修改班级接口示例
+ */
+/*
+$a_data=array(
+		'ClassId'=>661,
+		'Grade'=>3,
+		'ClassName'=>'中一班1'
+		);
+$request_data = array('License'=>$s_data,'Data'=>encrypt (json_encode($a_data), 'E', $key ));
+$s_result=https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/modify_class.php',$request_data);
+echo($s_result);
+*/
+/*
+ * 演示结束，错误码如果为1005：未找到指定班级，1004：数据库写入错误
+ */
+
+
+/*
+ * 修改班级接口示例
+ */
+/*
+$a_data=array(
+		'Grade'=>3,
+		'ClassName'=>'中一班1'
+		);
+$request_data = array('License'=>$s_data,'Data'=>encrypt (json_encode($a_data), 'E', $key ));
+$s_result=https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/add_class.php',$request_data);
+echo($s_result);
+*/
+/*
+ * 演示结束，如果成功，会返回{"Flag":"1","ClassId":1843}，如果错误代码1004：数据库写入错误
+ */
+
+/*
+ * 删除班级接口示例
+ */
+/*
+$request_data = array('License'=>$s_data,'ClassId'=>encrypt ('1685', 'E', $key ));
+$s_result=https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/delete_class.php',$request_data);
+echo($s_result);
+*/
+/*
+ * 演示结束，如果成功，会返回{"Flag":"1"}，如果错误代码1006:班级下面有幼儿，不能删除
+ */
+
+
 function https_request($url, $data = null) {
 	$curl = curl_init ();
 	curl_setopt ( $curl, CURLOPT_URL, $url );
