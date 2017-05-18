@@ -25,6 +25,12 @@ if ($o_stu->getState(0)<2)
 	echo "<script>location.href='meet_search_failed.php?id=2'</script>"; 
 	exit(0);
 }
+if ($o_stu->getState(0)>2)
+{
+	//没有通知信息核验
+	echo "<script>location.href='meet_search_failed.php'</script>"; 
+	exit(0);
+}
 ?>
 
 	<form action="../include/bn_submit.switch.php" id="submit_form" method="post" target="ajax_submit_frame" onsubmit="this.submit()">

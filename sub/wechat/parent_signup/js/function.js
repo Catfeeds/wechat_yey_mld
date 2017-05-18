@@ -469,6 +469,13 @@ function checkId(pId){
     Ai+=arrVerifyCode[ret %=11];     
     return pId.length ==18 && pId != Ai?"身份证输入错误！":Ai;        
 }
+function isMobile(str) 
+{
+    if (str.toString().length != 11) return false;
+    var prefix = [130,147,178,176,133,135,189,137,136,131,134,138,139,150,151,152,155,156,185,132,153,158,177,187,182,159,186,180,181,157,182,183,187,188,145,147,184];
+    var re = new RegExp("^(" + prefix.join("|") + ")\\d+$");
+    return re.test(str);
+}
 function submit_signin(modify)
 {
 	if (document.getElementById("Vcl_Name").value=="")
@@ -661,12 +668,26 @@ function submit_signin(modify)
 	{
 		Dialog_Message("报名联系方式的 [监护人手机号] 不能为空！",function(){
 			document.getElementById("Vcl_SignupPhone").focus()
-		})		
+		})	
 		return
 	}
+	if (isMobile(document.getElementById("Vcl_SignupPhone").value)==false)
+	{
+		Dialog_Message("请输入正确的 [监护人手机号]！",function(){
+			document.getElementById("Vcl_SignupPhone").focus()
+		})	
+		return	
+	}	
 	if (document.getElementById("Vcl_SignupPhoneBackup").value=="")
 	{
 		Dialog_Message("报名联系方式的 [备用联系电话] 不能为空！",function(){
+			document.getElementById("Vcl_SignupPhoneBackup").focus()
+		})		
+		return
+	}
+	if (document.getElementById("Vcl_SignupPhone").value==document.getElementById("Vcl_SignupPhoneBackup").value)
+	{
+		Dialog_Message("[备用联系电话]与[监护人手机号]不能相同！",function(){
 			document.getElementById("Vcl_SignupPhoneBackup").focus()
 		})		
 		return
