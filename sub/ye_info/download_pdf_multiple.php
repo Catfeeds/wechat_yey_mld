@@ -2,70 +2,36 @@
 set_time_limit(0); 
 error_reporting(0);
 define ( 'RELATIVITY_PATH', '../../' );
-define ( 'MODULEID', 1000 );
+define ( 'MODULEID', 120200 );
 $O_Session = '';
 require_once RELATIVITY_PATH . 'include/it_include.inc.php';
-
-require_once RELATIVITY_PATH . 'include/db_view.class.php';
 require_once RELATIVITY_PATH . 'include/db_table.class.php';
-require_once RELATIVITY_PATH . 'include/bn_user.class.php';
-$O_Session->ValidModuleForPage ( MODULEID );
 $o_user = new Single_User ( $O_Session->getUid () );
-$s_file_name='全区幼儿信息列表';
-if (isset ( $_GET ['deptid'] )) {
-	$S_Type = $_GET ['deptid'];
-	$o_dept=new Base_Dept($S_Type);
-	$s_file_name=$o_dept->getName();
-} else {
-	$S_Type = 0;
+if ($o_user->ValidModule ( MODULEID ) == false) {
+	echo('No right.');
+	exit ( 0 );//没有权限
 }
-if (isset ( $_GET ['grade'] ) && $_GET ['grade']>0) {
-	$S_Grade = $_GET ['grade'];
-	if ($S_Grade==1)$s_file_name='托班';
-	if ($S_Grade==2)$s_file_name='小班';
-	if ($S_Grade==3)$s_file_name='中班';
-	if ($S_Grade==4)$s_file_name='大班';
+if (isset ( $_GET ['classid'] ) && $_GET ['classid']>0) {
+	$o_class=new Student_Class();
+	$o_class->PushWhere ( array ('&&', 'ClassId', '=',$_GET ['classid']) );
+	if ($o_class->getAllCount()>0){
+		$s_file_name=$o_class->getClassName(0);
+	}else{
+		echo('ID error.');
+		echo(0);//Id不合法
+	}
 } else {
-	$S_Grade = 0;
-}
-if (isset ( $_GET ['class'] ) && $_GET ['class']>0) {
-	$S_Class = $_GET ['class'];
-	$o_class=new Base_Dept_Class($S_Class);
-	$s_file_name=$o_class->getClassName();
-} else {
-	$S_Class = 0;
+	echo('Parameter error.');
+	echo(0);//参数错误
 }
 
-$o_dept = new View_Student_Info ();
-$dept_id = $o_user->getDeptId ();
-$n_deptid=$S_Type;
-if($dept_id [0]==100)
-{
-	if ($n_deptid > 0) {
-		$o_dept->PushWhere ( array ('&&', 'DeptId', '=', $n_deptid ) );
-	}
-}else{
-	$o_dept->PushWhere ( array ('&&', 'DeptId', '=', $dept_id [0] ) );
-}
-	
-$o_dept->PushWhere ( array ('&&', 'State', '<>', 0 ) );
-$o_dept->PushWhere ( array ('&&', 'State', '<>', 5 ) );
-$o_dept->PushWhere ( array ('&&', 'ClassNameDiy', '=','') );
-$o_dept->PushWhere ( array ('&&', 'ClassNumber', '<>', 0 ) );
-if ($S_Grade > 0) {
-	$o_dept->PushWhere ( array ('&&', 'GradeNumber', '=', $S_Grade ) );
-}
-if ($S_Class > 0) {
-	$o_dept->PushWhere ( array ('&&', 'ClassNumber', '=', $S_Class ) );
-}
-$o_dept->PushWhere ( array ('&&', 'GradeNumber2', '<', 5 ) );
-$o_dept->PushOrder ( array ('GradeNumber', 'A' ) );
-$o_dept->PushOrder ( array ('ClassName', 'A' ) );
+$o_dept = new Student_Onboard_Info();
+$o_dept->PushWhere ( array ('&&', 'State', '=', 1 ) );
+$o_dept->PushWhere ( array ('&&', 'ClassNumber', '=', $_GET ['classid'] ) );
 $o_dept->PushOrder ( array ('Name', 'A' ) );
 $n_count = $o_dept->getAllCount ();
 
-
-include("mpdf60/mpdf.php");
+require_once RELATIVITY_PATH . 'include/mpdf60/mpdf.php';
 
 $mpdf=new mPDF('zh-CN','A4','','',32,25,27,25,16,13); 
 $mpdf->AddPage('','','','','',10,10,10,10,10,10);
@@ -80,67 +46,7 @@ $mpdf->WriteHTML($stylesheet,1);	// The parameter 1 tells that this is css/style
 
 for($i = 0; $i < $n_count; $i ++) {
 	ob_start();
-	$o_session=new Base_Student($o_dept->getStudentId($i));
-	$o_stu=new Base_Student_Info($o_dept->getStudentId($i));
-	if($o_stu->getJh_1_Connection()=='')
-	{
-		$o_stu->setJh_1_Connection('');
-		$o_stu->setJh_1_IsZhixi('');
-		$o_stu->setJh_1_IsCanji('');
-		$o_stu->setJh_1_Name('');
-		$o_stu->setJh_1_Job('');
-		$o_stu->setJh_1_Danwei('');
-		$o_stu->setJh_1_CanjiCode('');
-		$o_stu->setJh_1_IdType('');
-		$o_stu->setJh_1_Jiaoyu('');
-		$o_stu->setJh_1_Id('');
-		$o_stu->setJh_1_Phone('');
-		
-		$o_stu->setJh_2_Connection('');
-		$o_stu->setJh_2_IsZhixi('');
-		$o_stu->setJh_2_IsCanji('');
-		$o_stu->setJh_2_Name('');
-		$o_stu->setJh_2_Job('');
-		$o_stu->setJh_2_Danwei('');
-		$o_stu->setJh_2_CanjiCode('');
-		$o_stu->setJh_2_IdType('');
-		$o_stu->setJh_2_Jiaoyu('');
-		$o_stu->setJh_2_Id('');
-		$o_stu->setJh_2_Phone('');
-		
-		$o_stu->setJianhuConnection('');
-		$o_stu->setJianhuName('');
-		$o_stu->setJianhuPhone('');
-	
-		$o_janhuren=new Base_Student_Guardian();
-		$o_janhuren->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getUid() ) );
-		$o_janhuren->PushOrder ( array ('GuardianId', 'A' ) );
-		if ($o_janhuren->getAllCount()>0)
-		{
-			if ($o_janhuren->getName (0)=='')
-			{
-				$o_stu->setJh_1_Connection('母亲');
-				$o_stu->setJh_1_Name($o_janhuren->getName(1));
-				$o_stu->setJh_1_Danwei($o_janhuren->getUnit(1));
-				$o_stu->setJh_1_Phone($o_janhuren->getPhone(1));
-			}else{
-				$o_stu->setJh_1_Connection('父亲');
-				$o_stu->setJh_1_Name($o_janhuren->getName(0));
-				$o_stu->setJh_1_Danwei($o_janhuren->getUnit(0));
-				$o_stu->setJh_1_Phone($o_janhuren->getPhone(0));
-				$o_stu->setJh_2_Connection('母亲');
-				$o_stu->setJh_2_Name($o_janhuren->getName(1));
-				$o_stu->setJh_2_Danwei($o_janhuren->getUnit(1));
-				$o_stu->setJh_2_Phone($o_janhuren->getPhone(1));
-				if($o_janhuren->getName (2)!='')
-				{
-					$o_stu->setJianhuConnection($o_janhuren->getConnection(2));
-					$o_stu->setJianhuName($o_janhuren->getName(2));
-					$o_stu->setJianhuPhone($o_janhuren->getPhone(2));
-				}
-			}
-		}
-	}
+	$o_stu=new Student_Onboard_Info($o_dept->getStudentId($i));
 ?>
 <div align="center" style="padding-top:30px;">
     <div class="title" style="padding-bottom:30px;">幼儿信息</div>
@@ -176,7 +82,7 @@ for($i = 0; $i < $n_count; $i ++) {
         </tr>
         <tr style="font-size:12px;">
             <td colspan="2">
-              <?php filter($o_session->getName())?>
+              <?php filter($o_stu->getName())?>
             </td>
             <td colspan="2">
           <?php filter($o_stu->getSex())?>
@@ -188,7 +94,7 @@ for($i = 0; $i < $n_count; $i ++) {
            <?php filter($o_stu->getId())?>
             </td>
             <td colspan="3">
-          <?php filter($o_session->getYear().'-'.$o_session->getMonth().'-'.$o_session->getDay())?>
+           <?php filter($o_stu->getBirthday())?>
             </td>
             <td colspan="3">
            <?php filter($o_stu->getNationality())?>
@@ -202,7 +108,7 @@ for($i = 0; $i < $n_count; $i ++) {
                港澳台侨
             </td>
             <td colspan="4" style="font-weight:bold">
-           是否独生子女
+          是否有独生子女证
             </td>
             <td colspan="4" style="font-weight:bold">
            是否烈士子女
@@ -411,7 +317,7 @@ for($i = 0; $i < $n_count; $i ++) {
                户籍所在地
             </td>
             <td colspan="15" style="font-weight:normal;font-size:12px;">
-            <?php filter($o_stu->getH_City ().''.$o_stu->getH_Area ().''.$o_stu->getH_Street().''.$o_stu->getH_Shequ())?>
+            <?php filter($o_stu->getHCity ().''.$o_stu->getHArea ().''.$o_stu->getHStreet().''.$o_stu->getHShequ())?>
             </td>
         </tr>
         <tr style="font-weight:bold">
@@ -419,7 +325,7 @@ for($i = 0; $i < $n_count; $i ++) {
                户籍详细地址
             </td>
             <td colspan="15" style="font-weight:normal;font-size:12px;">
-           <?php filter($o_stu->getH_Add ())?>
+           <?php filter($o_stu->getHAdd ())?>
             </td>
         </tr>
         <tr style="font-weight:bold" class="layer">
@@ -427,13 +333,13 @@ for($i = 0; $i < $n_count; $i ++) {
                户主姓名
             </td>
             <td colspan="5" style="font-weight:normal;font-size:12px;">
-           <?php filter($o_stu->getH_Owner ())?>
+           <?php filter($o_stu->getHOwner ())?>
             </td>
             <td colspan="5" style="font-weight:bold">
 	户主与幼儿关系
             </td>
             <td colspan="5" style="font-weight:normal;font-size:12px;">
-           <?php filter($o_stu->getH_Guanxi ())?>
+           <?php filter($o_stu->getHGuanxi ())?>
             </td>
         </tr>
 		<tr style="font-weight:bold">
@@ -441,13 +347,13 @@ for($i = 0; $i < $n_count; $i ++) {
                现住址是否与户籍为同一地址
             </td>
             <td colspan="1" style="font-weight:normal;font-size:12px;">
-           <?php filter($o_stu->getZ_Same())?>
+           <?php filter($o_stu->getZSame())?>
             </td>
             <td colspan="3" style="font-weight:bold">
                现住址所在地
             </td>
             <td colspan="10" style="font-weight:normal;font-size:12px;">
-          <?php filter($o_stu->getZ_City ().''.$o_stu->getZ_Area ().''.$o_stu->getZ_Street().''.$o_stu->getZ_Shequ())?>
+          <?php filter($o_stu->getZCity ().''.$o_stu->getZArea ().''.$o_stu->getZStreet().''.$o_stu->getZShequ())?>
             </td>
         </tr>
         <tr style="font-weight:bold">
@@ -455,7 +361,7 @@ for($i = 0; $i < $n_count; $i ++) {
                现住址详细地址
             </td>
             <td colspan="15" style="font-weight:normal;font-size:12px;">
-            <?php filter($o_stu->getZ_Add ())?>
+            <?php filter($o_stu->getZAdd ())?>
             </td>
         </tr>
         <tr style="font-weight:bold" class="layer">
@@ -463,19 +369,19 @@ for($i = 0; $i < $n_count; $i ++) {
                现住址房屋属性
             </td>
             <td colspan="3" style="font-weight:normal;font-size:12px;">
-           <?php filter($o_stu->getZ_Property())?>
+           <?php filter($o_stu->getZProperty())?>
             </td>
             <td colspan="3" style="font-weight:bold">
 	产权人姓名
             </td>
             <td colspan="3" style="font-weight:normal;font-size:12px;">
-            <?php filter($o_stu->getZ_Owner())?>
+            <?php filter($o_stu->getZOwner())?>
             </td>
             <td colspan="4" style="font-weight:bold">
 	产权人与孩子关系
             </td>
             <td colspan="2" style="font-weight:normal;font-size:12px;">
-            <?php filter($o_stu->getZ_Guanxi())?>
+            <?php filter($o_stu->getZGuanxi())?>
             </td>
         </tr>
         <tr style="font-weight:bold">
@@ -503,22 +409,22 @@ for($i = 0; $i < $n_count; $i ++) {
         </tr>
         <tr style="font-size:12px;">
             <td colspan="2">
-              <?php filter($o_stu->getJh_1_Connection())?>
+              <?php filter($o_stu->getJh1Connection())?>
             </td>
             <td colspan="2">
-           <?php filter($o_stu->getJh_1_Name())?>
+           <?php filter($o_stu->getJh1Name())?>
             </td>
             <td colspan="3">
-           <?php filter($o_stu->getJh_1_IdType())?>
+           <?php filter($o_stu->getJh1IdType())?>
             </td>
             <td colspan="4">
-           <?php filter($o_stu->getJh_1_Id())?>
+           <?php filter($o_stu->getJh1Id())?>
             </td>
             <td colspan="4">
-           <?php filter($o_stu->getJh_1_IsZhixi())?>
+           <?php filter($o_stu->getJh1IsZhixi())?>
             </td>
             <td colspan="4">
-          <?php filter($o_stu->getJh_1_Job())?>
+          <?php filter($o_stu->getJh1Job())?>
             </td>
         </tr>
         <tr style="font-weight:bold">
@@ -540,19 +446,19 @@ for($i = 0; $i < $n_count; $i ++) {
         </tr>
         <tr style="font-size:12px;" class="layer">
             <td colspan="4">
-               <?php filter($o_stu->getJh_1_Jiaoyu())?>
+               <?php filter($o_stu->getJh1Jiaoyu())?>
             </td>
             <td colspan="3">
-           <?php filter($o_stu->getJh_1_Phone())?>
+           <?php filter($o_stu->getJh1Phone())?>
             </td>
             <td colspan="4">
-           <?php filter($o_stu->getJh_1_Danwei())?>
+           <?php filter($o_stu->getJh1Danwei())?>
             </td>
             <td colspan="4">
-          <?php filter($o_stu->getJh_1_IsCanji())?>
+          <?php filter($o_stu->getJh1IsCanji())?>
             </td>
             <td colspan="4">
-           <?php filter($o_stu->getJh_1_CanjiCode())?>
+           <?php filter($o_stu->getJh1CanjiCode())?>
             </td>
         </tr>
         <tr style="font-weight:bold">
@@ -580,22 +486,22 @@ for($i = 0; $i < $n_count; $i ++) {
         </tr>
         <tr style="font-size:12px;">
             <td colspan="2">
-              <?php filter($o_stu->getJh_2_Connection())?>
+              <?php filter($o_stu->getJh2Connection())?>
             </td>
             <td colspan="2">
-           <?php filter($o_stu->getJh_2_Name())?>
+           <?php filter($o_stu->getJh2Name())?>
             </td>
             <td colspan="3">
-           <?php filter($o_stu->getJh_2_IdType())?>
+           <?php filter($o_stu->getJh2IdType())?>
             </td>
             <td colspan="4">
-           <?php filter($o_stu->getJh_2_Id())?>
+           <?php filter($o_stu->getJh2Id())?>
             </td>
             <td colspan="4">
-           <?php filter($o_stu->getJh_2_IsZhixi())?>
+           <?php filter($o_stu->getJh2IsZhixi())?>
             </td>
             <td colspan="4">
-          <?php filter($o_stu->getJh_2_Job())?>
+          <?php filter($o_stu->getJh2Job())?>
             </td>
         </tr>
         <tr style="font-weight:bold">
@@ -617,19 +523,19 @@ for($i = 0; $i < $n_count; $i ++) {
         </tr>
         <tr style="font-size:12px;" class="layer">
             <td colspan="4">
-               <?php filter($o_stu->getJh_2_Jiaoyu())?>
+               <?php filter($o_stu->getJh2Jiaoyu())?>
             </td>
             <td colspan="3">
-           <?php filter($o_stu->getJh_2_Phone())?>
+           <?php filter($o_stu->getJh2Phone())?>
             </td>
             <td colspan="4">
-           <?php filter($o_stu->getJh_2_Danwei())?>
+           <?php filter($o_stu->getJh2Danwei())?>
             </td>
             <td colspan="4">
-          <?php filter($o_stu->getJh_2_IsCanji())?>
+          <?php filter($o_stu->getJh2IsCanji())?>
             </td>
             <td colspan="4">
-           <?php filter($o_stu->getJh_2_CanjiCode())?>
+           <?php filter($o_stu->getJh2CanjiCode())?>
             </td>
         </tr>
         <tr style="font-weight:bold">

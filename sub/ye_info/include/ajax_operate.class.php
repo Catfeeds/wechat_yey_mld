@@ -90,7 +90,7 @@ class Operate extends Bn_Basic {
 		$a_title = array ();
 		$a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassId', 0, 90);
+		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassNumber', 0, 90);
 		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'证件号码', '', 0, 90);

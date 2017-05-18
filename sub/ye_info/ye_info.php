@@ -7,7 +7,7 @@ require_once RELATIVITY_PATH . 'head.php';
 $s_fun='YeInfo';
 $s_item='State';
 $s_page=1;
-$s_sort='A';
+$s_sort='D';
 $s_key='';
 if($_COOKIE [$s_fun.'Item'])
 {
@@ -41,7 +41,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
   <ul class="dropdown-menu" style="transition-duration: 0.3s;">
     <li><a href="javascript:;" onclick="window.open('output_for_country.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">Excel 全国系统数据项</a></li>
     <li><a href="javascript:;" onclick="window.open('output_roster.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">Excel 花名册</a></li>
-    <li><a href="javascript:;" onclick="window.open('output_for_country.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">PDF 幼儿信息</a></li>
+    <li><a href="javascript:;" onclick="download_pdf('download_pdf_multiple.php?classid='+$.cookie('<?php echo($s_fun)?>Key'))">PDF 幼儿信息</a></li>
   </ul>
 </div>
 								</div>
@@ -106,7 +106,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 //clear_cookie('YeInfoList');//清除cookie为了让每次点击进去都显示新的，而不是待缓存的。
 function change_table_nav(fun,class_id)
 {
-	table_sort(fun,'Name','A',1,class_id,'');
+	table_sort(fun,'State','D',1,class_id,'');
 	$('#Vcl_KeyYeInfo').val('');
 	if (class_id!='')
 	{

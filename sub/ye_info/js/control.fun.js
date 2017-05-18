@@ -18,3 +18,9 @@ function search_for_yeinfo()
 	var key=$.cookie(fun+"Key");
 	table_load(fun,item,sort,1,key,encodeURIComponent(document.getElementById(id).value));    
 }
+function download_pdf(url)
+{
+    dialog_message("下载PDF所用时间较长，<br/>请不要有任何操作，耐心等待。<br/>点击“确定”后开始下载...",function(){ 
+		window.open(url,'_blank');
+	})  
+}
