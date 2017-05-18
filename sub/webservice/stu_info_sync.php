@@ -224,21 +224,7 @@ for($i=0;$i<count($a_stu_need_insert);$i++)
 }
 
 echo ('finish');
-//$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_stu_id.php',$request_data));
-//$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_single_stu_info.php',$request_data));
-/*
-$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_graduate_id.php',$request_data));
-$a_result=json_decode(https_request('http://yeygl.xchjw.cn/sub/webservice/get_single_graduate_info.php',$request_data));
-if($a_result->Flag==1)
-{
-	$a_data=$a_result->Data;
-	echo(count($a_data));
-	//echo($a_data);
-}else{
-	echo($a_result->Msg);
-}
-*/
-//echo(https_request('http://yeygl.xchjw.cn/sub/webservice/download_class.php',$request_data));
+
 function https_request($url, $data = null) {
 	$curl = curl_init ();
 	curl_setopt ( $curl, CURLOPT_URL, $url );

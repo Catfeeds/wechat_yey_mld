@@ -1,10 +1,10 @@
 <?php
 define ( 'RELATIVITY_PATH', '../../' );
-define ( 'MODULEID', 120201);
+define ( 'MODULEID', 120202);
 $O_Session = '';
 require_once RELATIVITY_PATH . 'include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'head.php';
-$s_fun='YeInfo';
+$s_fun='YeClassTable';
 $s_item='Grade';
 $s_page=1;
 $s_sort='A';
@@ -22,17 +22,9 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
-                            <div class="caption">所有班级列表</div>                            
-                            <div class="row">
-								  <div class="col-lg-6">
-								    <div class="input-group" style="width:300px;" >
-								      <input id="Vcl_KeyYe" type="text" class="form-control" placeholder="幼儿姓名/证件号" value="">
-								      <span class="input-group-btn">
-								        <button class="btn btn-primary" type="button" onclick="search_for_wait_audit()"><span  class="glyphicon glyphicon-search"></span></button>
-								      </span>
-								    </div>
-								  </div>
-								</div>
+                            <div class="caption">所有班级列表</div> 
+                            <button id="user_add_btn" type="button" title="添加班级" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" data-toggle="tooltip" onclick="location='class_modify.php'">
+                                <span  class="glyphicon glyphicon-plus"></span>&nbsp;添加班级</button>                           
 						</div>
                         <table class="table table-striped">
                             <thead>
@@ -49,7 +41,6 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 					</script>
 		
 <script>
-clear_cookie('YeInfoList');//清除cookie为了让每次点击进去都显示新的，而不是待缓存的。
 var table='<?php echo($s_fun)?>';
 </script>
 <?php

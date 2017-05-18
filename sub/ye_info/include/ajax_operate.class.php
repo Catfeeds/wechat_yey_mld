@@ -98,6 +98,85 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,75);
 		$this->SendJsonResultForTable($n_allcount,'YeInfo', 'yes', $n_page, $a_title, $a_row);
 	}
+	public function YeClassTable($n_uid)
+	{	
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120202 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Student_Class();		
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->PushOrder ( array ('ClassId','A') );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			//区分年级
+			switch ($o_user->getGrade($i))
+			{
+				case 0:
+					$s_grade_name='半日班';
+						break;
+				case 1:
+					$s_grade_name='托班';
+						break;
+				case 2:
+					$s_grade_name='小班';
+					break;
+				case 3:
+					$s_grade_name='中班';
+					break;
+				case 4:
+					$s_grade_name='大班';
+					break;
+			}
+			$a_button = array ();
+			/*
+			 * 计算班级人数
+			 */
+			$o_dept = new Student_Onboard_Info();
+			$o_dept->PushWhere ( array ('&&', 'Sex', '=', '女') );
+			$o_dept->PushWhere ( array ('&&', 'ClassNumber', '=', $o_user->getClassId($i) ) );
+			$n_count_girl = $o_dept->getAllCount ();
+			$o_dept = new Student_Onboard_Info();
+			$o_dept->PushWhere ( array ('&&', 'Sex', '=', '男') );
+			$o_dept->PushWhere ( array ('&&', 'ClassNumber', '=', $o_user->getClassId($i) ) );
+			$n_count_boy = $o_dept->getAllCount ();
+			
+			array_push ( $a_button, array ('修改', "" ) );//查看
+			array_push ( $a_button, array ('删除', "" ) );//查看
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),
+				$s_grade_name,
+				$o_user->getClassName ( $i ),
+				$n_count_girl,
+				$n_count_boy,
+				($n_count_girl+$n_count_boy),
+				$a_button
+				));				
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'年级', 'Grade', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'班级名称', '', 0, 90);
+		$a_title=$this->setTableTitle($a_title,'女生人数', 'Sex', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'男生人数', 'Birthday', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'总人数', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,75);
+		$this->SendJsonResultForTable($n_allcount,'YeClassTable', 'yes', $n_page, $a_title, $a_row);
+	}
 }
 
 ?>
