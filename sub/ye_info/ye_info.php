@@ -40,8 +40,8 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
   </button>
   <ul class="dropdown-menu" style="transition-duration: 0.3s;">
     <li><a href="javascript:;" onclick="window.open('output_for_country.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">Excel 全国系统数据项</a></li>
-    <li><a href="#">Excel 花名册</a></li>
-    <li><a href="#">PDF 幼儿信息</a></li>
+    <li><a href="javascript:;" onclick="window.open('output_roster.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">Excel 花名册</a></li>
+    <li><a href="javascript:;" onclick="window.open('output_for_country.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">PDF 幼儿信息</a></li>
   </ul>
 </div>
 								</div>
