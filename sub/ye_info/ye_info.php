@@ -5,7 +5,7 @@ $O_Session = '';
 require_once RELATIVITY_PATH . 'include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'head.php';
 $s_fun='YeInfo';
-$s_item='Name';
+$s_item='State';
 $s_page=1;
 $s_sort='A';
 $s_key='';
@@ -39,7 +39,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
     导出 <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" style="transition-duration: 0.3s;">
-    <li><a href="#">Excel 全国系统数据项</a></li>
+    <li><a href="javascript:;" onclick="window.open('output_for_country.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">Excel 全国系统数据项</a></li>
     <li><a href="#">Excel 花名册</a></li>
     <li><a href="#">PDF 幼儿信息</a></li>
   </ul>

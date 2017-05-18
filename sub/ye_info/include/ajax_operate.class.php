@@ -67,12 +67,17 @@ class Operate extends Bn_Basic {
 					$s_grade_name='大班';
 					break;
 			}
+			$s_state_flg='';
+			if ($o_user->getState($i)==2)
+			{
+				$s_state_flg=' <span class="label label-warning">待审</span>';
+			}
 			$a_button = array ();
 			array_push ( $a_button, array ('查看', "window.open('print.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
 			array_push ( $a_button, array ('下载PDF', "window.open('download_pdf_single.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
-				$o_user->getName ( $i ),
+				$o_user->getName ( $i ).$s_state_flg,
 				$s_grade_name.'('.$o_user->getClassName ( $i ).')',
 				$o_user->getSex ( $i ),
 				$o_user->getBirthday ( $i ),
