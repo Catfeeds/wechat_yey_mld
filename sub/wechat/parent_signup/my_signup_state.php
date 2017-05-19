@@ -150,6 +150,10 @@ switch($o_stu->getState(0))
 	                		<label class="weui-form-preview__label">班级类型</label>
 	                		<span class="weui-form-preview__value">'.$o_reminder->getKeyword5(0).'</span>
             			</div>
+            			<div class="weui-form-preview__item">
+	                		<label class="weui-form-preview__label">是否服从班级类型调剂</label>
+	                		<span class="weui-form-preview__value">'.$o_stu->getCompliance(0).'</span>
+            			</div>
      				</div>     				
     		 	</div>
 		';
@@ -192,11 +196,7 @@ switch($o_stu->getState(0))
 2. 幼儿入园体检化验需空腹，请幼儿在体检前8小时禁食、禁奶，如体检当日已进食，请择日抽血。<br/><br/>
 3. 如幼儿生病或正在接受药物治疗，请在身体恢复正常后预约入园体检，预约电话83541354。<br/><br/>
 4. 请家长尽量携带幼儿医保卡就诊挂号，减少等待时间、避免手写出现错误信息。<br/><br/>
-5. 体检报告由幼儿园统一领取。<br/><br/>
-体检时间：2017年7月12日上午7:30<br/>
-体检机构：西城妇幼保健院-儿保中心<br/>
-机构地址：平原里小区19号（健宫医院对面）<br/>
-公交车站：自新路北（83路;133路;381路;特14路;专13路）
+5. 体检报告由幼儿园统一领取。
 					</h4>
 					<?php 
                     }

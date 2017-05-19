@@ -316,7 +316,7 @@ class Operate extends Bn_Basic {
 				    $o_msg->setKeyword3($o_admission_setup->getAuditDate());
 				    $o_msg->setKeyword4($this->getAuditTime($o_admission_setup->getAuditTime()));
 				    $o_msg->setKeyword5($o_admission_setup->getAuditAddress());
-				    $o_msg->setRemark('核验资料：居民户口簿、房产证明、免疫预防接种证等。
+				    $o_msg->setRemark('注意事项：家长持报名手机，在规定的时段、地点，有序扫码入园，进行信息核验。家长请务必携带相关证件，即:户口本、幼儿身份证、房产证或租赁合同（房主与幼儿的关系）。幼儿预防接种证（小绿本）。其他特殊证明（华侨、烈士、现役军人、残疾等）。
 
 如需查看幼儿报名信息，请点击详情');
 				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup.php');
@@ -382,7 +382,8 @@ class Operate extends Bn_Basic {
 				    $o_msg->setKeyword3($o_admission_setup->getHealthTime());//体检时间
 				    $o_msg->setKeyword4($o_admission_setup->getHealthAddress());//体检地点
 				    $o_msg->setKeyword5('');//为空
-				    $o_msg->setRemark('请您按照如上时段、地址进行信息核验，感谢您的配合。
+				    $o_msg->setRemark('机构地址：平原里小区19号（健宫医院对面）<br/>
+公交车站：自新路北（83路;133路;381路;特14路;专13路）
 				    
 如需查看幼儿报名信息，请点击详情');
 				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId().'');

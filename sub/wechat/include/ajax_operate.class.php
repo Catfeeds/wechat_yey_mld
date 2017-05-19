@@ -856,8 +856,7 @@ class Operate extends Bn_Basic {
 					'keyword3' => array('value' => $o_admission_setup->getMeetDate(),'color'=>'#173177'),
 					'keyword4' => array('value' => $s_meet_time,'color'=>'#173177'),
 					'keyword5' => array('value' => $o_admission_setup->getMeetAddress(),'color'=>'#173177'),
-					'remark' => array('value' => '
-注意事项：居民户口簿、房产证明、免疫预防接种证等。
+					'remark' => array('value' => '注意事项：家长持报名手机，在规定的时段、地点，有序扫码入园，参加见面会。一名幼儿只能由一名监护人带领参加见面会。参与见面会的幼儿进行见面前家长可以请幼儿牢记幼儿编号或将写有幼儿编号的纸条由幼儿转交见面老师，幼儿见面过程中家长需在操场上的家长见面处进行家长见面。
 					
 如需查看报名信息，请点击详情。')
 				)
@@ -878,7 +877,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setKeyword3($o_admission_setup->getMeetDate());
 			$o_msg->setKeyword4($s_meet_time);
 			$o_msg->setKeyword5($o_admission_setup->getMeetAddress());
-			$o_msg->setRemark('注意事项：居民户口簿、房产证明、免疫预防接种证等。');
+			$o_msg->setRemark('注意事项：家长持报名手机，在规定的时段、地点，有序扫码入园，参加见面会。一名幼儿只能由一名监护人带领参加见面会。参与见面会的幼儿进行见面前家长可以请幼儿牢记幼儿编号或将写有幼儿编号的纸条由幼儿转交见面老师，幼儿见面过程中家长需在操场上的家长见面处进行家长见面。');
 			$o_msg->setUrl('');
 			$o_msg->setKeywordSum(5);
 			$o_msg->Save();
