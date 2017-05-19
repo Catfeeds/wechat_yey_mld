@@ -15,7 +15,7 @@ header ( 'content-type:text/html; charset=utf-8' );
  */
 $key = 'www.bjsql.com';
 $license = 'MNJIHKI6525489';
-$s_url = 'http://yeygl.xchjw.cn/sub/webservice/';
+$s_url = 'http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';
 $license = encrypt ( $license, 'E', $key );
 /*
  * 获取系统配置
