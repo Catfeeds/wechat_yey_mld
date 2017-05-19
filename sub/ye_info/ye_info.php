@@ -35,20 +35,24 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  </div>
 								</div>
 								<div class="btn-group output" style="float:right;outline: medium none;margin-left:10px;display:none">
-  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    导出 <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" style="transition-duration: 0.3s;">
-    <li><a href="javascript:;" onclick="window.open('output_for_country.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">Excel 全国系统数据项</a></li>
-    <li><a href="javascript:;" onclick="window.open('output_roster.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">Excel 花名册</a></li>
-    <li><a href="javascript:;" onclick="download_pdf('download_pdf_multiple.php?classid='+$.cookie('<?php echo($s_fun)?>Key'))">PDF 幼儿信息</a></li>
-  </ul>
-</div>
+								  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								    导出 <span class="caret"></span>
+								  </button>
+								  <ul class="dropdown-menu" style="transition-duration: 0.3s;">
+								    <li><a href="javascript:;" onclick="window.open('output_for_country.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">Excel 全国系统数据项</a></li>
+								    <li><a href="javascript:;" onclick="window.open('output_roster.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">Excel 花名册</a></li>
+								    <li><a href="javascript:;" onclick="download_pdf('download_pdf_multiple.php?classid='+$.cookie('<?php echo($s_fun)?>Key'))">PDF 幼儿信息</a></li>
+								  </ul>
+								</div>
 								</div>
 						<div class="table_nav">
 							<div class="<?php if($s_key=='')echo('on')?>" onclick="change_table_nav('<?php echo($s_fun)?>','')">
 								所有信息
 							</div>
+							<script type="text/javascript">
+							//将班级列表压入js数组
+							var a_class_list=[];
+							</script>
 							<?php 
 							 $o_table = new Student_Class();
 							 $o_table->PushOrder ( array ('Grade','A') );
@@ -81,6 +85,9 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 							 			break;
 							 	}
 							 	?>
+							 	<script type="text/javascript">
+							 	a_class_list.push(new Array("<?php echo($o_table->getClassId($i))?>","<?php echo($s_grade_name.'('.$o_table->getClassName($i).')');?>"));
+							 	</script>
 							 	<div class="<?php echo($s_class)?>" onclick="change_table_nav('<?php echo($s_fun)?>','<?php echo($o_table->getClassId($i))?>')">
 							 	<?php echo($s_grade_name.'('.$o_table->getClassName($i).')');?>
 							 	</div>

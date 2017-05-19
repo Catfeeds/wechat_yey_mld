@@ -1,7 +1,7 @@
 ﻿/**
  * 开发版本的文件导入
  */
-var RootPath='/wechat_yey/wechat_yey_mld/'; 
+var RootPath='/'; 
 (function (){
     var paths_js  = [
 			'js/language_cn.js',

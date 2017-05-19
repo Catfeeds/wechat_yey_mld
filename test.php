@@ -70,6 +70,19 @@ echo($s_result);
  * 演示结束，如果成功，会返回{"Flag":"1"}，如果错误代码1006:班级下面有幼儿，不能删除
  */
 
+/*
+ * 添加班级接口示例
+ */
+$a_data=array(
+		'StudentId'=>41480,
+		'ClassId'=>1686
+		);
+$request_data = array('License'=>$s_data,'Data'=>encrypt (json_encode($a_data), 'E', $key ));
+$s_result=https_request('http://192.168.0.8/xcye_collect/xcyey_admin/sub/webservice/stu_change_class.php',$request_data);
+echo($s_result);
+/*
+ * 演示结束，如果成功，会返回{"Flag":"1"}，错误代码1004：数据库写入错误，错误代码1003：未找到要去的班，错误代码1002：不是本校学生，无权操作
+ */
 
 function https_request($url, $data = null) {
 	$curl = curl_init ();

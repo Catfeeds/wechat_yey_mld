@@ -77,6 +77,7 @@ class Operate extends Bn_Basic {
 			}
 			$a_button = array ();
 			array_push ( $a_button, array ('查看', "window.open('print.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
+			array_push ( $a_button, array ('调班', "stu_change_class(".$o_user->getStudentId($i).",'".$o_user->getName ( $i )."','".$o_user->getClassName ( $i )."')" ) );//查看
 			array_push ( $a_button, array ('下载PDF', "window.open('download_pdf_single.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
@@ -285,6 +286,72 @@ class Operate extends Bn_Basic {
 					'text' =>'此班下不能有幼儿信息！'
 				);
 				echo (json_encode ( $a_general ));		
+			}else{
+				LOG::CLASS_UPDATE('error,删除修改班级信息时，验证失败!');
+				$a_general = array (
+					'success' => 0,
+					'text' =>'采集系统服务器连接失败，请重试。'
+				);
+				echo (json_encode ( $a_general ));	
+			}
+		}
+	}
+	public function StuChangeClass($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120201 ))return; //如果没有权限，不返回任何值
+		$o_table=new Student_Onboard_Info($this->getPost('id'));
+		if($this->getPost('classid')=='')
+		{
+			$a_general = array (
+				'success' => 0,
+				'text' =>'请选择班级后提交。'
+			);
+			echo (json_encode ( $a_general ));
+			return;
+		}
+		//调班到采集系统
+		$a_data=array(
+			'StudentId'=>$this->getPost('id'),
+			'ClassId'=>$this->getPost('classid')
+		);		
+		$request_data = array('License'=>$this->Encrypt ( $this->S_License, 'E', $this->S_Key ),'Data'=>$this->Encrypt (json_encode($a_data), 'E', $this->S_Key ));
+		$s_result=json_decode($this->HttpsRequest($this->S_Url.'stu_change_class.php',$request_data));
+		if ($s_result->Flag==1)
+		{
+			$o_class=new Student_Class($this->getPost('classid'));
+			//成功后,保存本地数据
+			$o_table->setClassNumber($this->getPost('classid'));
+			$o_table->setGrade($o_class->getGrade());
+			if ($o_table->Save()==false)
+			{
+				LOG::STU_SYNC('error,采集系统调班成功后，本地调班写入失败，幼儿ID：'.$this->getPost('Id').'，调班ID：'.$this->getPost('classid'));
+			}else{
+				$a_general = array (
+					'success' => 1,
+					'text' =>''
+				);
+				echo (json_encode ( $a_general ));
+			}
+		}else{
+			if ($s_result->Msg=='1004')
+			{
+				LOG::STU_SYNC('error,调班时采集系统数据库无法写入。幼儿ID：'.$this->getPost('Id').'，调班ID：'.$this->getPost('classid'));
+				$a_general = array (
+					'success' => 0,
+					'text' =>'采集系统数据库无法写入。'
+				);
+				echo (json_encode ( $a_general ));		
+			}elseif($s_result->Msg=='1003'||$s_result->Msg=='1002')
+			{
+				LOG::STU_SYNC('error,调班时无权操作本幼儿或目标班级，幼儿ID：'.$this->getPost('Id').'，调班ID：'.$this->getPost('classid'));
+				$a_general = array (
+					'success' => 0,
+					'text' =>'在采集系统中，没有找到指定幼儿或班级。'
+				);
+				echo (json_encode ( $a_general ));	
 			}else{
 				LOG::CLASS_UPDATE('error,删除修改班级信息时，验证失败!');
 				$a_general = array (

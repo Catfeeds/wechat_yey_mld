@@ -38,36 +38,16 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 						<input type="hidden" name="Vcl_FunName" value="<?php echo($s_funname)?>"/>
 						<input type="hidden" name="Vcl_Id" value="<?php echo($_GET['id'])?>"/>
                     	<div class="sss_form">
-                    		<?php 
-                    		if($_GET['id']>0)
-                    		{
-                    			?>
-                    			<div class="item">
-		                     		<label>年级：</label><br/>
-		                     		<select disabled="disabled" name="Vcl_Grade" id="Vcl_Grade" class="selectpicker" data-style="btn-default">
-		                     			<option value="">请选择年级</option>
-		                     			<option value="1">托班</option>
-	        							<option value="2">小班</option>
-	        							<option value="3">中班</option>
-	        							<option value="4">大班</option>
-	   								</select>
-		                     	</div>
-                    			<?php
-                    		}else{
-                    			?>
-                    			<div class="item">
-		                     		<label><span class="must">*</span> 年级：</label><br/>
-		                     		<select name="Vcl_Grade" id="Vcl_Grade" class="selectpicker" data-style="btn-default">
-		                     			<option value="">请选择年级</option>
-		                     			<option value="1">托班</option>
-	        							<option value="2">小班</option>
-	        							<option value="3">中班</option>
-	        							<option value="4">大班</option>
-	   								</select>
-		                     	</div>
-                    			<?php
-                    		}
-                    		?>                    		
+                    		<div class="item" style="display:<?php if($_GET['id']>0)echo('none')?>">
+		                     	<label><span class="must">*</span> 年级：</label><br/>
+		                     	<select name="Vcl_Grade" id="Vcl_Grade" class="selectpicker" data-style="btn-default">
+		                     		<option value="">请选择年级</option>
+		                     		<option value="1">托班</option>
+	        						<option value="2">小班</option>
+	        						<option value="3">中班</option>
+	        						<option value="4">大班</option>
+	   							</select>
+		                     </div>                		
 	                     	<div class="item">
 	                     		<label><span class="must">*</span> 班级名称：</label>
 	                     		<input name="Vcl_ClassName" maxlength="20" id="Vcl_ClassName" type="text" style="width:100%" class="form-control"/>

@@ -55,3 +55,31 @@ function class_delete(id) {
         })
     })
 }
+function stu_change_class(id,name,class_name) {
+	var a_arr=[];
+	a_arr.push('<select name="Vcl_ClassId" id="Vcl_ClassId" class="form-control" style="width:auto">');
+	a_arr.push('<option value="">请选择班级</option>');
+	for(var i=0;i<a_class_list.length;i++)
+	{
+		var temp=a_class_list[i];
+		a_arr.push('<option value="'+temp[0]+'">'+temp[1]+'</option>');
+	}
+	a_arr.push('</select>');
+    dialog_confirm('幼儿姓名：<b>'+name+'</b><br/>原始班级名称：<b>'+class_name+'</b><br/><br/>请选择调整后的班级，之后请按确认按钮完成调班。<br/><br/>'+a_arr.join('\n'),function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=StuChangeClass'; //后台方法
+        data = data + '&id=' + id+'&classid='+$('#Vcl_ClassId').val();
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+				$('.small_loading').fadeOut(100);
+				dialog_success('调班成功！',function(){
+					table_refresh('YeInfo')
+				})
+        	}        	
+        })
+    })
+}
