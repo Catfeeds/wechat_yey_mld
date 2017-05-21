@@ -24,7 +24,6 @@ for($i=0;$i<$n_count;$i++)
 	$o_temp->setSend(1);
 	$o_date = new DateTime ( 'Asia/Chongqing' );
 	$o_temp->setSendDate($o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ) . ' ' . $o_date->format ( 'H' ) . ':' . $o_date->format ( 'i' ) . ':' . $o_date->format ( 's' ));
-	$o_temp->Save();
 	sleep(1);
 	//给用户发送消息
 	require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';
@@ -99,7 +98,11 @@ for($i=0;$i<$n_count;$i++)
 				)
 		);
 	}
-	$curlUtil->https_request($s_url, json_encode($data));
+	$a_result=json_decode($curlUtil->https_request($s_url, json_encode($data)));
+	if ($a_result->errmsg=='ok')
+	{
+		$o_temp->Save();
+	}
 }
 echo('Finished');
 ?>
