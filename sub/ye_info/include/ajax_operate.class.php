@@ -9,8 +9,8 @@ class Operate extends Bn_Basic {
 	protected $N_PageSize= 50;
 	protected $S_Key='www.bjsql.com';//密钥
 	protected $S_License='MNJIHKI6525489';//部门权限
-	//protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//接口地址
-	protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//花生壳接口地址
+	//protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
+	protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//接口地址
 	//protected $S_Url='http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
 	public function YeInfo($n_uid)
 	{	
@@ -78,8 +78,10 @@ class Operate extends Bn_Basic {
 			}
 			$a_button = array ();
 			array_push ( $a_button, array ('查看', "window.open('print.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
+			array_push ( $a_button, array ('修改', "location='ye_modify.php?id=".$o_user->getStudentId($i)."'" ) );//查看
 			array_push ( $a_button, array ('调班', "stu_change_class(".$o_user->getStudentId($i).",'".$o_user->getName ( $i )."','".$o_user->getClassName ( $i )."')" ) );//查看
-			array_push ( $a_button, array ('下载PDF', "window.open('download_pdf_single.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
+			array_push ( $a_button, array ('离园', "stu_delete(".$o_user->getStudentId($i).")" ) );//查看
+			array_push ( $a_button, array ('下载PDF', "window.open('download_pdf_single.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看			
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
 				$o_user->getName ( $i ).$s_state_flg,
@@ -100,7 +102,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'证件号码', '', 0, 90);
 		$a_title=$this->setTableTitle($a_title,'第一监护人', '', 0, 80);
-		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,75);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,70);
 		$this->SendJsonResultForTable($n_allcount,'YeInfo', 'yes', $n_page, $a_title, $a_row);
 	}
 	public function YeClassTable($n_uid)
@@ -297,6 +299,43 @@ class Operate extends Bn_Basic {
 			}
 		}
 	}
+	public function StuDelete($n_uid) {
+		
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120201 ))return; //如果没有权限，不返回任何值
+		$o_table=new Student_Onboard_Info($this->getPost('id'));
+		
+		//删除幼儿信息到采集系统
+		$request_data = array('License'=>$this->Encrypt ( $this->S_License, 'E', $this->S_Key ),'StudentId'=>$this->Encrypt ($this->getPost('id'), 'E', $this->S_Key ));
+		$s_result=json_decode($this->HttpsRequest($this->S_Url.'delete_stu.php',$request_data));
+		if ($s_result->Flag==1)
+		{
+			//成功后,保存本地数据
+			$o_class = new Student_Class( $o_table->getClassNumber () );
+			$o_table->setClassNameDiy($o_class->getClassName ());	
+			$o_table->setOutTime($this->GetDate());
+			$o_table->setGradeNumber(0);
+			$o_table->setDeptId(0);
+			$o_table->setClassNumber(0);
+			$o_table->setState(0);
+			$o_table->Save();
+			$a_general = array (
+				'success' => 1,
+				'text' =>''
+			);
+			echo (json_encode ( $a_general ));
+		}else{
+			LOG::STU_SYNC('error,删除幼儿信息信息失败，StudentId：'.$this->getPost('id').'，错误提示：'.$s_result->Msg);
+			$a_general = array (
+				'success' => 0,
+				'text' =>'采集系统幼儿离园失败，请与管理员联系。'
+			);
+			echo (json_encode ( $a_general ));	
+		}
+	}
 	public function StuChangeClass($n_uid) {
 		if (! ($n_uid > 0)) {
 			$this->setReturn('parent.goto_login()');
@@ -354,7 +393,7 @@ class Operate extends Bn_Basic {
 				);
 				echo (json_encode ( $a_general ));	
 			}else{
-				LOG::CLASS_UPDATE('error,删除修改班级信息时，验证失败!');
+				LOG::STU_SYNC('error,调班时，验证失败!');
 				$a_general = array (
 					'success' => 0,
 					'text' =>'采集系统服务器连接失败，请重试。'
@@ -409,10 +448,27 @@ class Operate extends Bn_Basic {
 		$o_stu->Save();
 		$this->setReturn ( 'parent.form_return("dialog_success(\'添加幼儿信息成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
 	}
-	protected function UploadToAddAndModifyStuInfo($n_student_id=null)
+	public function StuModify($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120201 ))return; //如果没有权限，不返回任何值
+		//基本信息
+		$o_stu=new Student_Onboard_Info($this->getPost ( 'Id' ));
+		if ($this->getPost ( 'Birthday' )=='')$this->ReturnMsg('基本信息的 [出生日期] 不能为空！','Birthday');
+		$o_stu->setBirthday($this->getPost ( 'Birthday' ));
+		$o_stu=$this->setStuInfo($o_stu);
+		//请求接口并接收返回的StudentId
+		$this->UploadToAddAndModifyStuInfo();
+		$o_stu->setState(2);
+		$o_stu->Save();
+		$this->setReturn ( 'parent.form_return("dialog_success(\'修改幼儿信息成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
+	}
+	protected function UploadToAddAndModifyStuInfo()
 	{
 		$a_data=array(
-				'StudentId'=>$n_student_id,
+				'StudentId'=>$this->getPost ( 'Id' ),
 				'ClassId'=>$this->getPost('ClassId'),
 				'Id'=>$this->getPost('ID'),
 				'IdType'=>$this->getPost('IdType'),
@@ -496,14 +552,27 @@ class Operate extends Bn_Basic {
 				'Jiudu'=>$this->getPost('Jiudu'),
 				);	
 		$request_data = array('License'=>$this->Encrypt ( $this->S_License, 'E', $this->S_Key ),'Data'=>$this->Encrypt (json_encode($a_data), 'E', $this->S_Key ));
-		$s_result=json_decode($this->HttpsRequest($this->S_Url.'add_stu.php',$request_data));
-		if ($s_result->Flag==1)	
+		if($this->getPost ( 'Id' )>0)
 		{
-			return $s_result->StudentId;
+			//修改
+			$s_result=json_decode($this->HttpsRequest($this->S_Url.'modify_stu.php',$request_data));
+			if ($s_result->Flag!=1)	
+			{
+				LOG::STU_SYNC('error,采集系统修改幼儿信息失败，StudentId：'.$this->getPost ( 'Id' ).'，错误代码：'.$s_result->Msg);
+				$this->setReturn ( 'parent.form_return("dialog_error(\'采集系统添修改幼儿信息失败，请与管理员联系。\')");' );		
+			}
 		}else{
-			LOG::STU_SYNC('error,采集系统添加幼儿信息失败，错误代码：'.$s_result->Msg);
-			$this->setReturn ( 'parent.form_return("dialog_error(\'采集系统添幼儿信息失败，请与管理员联系。\')");' );		
-		}
+			//添加
+			$s_result=json_decode($this->HttpsRequest($this->S_Url.'add_stu.php',$request_data));
+			if ($s_result->Flag==1)	
+			{
+				return $s_result->StudentId;
+			}else{
+				LOG::STU_SYNC('error,采集系统添加幼儿信息失败，错误代码：'.$s_result->Msg);
+				$this->setReturn ( 'parent.form_return("dialog_error(\'采集系统添加幼儿信息失败，请与管理员联系。\')");' );		
+			}
+		}		
+		
 	}
 	protected function ReturnMsg($s_msg,$id)
 	{

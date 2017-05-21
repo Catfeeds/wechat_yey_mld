@@ -64,7 +64,10 @@ class Log
 	{
 		self::$instance->write(1, $msg);
 	}
-	
+	public static function CLASS_UPDATE($msg)
+	{
+		self::$instance->write(12, $msg);
+	}
 	public static function WARN($msg)
 	{
 		self::$instance->write(4, $msg);
@@ -113,13 +116,15 @@ class Log
 		case 10:
 			return 'stu_sync';
 		break;
+		case 12:
+			return 'class_update';
+		break;
 		case 11:
 			return 'system';
 		break;
 		default:
 		}
 	}
-	
 	protected function write($level,$msg)
 	{
 		if(($level & $this->level) == $level )

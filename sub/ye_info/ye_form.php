@@ -6,6 +6,27 @@
 	<br />
 	<input name="Vcl_Name" id="Vcl_Name" type="text" style="width: 100%" class="form-control" placeholder="必填"/>
 </div>
+<?php 
+if ($_GET['id']>0)
+{
+	?>
+<div class="item">
+	<label>
+		证件类型：
+	</label>
+	<br />
+	<input disabled="disabled" name="Vcl_IdType" id="Vcl_IdType" type="text" style="width: 100%" class="form-control"/>
+</div>
+<div class="item">
+	<label>
+		证件号：
+	</label>
+	<br />
+	<input disabled="disabled" name="Vcl_ID" id="Vcl_ID" type="text" style="width: 100%" class="form-control" placeholder="必填"/>
+</div>
+	<?php
+}else{
+	?>
 <div class="item">
 	<label>
 		<span class="must">*</span> 证件类型：
@@ -27,7 +48,11 @@
 	</label>
 	<br />
 	<input name="Vcl_ID" id="Vcl_ID" type="text" onBlur="check_id()" placeholder="必填" style="width: 100%" class="form-control">
-</div>
+</div>	
+	<?php
+}
+?>
+
 <div class="item">
 	<label>
 		<span class="must">*</span> 性别：

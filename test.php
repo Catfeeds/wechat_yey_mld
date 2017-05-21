@@ -89,6 +89,7 @@ echo($s_result);
 /*
  * 添加幼儿信息接口示例
  */
+/*
 $a_data=array(
 		'ClassId'=>1686,
 		'Id'=>'110107201310170037',
@@ -175,10 +176,121 @@ $a_data=array(
 $request_data = array('License'=>$s_data,'Data'=>encrypt (json_encode($a_data), 'E', $key ));
 $s_result=https_request('http://192.168.0.8/xcye_collect/xcyey_admin/sub/webservice/add_stu.php',$request_data);
 echo($s_result);
-
+*/
 /*
  * 演示结束，如果成功，会返回{"Flag":"1"}，错误代码1004：数据库写入错误，错误代码1003：未找到要去的班，错误代码1002：不是本校学生，无权操作
  */
+
+
+/*
+ * 添加幼儿信息接口示例
+ */
+/*
+$a_data=array(
+		'StudentId'=>'47315',
+		'ClassId'=>'1685',
+		'Id'=>'110101198110061538',
+		'IdType'=>'居民身份证',
+		'Birthday'=>'2014-02-23',
+		'Name'=>'吴思远',
+		'Sex'=>'男',
+		'Nationality'=>'中国',
+		'Gangao'=>'非港澳台侨',
+		'Nation'=>'汉族',
+		'Only'=>'是',
+		'OnlyCode'=>'123456',
+		'IsFirst'=>'',
+		'IsLieshi'=>'否',
+		'IsGuer'=>'否',
+		'IsWugong'=>'否',
+		'IsLiushou'=>'非留守儿童',
+		'IsDibao'=>'否',
+		'DibaoCode'=>'',
+		'IsZizhu'=>'否',
+		'IsCanji'=>'否',
+		'CanjiCode'=>'',
+		'CanjiType'=>'',
+		'Jiankang'=>'健康或良好',
+		'Xuexing'=>'未知血型',
+		'IsYiwang'=>'否',
+		'Illness'=>'',
+		'IsShoushu'=>'否',
+		'Shoushu'=>'',
+		'IsYizhi'=>'否',
+		'IsGuomin'=>'否',
+		'Allergic'=>'',
+		'IsYichuan'=>'否',
+		'Qitabingshi'=>'',
+		'Beizhu'=>'备注',
+		'C_City'=>'110000000000',
+		'C_Area'=>'110102000000',
+		'C_Street'=>'',
+		'IdQuality'=>'非农业户口',
+		'IdQuality'=>'城市',
+		'H_City'=>'110000000000',
+		'H_Area'=>'110102000000',
+		'H_Street'=>'广外街道',
+		'H_Shequ'=>'红莲北里社区',
+		'H_Add'=>'宣武区红莲北里9号楼2单元405号',
+		'H_Owner'=>'吴江',
+		'H_Guanxi'=>'父母',
+		'Z_Same'=>'否',
+		'Z_City'=>'北京市',
+		'Z_Area'=>'西城区',
+		'Z_Street'=>'广外街道',
+		'Z_Shequ'=>'红莲北里社区',
+		'Z_Add'=>'宣武区红莲北里9号楼2单元405号',
+		'Z_Property'=>'直系亲属房产',
+		'Z_Owner'=>'吴江',
+		'Z_Guanxi'=>'父亲',
+		'Jh_1_Connection'=>'父亲',
+		'Jh_1_Name'=>'吴江',
+		'Jh_1_IdType'=>'居民身份证',
+		'Jh_1_Id'=>'13068319860123761X',
+		'Jh_1_Job'=>'企业管理人员',
+		'Jh_1_Danwei'=>'中国移动通信集团有限公司',
+		'Jh_1_Jiaoyu'=>'硕士研究生',
+		'Jh_1_Phone'=>'13910220512',
+		'Jh_1_IsCanji'=>'否',
+		'Jh_1_CanjiCode'=>'',
+		'Jh_1_IsZhixi'=>'是',
+		'Jh_2_Connection'=>'母亲',
+		'Jh_2_Name'=>'吴静',
+		'Jh_2_IdType'=>'居民身份证',
+		'Jh_2_Id'=>'43090219851217904X',
+		'Jh_2_Job'=>'机关或事业单位干部职工',
+		'Jh_2_Danwei'=>'北京市教育委员会',
+		'Jh_2_Jiaoyu'=>'硕士研究生',
+		'Jh_2_Phone'=>'13810016186',
+		'Jh_2_IsCanji'=>'否',
+		'Jh_2_CanjiCode'=>'',
+		'Jh_2_IsZhixi'=>'是',
+		'JianhuName'=>'祖母',
+		'JianhuConnection'=>'王志敏',
+		'JianhuPhone'=>'13693205820',
+		'Jiudu'=>'走读', 
+		);
+$request_data = array('License'=>$s_data,'Data'=>encrypt (json_encode($a_data), 'E', $key ));
+$s_result=https_request('http://192.168.0.8/xcye_collect/xcyey_admin/sub/webservice/modify_stu.php',$request_data);
+echo($s_result);
+*/
+/*
+ * 演示结束，如果成功，会返回{"Flag":"1"}，错误代码1004：数据库写入错误，错误代码1003：未找到要去的班，错误代码1002：不是本校学生，无权操作
+ */
+
+
+/*
+ * 删除幼儿信息接口示例
+ */
+/*
+$request_data = array('License'=>$s_data,'StudentId'=>encrypt ('0', 'E', $key )); 
+$s_result=https_request('http://192.168.0.8/xcye_collect/xcyey_admin/sub/webservice/delete_stu.php',$request_data); 
+echo($s_result); 
+*/
+/*
+ * 演示结束，如果成功，会返回{"Flag":"1"}
+ */
+
 function https_request($url, $data = null) {
 	$curl = curl_init ();
 	curl_setopt ( $curl, CURLOPT_URL, $url );

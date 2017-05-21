@@ -55,6 +55,22 @@ function class_delete(id) {
         })
     })
 }
+function stu_delete(id) {
+    dialog_confirm('此幼儿真的要离园吗？离园后不能恢复，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=StuDelete'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('YeInfo')
+        	}        	
+        })
+    })
+}
 function stu_change_class(id,name,class_name) {
 	var a_arr=[];
 	a_arr.push('<select name="Vcl_ClassId" id="Vcl_ClassId" class="form-control" style="width:auto">');

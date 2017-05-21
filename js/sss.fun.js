@@ -35,7 +35,6 @@ try {
 			$(this).find('.dropdown-menu').hide()
 			$(this).find('.dropdown-menu').stop(true, true).delay(0).fadeIn(300)
 		})
-		
 		$('.dropdown').on('hidden.bs.dropdown', function(){
 			$(this).find('.dropdown-menu').stop(true, true).delay(0).fadeOut(300)
 		})
