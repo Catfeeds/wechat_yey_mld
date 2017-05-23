@@ -38,14 +38,84 @@ if ($o_stu->getState(0)>1)
 		<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
 		<input type="hidden" id="Vcl_FunName" name="Vcl_FunName" value="AuditApprove"/>
 		<input type="hidden" name="Vcl_StudentId" value="<?php echo($_GET['id'])?>"/>
+		<div class="page__hd" style="padding:0px;padding-top:10px;">
+	        <h1 class="page__title" style="font-size:28px;padding:0px;text-align:center">幼儿信息</h1>
+	    </div>
 			<?php 
 				require_once RELATIVITY_PATH . 'sub/wechat/parent_signup/signup_detail.php';
 			?>
-		<div class="weui-cells__title">信息核验不通过原因</div>
+		<div class="page__hd" style="padding:0px;padding-top:15px;">
+	        <h1 class="page__title" style="font-size:28px;padding:0px;text-align:center">信息核验选项</h1>
+	    </div>
+	    <?php 
+	    $o_question=new Student_Audit_Question();
+	    $o_question->PushOrder ( array ('Number','A') );   
+	    for($i=0;$i<$o_question->getAllCount();$i++)
+	    {
+	    	
+	    	//选项
+	    	if ($o_question->getType($i)==0)
+	    	{
+	    		echo('
+		    	<div class="weui-cells__title">'.$o_question->getNumber($i).'. '.$o_question->getText($i).' （单选）</div>
+		    	');
+	    		//单选
+	    		echo('
+		    	<div class="weui-cells weui-cells_radio">
+		    	');
+	    		$o_option=new Student_Audit_Option();
+	    		$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId($i)) ); 
+	    		$o_option->PushOrder ( array ('Number','A') ); 
+	    		for($j=0;$j<$o_option->getAllCount();$j++)
+	    		{
+	    			echo('
+				    	<label class="weui-cell weui-check__label" for="Vcl_Option_'.$o_option->getId($j).'">
+			                <div class="weui-cell__bd">
+			                    <p>'.$o_option->getText($j).'</p>
+			                </div>
+			                <div class="weui-cell__ft">
+			                    <input type="radio" class="weui-check" name="Vcl_Question_'.$o_question->getId($i).'" id="Vcl_Option_'.$o_option->getId($j).'">
+			                    <span class="weui-icon-checked"></span>
+			                </div>
+			            </label>
+			    	');
+	    		}
+	    	}else{
+	    		echo('
+		    	<div class="weui-cells__title">'.$o_question->getNumber($i).'. '.$o_question->getText($i).' （多选）</div>
+		    	');
+	    		//多选
+	    		echo('
+		    	<div class="weui-cells weui-cells_checkbox">
+		    	');
+	    		$o_option=new Student_Audit_Option();
+	    		$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId($i)) ); 
+	    		$o_option->PushOrder ( array ('Number','A') ); 
+	    		for($j=0;$j<$o_option->getAllCount();$j++)
+	    		{
+	    			echo('
+		    			<label class="weui-cell weui-check__label" for="Vcl_Option_'.$o_option->getId($j).'">
+			                <div class="weui-cell__hd">
+			                    <input type="checkbox" class="weui-check" name="Vcl_Option_'.$o_option->getId($j).'" id="Vcl_Option_'.$o_option->getId($j).'">
+			                    <i class="weui-icon-checked"></i>
+			                </div>
+			                <div class="weui-cell__bd">
+			                    <p>'.$o_option->getText($j).'</p>
+			                </div>
+			            </label>
+	    			');
+	    		}
+	    	}
+	    	echo('
+	    	</div>
+	    	');
+	    }
+	    ?>
+	    <div class="weui-cells__title">信息核验不通过原因</div>
 		<div class="weui-cells weui-cells_checkbox" style="margin-top:0px;">
 	        <div class="weui-cell">
 	            <div class="weui-cell__bd">
-	                <input class="weui-input" type="text" id="Vcl_AuditRemark" name="Vcl_AuditRemark" placeholder="（选填）"/>
+	                <input class="weui-input" type="text" id="Vcl_AuditRemark" name="Vcl_AuditRemark" placeholder="核验不通过时，必填"/>
 	            </div>
 	        </div>
         </div>
@@ -209,6 +279,9 @@ if ($o_stu->getState(0)>1)
 		vcl_disabled(document.getElementsByTagName("select")[i])
 	}
 	$('#Vcl_AuditRemark').removeAttr("disabled");
+	$('[type=radio]').removeAttr("disabled");
+	$('[type=checkbox]').removeAttr("disabled");
+	
 </script>
 <?php
 require_once '../footer.php';

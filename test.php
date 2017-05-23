@@ -290,6 +290,30 @@ echo($s_result);
 /*
  * 演示结束，如果成功，会返回{"Flag":"1"}
  */
+for($i=1;$i<200;$i++)
+{
+	echo(get_column_number($i,1));
+	echo('<br/>');
+}
+
+function get_column_number($column,$row)
+{
+	$a_number=array('','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+	//先除以24，然后取整
+	//echo(floor($column/24));
+	if ($column>26)
+	{
+		if ($column%26==0)
+		{
+			return $a_number[floor($column/26)-1].$a_number[26].$row;
+		}else{
+			return $a_number[floor($column/26)].$a_number[$column%26].$row;
+		}
+	}else{
+		return $a_number[$column].$row;
+	}
+}
+
 
 function https_request($url, $data = null) {
 	$curl = curl_init ();

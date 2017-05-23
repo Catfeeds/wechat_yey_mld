@@ -4,7 +4,8 @@ $(function(){
 	    if(keycode == '13'){  
 	    	search_for_yeinfo()   
 	    }  
-	});  
+	});
+	audit_get_waiting_number()  
 })
 function search_for_yeinfo()
 {
@@ -944,7 +945,25 @@ function audit_student()
 	}else{
 		dialog_confirm("真的要批准这个幼儿的信息吗？",function (){parent.parent.Common_OpenLoading();document.getElementById('submit_form_2').submit();});
 	}
-    
+}
+function vcl_disabled(obj)
+{
+	$(obj).attr({"disabled":"disabled"});	
+}
+function audit_get_waiting_number()
+{
+	var module_id=120203;
+	var data = 'Ajax_FunName=AuditGetWaitingNumber'; //后台方法
+    data = data + '&id='+module_id;
+    $.getJSON("include/bn_submit.switch.php", data, function (json) {
+    	//发送ajax到后台获取数值
+    	if(json.number>0)
+    	{
+    		$('#sub_nav_'+json.module_id).show()
+    	}else{
+    		$('#sub_nav_'+json.module_id).hide()
+    	}
+	})
 }
 var JieDao=new Array();
 JieDao['德胜街道']=new Array("石油社区","六铺炕水电社区","六铺炕煤炭社区","安德路南社区","安德路北社区","德外大街东社区","德外大街西社区","人定湖西里社区","新外大街南社区","新外大街北社区","德胜里社区","新明家园社区","新康社区","新风中直社区","北广社区","马甸社区","双旗杆社区","裕中西里社区","裕中东里社区","黄寺大街西社区","黄寺大街24号社区","阳光丽景社区","新风街1号社区");

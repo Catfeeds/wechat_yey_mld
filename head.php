@@ -78,6 +78,12 @@ function ExportMainTitle($id,$n_uid)
 	}
 }
 $o_user = new Single_User($O_Session->getUid());
+//验证是否对本页面有权限，如果没有权限，那么退出
+if (!$o_user->ValidModule ( MODULEID ))
+{
+	echo ('<script type="text/javascript" src="'.RELATIVITY_PATH.'js/initialize.js"></script><script type="text/javascript">goto_login()</script>');
+	exit (0);
+}
 $o_setup=new Base_Setup(1);
 ?>
 <!DOCTYPE html>

@@ -6,33 +6,12 @@
 	<br />
 	<input name="Vcl_Name" id="Vcl_Name" type="text" style="width: 100%" class="form-control" placeholder="必填"/>
 </div>
-<?php 
-if ($_GET['id']>0)
-{
-	?>
-<div class="item">
-	<label>
-		证件类型：
-	</label>
-	<br />
-	<input disabled="disabled" name="Vcl_IdType" id="Vcl_IdType" type="text" style="width: 100%" class="form-control"/>
-</div>
-<div class="item">
-	<label>
-		证件号：
-	</label>
-	<br />
-	<input disabled="disabled" name="Vcl_ID" id="Vcl_ID" type="text" style="width: 100%" class="form-control" placeholder="必填"/>
-</div>
-	<?php
-}else{
-	?>
 <div class="item">
 	<label>
 		<span class="must">*</span> 证件类型：
 	</label>
 	<br />
-	<select name="Vcl_IdType" id="Vcl_IdType" class="selectpicker" data-style="btn-default" onchange="change_idtype(this)">
+	<select disabled="disabled" name="Vcl_IdType" id="Vcl_IdType" class="selectpicker" data-style="btn-default" onchange="change_idtype(this)">
 		<option value="居民身份证">居民身份证</option>
 		<option value="香港特区护照/身份证明">香港特区护照/身份证明</option>
 		<option value="澳门特区护照/身份证明">澳门特区护照/身份证明</option>
@@ -47,12 +26,8 @@ if ($_GET['id']>0)
 		<span class="must">*</span> 证件号：
 	</label>
 	<br />
-	<input name="Vcl_ID" id="Vcl_ID" type="text" onBlur="check_id()" placeholder="必填" style="width: 100%" class="form-control">
+	<input disabled="disabled" name="Vcl_ID" id="Vcl_ID" type="text" onBlur="check_id()" placeholder="必填" style="width: 100%" class="form-control">
 </div>	
-	<?php
-}
-?>
-
 <div class="item">
 	<label>
 		<span class="must">*</span> 性别：
@@ -68,10 +43,22 @@ if ($_GET['id']>0)
 		<span class="must">*</span> 出生日期：
 	</label>
 	<br />
+	<?php 
+	if (MODULEID==120203)
+	{
+		//审核显示纯文本输入框
+		?>
+	<input name="Vcl_Birthday" id="Vcl_Birthday" type="text" placeholder="必填" style="width: 100%" class="form-control">
+		<?php
+	}else{
+		?>
 	<div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
 		<input class="form-control" size="16" type="text" id="Vcl_Birthday" name="Vcl_Birthday" readonly style="background-color:white">
 		<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-	</div>
+	</div>	
+		<?php
+	}
+	?>
 </div>
 <div class="item">
 	<label>

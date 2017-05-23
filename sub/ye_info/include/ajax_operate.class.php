@@ -5,13 +5,46 @@ require_once RELATIVITY_PATH . 'include/db_view.class.php';
 require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
 require_once RELATIVITY_PATH . 'include/bn_user.class.php';
 require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
-class Operate extends Bn_Basic {
+class Operate_YeInfo extends Bn_Basic {
 	protected $N_PageSize= 50;
 	protected $S_Key='www.bjsql.com';//密钥
 	protected $S_License='MNJIHKI6525489';//部门权限
 	//protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
 	protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//接口地址
 	//protected $S_Url='http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
+	public function getWaitRead($n_uid)
+	{
+		//因为这个模块带提醒数字图标，所以必须有此方法
+		if (! ($n_uid > 0)) {
+				//直接退出系统
+			return 0;
+		}	
+		$o_user = new Single_User ( $n_uid );
+		$n_count=0;
+		if ($o_user->ValidModule ( 120203 )) {
+			$o_user = new Student_Onboard_Info_Class_View();
+			$o_user->PushWhere ( array ('&&', 'State', '=',2) );
+			$n_count=$n_count+$o_user->getAllCount();
+		}
+		return $n_count;
+	}
+	public function AuditGetWaitingNumber($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if ($o_user->ValidModule ( 120203 )) {
+			$o_user = new Student_Onboard_Info_Class_View();
+			$o_user->PushWhere ( array ('&&', 'State', '=',2) );
+			$n_count=$o_user->getAllCount();
+		}
+		$a_result=array(
+			'number'=>$n_count,
+			'module_id'=>$this->getPost('id')
+		);
+		echo(json_encode ($a_result));
+	}
 	public function YeInfo($n_uid)
 	{	
 		if (! ($n_uid > 0)) {
@@ -19,6 +52,8 @@ class Operate extends Bn_Basic {
 		}
 		$o_user = new Single_User ( $n_uid );
 		if (!$o_user->ValidModule ( 120201 ))return;//如果没有权限，不返回任何值
+		$b_auditor=false;//判断是否为审核员，如果是，那么不能修改幼儿信息
+		if ($o_user->ValidModule ( 120203 ))$b_auditor=true;
 		$n_page=$this->getPost('page');
 		if ($n_page<=0)$n_page=1;
 		$o_user = new Student_Onboard_Info_Class_View();
@@ -78,9 +113,12 @@ class Operate extends Bn_Basic {
 			}
 			$a_button = array ();
 			array_push ( $a_button, array ('查看', "window.open('print.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
-			array_push ( $a_button, array ('修改', "location='ye_modify.php?id=".$o_user->getStudentId($i)."'" ) );//查看
-			array_push ( $a_button, array ('调班', "stu_change_class(".$o_user->getStudentId($i).",'".$o_user->getName ( $i )."','".$o_user->getClassName ( $i )."')" ) );//查看
-			array_push ( $a_button, array ('离园', "stu_delete(".$o_user->getStudentId($i).")" ) );//查看
+			if ($b_auditor==false)
+			{
+				array_push ( $a_button, array ('修改', "location='ye_modify.php?id=".$o_user->getStudentId($i)."'" ) );//查看
+				array_push ( $a_button, array ('调班', "stu_change_class(".$o_user->getStudentId($i).",'".$o_user->getName ( $i )."','".$o_user->getClassName ( $i )."')" ) );//查看
+				array_push ( $a_button, array ('离园', "stu_delete(".$o_user->getStudentId($i).")" ) );//查看
+			}			
 			array_push ( $a_button, array ('下载PDF', "window.open('download_pdf_single.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看			
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
@@ -104,6 +142,75 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'第一监护人', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,70);
 		$this->SendJsonResultForTable($n_allcount,'YeInfo', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function YeAuditTable($n_uid)
+	{	
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120203 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Student_Onboard_Info_Class_View();
+		$o_user->PushWhere ( array ('&&', 'State', '=',2) );
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			//区分年级
+			switch ($o_user->getGrade($i))
+			{
+				case 0:
+					$s_grade_name='半日班';
+						break;
+				case 1:
+					$s_grade_name='托班';
+						break;
+				case 2:
+					$s_grade_name='小班';
+					break;
+				case 3:
+					$s_grade_name='中班';
+					break;
+				case 4:
+					$s_grade_name='大班';
+					break;
+			}
+			$s_state_flg='';
+			$a_button = array ();
+			array_push ( $a_button, array ('进入审核', "location='audit_detail.php?id=".$o_user->getStudentId($i)."'") );//查看
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),
+				$o_user->getName ( $i ),
+				$s_grade_name.'('.$o_user->getClassName ( $i ).')',
+				$o_user->getSex ( $i ),
+				$o_user->getBirthday ( $i ),
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType( $i ).'</span>',
+				$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh1Phone ( $i ).'</span>',
+				$a_button
+				));				
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassNumber', 0, 90);
+		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'证件号码', '', 0, 90);
+		$a_title=$this->setTableTitle($a_title,'第一监护人', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,70);
+		$this->SendJsonResultForTable($n_allcount,'YeAuditTable', 'yes', $n_page, $a_title, $a_row);
 	}
 	public function YeClassTable($n_uid)
 	{	
@@ -305,7 +412,7 @@ class Operate extends Bn_Basic {
 			$this->setReturn('parent.goto_login()');
 		}
 		$o_user = new Single_User ( $n_uid );
-		if (! $o_user->ValidModule ( 120201 ))return; //如果没有权限，不返回任何值
+		if (! $o_user->ValidModule ( 120201 )|| $o_user->ValidModule ( 120203 ))return; //如果没有权限，不返回任何值
 		$o_table=new Student_Onboard_Info($this->getPost('id'));
 		
 		//删除幼儿信息到采集系统
@@ -341,7 +448,7 @@ class Operate extends Bn_Basic {
 			$this->setReturn('parent.goto_login()');
 		}
 		$o_user = new Single_User ( $n_uid );
-		if (! $o_user->ValidModule ( 120201 ))return; //如果没有权限，不返回任何值
+		if (! $o_user->ValidModule ( 120201 )|| $o_user->ValidModule ( 120203 ))return; //如果没有权限，不返回任何值
 		$o_table=new Student_Onboard_Info($this->getPost('id'));
 		if($this->getPost('classid')=='')
 		{
@@ -427,7 +534,7 @@ class Operate extends Bn_Basic {
 			$this->setReturn('parent.goto_login()');
 		}
 		$o_user = new Single_User ( $n_uid );
-		if (! $o_user->ValidModule ( 120201 ))return; //如果没有权限，不返回任何值
+		if (! $o_user->ValidModule ( 120201 ) || $o_user->ValidModule ( 120203 ))return; //如果没有权限，不返回任何值
 		//基本信息
 		$o_stu=new Student_Onboard_Info();
 		$o_stu->setIdType($this->getPost ( 'IdType' ));
@@ -453,7 +560,7 @@ class Operate extends Bn_Basic {
 			$this->setReturn('parent.goto_login()');
 		}
 		$o_user = new Single_User ( $n_uid );
-		if (! $o_user->ValidModule ( 120201 ))return; //如果没有权限，不返回任何值
+		if (! $o_user->ValidModule ( 120201 )|| $o_user->ValidModule ( 120203 ))return; //如果没有权限，不返回任何值
 		//基本信息
 		$o_stu=new Student_Onboard_Info($this->getPost ( 'Id' ));
 		if ($this->getPost ( 'Birthday' )=='')$this->ReturnMsg('基本信息的 [出生日期] 不能为空！','Birthday');

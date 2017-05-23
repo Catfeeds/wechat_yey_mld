@@ -746,6 +746,7 @@ class Student_Info extends CRUD
     protected $Compliance;
     protected $AuditorId;
     protected $AuditorName;
+    protected $AuditOption;
     protected $AuditRemark;
     protected $MeetAuditorId;
     protected $MeetAuditorName;
@@ -876,6 +877,7 @@ class Student_Info extends CRUD
                     'compliance' => 'Compliance',
                     'auditor_id' => 'AuditorId',
                     'auditor_name' => 'AuditorName',
+        			'audit_option' => 'AuditOption',
                     'audit_remark' => 'AuditRemark',
                     'meet_auditor_id' => 'MeetAuditorId',
                     'meet_auditor_name' => 'MeetAuditorName',
@@ -2026,6 +2028,87 @@ class Student_City_Code extends CRUD
                     'id' => 'Id',
                     'parent_id' => 'ParentId',
                     'name' => 'Name'
+        ));
+    }
+}
+class Student_Audit_Question extends CRUD
+{
+    protected $Id;
+    protected $Text;
+    protected $Type;
+    protected $Number;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_audit_question';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'text' => 'Text',
+                    'type' => 'Type',
+                    'number' => 'Number'
+        ));
+    }
+}
+class Student_Audit_Option extends CRUD
+{
+    protected $Id;
+    protected $QuestionId;
+    protected $Text;
+    protected $Number;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_audit_option';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'question_id' => 'QuestionId',
+                    'text' => 'Text',
+                    'number' => 'Number'
+        ));
+    }
+}
+class Student_Audit_Question_View extends CRUD
+{
+    protected $Id;
+    protected $Question;
+    protected $Type;
+    protected $QuestionNumber;
+    protected $OptionId;
+    protected $Option;
+    protected $OptionNumber;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_audit_question_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'question' => 'Question',
+                    'type' => 'Type',
+                    'question_number' => 'QuestionNumber',
+                    'option_id' => 'OptionId',
+                    'option' => 'Option',
+                    'option_number' => 'OptionNumber'
         ));
     }
 }

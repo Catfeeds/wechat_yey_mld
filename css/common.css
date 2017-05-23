@@ -160,6 +160,10 @@ img
 {
 	overflow:auto;
 	}
+.bootstrap-select.btn-group.disabled,.bootstrap-select.btn-group>.disabled
+{
+	background-color: #eee;	
+}
 /*Í·²¿*/
 .sss_top
 {
