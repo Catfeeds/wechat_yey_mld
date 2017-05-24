@@ -936,6 +936,30 @@ function stu_modify(modify)
 		$('#submit_form').submit();
 	}
 }
+function audit_submit(result)
+{
+	if (result==1)
+	{
+		$('#Vcl_FunName').val('StuApprove');
+		//审核通过
+		dialog_confirm("该幼儿信息和其他幼儿园存在重复，批准后将由学前科审核，是否继续？",function (){
+			loading_show();
+			$('#submit_form').submit();
+		});
+	}else{
+		$('#Vcl_FunName').val('StuReject');
+		//审核不通过
+		if($('#Vcl_RejectReason').val()=='')
+		{
+			dialog_message(" [不批准原因] 不能为空！")
+			return;
+		}
+		dialog_confirm("真的要不批准此幼儿信息吗？",function (){
+			loading_show();
+			$('#submit_form').submit();
+		});
+	}
+}
 function audit_student()
 {
 	//对于有重复标记的数据审核，给出提示，需要到教委去重。

@@ -42,8 +42,7 @@ if($o_stu->getName()==null || $o_stu->getName()=='')
                     <form action="include/bn_submit.switch.php" id="submit_form" method="post" target="submit_form_frame">
 						<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 						<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
-						<input type="hidden" name="Vcl_FunName" value="StuAudit"/>
-						<input type="hidden" name="Vcl_AuditResult" value="0"/>
+						<input type="hidden" name="Vcl_FunName" id="Vcl_FunName" value="StuAudit"/>
 						<input type="hidden" name="Vcl_Id" value="<?php echo($_GET['id'])?>"/>
                     	<div class="sss_form">
                     		<?php 
@@ -55,8 +54,8 @@ if($o_stu->getName()==null || $o_stu->getName()=='')
 							</div>           	     	
 							<div class="item" style="width:98%;margin-bottom:0px;">
 							<button id="user_add_btn" type="button" class="btn btn-default cancel" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="location='<?php echo($_SERVER['HTTP_REFERER'])?>'"><?php echo(Text::Key('Cancel'))?></button>
-							<button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" data-placement="left" onclick="">审核通过</button>
-							<button id="user_add_btn" type="button" class="btn btn-danger" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="">不通过</button>
+							<button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" data-placement="left" onclick="audit_submit(1)">审核通过</button>
+							<button id="user_add_btn" type="button" class="btn btn-danger" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="audit_submit(0)">不通过</button>
 							</div>
                      	</div>
                      </form>

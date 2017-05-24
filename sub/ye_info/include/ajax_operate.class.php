@@ -107,11 +107,17 @@ class Operate_YeInfo extends Bn_Basic {
 					break;
 			}
 			$s_state_flg='';
+			$a_button = array ();
 			if ($o_user->getState($i)==2)
 			{
 				$s_state_flg=' <span class="label label-warning">待审</span>';
 			}
-			$a_button = array ();
+			if ($o_user->getState($i)==3)
+			{
+				$s_state_flg=' <span class="label label-danger">未批准</span>';
+				array_push ( $a_button, array ('查看原因', "dialog_message(' <b>不批准原因：</b>".$o_user->getRejectReason($i)."<br/>您可修改后再次提交进行审批。')" ) );//查看
+			}
+			
 			array_push ( $a_button, array ('查看', "window.open('print.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
 			if ($b_auditor==false)
 			{
@@ -571,6 +577,22 @@ class Operate_YeInfo extends Bn_Basic {
 		$o_stu->setState(2);
 		$o_stu->Save();
 		$this->setReturn ( 'parent.form_return("dialog_success(\'修改幼儿信息成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
+	}
+	public function StuReject($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120203 ))return; //如果没有权限，不返回任何值
+		//基本信息
+		$o_stu=new Student_Onboard_Info($this->getPost ( 'Id' ));
+		if ($o_stu->getState()==2)
+		{
+			$o_stu->setState ( 3 );
+			$o_stu->setRejectReason ( $this->getPost ( 'RejectReason' ));
+			$o_stu->Save();
+		}		
+		$this->setReturn ( 'parent.location=\''.$this->getPost('BackUrl').'\';' );	
 	}
 	protected function UploadToAddAndModifyStuInfo()
 	{

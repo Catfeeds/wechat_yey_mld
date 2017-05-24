@@ -638,6 +638,7 @@ class Base_User_Files  extends CRUD
 class Student_Info extends CRUD
 {
     protected $StudentId;
+    protected $StudentNumber;
     protected $State;
     protected $Reject;
     protected $Name;
@@ -746,16 +747,17 @@ class Student_Info extends CRUD
     protected $Compliance;
     protected $AuditorId;
     protected $AuditorName;
-    protected $AuditOption;
     protected $AuditRemark;
     protected $MeetAuditorId;
     protected $MeetAuditorName;
     protected $MeetItem;
+    protected $AuditOption;
     protected $MeetRemark;
     protected $MeetParentAuditorId;
     protected $MeetParentAuditorName;
     protected $MeetParentItem;
     protected $MeetParentRemark;
+    protected $RejectReason;
 
     protected function DefineKey()
     {
@@ -769,8 +771,9 @@ class Student_Info extends CRUD
     {
         return(array(
                     'student_id' => 'StudentId',
+                    'student_number' => 'StudentNumber',
                     'state' => 'State',
-        			'reject' => 'Reject',
+                    'reject' => 'Reject',
                     'name' => 'Name',
                     'sex' => 'Sex',
                     'birthday' => 'Birthday',
@@ -877,16 +880,17 @@ class Student_Info extends CRUD
                     'compliance' => 'Compliance',
                     'auditor_id' => 'AuditorId',
                     'auditor_name' => 'AuditorName',
-        			'audit_option' => 'AuditOption',
                     'audit_remark' => 'AuditRemark',
                     'meet_auditor_id' => 'MeetAuditorId',
                     'meet_auditor_name' => 'MeetAuditorName',
                     'meet_item' => 'MeetItem',
+                    'audit_option' => 'AuditOption',
                     'meet_remark' => 'MeetRemark',
                     'meet_parent_auditor_id' => 'MeetParentAuditorId',
                     'meet_parent_auditor_name' => 'MeetParentAuditorName',
                     'meet_parent_item' => 'MeetParentItem',
-                    'meet_parent_remark' => 'MeetParentRemark'
+                    'meet_parent_remark' => 'MeetParentRemark',
+                    'reject_reason' => 'RejectReason'
         ));
     }
 }
@@ -1212,6 +1216,7 @@ class Student_Onboard_Info extends CRUD
     protected $Compliance;
     protected $AuditorId;
     protected $AuditorName;
+    protected $AuditOption;
     protected $AuditRemark;
     protected $MeetAuditorId;
     protected $MeetAuditorName;
@@ -1221,6 +1226,7 @@ class Student_Onboard_Info extends CRUD
     protected $MeetParentAuditorName;
     protected $MeetParentItem;
     protected $MeetParentRemark;
+    protected $RejectReason;
 
     protected function DefineKey()
     {
@@ -1342,6 +1348,7 @@ class Student_Onboard_Info extends CRUD
                     'compliance' => 'Compliance',
                     'auditor_id' => 'AuditorId',
                     'auditor_name' => 'AuditorName',
+                    'audit_option' => 'AuditOption',
                     'audit_remark' => 'AuditRemark',
                     'meet_auditor_id' => 'MeetAuditorId',
                     'meet_auditor_name' => 'MeetAuditorName',
@@ -1350,7 +1357,8 @@ class Student_Onboard_Info extends CRUD
                     'meet_parent_auditor_id' => 'MeetParentAuditorId',
                     'meet_parent_auditor_name' => 'MeetParentAuditorName',
                     'meet_parent_item' => 'MeetParentItem',
-                    'meet_parent_remark' => 'MeetParentRemark'
+                    'meet_parent_remark' => 'MeetParentRemark',
+                    'reject_reason' => 'RejectReason'
         ));
     }
 }
@@ -1476,6 +1484,8 @@ class Student_Onboard_Info_Class_View extends CRUD
     protected $MeetParentRemark;
     protected $ClassName;
     protected $Grade;
+    protected $AuditOption;
+    protected $RejectReason;
 
     protected function DefineKey()
     {
@@ -1607,7 +1617,9 @@ class Student_Onboard_Info_Class_View extends CRUD
                     'meet_parent_item' => 'MeetParentItem',
                     'meet_parent_remark' => 'MeetParentRemark',
                     'class_name' => 'ClassName',
-                    'grade' => 'Grade'
+                    'grade' => 'Grade',
+                    'audit_option' => 'AuditOption',
+                    'reject_reason' => 'RejectReason'
         ));
     }
 }
