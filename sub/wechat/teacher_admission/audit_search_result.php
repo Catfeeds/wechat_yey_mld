@@ -95,12 +95,13 @@ if ($o_stu->getState(0)>1)
 	    		{
 	    			echo('
 		    			<label class="weui-cell weui-check__label" for="Vcl_Option_'.$o_option->getId($j).'">
+			                
+			                <div class="weui-cell__bd">
+			                    <p>'.$o_option->getText($j).'</p>
+			                </div>
 			                <div class="weui-cell__hd">
 			                    <input type="checkbox" class="weui-check" name="Vcl_Option_'.$o_option->getId($j).'" id="Vcl_Option_'.$o_option->getId($j).'">
 			                    <i class="weui-icon-checked"></i>
-			                </div>
-			                <div class="weui-cell__bd">
-			                    <p>'.$o_option->getText($j).'</p>
 			                </div>
 			            </label>
 	    			');
