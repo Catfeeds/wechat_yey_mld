@@ -295,6 +295,7 @@ echo($s_result);
 /*
  * 检查幼儿ID是否有重复，如果有重复，返回0和重复的幼儿园，班级，没有重复返回1
  */
+/*
 $a_data=array(
 		'IdType'=>'居民身份证',
 		'Id'=>'110104201201312025'
@@ -302,10 +303,20 @@ $a_data=array(
 $request_data = array('License'=>$s_data,'Data'=>encrypt (json_encode($a_data), 'E', $key )); 
 $s_result=https_request('http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/check_stu_id.php',$request_data); 
 echo($s_result); 
+*/
 /*
  * 演示结束，如果成功，会返回{"Flag":"1"}
  */
 
+/*
+ * 获取基教统计报表，日期列表
+ */
+$request_data = array('License'=>$s_data); 
+$s_result=https_request('http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/get_count_date.php',$request_data); 
+echo($s_result); 
+/*
+ * 演示结束，如果成功，会返回{"Flag":"1"}
+ */
 
 function https_request($url, $data = null) {
 	$curl = curl_init ();
