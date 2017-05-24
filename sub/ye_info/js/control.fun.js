@@ -942,7 +942,7 @@ function audit_submit(result)
 	{
 		$('#Vcl_FunName').val('StuApprove');
 		//审核通过
-		dialog_confirm("该幼儿信息和其他幼儿园存在重复，批准后将由学前科审核，是否继续？",function (){
+		dialog_confirm("真的要审核通过此幼儿信息吗？",function (){
 			loading_show();
 			$('#submit_form').submit();
 		});

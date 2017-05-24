@@ -9,8 +9,8 @@ class Operate_YeInfo extends Bn_Basic {
 	protected $N_PageSize= 50;
 	protected $S_Key='www.bjsql.com';//密钥
 	protected $S_License='MNJIHKI6525489';//部门权限
-	//protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
-	protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//接口地址
+	protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
+	//protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//接口地址
 	//protected $S_Url='http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
 	public function getWaitRead($n_uid)
 	{
@@ -592,6 +592,45 @@ class Operate_YeInfo extends Bn_Basic {
 			$o_stu->setRejectReason ( $this->getPost ( 'RejectReason' ));
 			$o_stu->Save();
 		}		
+		$this->setReturn ( 'parent.location=\''.$this->getPost('BackUrl').'\';' );	
+	}
+	public function StuApprove($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120203 ))return; //如果没有权限，不返回任何值
+		//基本信息
+		$o_stu=new Student_Onboard_Info($this->getPost ( 'Id' ));
+		if ($o_stu->getState()==2)
+		{
+			if($o_stu->getInTime()=='0000-00-00')
+			{
+				$o_stu->setInTime ($this->GetDate());
+			}
+			$o_stu->setOutTime('0000-00-00');
+			$o_stu->setState ( 1 );
+			$o_stu->setRejectReason ('');
+			//判断区里是否有重复的幼儿
+			$a_data=array(
+					'StudentId'=>$o_stu->getStudentId(),
+					'IdType'=>$o_stu->getIdType(),
+					'Id'=>$o_stu->getId()
+					);
+			$request_data = array('License'=>$this->Encrypt ( $this->S_License, 'E', $this->S_Key ),'Data'=>$this->Encrypt (json_encode($a_data), 'E', $this->S_Key )); 
+			$s_result=json_decode($this->HttpsRequest($this->S_Url.'audit_stu.php',$request_data));
+			if ($s_result->Flag==1)
+			{
+				//审核通过
+				$o_stu->Save();
+				$this->setReturn ( 'parent.form_return("dialog_success(\'幼儿信息审核通过成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+			}else if ($s_result->SchoolName!=''){
+				$this->setReturn ( 'parent.form_return("dialog_message(\'对不起，该幼儿的<b>“证件信息”</b>在西城区采集系统中有重复，不能审核通过，如有问题请与西城区学前科联系，重复信息如下：<br/><br/><b>幼儿园名称：</b>'.$s_result->SchoolName.'<br/><b>班级名称：</b>'.$s_result->ClassName.'<br/><b>幼儿姓名：</b>'.$s_result->Name.'<br/><b>证件类型：</b>'.$o_stu->getIdType().'<br/><b>证件号：</b>'.$o_stu->getId().'<br/>\')");' );	
+			}else{
+				LOG::STU_SYNC('error,采集系统审核幼儿信息失败，错误代码：'.$s_result->Msg);
+				$this->setReturn ( 'parent.form_return("dialog_error(\'采集系统添加幼儿信息失败，请与管理员联系。\')");' );	
+			}
+		}
 		$this->setReturn ( 'parent.location=\''.$this->getPost('BackUrl').'\';' );	
 	}
 	protected function UploadToAddAndModifyStuInfo()
