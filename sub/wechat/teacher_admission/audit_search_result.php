@@ -74,7 +74,7 @@ if ($o_stu->getState(0)>1)
 			                    <p>'.$o_option->getText($j).'</p>
 			                </div>
 			                <div class="weui-cell__ft">
-			                    <input type="radio" class="weui-check" name="Vcl_Question_'.$o_question->getId($i).'" id="Vcl_Option_'.$o_option->getId($j).'">
+			                    <input value="'.$o_option->getText($j).'" type="radio" class="weui-check" name="Vcl_Question_'.$o_question->getId($i).'" id="Vcl_Option_'.$o_option->getId($j).'">
 			                    <span class="weui-icon-checked"></span>
 			                </div>
 			            </label>
@@ -111,7 +111,7 @@ if ($o_stu->getState(0)>1)
 	    	');
 	    }
 	    ?>
-	    <div class="weui-cells__title">信息核验不通过原因</div>
+	    <div class="weui-cells__title">核验备注</div>
 		<div class="weui-cells weui-cells_checkbox" style="margin-top:0px;">
 	        <div class="weui-cell">
 	            <div class="weui-cell__bd">

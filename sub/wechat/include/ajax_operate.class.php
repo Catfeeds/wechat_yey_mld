@@ -824,6 +824,43 @@ class Operate extends Bn_Basic {
 		}
 		$o_stu->setAuditorId($o_stu_wechat->getUid(0));
 	    $o_stu->setAuditorName($o_stu_wechat->getName(0));
+	    //开始记录核验选项
+	    $o_question=new Student_Audit_Question();
+	    $o_question->PushOrder ( array ('Number','A') );   
+	    $a_question_result=array();
+	    for($i=0;$i<$o_question->getAllCount();$i++)
+	    {
+	    	if ($o_question->getType($i)==0)
+	    	{
+	    		//单选
+	    		if ($this->getPost('Question_'.$o_question->getId($i))=='')
+	    		{
+	    			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'请选择“'.$o_question->getText($i).'”\');' );
+	    		}
+	    		array_push($a_question_result, rawurlencode($this->getPost('Question_'.$o_question->getId($i))));
+	    	}else{
+	    		//多选
+	    		$s_temp='';
+	    		$o_option=new Student_Audit_Option();
+	    		$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId($i)) ); 
+	    		$o_option->PushOrder ( array ('Number','A') ); 
+	    		for($j=0;$j<$o_option->getAllCount();$j++)
+	    		{
+	    			if ($this->getPost('Option_'.$o_option->getId($j))=='on')
+	    			{
+	    				$s_temp.=$o_option->getText($j).';';
+	    			}
+	    		}
+	    		if ($s_temp=='')
+	    		{
+	    			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'请选择“'.$o_question->getText($i).'”\');' );
+	    		}else{
+	    			$s_temp=substr($s_temp,0,strlen($s_temp)-1); //去掉最后一个分号
+	    		}
+	    		array_push($a_question_result,rawurlencode($s_temp));
+	    	}
+	    }
+	    $o_stu->setAuditOption(json_encode($a_question_result));
 	    $o_stu->setAuditRemark($this->getPost ( 'AuditRemark' ));
 		$o_stu->setState(2);
 		$o_stu->setReject(0);
@@ -925,7 +962,7 @@ class Operate extends Bn_Basic {
 	    $o_stu->setAuditorName($o_stu_wechat->getName(0));
 	    if ($this->getPost ( 'AuditRemark' )=='')
 	    {
-	    	$o_stu->setAuditRemark('空');//把这里强制写上文字，是非了能区分，哪些没通过，哪些没来
+	    	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，核验不通过时，核验备注不能为空！\');' );
 	    }else{
 	    	$o_stu->setAuditRemark($this->getPost ( 'AuditRemark' ));
 	    }   

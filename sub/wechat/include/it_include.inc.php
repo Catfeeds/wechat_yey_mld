@@ -17,7 +17,7 @@ $b_login=false;
 $n_uid=0;
 $S_Session_Id= $_COOKIE ['SESSIONID'];
 if (isset ( $_COOKIE ['SESSIONID'] )) {//检查是否保存了Session
-	//setcookie ( 'SESSIONID', 'd2e13c3d1cdb877f2bedb652758ebd02',0 ,'/','',false,true);
+	//setcookie ( 'SESSIONID', '8716df87d12e68b28ae251f5fb5f3b17',0 ,'/','',false,true);
 	$S_Session_Id= $_COOKIE ['SESSIONID'];
 	$o_user = new WX_User_Info ();
 	$o_user->PushWhere ( array ('&&', 'SessionId', '=',$S_Session_Id) );

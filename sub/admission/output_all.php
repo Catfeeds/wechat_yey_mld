@@ -121,6 +121,12 @@ function OutputList($S_State,$s_filename) {
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '报名班级类型');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '是否服从班级类型调剂');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '信息核验员');$n_counter++;
+	$o_question=new Student_Audit_Question();
+	$o_question->PushOrder ( array ('Number','A') );   
+	for($i=0;$i<$o_question->getAllCount();$i++)
+	{
+		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), $o_question->getText($i));$n_counter++;
+	}
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '核验备注');$n_counter++;
 	//如果是3，已见面，那么要添加相应的列
 	if($S_State>=3)
@@ -156,7 +162,7 @@ function OutputList($S_State,$s_filename) {
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getStudentId ( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getName ( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getIdType ( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->getStyle(get_column_number($n_counter,$n_row))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);$n_counter++;
+		$objPHPExcel->getActiveSheet()->getStyle(get_column_number($n_counter,$n_row))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 		$objPHPExcel->getActiveSheet()->setCellValue(get_column_number($n_counter,$n_row),"'".$o_dept->getId ( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getSex ( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getBirthday ( $i ));$n_counter++;
@@ -232,6 +238,19 @@ function OutputList($S_State,$s_filename) {
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getClassMode( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getCompliance( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getAuditorName( $i ));$n_counter++;
+		$a_option=json_decode($o_dept->getAuditOption( $i ));
+		if (count($a_option)>0)
+		{
+			for($j=0;$j<count($a_option);$j++)
+			{
+				$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),rawurldecode($a_option[$j]));$n_counter++;
+			}
+		}else{
+			for($j=0;$j<$o_question->getAllCount();$j++)
+			{
+				$n_counter++;
+			}
+		}	
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getAuditRemark( $i ));$n_counter++;
 		if($S_State>=3)
 		{
