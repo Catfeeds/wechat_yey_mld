@@ -7,6 +7,7 @@ $(function(){
 	});
 	audit_get_waiting_number()  
 })
+
 function search_for_yeinfo()
 {
 	var fun='YeInfo';
@@ -988,6 +989,63 @@ function audit_get_waiting_number()
     		$('#sub_nav_'+json.module_id).hide()
     	}
 	})
+}
+function jijiao_get_data()
+{
+	$('.small_loading').fadeIn(100);
+	var data = 'Ajax_FunName=JijiaoGetDate'; //后台方法
+    $.getJSON("include/bn_submit.switch.php", data, function (json) {
+    	if (json.success==0)
+    	{
+    		$('.small_loading').fadeOut(100);
+    		dialog_error(json.text)
+    	}else{
+    		var a_data=json.data
+    		var a_arr=[];
+    		var n_id='';
+    		for(var i=0;i<a_data.length;i++)
+    		{//构建导航
+    			var temp=a_data[i]
+    			var s_class='';
+    			if (i==0)
+    			{
+    				s_class='on';
+    				n_id=temp.Id;
+    			}
+    			a_arr.push('<div class="'+s_class+'" onclick="jijiao_get_data_detail('+temp.Id+')">');
+    			a_arr.push(temp.Date);
+    			a_arr.push('</div>');    			
+    		}
+    		$('.table_nav').html(a_arr.join('\n'));
+    		$('.sss_main .sss_main_sub .sss_sub_table .table_nav div').click(function () {//恢复导航点击事件
+    			$($(this).siblings()).removeClass('on');
+    			$(this).addClass('on')
+    		});
+    		$('.small_loading').fadeOut(100);
+    		if (n_id!='')
+    		{
+    			jijiao_get_data_detail(n_id)
+    		}
+    	}        	
+    })
+}
+function jijiao_get_data_detail(id)
+{
+	$('.small_loading').fadeIn(100);
+	var data = 'Ajax_FunName=JijiaoGetDateDetail'; //后台方法
+	data = data + '&id=' + id;
+    $.getJSON("include/bn_submit.switch.php", data, function (json) {
+    	if (json.success==0)
+    	{
+    		$('.small_loading').fadeOut(100);
+    		dialog_error(json.text)
+    	}else{
+    		var a_data=json.data
+    		var a_arr=[];
+    		
+    		$('.small_loading').fadeOut(100);
+    	}        	
+    })	
 }
 var JieDao=new Array();
 JieDao['德胜街道']=new Array("石油社区","六铺炕水电社区","六铺炕煤炭社区","安德路南社区","安德路北社区","德外大街东社区","德外大街西社区","人定湖西里社区","新外大街南社区","新外大街北社区","德胜里社区","新明家园社区","新康社区","新风中直社区","北广社区","马甸社区","双旗杆社区","裕中西里社区","裕中东里社区","黄寺大街西社区","黄寺大街24号社区","阳光丽景社区","新风街1号社区");

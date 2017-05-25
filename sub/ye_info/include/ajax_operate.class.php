@@ -9,9 +9,9 @@ class Operate_YeInfo extends Bn_Basic {
 	protected $N_PageSize= 50;
 	protected $S_Key='www.bjsql.com';//密钥
 	protected $S_License='MNJIHKI6525489';//部门权限
-	protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
+	//protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
 	//protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//接口地址
-	//protected $S_Url='http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
+	protected $S_Url='http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
 	public function getWaitRead($n_uid)
 	{
 		//因为这个模块带提醒数字图标，所以必须有此方法
@@ -403,13 +403,63 @@ class Operate_YeInfo extends Bn_Basic {
 				);
 				echo (json_encode ( $a_general ));		
 			}else{
-				LOG::CLASS_UPDATE('error,删除修改班级信息时，验证失败!');
+				LOG::CLASS_UPDATE('error,删除修改班级信息时，验证失败!ClassId：'.$this->getPost('id'));
 				$a_general = array (
 					'success' => 0,
 					'text' =>'采集系统服务器连接失败，请重试。'
 				);
 				echo (json_encode ( $a_general ));	
 			}
+		}
+	}
+	public function JijiaoGetDate($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120204 ))return; //如果没有权限，不返回任何值
+		//删除班级到采集系统
+		$request_data = array('License'=>$this->Encrypt ( $this->S_License, 'E', $this->S_Key ));
+		$s_result=json_decode($this->HttpsRequest($this->S_Url.'get_count_date.php',$request_data));
+		if ($s_result->Flag==1)
+		{
+			$a_general = array (
+				'success' => 1,
+				'data' =>$s_result->Data
+			);
+			echo (json_encode ( $a_general ));
+		}else{
+			LOG::STU_SYNC('error,获取基教统计报表日期列表时，验证失败!');
+			$a_general = array (
+				'success' => 0,
+				'text' =>'采集系统服务器连接失败，请重试。'
+			);
+			echo (json_encode ( $a_general ));	
+		}
+	}
+	public function JijiaoGetDateDetail($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120204 ))return; //如果没有权限，不返回任何值
+		//删除班级到采集系统
+		$request_data = array('License'=>$this->Encrypt ( $this->S_License, 'E', $this->S_Key ),'Id'=>$this->Encrypt ($this->getPost('id'), 'E', $this->S_Key ));
+		//$s_result=json_decode($this->HttpsRequest($this->S_Url.'get_count_date_detail.php',$request_data));
+		if ($s_result->Flag==1)
+		{
+			$a_general = array (
+				'success' => 1,
+				'data' =>$s_result->Data
+			);
+			echo (json_encode ( $a_general ));
+		}else{
+			LOG::STU_SYNC('error,获取基教统计报表日期详细信息时，验证失败!，Id：'.$this->getPost('id'));
+			$a_general = array (
+				'success' => 0,
+				'text' =>'采集系统服务器连接失败，请重试。'
+			);
+			echo (json_encode ( $a_general ));	
 		}
 	}
 	public function StuDelete($n_uid) {
