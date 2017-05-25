@@ -1006,26 +1006,13 @@ function jijiao_get_data()
     		for(var i=0;i<a_data.length;i++)
     		{//构建导航
     			var temp=a_data[i]
-    			var s_class='';
-    			if (i==0)
-    			{
-    				s_class='on';
-    				n_id=temp.Id;
-    			}
-    			a_arr.push('<div class="'+s_class+'" onclick="jijiao_get_data_detail('+temp.Id+')">');
-    			a_arr.push(temp.Date);
-    			a_arr.push('</div>');    			
+    			a_arr.push('<option value="'+temp.Id+'">'+temp.Date+'</option>');    			
     		}
-    		$('.table_nav').html(a_arr.join('\n'));
-    		$('.sss_main .sss_main_sub .sss_sub_table .table_nav div').click(function () {//恢复导航点击事件
-    			$($(this).siblings()).removeClass('on');
-    			$(this).addClass('on')
-    		});
+    		$('#Vcl_Date').html(a_arr.join('\n'));
+    		$('#Vcl_Date').selectpicker('refresh');
     		$('.small_loading').fadeOut(100);
-    		if (n_id!='')
-    		{
-    			jijiao_get_data_detail(n_id)
-    		}
+			var temp=a_data[0]
+    		jijiao_get_data_detail(temp.Id)
     	}        	
     })
 }
@@ -1041,8 +1028,54 @@ function jijiao_get_data_detail(id)
     		dialog_error(json.text)
     	}else{
     		var a_data=json.data
-    		var a_arr=[];
-    		
+			var report_class=a_data.ReportClass
+			//基础基211幼儿园、幼儿园班数（单位：个）
+			var a_arr=[];
+			a_arr.push('<td>合计</td>');
+			a_arr.push('<td>01</td>');
+			a_arr.push('<td class="report_disable">&nbsp;</td>');
+			a_arr.push('<td>'+report_class[0]+'</td>');
+			a_arr.push('<td>'+report_class[1]+'</td>');
+			a_arr.push('<td>'+report_class[2]+'</td>');
+			a_arr.push('<td>'+report_class[3]+'</td>');
+			$('#ReportClass').html(a_arr.join('\n'));
+			//基础基311幼儿园、幼儿班分年龄幼儿数（单位：人）
+			var report_age=a_data.ReportAge
+			for(var i=0;i<report_age.length;i++)
+			{
+				var a_arr=[];
+				var a_temp=report_age[i];
+				a_arr.push('<td>'+a_temp[0]+'</td>');
+				a_arr.push('<td>'+a_temp[1]+'</td>');
+				a_arr.push('<td class="report_disable">&nbsp;</td>');
+				a_arr.push('<td>'+a_temp[2]+'</td>');
+				a_arr.push('<td>'+a_temp[3]+'</td>');
+				a_arr.push('<td>'+a_temp[4]+'</td>');
+				a_arr.push('<td>'+a_temp[5]+'</td>');
+				a_arr.push('<td class="report_disable">&nbsp;</td>');
+				a_arr.push('<td>'+a_temp[6]+'</td>');
+				a_arr.push('<td>'+a_temp[7]+'</td>');
+				a_arr.push('<td>'+a_temp[8]+'</td>');
+				a_arr.push('<td>'+a_temp[9]+'</td>');
+				a_arr.push('<td>'+a_temp[10]+'</td>');
+				a_arr.push('<td>'+a_temp[11]+'</td>');
+				$('#ReportAge_'+i).html(a_arr.join('\n'));
+			}
+			//基础基341在校生中其他情况及外国籍学生情况（单位：人）
+			var report_nation=a_data.ReportNation
+			for(var i=0;i<report_nation.length;i++)
+			{
+				var a_arr=[];
+				var a_temp=report_nation[i];
+				a_arr.push('<td>'+a_temp[0]+'</td>');
+				a_arr.push('<td>'+a_temp[1]+'</td>');
+				a_arr.push('<td>-</td>');
+				a_arr.push('<td>-</td>');
+				a_arr.push('<td>'+a_temp[2]+'</td>');
+				a_arr.push('<td>'+a_temp[3]+'</td>');
+				a_arr.push('<td>'+a_temp[4]+'</td>');
+				$('#ReportNation_'+i).html(a_arr.join('\n'));
+			}
     		$('.small_loading').fadeOut(100);
     	}        	
     })	

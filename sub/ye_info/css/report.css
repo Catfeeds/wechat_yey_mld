@@ -1,0 +1,36 @@
+@CHARSET "UTF-8";
+.report_table
+{
+	border-bottom: 1px solid #DDDDDD;
+	border-left: 1px solid #DDDDDD;
+	background-color:#FFFFFF;
+	color:black;	
+	width:100%;
+}
+.report_table td
+{
+	border-right: 1px solid #DDDDDD;
+	border-top: 1px solid #DDDDDD;
+	padding:7px 5px 7px 5px;
+	vertical-align:middle;	
+	text-align:center;
+	color:#333333;
+	}
+.report_disable
+{
+	background-color:#EEEEEE;
+	}
+.report_text
+{
+	font-weight:bold;
+	color:#333333;
+}
+.report_title{
+	font-size:18px;
+	text-align:center;
+	font-weight:bold;
+	color:#333333;
+}
+.sss_main {
+	padding-bottom:0px;	
+}
