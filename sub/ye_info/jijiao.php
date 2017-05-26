@@ -176,7 +176,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 	</table>
 	<div style="height: 20px;"></div>
 	<div class="report_title">幼儿园、幼儿班北京市户籍分年龄幼儿数</div>
-	<div class="report_text">基础基31A （2015/2016学年初）</div>
+	<div class="report_text">基础基31A （<span class="Year"></span>学年初）</div>
 	<table class="report_table" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td rowspan="2">&nbsp; &nbsp;</td>
@@ -230,139 +230,33 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 			<td class="report_disable">&nbsp;</td>
 			<td class="report_disable">&nbsp;</td>
 		</tr>
-		<tr>
-			<td>女</td>
-			<td>02</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>0</td>
-			<td>43</td>
-			<td>6</td>
-			<td>0</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>143</td>
-			<td>0</td>
-			<td>44</td>
-			<td>52</td>
-			<td>47</td>
-			<td>46</td>
-		</tr>
-		<tr>
-			<td>少数民族</td>
-			<td>03</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>0</td>
-			<td>7</td>
-			<td>0</td>
-			<td>0</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>17</td>
-			<td>0</td>
-			<td>7</td>
-			<td>17</td>
-			<td>11</td>
-			<td>6</td>
-		</tr>
-		<tr>
-			<td>残疾人</td>
-			<td>04</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td>3岁以下</td>
-			<td>05</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>0</td>
-			<td>2</td>
-			<td>0</td>
-			<td>0</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>0</td>
-			<td>0</td>
-			<td>2</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td>3岁</td>
-			<td>06</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>0</td>
-			<td>93</td>
-			<td>1</td>
-			<td>0</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>45</td>
-			<td>0</td>
-			<td>94</td>
-			<td>1</td>
-			<td>0</td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td>4岁</td>
-			<td>07</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>0</td>
-			<td>0</td>
-			<td>10</td>
-			<td>0</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>51</td>
-			<td>0</td>
-			<td>0</td>
-			<td>97</td>
-			<td>3</td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td>5岁</td>
-			<td>08</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>2</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>47</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>96</td>
-			<td>1</td>
-		</tr>
-		<tr>
-			<td>6岁及以上</td>
-			<td>09</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td class="report_disable">&nbsp;</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>92</td>
-		</tr>
-	
+		<?php 
+		for($i=0;$i<8;$i++)
+		{
+			?>
+			<tr id="ReportAgeBj_<?php echo($i)?>">
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td class="report_disable">&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td class="report_disable">&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<?php
+		}
+		?>
 	</table>
 	<div style="height: 20px;"></div>
 	<div class="report_title">北京市幼儿园在园（班）幼儿补充资料</div>
-	<div class="report_text">基础基99A （2015/2016学年初）</div>
+	<div class="report_text">基础基99A （<span class="Year"></span>学年初）</div>
 	<table class="report_table" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td rowspan="2">&nbsp;</td>
@@ -387,15 +281,15 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 			<td>5</td>
 			<td>6</td>
 		</tr>
-		<tr>
+		<tr id="ReportClassBj">
 			<td>本市农业户籍幼儿数</td>
 			<td>01</td>
 			<td class="report_disable">&nbsp;</td>
-			<td>1</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>1</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
 		</tr>
 	</table>
 </div>

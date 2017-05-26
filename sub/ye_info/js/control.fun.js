@@ -1076,6 +1076,42 @@ function jijiao_get_data_detail(id)
 				a_arr.push('<td>'+a_temp[4]+'</td>');
 				$('#ReportNation_'+i).html(a_arr.join('\n'));
 			}
+			//幼儿园、幼儿班北京市户籍分年龄幼儿数
+			var report_age_bj=a_data.ReportAgeBj
+			for(var i=0;i<report_age_bj.length;i++)
+			{
+				var a_arr=[];
+				var a_temp=report_age_bj[i];
+				a_arr.push('<td>'+a_temp[0]+'</td>');
+				a_arr.push('<td>'+a_temp[1]+'</td>');
+				a_arr.push('<td class="report_disable">&nbsp;</td>');
+				a_arr.push('<td>'+a_temp[2]+'</td>');
+				a_arr.push('<td>'+a_temp[3]+'</td>');
+				a_arr.push('<td>'+a_temp[4]+'</td>');
+				a_arr.push('<td>'+a_temp[5]+'</td>');
+				a_arr.push('<td class="report_disable">&nbsp;</td>');
+				a_arr.push('<td>'+a_temp[6]+'</td>');
+				a_arr.push('<td>'+a_temp[7]+'</td>');
+				a_arr.push('<td>'+a_temp[8]+'</td>');
+				a_arr.push('<td>'+a_temp[9]+'</td>');
+				a_arr.push('<td>'+a_temp[10]+'</td>');
+				a_arr.push('<td>'+a_temp[11]+'</td>');
+				$('#ReportAgeBj_'+i).html(a_arr.join('\n'));
+			}			
+			//基础基211幼儿园、幼儿园班数（单位：个）
+			var report_class_bj=a_data.ReportClassBj
+			var a_arr=[];
+			a_arr.push('<td>本市农业户籍幼儿数</td>');
+			a_arr.push('<td>01</td>');
+			a_arr.push('<td class="report_disable">&nbsp;</td>');
+			a_arr.push('<td>'+report_class_bj[0]+'</td>');
+			a_arr.push('<td>'+report_class_bj[1]+'</td>');
+			a_arr.push('<td>'+report_class_bj[2]+'</td>');
+			a_arr.push('<td>'+report_class_bj[3]+'</td>');
+			a_arr.push('<td>'+report_class_bj[4]+'</td>');
+			$('#ReportClassBj').html(a_arr.join('\n'));
+			//学年
+			$('.Year').html(a_data.YearStart+'/'+a_data.YearEnd);
     		$('.small_loading').fadeOut(100);
     	}        	
     })	

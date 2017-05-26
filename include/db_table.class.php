@@ -1361,6 +1361,10 @@ class Student_Onboard_Info extends CRUD
                     'reject_reason' => 'RejectReason'
         ));
     }
+	public function DeleteAll()
+	{
+		$this->Execute ( 'TRUNCATE TABLE  `student_onboard_info`');		
+	}
 }
 class Student_Onboard_Info_Class_View extends CRUD
 {

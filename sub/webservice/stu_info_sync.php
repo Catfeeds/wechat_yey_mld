@@ -32,6 +32,9 @@ $a_result_data = json_decode ( https_request ( $s_url . 'download_class.php', $r
 if ($a_result_data->Flag == 1) {
 	$a_data = $a_result_data->Data;
 	//开始同步本地班级数据
+	//清空所有数据
+	$o_class = new Student_Class ();
+	$o_class->DeleteAll();
 	for($i = 0; $i < count ( $a_data ); $i ++) {
 		$a_temp = $a_data [$i];
 		//如果班级ID存在，那么跳过，否则新建
@@ -163,6 +166,9 @@ if ($a_result_data->Flag == 1) {
  * 读取本地在园幼儿信息，将ID放入一个数组
  */
 $a_stu_id=array();
+//清空所有数据
+$o_stu=new Student_Onboard_Info();
+$o_stu->DeleteAll();
 $o_stu=new Student_Onboard_Info();
 for($i=0;$i<$o_stu->getAllCount();$i++)
 {
