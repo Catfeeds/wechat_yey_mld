@@ -129,7 +129,7 @@ if($o_stu->getJh1Connection()=='')
     </style>
 </head>
 <body>
-<input type="button" value="下载PDF" onclick="location='download_pdf_single.php?id=<?php echo($n_uid)?>'">
+<input type="button" value="下载PDF" onclick="location='download_pdf_single.php?id=<?php echo($n_uid)?>&graduate=<?php echo($_GET['graduate'])?>'">
 <div align="center">
     <div class="title">幼儿信息</div>
     <table align="center" border="0" cellpadding="0" cellspacing="0">

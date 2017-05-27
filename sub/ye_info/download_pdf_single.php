@@ -11,7 +11,12 @@ if (is_numeric ( $_GET ['id'] )) {
 } else {
 	$n_uid = 0;
 }
-$o_stu=new Student_Onboard_Info($n_uid);
+if ($_GET['graduate']==1)
+{
+	$o_stu=new Student_Graduate_Info($n_uid);
+}else{
+	$o_stu=new Student_Onboard_Info($n_uid);
+}
 
 function filter($str)
 {

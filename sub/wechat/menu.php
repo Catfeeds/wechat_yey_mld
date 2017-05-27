@@ -17,16 +17,11 @@ $data='{
                 {
                     "type": "view", 
                     "name": "园所简介", 
-                    "url": "http://mp.weixin.qq.com/s/RKoaM3d1omY5Z4tPplITcw" 
+                    "url": "http://mp.weixin.qq.com/s/n9K4h0_WKgmZ0WEYzprjvQ" 
                 },
                 {
                 	"type":"click",
-		          	"name":"办园理念",
-		          	"key": "2"
-                },
-                {
-                	"type":"click",
-		          	"name":"联系方式",
+		          	"name":"园所文化",
 		          	"key": "2"
                 }
             ]

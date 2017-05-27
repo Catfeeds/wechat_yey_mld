@@ -56,6 +56,7 @@ class Admission_Time extends CRUD
 {
     protected $Id;
     protected $Time;
+    protected $Date;
     protected $Sum;
     protected $UseSum;
     protected $Type;
@@ -73,6 +74,7 @@ class Admission_Time extends CRUD
         return(array(
                     'id' => 'Id',
                     'time' => 'Time',
+        			'date' => 'Date',
                     'sum' => 'Sum',
         			'type' => 'Type',
                     'use_sum' => 'UseSum'

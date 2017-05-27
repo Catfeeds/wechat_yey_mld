@@ -32,7 +32,9 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 	                    	<div class="item">
 		                    	<div class="input-group">
 		                    		<span class="input-group-addon" id="basic-addon1"><?php echo(($i+1))?></span>
-								  <span class="input-group-addon" id="basic-addon1" style="border-right:0px;">时段</span>
+		                    		<span class="input-group-addon" id="basic-addon1" style="border-right:0px;">日期</span>
+								  <input name="Vcl_Date_<?php echo($o_table->getId($i))?>" type="text" class="form-control" value="<?php echo($o_table->getDate($i))?>" placeholder="例如：2017年6月15日" aria-describedby="basic-addon1">
+								  <span class="input-group-addon" id="basic-addon1" style="border-right:0px;border-left:0px;">时段</span>
 								  <input name="Vcl_Time_<?php echo($o_table->getId($i))?>" type="text" class="form-control" value="<?php echo($o_table->getTime($i))?>" placeholder="例如：08:30-09:00" aria-describedby="basic-addon1">
 								  <span class="input-group-addon" id="basic-addon1" style="border-left:0px;border-right:0px;">核验人数上限</span>
 								  <input name="Vcl_Sum_<?php echo($o_table->getId($i))?>" type="text" class="form-control" value="<?php echo($o_table->getSum($i))?>" onkeyup="value=value.replace(/[^0-9]/g,'')" placeholder="数字" aria-describedby="basic-addon1">
@@ -54,7 +56,9 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 	                    	<div class="item">
 		                    	<div class="input-group">
 		                    		<span class="input-group-addon" id="basic-addon1"><?php echo(($i+1))?></span>
-								  <span class="input-group-addon" id="basic-addon1" style="border-right:0px;">时段</span>
+		                    		<span class="input-group-addon" id="basic-addon1" style="border-right:0px;">日期</span>
+								  <input name="Vcl_Date_<?php echo($o_table->getId($i))?>" type="text" class="form-control" value="<?php echo($o_table->getTime($i))?>" placeholder="例如：2017年6月15日" aria-describedby="basic-addon1">
+								  <span class="input-group-addon" id="basic-addon1" style="border-right:0px;border-left:0px;">时段</span>
 								  <input name="Vcl_Time_<?php echo($o_table->getId($i))?>" type="text" class="form-control" value="<?php echo($o_table->getTime($i))?>" placeholder="例如：08:30-09:00" aria-describedby="basic-addon1">
 								  <span class="input-group-addon" id="basic-addon1" style="border-left:0px;border-right:0px;">见面人数上限</span>
 								  <input name="Vcl_Sum_<?php echo($o_table->getId($i))?>" type="text" class="form-control" value="<?php echo($o_table->getSum($i))?>" onkeyup="value=value.replace(/[^0-9]/g,'')" placeholder="数字" aria-describedby="basic-addon1">

@@ -9,9 +9,9 @@ class Operate_YeInfo extends Bn_Basic {
 	protected $N_PageSize= 50;
 	protected $S_Key='www.bjsql.com';//密钥
 	protected $S_License='MNJIHKI6525489';//部门权限
-	//protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
+	protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
 	//protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//接口地址
-	protected $S_Url='http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
+	//protected $S_Url='http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
 	public function getWaitRead($n_uid)
 	{
 		//因为这个模块带提醒数字图标，所以必须有此方法
@@ -148,6 +148,72 @@ class Operate_YeInfo extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'第一监护人', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,70);
 		$this->SendJsonResultForTable($n_allcount,'YeInfo', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function YeGraduateTable($n_uid)
+	{	
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120205 ))return;//如果没有权限，不返回任何值
+		$b_auditor=false;//判断是否为审核员，如果是，那么不能修改幼儿信息
+		if ($o_user->ValidModule ( 120203 ))$b_auditor=true;
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Student_Graduate_Info();
+		$s_key=$this->getPost('key');
+		if ($this->getPost('other_key')!='')
+		{
+			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$this->getPost('other_key').'%') );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',$s_key) );
+			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$this->getPost('other_key').'%') );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',$s_key) );
+			$o_user->PushWhere ( array ('||', 'ClassNameDiy', 'like','%'.$this->getPost('other_key').'%') );
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',$s_key) );
+		}else{
+			$o_user->PushWhere ( array ('&&', 'GradeNumber', '=',$s_key) );
+		}				
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$a_button = array ();			
+			array_push ( $a_button, array ('查看', "window.open('print.php?id=".$o_user->getStudentId($i)."&graduate=1','_blank')" ) );//查看
+			if ($b_auditor==false)
+			{
+				array_push ( $a_button, array ('撤销毕业', "stu_delete(".$o_user->getStudentId($i).")" ) );//查看
+			}		
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),
+				$o_user->getName ( $i ),
+				$o_user->getClassNameDiy ( $i ),
+				$o_user->getSex ( $i ),
+				$o_user->getBirthday ( $i ),
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType( $i ).'</span>',
+				$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh1Phone ( $i ).'</span>',
+				$a_button
+				));				
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'原班级名称', 'ClassNameDiy', 0, 90);
+		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'证件号码', '', 0, 90);
+		$a_title=$this->setTableTitle($a_title,'第一监护人', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,70);
+		$this->SendJsonResultForTable($n_allcount,'YeGraduateTable', 'yes', $n_page, $a_title, $a_row);
 	}
 	public function YeAuditTable($n_uid)
 	{	

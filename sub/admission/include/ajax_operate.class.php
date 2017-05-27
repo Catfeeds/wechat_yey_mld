@@ -313,10 +313,11 @@ class Operate extends Bn_Basic {
 				    $o_msg->setFirst('如下幼儿初步审核已经通过，请您按时间地点携带核验资料进行信息核验，错过视为自行放弃报名资格。');
 				    $o_msg->setKeyword1($o_stu->getStudentId());
 				    $o_msg->setKeyword2($o_stu->getName());
-				    $o_msg->setKeyword3($o_admission_setup->getAuditDate());
-				    $o_msg->setKeyword4($this->getAuditTime($o_admission_setup->getAuditTime()));
+				    $a_time=$this->getAuditDateAndTime($o_admission_setup->getAuditDate(),$o_admission_setup->getAuditTime());
+				    $o_msg->setKeyword3($a_time[0]);
+				    $o_msg->setKeyword4($a_time[1]);
 				    $o_msg->setKeyword5($o_admission_setup->getAuditAddress());
-				    $o_msg->setRemark('注意事项：家长持报名手机，在规定的时段、地点，有序扫码入园，进行信息核验。家长请务必携带相关证件，即:户口本、幼儿身份证、房产证或租赁合同（房主与幼儿的关系）。幼儿预防接种证（小绿本）。其他特殊证明（华侨、烈士、现役军人、残疾等）。
+				    $o_msg->setRemark('注意事项：家长持报名手机及幼儿编号，在规定的时段、地点，有序扫码入园，进行信息核验。家长请务必携带相关证件原件，即:户口本、幼儿身份证、房产证或租赁合同（能证明房主与幼儿的关系）、幼儿预防接种证（小绿本）、其他特殊证明（如烈士子女等）。
 
 如需查看幼儿报名信息，请点击详情');
 				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup.php');
@@ -327,7 +328,7 @@ class Operate extends Bn_Basic {
 		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发送信息核验通知成功！\',function(){parent.table_refresh(\'StudentSignupTable\')})");' );
 	}
-	private function getAuditTime($s_time)
+	private function getAuditDateAndTime($s_date,$s_time)
 	{
 		//读取见面设置
 		$o_table=new Admission_Time();
@@ -338,10 +339,11 @@ class Operate extends Bn_Basic {
         	if ($o_table->getUseSum($i)<$o_table->getSum($i))
         	{
         		$s_time=$o_table->getTime($i);
+        		$s_date=$o_table->getDate($i);
         		$o_table->SumAdd1($o_table->getId($i));
         	}
         }
-        return $s_time;
+        return array($s_date,$s_time);
 	}
 	public function SendHealthNotice($n_uid)
 	{	
@@ -686,6 +688,7 @@ class Operate extends Bn_Basic {
         {
         	$o_temp=new Admission_Time($o_table->getId($i));
         	$o_temp->setTime($this->getPost('Time_'.$o_table->getId($i)));
+        	$o_temp->setDate($this->getPost('Date_'.$o_table->getId($i)));
         	$o_temp->setSum($this->getPost('Sum_'.$o_table->getId($i)));
         	$o_temp->Save();
         }

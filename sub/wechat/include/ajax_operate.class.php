@@ -875,8 +875,10 @@ class Operate extends Bn_Basic {
 		$o_wechat_user->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId()) );
 		for($j=0;$j<$o_wechat_user->getAllCount();$j++)
 		{
-			//立即发送见面信息模板消息
-			$s_meet_time=$this->getMeetTime($o_admission_setup->getMeetTime());
+			//立即发送见面信息模板消息$this->getMeetTime($o_admission_setup->getMeetTime());
+			$a_time=$this->getMeetDateAndTime($o_admission_setup->getMeetDate(), $o_admission_setup->getMeetTime());
+			$s_meet_date=$a_time[0];
+			$s_meet_time=$a_time[1];
 			$curlUtil = new curlUtil();
 		    $o_parent=new WX_User_Info($o_wechat_user->getUserId($j));
 			$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
@@ -890,10 +892,10 @@ class Operate extends Bn_Basic {
 '),
 					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
-					'keyword3' => array('value' => $o_admission_setup->getMeetDate(),'color'=>'#173177'),
+					'keyword3' => array('value' => $s_meet_date,'color'=>'#173177'),
 					'keyword4' => array('value' => $s_meet_time,'color'=>'#173177'),
 					'keyword5' => array('value' => $o_admission_setup->getMeetAddress(),'color'=>'#173177'),
-					'remark' => array('value' => '注意事项：家长持报名手机，在规定的时段、地点，有序扫码入园，参加见面会。一名幼儿只能由一名监护人带领参加见面会。参与见面会的幼儿进行见面前家长可以请幼儿牢记幼儿编号或将写有幼儿编号的纸条由幼儿转交见面老师，幼儿见面过程中家长需在操场上的家长见面处进行家长见面。
+					'remark' => array('value' => '注意事项：家长持报名手机及幼儿编号，在规定的时段、地点，有序扫码入园，参加见面会。一名幼儿只能由一名监护人带领参加见面会。
 					
 如需查看报名信息，请点击详情。')
 				)
@@ -911,7 +913,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，错过视为自行放弃报名资格。');
 			$o_msg->setKeyword1($o_stu->getStudentId());
 			$o_msg->setKeyword2($o_stu->getName());
-			$o_msg->setKeyword3($o_admission_setup->getMeetDate());
+			$o_msg->setKeyword3($s_meet_date);
 			$o_msg->setKeyword4($s_meet_time);
 			$o_msg->setKeyword5($o_admission_setup->getMeetAddress());
 			$o_msg->setRemark('注意事项：家长持报名手机，在规定的时段、地点，有序扫码入园，参加见面会。一名幼儿只能由一名监护人带领参加见面会。参与见面会的幼儿进行见面前家长可以请幼儿牢记幼儿编号或将写有幼儿编号的纸条由幼儿转交见面老师，幼儿见面过程中家长需在操场上的家长见面处进行家长见面。');
@@ -921,7 +923,7 @@ class Operate extends Bn_Basic {
 		}	    
 	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'audit_search_success.php"');
 	}
-	private function getMeetTime($s_time)
+	private function getMeetDateAndTime($s_date,$s_time)
 	{
 		//读取见面设置
 		$o_table=new Admission_Time();
@@ -932,10 +934,11 @@ class Operate extends Bn_Basic {
         	if ($o_table->getUseSum($i)<$o_table->getSum($i))
         	{
         		$s_time=$o_table->getTime($i);
+        		$s_date=$o_table->getDate($i);
         		$o_table->SumAdd1($o_table->getId($i));
         	}
         }
-        return $s_time;
+        return array($s_date,$s_time);
 	}
 	public function AuditReject($n_uid)
 	{
