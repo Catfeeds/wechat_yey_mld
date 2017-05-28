@@ -7,7 +7,6 @@ header ( 'content-type:text/html; charset=utf-8' );
 $key = 'www.bjsql.com';
 $license = 'MNJIHKI6525489';
 $s_data = encrypt ( $license, 'E', $key );
-
 //$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/download_class.php',$request_data));
 //$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_stu_id.php',$request_data));
 //$a_result=json_decode(https_request('http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/get_single_stu_info.php',$request_data));
@@ -311,9 +310,27 @@ echo($s_result);
 /*
  * 获取基教统计报表，日期列表
  */
+/*
 $request_data = array('License'=>$s_data); 
 $s_result=https_request('http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/get_count_date.php',$request_data); 
 echo($s_result); 
+*/
+/*
+ * 演示结束，如果成功，会返回{"Flag":"1"}
+ */
+
+/*
+ * 已毕业幼儿撤销
+ */
+
+$a_data=array(
+		'StudentId'=>'17002',
+		'ClassId'=>'1685'
+		);
+$request_data = array('License'=>$s_data,'Data'=>encrypt (json_encode($a_data), 'E', $key )); 
+$s_result=https_request('http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/cancel_graduate.php',$request_data); 
+echo($s_result); 
+
 /*
  * 演示结束，如果成功，会返回{"Flag":"1"}
  */

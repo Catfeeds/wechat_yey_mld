@@ -107,7 +107,7 @@ class Operate extends Bn_Basic {
 				'keyword4' => array('value' => $o_stu->getId(),'color'=>'#173177'),
 				'keyword5' => array('value' => $o_stu->getSignupDate(),'color'=>'#173177'),
 				'remark' => array('value' => '
-请您于2017年6月16日前关注报名状态。谢谢。
+请您于2017年6月14日17:00前关注报名状态。谢谢。
 				
 如需修改幼儿报名信息，请点击详情。')
 			)
@@ -390,7 +390,7 @@ class Operate extends Bn_Basic {
 				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId(), // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
-					'first' => array('value' => '您所报名的如下幼儿已经被我园录取，请按时带幼儿进行注册，未能按时注册视为自动放弃报名资格。
+					'first' => array('value' => '您所报名的如下幼儿已经被我园录取，请按时带幼儿进行注册，未能按时注册视为自动放弃入园资格。
 '),
 					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
@@ -400,7 +400,7 @@ class Operate extends Bn_Basic {
 					'remark' => array('value' => '注册时间：2017年8月25日 08：30
 注册地点：北京市西城区红莲中里10号。
 				
-如需查看报名信息，请点击详情。')
+报到注意事项请点击详情查看。')
 				)
 				);
 			$curlUtil->https_request($s_url, json_encode($data));
@@ -413,13 +413,13 @@ class Operate extends Bn_Basic {
 			$o_msg->setOpenId($o_parent->getOpenId());
 			$o_msg->setActivityId(0);
 			$o_msg->setSend(1);
-			$o_msg->setFirst('您所报名的如下幼儿已经被我园录取，请按时带幼儿进行注册，未能按时注册视为自动放弃报名资格。');
+			$o_msg->setFirst('您所报名的如下幼儿已经被我园录取，请按时带幼儿进行注册，未能按时注册视为自动放弃入园资格。');
 			$o_msg->setKeyword1($o_stu->getStudentId());
 			$o_msg->setKeyword2($o_stu->getName());
 			$o_msg->setKeyword3($o_stu->getIdType());
 			$o_msg->setKeyword4($o_stu->getId());
 			$o_msg->setKeyword5($o_stu->getClassMode());
-			$o_msg->setRemark('注册时间：2017年8月25日 08：30<br/>注册地点：北京市西城区红莲中里10号。');
+			$o_msg->setRemark('');
 			$o_msg->setUrl('');
 			$o_msg->setKeywordSum(5);
 			$o_msg->Save();
@@ -885,19 +885,18 @@ class Operate extends Bn_Basic {
 			$data = array(
 		    	'touser' => $o_parent->getOpenId(), // openid是发送消息的基础
 				'template_id' => $this->getWechatSetup('MSGTMP_03'), // 模板id
-				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup.php', // 点击跳转地址
+				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId(), // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
-					'first' => array('value' => '如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，错过视为自行放弃报名资格。
+					'first' => array('value' => '如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，如错过体见面视为自行放弃入园资格：
 '),
 					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
 					'keyword3' => array('value' => $s_meet_date,'color'=>'#173177'),
 					'keyword4' => array('value' => $s_meet_time,'color'=>'#173177'),
 					'keyword5' => array('value' => $o_admission_setup->getMeetAddress(),'color'=>'#173177'),
-					'remark' => array('value' => '注意事项：家长持报名手机及幼儿编号，在规定的时段、地点，有序扫码入园，参加见面会。一名幼儿只能由一名监护人带领参加见面会。
-					
-如需查看报名信息，请点击详情。')
+					'remark' => array('value' => '
+见面会注意事项请点击详情查看。')
 				)
 				);
 			$curlUtil->https_request($s_url, json_encode($data));
@@ -910,13 +909,13 @@ class Operate extends Bn_Basic {
 			$o_msg->setOpenId($o_parent->getOpenId());
 			$o_msg->setActivityId(0);
 			$o_msg->setSend(1);
-			$o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，错过视为自行放弃报名资格。');
+			$o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，如错过体见面视为自行放弃入园资格：');
 			$o_msg->setKeyword1($o_stu->getStudentId());
 			$o_msg->setKeyword2($o_stu->getName());
 			$o_msg->setKeyword3($s_meet_date);
 			$o_msg->setKeyword4($s_meet_time);
 			$o_msg->setKeyword5($o_admission_setup->getMeetAddress());
-			$o_msg->setRemark('注意事项：家长持报名手机，在规定的时段、地点，有序扫码入园，参加见面会。一名幼儿只能由一名监护人带领参加见面会。参与见面会的幼儿进行见面前家长可以请幼儿牢记幼儿编号或将写有幼儿编号的纸条由幼儿转交见面老师，幼儿见面过程中家长需在操场上的家长见面处进行家长见面。');
+			$o_msg->setRemark('');
 			$o_msg->setUrl('');
 			$o_msg->setKeywordSum(5);
 			$o_msg->Save();

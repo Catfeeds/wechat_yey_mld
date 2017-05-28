@@ -163,6 +163,16 @@ switch($o_stu->getState(0))
 		exit(0);
 		break;
 }
+function format_remark($s_str)
+{
+	$s_str=str_replace('如需查看幼儿报名信息，请点击详情', '',$s_str);
+	$s_str=str_replace('见面会注意事项请点击详情查看。', '',$s_str);
+	$s_str=str_replace('幼儿体检注意事项请点击详情查看。', '',$s_str);
+	$s_str=str_replace('幼儿体检注意事项请点击详情查看。', '',$s_str);
+	$s_str=str_replace('公交车站', '<br/>公交车站',$s_str);
+	$s_str=str_replace('信息核验注意事项请点击详情查看。', '',$s_str);
+	return $s_str;
+}
 ?>
 <style>
 .weui-media-box:before {
@@ -185,7 +195,29 @@ switch($o_stu->getState(0))
                 </div>
                 <?php echo($s_html)?>
                 <div class="weui-media-box weui-media-box_text">
-                    <h4 class="weui-media-box__title"><?php echo(str_replace('如需查看幼儿报名信息，请点击详情', '', $o_reminder->getRemark(0)))?></h4>
+                    <h4 class="weui-media-box__title"><?php echo(format_remark($o_reminder->getRemark(0)));?></h4>
+                    <?php 
+                    if ($o_stu->getState(0)==1)
+                    {
+                    ?>
+                	<h4 class="weui-media-box__title" style="text-align:center;font-size:22px;padding-top:15px;padding-bottom:15px;"><b>信息核验注意事项</b></h4>
+                    <h4 class="weui-media-box__title" style="font-size:14px;color:#333333">
+<span style="text-decoration:underline">家长持报名手机及幼儿编号</span>，在规定的时段、地点，有序扫码入园，进行信息核验。家长请务必携带相关证件原件，即:户口本、幼儿身份证、房产证或租赁合同（能证明房主与幼儿的关系）、幼儿预防接种证（小绿本）、其他特殊证明（如烈士子女等）。
+					</h4>
+					<?php 
+                    }
+					?>
+					<?php 
+                    if ($o_stu->getState(0)==2)
+                    {
+                    ?>
+                	<h4 class="weui-media-box__title" style="text-align:center;font-size:22px;padding-top:15px;padding-bottom:15px;"><b>见面会注意事项</b></h4>
+                    <h4 class="weui-media-box__title" style="font-size:14px;color:#333333">
+<span style="text-decoration:underline">家长持报名手机及幼儿编号</span>，在规定的时段、地点，有序扫码入园，参加见面会。一名幼儿只能由一名监护人带领参加见面会。
+					</h4>
+					<?php 
+                    }
+					?>
                     <?php 
                     if ($o_stu->getState(0)==4)
                     {

@@ -310,17 +310,16 @@ class Operate extends Bn_Basic {
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
-				    $o_msg->setFirst('如下幼儿初步审核已经通过，请您按时间地点携带核验资料进行信息核验，错过视为自行放弃报名资格。');
+				    $o_msg->setFirst('如下幼儿初步审核已经通过，请您按时间地点携带核验资料进行信息核验，如错过信息核验视为自行放弃入园资格：');
 				    $o_msg->setKeyword1($o_stu->getStudentId());
 				    $o_msg->setKeyword2($o_stu->getName());
 				    $a_time=$this->getAuditDateAndTime($o_admission_setup->getAuditDate(),$o_admission_setup->getAuditTime());
 				    $o_msg->setKeyword3($a_time[0]);
 				    $o_msg->setKeyword4($a_time[1]);
 				    $o_msg->setKeyword5($o_admission_setup->getAuditAddress());
-				    $o_msg->setRemark('注意事项：家长持报名手机及幼儿编号，在规定的时段、地点，有序扫码入园，进行信息核验。家长请务必携带相关证件原件，即:户口本、幼儿身份证、房产证或租赁合同（能证明房主与幼儿的关系）、幼儿预防接种证（小绿本）、其他特殊证明（如烈士子女等）。
-
-如需查看幼儿报名信息，请点击详情');
-				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup.php');
+				    $o_msg->setRemark('
+信息核验注意事项请点击详情查看。');
+				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId().'');
 				    $o_msg->setKeywordSum(5);
 				    $o_msg->Save();
 				}				
@@ -378,16 +377,16 @@ class Operate extends Bn_Basic {
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
-				    $o_msg->setFirst('如下幼儿已经通过幼儿见面，请您按时间地点携带幼儿进行体检，如错过体检视为自行放弃报名资格。');
+				    $o_msg->setFirst('如下幼儿已经通过幼儿见面，请您按时间地点携带幼儿进行体检，如错过体检视为自行放弃入园资格：');
 				    $o_msg->setKeyword1($o_stu->getStudentId());//幼儿编号
 				    $o_msg->setKeyword2($o_stu->getName());//幼儿姓名
 				    $o_msg->setKeyword3($o_admission_setup->getHealthTime());//体检时间
 				    $o_msg->setKeyword4($o_admission_setup->getHealthAddress());//体检地点
 				    $o_msg->setKeyword5('');//为空
-				    $o_msg->setRemark('机构地址：平原里小区19号（健宫医院对面）<br/>
+				    $o_msg->setRemark('机构地址：平原里小区19号（健宫医院对面）
 公交车站：自新路北（83路;133路;381路;特14路;专13路）
-				    
-如需查看幼儿报名信息，请点击详情');
+
+幼儿体检注意事项请点击详情查看。');
 				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId().'');
 				    $o_msg->setKeywordSum(4);
 				    $o_msg->Save();
@@ -436,9 +435,9 @@ class Operate extends Bn_Basic {
 				    $o_msg->setKeyword4($o_stu->getId());//体检地点
 				    $o_msg->setKeyword5('');//体检地点
 				    $o_msg->setRemark('完善信息后，您将会收到录取通知。
-				    
+
 请点击详情，完善幼儿信息。');
-				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup.php');
+				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/signup_finish_info.php?id='.$o_stu->getStudentId());
 				    $o_msg->setKeywordSum(4);
 				    $o_msg->Save();
 				    

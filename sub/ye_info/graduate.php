@@ -65,7 +65,41 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 					$s_key=$a_list[0];
 					echo("table_sort('".$s_fun."','".$s_item."','".$s_sort."','".$s_page."','".$s_key."','')");
 					?>
+					//将班级列表压入js数组
+					var a_class_list=[];
+					<?php 
+						$o_table = new Student_Class();
+						$o_table->PushOrder ( array ('Grade','A') );
+						$o_table->PushOrder ( array ('ClassId','A') );
+						for($i=0;$i<$o_table->getAllCount();$i++)
+						{
+							$s_grade_name='';
+							 	//区分年级
+							 	switch ($o_table->getGrade($i))
+							 	{
+							 		case 0:
+							 			$s_grade_name='半日班';
+							 			break;
+							 		case 1:
+							 			$s_grade_name='托班';
+							 			break;
+							 		case 2:
+							 			$s_grade_name='小班';
+							 			break;
+							 		case 3:
+							 			$s_grade_name='中班';
+							 			break;
+							 		case 4:
+							 			$s_grade_name='大班';
+							 			break;
+							 	}
+							?>
+							a_class_list.push(new Array("<?php echo($o_table->getClassId($i))?>","<?php echo($s_grade_name.'('.$o_table->getClassName($i).')');?>"));
+							<?php
+						}
+					?>
 					</script>
+
 		
 <script>
 

@@ -1106,6 +1106,20 @@ class Student_Graduate_Info extends CRUD
                     'flag_first' => 'FlagFirst'
         ));
     }
+	public function CutGraduateToOnboard($n_uid)
+	{
+		for($i=0;$i<1000;$i++)
+		{
+			if ($this->O_Result)
+			{
+				break;
+			}else{
+				$this->Execute ("insert into `student_onboard_info` select * from `student_graduate_info` Where `student_graduate_info`.`student_id`=".$n_uid.";");
+				$this->Execute ("DELETE FROM `student_graduate_info` WHERE `student_graduate_info`.`student_id`=".$n_uid.";");		
+			}
+		}
+		
+	}
 }
 class Student_Onboard_Info extends CRUD
 {

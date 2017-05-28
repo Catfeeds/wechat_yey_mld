@@ -9,8 +9,8 @@ class Operate_YeInfo extends Bn_Basic {
 	protected $N_PageSize= 50;
 	protected $S_Key='www.bjsql.com';//密钥
 	protected $S_License='MNJIHKI6525489';//部门权限
-	protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
-	//protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//接口地址
+	//protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
+	protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//接口地址
 	//protected $S_Url='http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
 	public function getWaitRead($n_uid)
 	{
@@ -190,7 +190,7 @@ class Operate_YeInfo extends Bn_Basic {
 			array_push ( $a_button, array ('查看', "window.open('print.php?id=".$o_user->getStudentId($i)."&graduate=1','_blank')" ) );//查看
 			if ($b_auditor==false)
 			{
-				array_push ( $a_button, array ('撤销毕业', "stu_delete(".$o_user->getStudentId($i).")" ) );//查看
+				array_push ( $a_button, array ('撤销毕业', "stu_cancel_graduate(".$o_user->getStudentId($i).",'".$o_user->getName ( $i )."','".$o_user->getClassNameDiy ( $i )."')" ) );//查看
 			}		
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
@@ -395,7 +395,7 @@ class Operate_YeInfo extends Bn_Basic {
 			if ($s_result->Msg=='1001')
 			{
 				LOG::CLASS_UPDATE('error,提交新建班级时，验证失败!');
-				$this->setReturn ( 'parent.form_return("dialog_error(\'采集系统服务器连接失败，请重试。\')");' );				
+				$this->setReturn ( 'parent.form_return("dialog_error(\'采集系统服务器连接失败，请重试，如无法解决，请联系管理员。\')");' );				
 			}else{
 				LOG::CLASS_UPDATE('error,提交新建班级时，采集系统添加班级新建数据不成功，年级：'.$this->getPost('Grade').'，班级名称：'.$this->getPost('ClassName'));
 				$this->setReturn ( 'parent.form_return("dialog_error(\'采集系统添加班级错误，请重试。\')");' );				
@@ -437,7 +437,7 @@ class Operate_YeInfo extends Bn_Basic {
 				$this->setReturn ( 'parent.form_return("dialog_error(\'修改班级信息失败，请重试。\')");' );
 			}else{
 				LOG::CLASS_UPDATE('error,提交修改班级信息时，验证失败!');
-				$this->setReturn ( 'parent.form_return("dialog_error(\'采集系统服务器连接失败，请重试。\')");' );	
+				$this->setReturn ( 'parent.form_return("dialog_error(\'采集系统服务器连接失败，请重试，如无法解决，请联系管理员。\')");' );	
 			}
 		}
 	}
@@ -472,7 +472,7 @@ class Operate_YeInfo extends Bn_Basic {
 				LOG::CLASS_UPDATE('error,删除修改班级信息时，验证失败!ClassId：'.$this->getPost('id'));
 				$a_general = array (
 					'success' => 0,
-					'text' =>'采集系统服务器连接失败，请重试。'
+					'text' =>'采集系统服务器连接失败，请重试，如无法解决，请联系管理员。'
 				);
 				echo (json_encode ( $a_general ));	
 			}
@@ -498,7 +498,7 @@ class Operate_YeInfo extends Bn_Basic {
 			LOG::STU_SYNC('error,获取基教统计报表日期列表时，验证失败!');
 			$a_general = array (
 				'success' => 0,
-				'text' =>'采集系统服务器连接失败，请重试。'
+				'text' =>'采集系统服务器连接失败，请重试，如无法解决，请联系管理员。'
 			);
 			echo (json_encode ( $a_general ));	
 		}
@@ -523,7 +523,7 @@ class Operate_YeInfo extends Bn_Basic {
 			LOG::STU_SYNC('error,获取基教统计报表日期详细信息时，验证失败!，Id：'.$this->getPost('id'));
 			$a_general = array (
 				'success' => 0,
-				'text' =>'采集系统服务器连接失败，请重试。'
+				'text' =>'采集系统服务器连接失败，请重试，如无法解决，请联系管理员。'
 			);
 			echo (json_encode ( $a_general ));	
 		}
@@ -596,7 +596,7 @@ class Operate_YeInfo extends Bn_Basic {
 			$o_table->setGrade($o_class->getGrade());
 			if ($o_table->Save()==false)
 			{
-				LOG::STU_SYNC('error,采集系统调班成功后，本地调班写入失败，幼儿ID：'.$this->getPost('Id').'，调班ID：'.$this->getPost('classid'));
+				LOG::STU_SYNC('error,采集系统调班成功后，本地调班写入失败，幼儿ID：'.$this->getPost('id').'，调班ID：'.$this->getPost('classid'));
 			}else{
 				$a_general = array (
 					'success' => 1,
@@ -607,7 +607,7 @@ class Operate_YeInfo extends Bn_Basic {
 		}else{
 			if ($s_result->Msg=='1004')
 			{
-				LOG::STU_SYNC('error,调班时采集系统数据库无法写入。幼儿ID：'.$this->getPost('Id').'，调班ID：'.$this->getPost('classid'));
+				LOG::STU_SYNC('error,调班时采集系统数据库无法写入。幼儿ID：'.$this->getPost('id').'，调班ID：'.$this->getPost('classid'));
 				$a_general = array (
 					'success' => 0,
 					'text' =>'采集系统数据库无法写入。'
@@ -615,7 +615,7 @@ class Operate_YeInfo extends Bn_Basic {
 				echo (json_encode ( $a_general ));		
 			}elseif($s_result->Msg=='1003'||$s_result->Msg=='1002')
 			{
-				LOG::STU_SYNC('error,调班时无权操作本幼儿或目标班级，幼儿ID：'.$this->getPost('Id').'，调班ID：'.$this->getPost('classid'));
+				LOG::STU_SYNC('error,调班时无权操作本幼儿或目标班级，幼儿ID：'.$this->getPost('id').'，调班ID：'.$this->getPost('classid'));
 				$a_general = array (
 					'success' => 0,
 					'text' =>'在采集系统中，没有找到指定幼儿或班级。'
@@ -625,10 +625,63 @@ class Operate_YeInfo extends Bn_Basic {
 				LOG::STU_SYNC('error,调班时，验证失败!');
 				$a_general = array (
 					'success' => 0,
-					'text' =>'采集系统服务器连接失败，请重试。'
+					'text' =>'采集系统服务器连接失败，请重试，如无法解决，请联系管理员。'
 				);
 				echo (json_encode ( $a_general ));	
 			}
+		}
+	}
+	public function StuCancelGraduate($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120205 )|| $o_user->ValidModule ( 120203 ))return; //如果没有权限，不返回任何值
+		$o_table=new Student_Graduate_Info($this->getPost('id'));
+		if($this->getPost('classid')=='')
+		{
+			$a_general = array (
+				'success' => 0,
+				'text' =>'请选择班级后提交。'
+			);
+			echo (json_encode ( $a_general ));
+			return;
+		}
+		//调班到采集系统
+		$a_data=array(
+			'StudentId'=>$this->getPost('id'),
+			'ClassId'=>$this->getPost('classid')
+		);		
+		$request_data = array('License'=>$this->Encrypt ( $this->S_License, 'E', $this->S_Key ),'Data'=>$this->Encrypt (json_encode($a_data), 'E', $this->S_Key ));
+		$s_result=json_decode($this->HttpsRequest($this->S_Url.'cancel_graduate.php',$request_data));
+		if ($s_result->Flag==1)
+		{
+			$o_class=new Student_Class($this->getPost('classid'));
+			$o_stu = new Student_Graduate_Info ($this->getPost('id'));
+			$o_stu->setGradeNumber($o_class->getGrade());
+			$o_stu->setClassNumber($o_class->getClassId());
+			$o_stu->setClassNameDiy ('');
+			$o_stu->setOutTime ('0000-00-00');
+			$o_stu->Save ();
+			if ($o_stu->Save()==false)
+			{
+				LOG::STU_SYNC('error,采集系统撤销毕业成功后，本地写入失败，幼儿ID：'.$this->getPost('id').'，调班ID：'.$this->getPost('classid'));
+			}else{
+				$o_stu = new Student_Graduate_Info();//剪切基础数据
+				$o_stu->CutGraduateToOnboard($this->getPost('id'));
+				$a_general = array (
+					'success' => 1,
+					'text' =>''
+				);
+				echo (json_encode ( $a_general ));
+			}
+		}else{
+			LOG::STU_SYNC('error,撤销毕业时，采集系统失败。幼儿ID：'.$this->getPost('id').'，撤销后班ID：'.$this->getPost('classid'));
+				$a_general = array (
+					'success' => 0,
+					'text' =>'采集系统服务器连接失败，请重试，如无法解决，请联系管理员。'
+				);
+			echo (json_encode ( $a_general ));		
 		}
 	}
 	public function CheckId()

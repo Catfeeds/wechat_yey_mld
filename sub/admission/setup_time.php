@@ -6,6 +6,14 @@ require_once RELATIVITY_PATH . 'include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'head.php';
 ExportMainTitle(MODULEID,$O_Session->getUid());
 ?>
+<style>
+<!--
+.sss_form div.item {
+    width: 80%;
+    margin-left: 10%;
+}
+-->
+</style>
 					<div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
                         <div class="caption">
@@ -57,7 +65,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 		                    	<div class="input-group">
 		                    		<span class="input-group-addon" id="basic-addon1"><?php echo(($i+1))?></span>
 		                    		<span class="input-group-addon" id="basic-addon1" style="border-right:0px;">日期</span>
-								  <input name="Vcl_Date_<?php echo($o_table->getId($i))?>" type="text" class="form-control" value="<?php echo($o_table->getTime($i))?>" placeholder="例如：2017年6月15日" aria-describedby="basic-addon1">
+								  <input name="Vcl_Date_<?php echo($o_table->getId($i))?>" type="text" class="form-control" value="<?php echo($o_table->getDate($i))?>" placeholder="例如：2017年6月15日" aria-describedby="basic-addon1">
 								  <span class="input-group-addon" id="basic-addon1" style="border-right:0px;border-left:0px;">时段</span>
 								  <input name="Vcl_Time_<?php echo($o_table->getId($i))?>" type="text" class="form-control" value="<?php echo($o_table->getTime($i))?>" placeholder="例如：08:30-09:00" aria-describedby="basic-addon1">
 								  <span class="input-group-addon" id="basic-addon1" style="border-left:0px;border-right:0px;">见面人数上限</span>

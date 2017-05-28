@@ -79,48 +79,48 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        		}
 	        		if($o_stu_wechat->getReject($i)==1)
 	        		{
-	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">信息初审未通过，失去入园资格。</span>';
+	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">信息初审未通过，失去入园资格</span>';
 	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		}
 	        		break;
 	        	case 1:
-	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待进行信息核验</span>';
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待进行信息核验，请查阅状态详情</span>';
 	        		$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		if($o_stu_wechat->getReject($i)==1)
 	        		{
 	        			if ($o_stu_wechat->getAuditorName ( $i )=='')
 	        			{
-	        				$s_html='<span class="weui-form-preview__value" style="color:#d9534f">未参加信息核验，失去入园资格。</span>';
+	        				$s_html='<span class="weui-form-preview__value" style="color:#d9534f">未参加信息核验，失去入园资格</span>';
 	        			}else{
-	        				$s_html='<span class="weui-form-preview__value" style="color:#d9534f">信息核验未通过，失去入园资格。</span>';
+	        				$s_html='<span class="weui-form-preview__value" style="color:#d9534f">信息核验未通过，失去入园资格</span>';
 	        			}	        			
 	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		}
 	        		break;
 	        	case 2:
-	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">信息核验通过，等待见面，请查阅状态详情。</span>';
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">核验通过，等待见面，请查阅状态详情</span>';
 	        		$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		if($o_stu_wechat->getReject($i)==1)
 	        		{
-	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">未参加见面会，失去入园资格。</span>';
+	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">未参加见面会，失去入园资格</span>';
 	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		}
 	        		break;
 	        	case 3:
-	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">见面已完成，请等候结果。</span>';
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">见面已完成，请等候结果</span>';
 	        		$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		if($o_stu_wechat->getReject($i)==1)
 	        		{
-	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">见面未通过，失去入园资格。</span>';
+	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">见面未通过，失去入园资格</span>';
 	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		}
 	        		break;
 	        	case 4:
-	        		$s_html='<span class="weui-form-preview__value" style="color:#FFA200">等待进行幼儿体检及结果，请查阅状态详情。</span>';
+	        		$s_html='<span class="weui-form-preview__value" style="color:#FFA200">等待进行体检及结果，请查阅状态详情</span>';
 	        		$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		if($o_stu_wechat->getReject($i)==1)
 	        		{
-	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">幼儿体检未通过，失去入园资格。</span>';
+	        			$s_html='<span class="weui-form-preview__value" style="color:#d9534f">幼儿体检未通过，失去入园资格</span>';
 	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		}
 	        		break;
@@ -129,7 +129,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        		$s_button='<a href="signup_finish_info.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">信息采集</a>';
 	        		break;
 	        	case 6:
-	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">已录取，请查看状态详情，按时报到注册。</span>';
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">已录取，查阅状态详情，按时报到注册</span>';
 	        		$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_finish_info.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		break;
 	        }

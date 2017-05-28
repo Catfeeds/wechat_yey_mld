@@ -3,7 +3,8 @@
  * 幼儿信息与教委信息采集系统同步
  */
 ignore_user_abort(true);//在关闭连接后，继续运行php脚本
-set_time_limit(0);
+ini_set("max_execution_time",1800);
+set_time_limit(300);
 define('RELATIVITY_PATH', '../../'); //定义相对路径
 header ( 'Cache-Control: no-cache' );
 header ( 'Pragma: no-cache' );
@@ -15,7 +16,9 @@ header ( 'content-type:text/html; charset=utf-8' );
  */
 $key = 'www.bjsql.com';
 $license = 'MNJIHKI6525489';
-$s_url = 'http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';
+//$s_url = 'http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';
+//$s_url = 'http://yeygl.xchjw.cn/sub/webservice/';//接口地址
+$s_url = 'http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
 $license = encrypt ( $license, 'E', $key );
 /*
  * 获取系统配置
@@ -168,7 +171,7 @@ if ($a_result_data->Flag == 1) {
 $a_stu_id=array();
 //清空所有数据
 $o_stu=new Student_Onboard_Info();
-$o_stu->DeleteAll();
+//$o_stu->DeleteAll();
 $o_stu=new Student_Onboard_Info();
 for($i=0;$i<$o_stu->getAllCount();$i++)
 {
