@@ -84,7 +84,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        		}
 	        		break;
 	        	case 1:
-	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待进行信息核验，请查阅状态详情</span>';
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待信息核验，请查阅状态详情</span>';
 	        		$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		if($o_stu_wechat->getReject($i)==1)
 	        		{
@@ -98,7 +98,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        		}
 	        		break;
 	        	case 2:
-	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">核验通过，等待见面，请查阅状态详情</span>';
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待见面，请查阅状态详情</span>';
 	        		$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		if($o_stu_wechat->getReject($i)==1)
 	        		{
@@ -116,7 +116,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        		}
 	        		break;
 	        	case 4:
-	        		$s_html='<span class="weui-form-preview__value" style="color:#FFA200">等待进行体检及结果，请查阅状态详情</span>';
+	        		$s_html='<span class="weui-form-preview__value" style="color:#FFA200">等待体检及结果，请查阅状态详情</span>';
 	        		$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		if($o_stu_wechat->getReject($i)==1)
 	        		{
@@ -129,7 +129,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        		$s_button='<a href="signup_finish_info.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">信息采集</a>';
 	        		break;
 	        	case 6:
-	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">已录取，查阅状态详情，按时报到注册</span>';
+	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">已录取，报到注册请查阅状态详情</span>';
 	        		$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_finish_info.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		break;
 	        }

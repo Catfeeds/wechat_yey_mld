@@ -888,7 +888,7 @@ class Operate extends Bn_Basic {
 				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId(), // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
-					'first' => array('value' => '如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，如错过体见面视为自行放弃入园资格：
+					'first' => array('value' => '如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，如错过见面视为自行放弃入园资格：
 '),
 					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
