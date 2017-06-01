@@ -344,6 +344,22 @@ class Operate extends Bn_Basic {
         }
         return array($s_date,$s_time);
 	}
+	private function getHealthDateAndTime($s_datetime)
+	{
+		//读取见面设置
+		$o_table=new Admission_Time();
+		$o_table->PushWhere ( array ('&&', 'Type', '=', 'Health' ) );
+		$o_table->PushOrder ( array ('Id', 'A' ) );
+        for($i=0;$i<$o_table->getAllCount();$i++)
+        {
+        	if ($o_table->getUseSum($i)<$o_table->getSum($i))
+        	{
+        		$s_datetime=$o_table->getDate($i).' '.$o_table->getTime($i);
+        		$o_table->SumAdd1($o_table->getId($i));
+        	}
+        }
+        return $s_datetime;
+	}
 	public function SendHealthNotice($n_uid)
 	{	
 		sleep(1);
@@ -380,7 +396,7 @@ class Operate extends Bn_Basic {
 				    $o_msg->setFirst('如下幼儿已经通过幼儿见面，请您按时间地点携带幼儿进行体检，如错过体检视为自行放弃入园资格：');
 				    $o_msg->setKeyword1($o_stu->getStudentId());//幼儿编号
 				    $o_msg->setKeyword2($o_stu->getName());//幼儿姓名
-				    $o_msg->setKeyword3($o_admission_setup->getHealthTime());//体检时间
+				    $o_msg->setKeyword3($this->getHealthDateAndTime($o_admission_setup->getHealthTime()));//体检时间
 				    $o_msg->setKeyword4($o_admission_setup->getHealthAddress());//体检地点
 				    $o_msg->setKeyword5('');//为空
 				    $o_msg->setRemark('机构地址：平原里小区19号（健宫医院对面）

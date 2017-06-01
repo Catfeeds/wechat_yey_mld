@@ -47,10 +47,10 @@ $(function(){
 //判断是否为合法报名时段
 $o_setup=new Admission_Setup(1); 
 $o_date = new DateTime('Asia/Chongqing');
-$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d');
+$s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ) . ' ' . $o_date->format ( 'H' ) . ':' . $o_date->format ( 'i' ) . ':' . $o_date->format ( 's' );
 if (strtotime($s_date)<strtotime($o_setup->getSignupStart()))
 {
-	echo('Dialog_Message("报名开始时间为：'.$o_setup->getSignupStart().' ，请在有效日期内进行报名。",function(){location=\'my_signup.php\'});
+	echo('Dialog_Message("报名开始时间为：<br/>'.$o_setup->getSignupStart().' <br/>请在有效日期内进行报名。",function(){location=\'my_signup.php\'});
 	');
 }
 if (strtotime($s_date)>strtotime($o_setup->getSignupEnd()))
