@@ -909,7 +909,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setOpenId($o_parent->getOpenId());
 			$o_msg->setActivityId(0);
 			$o_msg->setSend(1);
-			$o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，如错过体见面视为自行放弃入园资格：');
+			$o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，如错过见面视为自行放弃入园资格：');
 			$o_msg->setKeyword1($o_stu->getStudentId());
 			$o_msg->setKeyword2($o_stu->getName());
 			$o_msg->setKeyword3($s_meet_date);
