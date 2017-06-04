@@ -22,7 +22,7 @@ $data='{
                 {
                 	"type":"click",
 		          	"name":"园所文化",
-		          	"key": "2"
+		          	"key": "[2]"
                 }
             ]
         }, 
@@ -32,17 +32,17 @@ $data='{
                 {
                     "type":"click",
 		          	"name":"师幼活动",
-		          	"key": "2"
+		          	"key": "[3,4]"
                 },
                 {
                 	"type":"click",
 		          	"name":"卫生保健",
-		          	"key": "2"
+		          	"key": "[2]"
                 },
                 {
                 	"type":"click",
 		          	"name":"家园社区",
-		          	"key": "2"
+		          	"key": "[5,6,7,8]"
                 }
             ]
         }, 
@@ -57,7 +57,7 @@ $data='{
                 {
                 	"type":"click",
 		          	"name":"社会招聘",
-		          	"key": "2"
+		          	"key": "[2]"
                 }
             ]
         }

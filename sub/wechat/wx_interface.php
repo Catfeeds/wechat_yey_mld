@@ -502,15 +502,16 @@ class wechat
             }            
 		}else{
 			//把第一次关注的人，全部加入默认分组中
-			$resultStr = $this->getLibrary(1, $postObj); 
+			$resultStr = $this->getLibrary('[1]', $postObj); 
 			//$resultStr = $this->transmitText($postObj,'感谢关注北京市西城区美术培训学校！');
 		}
         echo $resultStr;
     }
 	function getLibrary($n_id,$object){ //获取资源库中的资源
+		$a_id=json_decode($n_id);
 		$content = array();
 		$activity = new WX_Library();
-		$activity->PushWhere(array("&&", "Id", "=", $n_id));
+		$activity->PushWhere(array("&&", "Id", "=", $a_id[0]));
 		$count = $activity->getAllCount();
 		if ($count>0)
 		{
@@ -524,6 +525,23 @@ class wechat
 					'PicUrl' => $activity->getPicUrl(0),
 					'Url' => $activity->getMessageUrl(0)
 					);
+				if (count($a_id)>1)
+				{
+					for($i=1;$i<count($a_id);$i++)
+					{
+						$activity = new WX_Library();
+						$activity->PushWhere(array("&&", "Id", "=", $a_id[$i]));
+						$count = $activity->getAllCount();
+						$a_temp=array(
+							'Title' => $activity->getTitle(0),
+							'Description' => $activity->getDescription(0),
+							'PicUrl' => $activity->getPicUrl(0),
+							'Url' => $activity->getMessageUrl(0)
+							);
+						array_push($content, $a_temp);
+					}
+					//说明是组合图文消息
+				}
 				return $this->transmitNews($object, $content);
 			}elseif("3" == $activity->getMessageType(0)){  //图片回复
 				$content= array(
