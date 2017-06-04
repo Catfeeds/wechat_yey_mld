@@ -15,14 +15,14 @@ $data='{
           	"name":"走进马幼",
           	"sub_button": [
                 {
-                    "type": "view", 
+                    "type": "click", 
                     "name": "园所简介", 
-                    "url": "http://mp.weixin.qq.com/s/n9K4h0_WKgmZ0WEYzprjvQ" 
+                    "key": "[1]" 
                 },
                 {
                 	"type":"click",
 		          	"name":"园所文化",
-		          	"key": "[2]"
+		          	"key": "[10]"
                 }
             ]
         }, 
@@ -37,7 +37,7 @@ $data='{
                 {
                 	"type":"click",
 		          	"name":"卫生保健",
-		          	"key": "[2]"
+		          	"key": "[11]"
                 },
                 {
                 	"type":"click",
@@ -49,7 +49,7 @@ $data='{
         {
             "name": "社会关注", 
             "sub_button": [
-                {
+                { 
                     "type": "view", 
                     "name": "招生报名", 
                     "url": "http://wx.mldyey.com/sub/wechat/parent_signup/my_signup.php" 
@@ -57,7 +57,7 @@ $data='{
                 {
                 	"type":"click",
 		          	"name":"社会招聘",
-		          	"key": "[2]"
+		          	"key": "[9]"
                 }
             ]
         }
