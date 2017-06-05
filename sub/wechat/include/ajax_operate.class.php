@@ -54,7 +54,7 @@ class Operate extends Bn_Basic {
 		sleep(0);
 		$o_setup=new Admission_Setup(1); 
 		$o_date = new DateTime('Asia/Chongqing');
-		$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d');
+		$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d'). ' ' . $o_date->format ( 'H' ) . ':' . $o_date->format ( 'i' ) . ':' . $o_date->format ( 's' );
 		if (strtotime($s_date)<strtotime($o_setup->getSignupStart()))
 		{
 			$this->ReturnMsg('报名开始时间为：'.$o_setup->getSignupStart().' ，请在有效日期内进行报名，谢谢合作。','Name');
