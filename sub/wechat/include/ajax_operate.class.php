@@ -1063,7 +1063,81 @@ class Operate extends Bn_Basic {
 		}	    
 	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'meet_parent_search_success.php"');
 	}
-	
+	public function OnboardBinding($n_uid)
+	{
+		if ($n_uid>0)
+		{
+			
+		}else{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
+		}
+		//验证输入的信息是否合法
+		if ($this->getPost ( 'Name' )=='')$this->ReturnMsg('幼儿信息的 [幼儿姓名] 不能为空！','Name');
+		if ($this->getPost ( 'ID' )=='')$this->ReturnMsg('幼儿信息的 [证件号码] 不能为空！','ID');
+		if ($this->getPost ( 'JhName' )=='')$this->ReturnMsg('家长信息的 [姓名] 不能为空！','JhName');
+		if ($this->getPost ( 'JhPhone' )=='')$this->ReturnMsg('家长信息的 [手机号] 不能为空！','JhPhone');
+		//验证幼儿信息是否正确
+		$o_stu=new Student_Onboard_Info();
+		$o_stu->PushWhere ( array ('&&', 'Name', '=',$this->getPost ( 'Name' )) ); 
+		$o_stu->PushWhere ( array ('&&', 'IdType', '=',$this->getPost ( 'IdType' )) ); 
+		$o_stu->PushWhere ( array ('&&', 'Id', '=',$this->getPost ( 'ID' )) ); 
+		if ($o_stu->getAllCount()==0)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'对不起，幼儿信息不存在，请修改后重新输入！\');' );
+		}
+		//验证家长信息
+		if($o_stu->getJh1Name(0)!=$this->getPost ( 'JhName' ) || $o_stu->getJh1Phone(0)!=$this->getPost ( 'JhPhone' ))
+		{
+			if($o_stu->getJh2Name(0)!=$this->getPost ( 'JhName' ) || $o_stu->getJh2Phone(0)!=$this->getPost ( 'JhPhone' ))
+			{
+				$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'对不起，家长姓名或手机不匹配，请核实后重新输入！\');' );
+			}			
+		}
+		//开始绑定
+		$o_user_wechat=new WX_User_Info($n_uid);
+		$o_user_wechat->setUserName($this->getPost ( 'JhName' ));
+		$o_user_wechat->setPhone($this->getPost ( 'JhPhone' ));
+		$o_user_wechat->Save();
+		//开始写入绑定数据库
+		//先查找是否已经绑定过
+		$o_onboard_wechat=new Student_Onboard_Info_Wechat();
+		$o_onboard_wechat->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId(0)) ); 
+		$o_onboard_wechat->PushWhere ( array ('&&', 'UserId', '=',$n_uid) ); 
+		if ($o_onboard_wechat->getAllCount()>0)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'对不起，此微信已经绑定过该幼儿，请更换！\');' );
+		}
+		//写入绑定
+		$o_onboard_wechat=new Student_Onboard_Info_Wechat();
+		$o_onboard_wechat->setStudentId($o_stu->getStudentId(0));
+		$o_onboard_wechat->setUserId($n_uid);
+		$o_onboard_wechat->Save();
+		//修改用户分组
+		require_once RELATIVITY_PATH . 'sub/wechat/include/userGroup.class.php';
+		$o_group = new userGroup();
+		$o_group->updateGroup($o_user_wechat->getOpenId(), $this->getWechatSetup('PARENTGROUP'));
+		//发送绑定成功通知
+		require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';		    
+		$o_token=new accessToken();
+		$curlUtil = new curlUtil();
+		$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
+		$data = array(
+		    	'touser' => $o_user_wechat->getOpenId(), // openid是发送消息的基础
+				'template_id' => $this->getWechatSetup('MSGTMP_08'), // 模板id
+				'url' => '', // 点击跳转地址
+				'topcolor' => '#FF0000', // 顶部颜色
+				'data' => array(
+					'first' => array('value' => '您的微信已经绑定在园幼儿“'.$o_stu->getName(0).'”。
+'),
+					'keyword1' => array('value' => $o_user_wechat->getUserName(),'color'=>'#173177'),
+					'keyword2' => array('value' => $o_user_wechat->getNickname(),'color'=>'#173177'),
+					'keyword3' => array('value' => $this->GetDateNow(),'color'=>'#173177'),
+					'remark' => array('value' => '')
+				)
+				);
+		$curlUtil->https_request($s_url, json_encode($data));
+	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'onboard_binding_success.php"');
+	}
 }
 
 ?>

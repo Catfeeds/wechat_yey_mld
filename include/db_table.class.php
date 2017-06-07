@@ -1382,6 +1382,29 @@ class Student_Onboard_Info extends CRUD
 		$this->Execute ( 'TRUNCATE TABLE  `student_onboard_info`');		
 	}
 }
+class Student_Onboard_Info_Wechat extends CRUD
+{
+    protected $Id;
+    protected $StudentId;
+    protected $UserId;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_onboard_info_wechat';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'student_id' => 'StudentId',
+                    'user_id' => 'UserId'
+        ));
+    }
+}
 class Student_Onboard_Info_Class_View extends CRUD
 {
     protected $StudentId;
