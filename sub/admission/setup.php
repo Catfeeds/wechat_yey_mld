@@ -27,6 +27,10 @@ $o_admission_setup=new Admission_Setup(1);
 	                     		<input name="Vcl_DeptId" maxlength="50" id="Vcl_DeptId" type="text" style="width:100%" placeholder="必填" class="form-control"/>
 	                     	</div>
 	                     	<div class="item">
+	                     		<label><span class="must">*</span> 报名起始编号：</label>
+	                     		<input name="Vcl_SignupStartNumber" maxlength="10" id="Vcl_SignupStartNumber" type="text" style="width:100%" placeholder="必填" class="form-control"/>
+	                     	</div>
+	                     	<div class="item">
 	                     		<label><span class="must">*</span> 托班招生人数：</label>
 	                     		<input name="Vcl_TuoSum" maxlength="50" id="Vcl_TuoSum" type="text" style="width:100%" onkeyup="value=value.replace(/[^0-9]/g,'')" placeholder="必填" class="form-control"/>
 	                     	</div>  
@@ -119,6 +123,7 @@ $('#Vcl_MeetTime').val('<?php echo($o_admission_setup->getMeetTime())?>');
 $('#Vcl_MeetAddress').val('<?php echo($o_admission_setup->getMeetAddress())?>');
 $('#Vcl_HealthTime').val('<?php echo($o_admission_setup->getHealthTime())?>');
 $('#Vcl_HealthAddress').val('<?php echo($o_admission_setup->getHealthAddress())?>');
+$('#Vcl_SignupStartNumber').val('<?php echo($o_admission_setup->getSignupStartNumber())?>');
 $('.form_date').datetimepicker({
     language:  'zh-CN',
     format: 'yyyy-mm-dd hh:ii:ss',

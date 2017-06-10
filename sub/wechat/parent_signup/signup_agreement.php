@@ -55,7 +55,7 @@ if (strtotime($s_date)<strtotime($o_setup->getSignupStart()))
 }
 if (strtotime($s_date)>strtotime($o_setup->getSignupEnd()))
 {
-	echo('Dialog_Message("报名已截至，截至时间：<br/>'.$o_setup->getSignupEnd().' ",function(){location=\'my_signup.php\'});');
+	echo('Dialog_Message("报名已截止，截止时间：<br/>'.$o_setup->getSignupEnd().' ",function(){location=\'my_signup.php\'});');
 }
 ?>
 });

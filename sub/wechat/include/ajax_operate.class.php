@@ -61,7 +61,7 @@ class Operate extends Bn_Basic {
 		}
 		if (strtotime($s_date)>strtotime($o_setup->getSignupEnd()))
 		{
-			$this->ReturnMsg('对不起，报名结束时间为：'.$o_setup->getSignupStart().' ，谢谢合作。','Name');
+			$this->ReturnMsg('对不起，报名截止时间为：'.$o_setup->getSignupStart().' ，谢谢合作。','Name');
 		}
 		$o_stu=new Student_Info();
 		$this->CheckId($n_uid);//验证ID是否有重复
@@ -80,6 +80,12 @@ class Operate extends Bn_Basic {
 	    $o_stu->setBirthday($this->getPost ( 'Birthday' ));
 	    $o_stu=$this->setStuInfo($o_stu);
 	    $o_stu->setSchoolId($o_setup->getDeptId());
+	    //查看当前报名幼儿信息的数据库，有没有数据，如果没有数据，需要制定编号
+	    $o_temp=new Student_Info();
+	    if ($o_temp->getAllCount()==0)
+	    {
+	    	$o_stu->setStudentId($o_setup->getSignupStartNumber());
+	    }
 	    $o_stu->Save();
 	    //关联微信用户
 	    $o_info_wechat=new Student_Info_Wechat();

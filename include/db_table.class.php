@@ -6,6 +6,7 @@ class Admission_Setup extends CRUD
     protected $Id;
     protected $DeptId;
     protected $SignupStart;
+    protected $SignupStartNumber;
     protected $SignupEnd;
     protected $TuoSum;
     protected $XiaoSum;
@@ -35,6 +36,7 @@ class Admission_Setup extends CRUD
                     'id' => 'Id',
                     'dept_id' => 'DeptId',
                     'signup_start' => 'SignupStart',
+        			'signup_start_number' => 'SignupStartNumber',
                     'signup_end' => 'SignupEnd',
                     'tuo_sum' => 'TuoSum',
                     'xiao_sum' => 'XiaoSum',

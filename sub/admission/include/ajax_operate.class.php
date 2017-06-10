@@ -677,6 +677,7 @@ class Operate extends Bn_Basic {
 		$o_setup->setZhongSum($this->getPost('ZhongSum'));
 		$o_setup->setBanriSum($this->getPost('BanriSum'));
 		$o_setup->setSignupStart($this->getPost('SignupStart'));
+		$o_setup->setSignupStartNumber($this->getPost('SignupStartNumber'));
 		$o_setup->setSignupEnd($this->getPost('SignupEnd'));
 		$o_setup->setAuditDate($this->getPost('AuditDate'));
 		$o_setup->setAuditTime($this->getPost('AuditTime'));
