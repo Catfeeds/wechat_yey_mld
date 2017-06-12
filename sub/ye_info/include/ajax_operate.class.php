@@ -7,12 +7,18 @@ require_once RELATIVITY_PATH . 'include/bn_user.class.php';
 require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
 class Operate_YeInfo extends Bn_Basic {
 	protected $N_PageSize= 50;
-	protected $S_Key='www.bjsql.com';//密钥
-	protected $S_License='MNJIHKI6525489';//部门权限
-	protected $S_Url='http://192.168.0.8/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
+	protected $S_Key='';//密钥
+	protected $S_License='';//部门权限
+	//protected $S_Url='http://192.168.0.8/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
 	//protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
-	//protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//接口地址
+	protected $S_Url='';//接口地址
 	//protected $S_Url='http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
+	public function __construct() {
+		$o_sys_setup=new Base_Setup(1);
+		$this->S_Key=$o_sys_setup->getXcyeCollectKey();
+		$this->S_License=$o_sys_setup->getXcyeCollectLicense();
+		$this->S_Url=$o_sys_setup->getXcyeCollectUrl();
+	}
 	public function getWaitRead($n_uid)
 	{
 		//因为这个模块带提醒数字图标，所以必须有此方法

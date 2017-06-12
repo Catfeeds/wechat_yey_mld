@@ -258,6 +258,9 @@ class Base_Setup extends CRUD
    protected $Footer;
    protected $HomeUrl;
    protected $Logo;
+   protected $XcyeCollectKey;
+   protected $XcyeCollectLicense;
+   protected $XcyeCollectUrl;
 
    protected function DefineKey()
    {
@@ -275,6 +278,9 @@ class Base_Setup extends CRUD
       'update_url' => 'UpdateUrl',
       'system_name' => 'SystemName',
       'footer' => 'Footer',
+      'xcye_collect_key' => 'XcyeCollectKey',
+      'xcye_collect_license' => 'XcyeCollectLicense',
+      'xcye_collect_url' => 'XcyeCollectUrl',
       'home_url' => 'HomeUrl'
                    ));
    }

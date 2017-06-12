@@ -12,19 +12,23 @@ header ( 'Pragma: no-cache' );
 header ( 'Expires: Thu, 01 Jan 1970 00:00:00 GMT' );
 header ( 'Last-Modified:' . gmdate ( 'D, d M Y H:i:s' ) . ' GMT' );
 header ( 'content-type:text/html; charset=utf-8' );
+require_once RELATIVITY_PATH . 'include/db_table.class.php';
+$o_sys_setup=new Base_Setup(1);
 /*
  * 设置同步所需验证信息
  */
-$key = 'www.bjsql.com';
-$license = 'MNJIHKI6525489';
-$s_url = 'http://192.168.0.8/xcye_collect/xcyey_admin/sub/webservice/';
+$key=$o_sys_setup->getXcyeCollectKey();
+$license=$o_sys_setup->getXcyeCollectLicense();
+$s_url=$o_sys_setup->getXcyeCollectUrl();
+
+//$s_url = 'http://192.168.0.8/xcye_collect/xcyey_admin/sub/webservice/';
 //$s_url = 'http://yeygl.xchjw.cn/sub/webservice/';//接口地址
 //$s_url = 'http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
 $license = encrypt ( $license, 'E', $key );
 /*
  * 获取系统配置
  */
-require_once RELATIVITY_PATH . 'include/db_table.class.php';
+
 //获取当前系统DeptId编号
 $o_setup=new Admission_Setup(1);
 $s_deptid=$o_setup->getDeptId();
