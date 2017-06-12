@@ -210,7 +210,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'信息核验员', '', 0, 80);
-		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
+		$this->SendJsonResultForTable($n_allcount,'AuditPassTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function HealthWaitTable($n_uid)
 	{	
