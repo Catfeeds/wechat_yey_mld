@@ -247,6 +247,34 @@ function arrayToJson(o) {
     }
     return o.toString();
   }
+function select_submit_assign_class(obj)
+{
+	if (obj.value=='')
+	{
+		return
+	}
+	var a_data=[];
+	for(var i=0;i<$('tbody input[type=checkbox]').length;i++)
+	{
+		obj=$('tbody input[type=checkbox]')[i]
+		if (obj.checked)
+		{
+			a_data.push(obj.value);
+		}
+	}
+	if(a_data.length==0)
+	{
+		dialog_message("请先选择报名信息！")
+		return
+	}
+	document.getElementById('Vcl_StuId').value=arrayToJson(a_data)
+	dialog_confirm("真的将的<b>"+a_data.length+"</b>名幼儿分配到<b>"+$('#assign .selected .text').html()+"</b>吗？<br/><br/>确认后：幼儿信息将移动至幼儿信息模块，不可撤销，请谨慎操作！",function (){
+		document.getElementById('submit_form').submit();
+		loading_show();
+	},function(){
+		$('#Vcl_ClassId').selectpicker('val','');//下拉框归位
+	});
+}
 function setup_modify()
 {	
 	loading_show();

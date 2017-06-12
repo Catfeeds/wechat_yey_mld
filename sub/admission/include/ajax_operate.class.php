@@ -143,7 +143,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'信息核验员', '', 0, 80);
-		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
+		$this->SendJsonResultForTable($n_allcount,'WaitAuditTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function AuditPassTable($n_uid)
 	{	
@@ -275,7 +275,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
-		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
+		$this->SendJsonResultForTable($n_allcount,'HealthWaitTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function SendAuditNotice($n_uid)
 	{	
@@ -527,7 +527,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'见面审核员', '', 0, 80);
-		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
+		$this->SendJsonResultForTable($n_allcount,'MeetResultTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function InfoWaitTable($n_uid)
 	{	
@@ -592,7 +592,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
-		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
+		$this->SendJsonResultForTable($n_allcount,'InfoWaitTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function AdmissionTable($n_uid)
 	{	
@@ -641,7 +641,7 @@ class Operate extends Bn_Basic {
 			$a_button = array ();
 			array_push ( $a_button, array ('查看', "window.open('print.php?student_id=".$o_user->getStudentId($i)."','_blank')" ) );//查看
 			array_push ($a_row, array (
-				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
+				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '"/>',
 				$o_user->getStudentId ( $i ),
 				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
@@ -659,7 +659,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
-		$this->SendJsonResultForTable($n_allcount,'StudentSignupTable', 'no', $n_page, $a_title, $a_row);
+		$this->SendJsonResultForTable($n_allcount,'AdmissionTable', 'no', $n_page, $a_title, $a_row);
 	}	
 	public function AdmissionSetup($n_uid)
 	{
@@ -719,7 +719,6 @@ class Operate extends Bn_Basic {
 		$o_user = new Single_User ( $n_uid );
 		if (!$o_user->ValidModule ( 120100 ))return;//如果没有权限，不返回任何值
 		$a_data=json_decode($_POST['Vcl_StuId']);
-		$o_admission_setup=new Admission_Setup(1);
 		$o_system_setup=new Base_Setup(1);
 		for($i=0;$i<count($a_data);$i++)
 		{
@@ -728,6 +727,74 @@ class Operate extends Bn_Basic {
 			$o_stu->Save();
 		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'操作成功！\')");' );
+	}
+	public function AssignClass($n_uid)
+	{	
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}		
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120107 ))return;//如果没有权限，不返回任何值
+		$a_data=json_decode($_POST['Vcl_StuId']);//获取选择的数据
+		$s_result='';
+		$o_admission_setup=new Admission_Setup(1);
+		require_once RELATIVITY_PATH . 'sub/ye_info/include/ajax_operate.class.php';
+		$o_operate = new Operate_YeInfo ();
+		for($i=0;$i<count($a_data);$i++)
+		{
+			//第一步，去采集系统验证是否可以添加
+			$o_signup=new Student_Info($a_data[$i]);
+			if ($o_signup->getState()!=6)
+			{
+				continue;
+			}		
+			$a_result=$o_operate->CheckStuCardidFromCaiji($o_signup->getIdType(),$o_signup->getId());
+			if ($a_result->Flag==0)
+			{
+				//有重复
+				$s_result.='
+				<div class="item" style="line-height:18px;">
+					<label style="font-size:14px;">'.($i+1).' 错误：幼儿证件与采集系统中已存在幼儿证件重复</label><br/>
+					报名信息：'.$o_signup->getName().'（'.$o_signup->getIdType().' '.$o_signup->getId().'） <br/>
+		        	<b>与以下幼儿信息重复：</b> <br/>
+		        	幼儿园名称：'.$a_result->SchoolName.'（'.$a_result->ClassName.'）<br/>
+					幼儿姓名：'.$a_result->Name.'（'.$o_signup->getIdType().' '.$o_signup->getId().'）
+				</div>
+				';
+				continue;
+			}
+			$n_student_id='';
+			//第二步，添加到采集系统中
+			$a_result=$o_operate->UploadToAddStuInfoForAssignClass($o_signup,$this->getPost('ClassId'));
+			if ($a_result->Flag==1)
+			{
+				$n_student_id=$a_result->StudentId;
+			}else{
+				$s_result.='
+				<div class="item" style="line-height:18px;">
+					<label style="font-size:14px;">'.($i+1).' 错误：分班失败</label><br/>
+					报名信息：'.$o_signup->getName().'（'.$o_signup->getIdType().' '.$o_signup->getId().'） <br/>
+		        	<b>错误代码：</b>'.$a_result->Msg.'，如有问题，请与管理员联系。
+				</div>
+				';
+				continue;
+			}
+			//第三步，移动到在园信息中，1.先修改当前记录ID为返回值，2. 复制信息，3.删除报名信息
+			$o_class=new Student_Class($this->getPost('ClassId'));
+			$o_signup->setStudentId($n_student_id);
+			$o_signup->setState(1);
+			$o_signup->setGradeNumber($o_class->getGrade());
+			$o_signup->setClassNumber($this->getPost('ClassId'));
+			$o_signup->Save();
+			$o_signup->CutSignupToOnboard($n_student_id);
+		}
+		if($s_result=='')
+		{
+			$this->setReturn ( 'parent.form_return("dialog_success(\'分配班级成功，请继续操作。\')");parent.$(\'#Vcl_ClassId\').selectpicker(\'val\',\'\');parent.table_refresh(\'AdmissionTable\')' );
+		}else{
+			//将返回中文结果，跳转到另外一页显示。
+			$this->setReturn ( 'parent.location="'.$this->getPost('Url').'admission_assign_result.php?text='.rawurlencode($s_result).'"' );
+		}
 	}
 }
 

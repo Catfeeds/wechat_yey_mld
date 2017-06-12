@@ -90,7 +90,9 @@ if($_GET['id']>0)
 	echo('document.getElementById("Vcl_Name").value="'.$o_stu->getName().'";');
 	echo('document.getElementById("Vcl_Sex").value="'.$o_stu->getSex().'";');
 	echo('document.getElementById("Vcl_IdType").value="'.$o_stu->getIdType().'";');
+	echo('document.getElementById("Vcl_IdType").disabled="disabled";');
 	echo('document.getElementById("Vcl_ID").value="'.$o_stu->getId().'";');
+	echo('document.getElementById("Vcl_ID").disabled="disabled";');
 	echo('document.getElementById("Vcl_Birthday").value="'.$o_stu->getBirthday().'";');
 	
 	

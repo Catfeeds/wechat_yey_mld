@@ -9,8 +9,9 @@ class Operate_YeInfo extends Bn_Basic {
 	protected $N_PageSize= 50;
 	protected $S_Key='www.bjsql.com';//密钥
 	protected $S_License='MNJIHKI6525489';//部门权限
+	protected $S_Url='http://192.168.0.8/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
 	//protected $S_Url='http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
-	protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//接口地址
+	//protected $S_Url='http://yeygl.xchjw.cn/sub/webservice/';//接口地址
 	//protected $S_Url='http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';//本地测试接口
 	public function getWaitRead($n_uid)
 	{
@@ -125,10 +126,18 @@ class Operate_YeInfo extends Bn_Basic {
 				array_push ( $a_button, array ('调班', "stu_change_class(".$o_user->getStudentId($i).",'".$o_user->getName ( $i )."','".$o_user->getClassName ( $i )."')" ) );//查看
 				array_push ( $a_button, array ('离园', "stu_delete(".$o_user->getStudentId($i).")" ) );//查看
 			}			
-			array_push ( $a_button, array ('下载PDF', "window.open('download_pdf_single.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看			
+			array_push ( $a_button, array ('下载PDF', "window.open('download_pdf_single.php?id=".$o_user->getStudentId($i)."','_blank')" ) );//查看	
+			//检查是否已经绑定
+			$o_onboard_wechat=new Student_Onboard_Info_Wechat();
+			$o_onboard_wechat->PushWhere ( array ('&&', 'StudentId', '=',$o_user->getStudentId($i)) );
+			$s_binding_wx='';
+			if ($o_onboard_wechat->getAllCount()>0)
+			{
+				$s_binding_wx='<span class="glyphicon fa fa-weixin" title="已绑定微信" aria-hidden="true" style="color:#2AA144" data-placement="left" data-toggle="tooltip"></span> ';
+			}			
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
-				$o_user->getName ( $i ).$s_state_flg,
+				$s_binding_wx.$o_user->getName ( $i ).$s_state_flg,
 				$s_grade_name.'('.$o_user->getClassName ( $i ).')',
 				$o_user->getSex ( $i ),
 				$o_user->getBirthday ( $i ),
@@ -724,6 +733,23 @@ class Operate_YeInfo extends Bn_Basic {
 			$this->setReturn ( 'parent.form_return("dialog_message(\'对不起！<br/>幼儿基本信息的 [证件号] 在您的幼儿园有重复，请更换！\')");' );	
 		}
 	}
+	public function CheckStuCardidFromCaiji($n_id_type,$n_id)
+	{
+		//判断区里是否有重复的幼儿
+		$a_data=array(
+				'IdType'=>$n_id_type,
+				'Id'=>$n_id
+				);
+		$request_data = array('License'=>$this->Encrypt ( $this->S_License, 'E', $this->S_Key ),'Data'=>$this->Encrypt (json_encode($a_data), 'E', $this->S_Key )); 
+		$s_result=json_decode($this->HttpsRequest($this->S_Url.'check_stu_cardid.php',$request_data));
+		if ($s_result->Flag==1)
+		{
+		}else if ($s_result->SchoolName!=''){	
+		}else{
+			LOG::STU_SYNC('error,采集系统审核幼儿信息失败，错误代码：'.$s_result->Msg);
+		}
+		return $s_result;
+	}
 	public function StuAdd($n_uid) {
 		if (! ($n_uid > 0)) {
 			$this->setReturn('parent.goto_login()');
@@ -864,7 +890,7 @@ class Operate_YeInfo extends Bn_Basic {
 				'C_Area'=>$this->getPost('CArea'),
 				'C_Street'=>$this->getPost('CStreet'),
 				'IdQuality'=>$this->getPost('IdQuality'),
-				'IdQuality'=>$this->getPost('IdQuality'),
+				'IdQualityType'=>$this->getPost('IdQualityType'),
 				'H_City'=>$this->getPost('HCity'),
 				'H_Area'=>$this->getPost('HArea'),
 				'H_Street'=>$this->getPost('HStreet'),
@@ -928,8 +954,101 @@ class Operate_YeInfo extends Bn_Basic {
 				LOG::STU_SYNC('error,采集系统添加幼儿信息失败，错误代码：'.$s_result->Msg);
 				$this->setReturn ( 'parent.form_return("dialog_error(\'采集系统添加幼儿信息失败，请与管理员联系。\')");' );		
 			}
-		}		
-		
+		}
+	}
+	public function UploadToAddStuInfoForAssignClass($o_user,$n_class_id)
+	{
+		$a_data=array(
+				'ClassId'=>$n_class_id,
+				'Id'=>$o_user->getId(),
+				'IdType'=>$o_user->getIdType(),
+				'Birthday'=>$o_user->getBirthday(),
+				'Name'=>$o_user->getName(),
+				'Sex'=>$o_user->getSex(),
+				'Nationality'=>$o_user->getNationality(),
+				'Gangao'=>$o_user->getGangao(),
+				'Nation'=>$o_user->getNation(),
+				'Only'=>$o_user->getOnly(),
+				'OnlyCode'=>$o_user->getOnlyCode(),
+				'IsFirst'=>$o_user->getIsFirst(),
+				'IsLieshi'=>$o_user->getIsLieshi(),
+				'IsGuer'=>$o_user->getIsGuer(),
+				'IsWugong'=>$o_user->getIsWugong(),
+				'IsLiushou'=>$o_user->getIsLiushou(),
+				'IsDibao'=>$o_user->getIsDibao(),
+				'DibaoCode'=>$o_user->getDibaoCode(),
+				'IsZizhu'=>$o_user->getIsZizhu(),
+				'IsCanji'=>$o_user->getIsCanji(),
+				'CanjiCode'=>$o_user->getCanjiCode(),
+				'CanjiType'=>$o_user->getCanjiType(),
+				'Jiankang'=>$o_user->getJiankang(),
+				'Xuexing'=>$o_user->getXuexing(),
+				'IsYiwang'=>$o_user->getIsYiwang(),
+				'Illness'=>$o_user->getIllness(),
+				'IsShoushu'=>$o_user->getIsShoushu(),
+				'Shoushu'=>$o_user->getShoushu(),
+				'IsYizhi'=>$o_user->getIsYizhi(),
+				'IsGuomin'=>$o_user->getIsGuomin(),
+				'Allergic'=>$o_user->getAllergic(),
+				'IsYichuan'=>$o_user->getIsYichuan(),
+				'Qitabingshi'=>$o_user->getQitabingshi(),
+				'Beizhu'=>$o_user->getBeizhu(),
+				'H_Code'=>$o_user->getHCode(),
+				'BirthdayCode'=>$o_user->getBirthdayCode(),
+				'Birthplace'=>$o_user->getBirthplace(),
+				'IdQuality'=>$o_user->getIdQuality(),
+				'IdQualityType'=>$o_user->getIdQualityType(),
+				'H_City'=>$o_user->getHCity(),
+				'H_Area'=>$o_user->getHArea(),
+				'H_Street'=>$o_user->getHStreet(),
+				'H_Shequ'=>$o_user->getHShequ(),
+				'H_Add'=>$o_user->getHAdd(),
+				'H_Owner'=>$o_user->getHOwner(),
+				'H_Guanxi'=>$o_user->getHGuanxi(),
+				'Z_Same'=>$o_user->getZSame(),
+				'Z_City'=>$o_user->getZCity(),
+				'Z_Area'=>$o_user->getZArea(),
+				'Z_Street'=>$o_user->getZStreet(),
+				'Z_Shequ'=>$o_user->getZShequ(),
+				'Z_Add'=>$o_user->getZAdd(),
+				'Z_Property'=>$o_user->getZProperty(),
+				'Z_Owner'=>$o_user->getZOwner(),
+				'Z_Guanxi'=>$o_user->getZGuanxi(),
+				'Jh_1_Connection'=>$o_user->getJh1Connection(),
+				'Jh_1_Name'=>$o_user->getJh1Name(),
+				'Jh_1_IdType'=>$o_user->getJh1IdType(),
+				'Jh_1_Id'=>$o_user->getJh1Id(),
+				'Jh_1_Job'=>$o_user->getJh1Job(),
+				'Jh_1_Danwei'=>$o_user->getJh1Danwei(),
+				'Jh_1_Jiaoyu'=>$o_user->getJh1Jiaoyu(),
+				'Jh_1_Phone'=>$o_user->getJh1Phone(),
+				'Jh_1_IsCanji'=>$o_user->getJh1IsCanji(),
+				'Jh_1_CanjiCode'=>$o_user->getJh1CanjiCode(),
+				'Jh_1_IsZhixi'=>$o_user->getJh1IsZhixi(),
+				'Jh_2_Connection'=>$o_user->getJh2Connection(),
+				'Jh_2_Name'=>$o_user->getJh2Name(),
+				'Jh_2_IdType'=>$o_user->getJh2IdType(),
+				'Jh_2_Id'=>$o_user->getJh2Id(),
+				'Jh_2_Job'=>$o_user->getJh2Job(),
+				'Jh_2_Danwei'=>$o_user->getJh2Danwei(),
+				'Jh_2_Jiaoyu'=>$o_user->getJh2Jiaoyu(),
+				'Jh_2_Phone'=>$o_user->getJh2Phone(),
+				'Jh_2_IsCanji'=>$o_user->getJh2IsCanji(),
+				'Jh_2_CanjiCode'=>$o_user->getJh2CanjiCode(),
+				'Jh_2_IsZhixi'=>$o_user->getJh2IsZhixi(),
+				'JianhuName'=>$o_user->getJianhuName(),
+				'JianhuConnection'=>$o_user->getJianhuConnection(),
+				'JianhuPhone'=>$o_user->getJianhuPhone(),
+				'Jiudu'=>$o_user->getJiudu()
+				);	
+		$request_data = array('License'=>$this->Encrypt ( $this->S_License, 'E', $this->S_Key ),'Data'=>$this->Encrypt (json_encode($a_data), 'E', $this->S_Key ));
+		$s_result=json_decode($this->HttpsRequest($this->S_Url.'stu_assign_class.php',$request_data));
+		if ($s_result->Flag==1)
+		{
+		}else{
+			LOG::STU_SYNC('error,采集系统添加分班幼儿信息失败，错误代码：'.$s_result->Msg);	
+		}
+		return $s_result;
 	}
 	protected function ReturnMsg($s_msg,$id)
 	{

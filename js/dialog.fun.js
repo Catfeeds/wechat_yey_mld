@@ -76,7 +76,7 @@ function dialog_error(text, fun) {
         }
     });
 }
-function dialog_confirm(text, fun) {
+function dialog_confirm(text, fun,cancel_fun) {
     $.teninedialog({
         width: '450px',
         title: '<span class="glyphicon glyphicon-question-sign" style="top:2px;color:#F0AD4E;"></span>&nbsp;&nbsp;<span style="' + Language.Font + '">' + Language.MessageBoxTitle_04 + '</span>',
@@ -89,9 +89,13 @@ function dialog_confirm(text, fun) {
             if (fun && index==0) {
                 fun();
             }
+			if (cancel_fun && index==1)
+			{
+				cancel_fun();
+			}
             $(this).closeDialog(modal);
         }
-    });
+    })
 }
 function form_return(command)
 {

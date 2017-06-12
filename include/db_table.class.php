@@ -642,7 +642,6 @@ class Base_User_Files  extends CRUD
 class Student_Info extends CRUD
 {
     protected $StudentId;
-    protected $StudentNumber;
     protected $State;
     protected $Reject;
     protected $Name;
@@ -897,6 +896,11 @@ class Student_Info extends CRUD
                     'reject_reason' => 'RejectReason'
         ));
     }
+	public function CutSignupToOnboard($n_student_id)
+	{
+		$this->Execute ("insert into `student_onboard_info` select * from `student_info` Where `student_info`.`student_id`=".$n_student_id.";");
+		$this->Execute ("DELETE FROM `student_info` WHERE `student_info`.`student_id`=".$n_student_id.";");	
+	}
 }
 class Student_Graduate_Info extends CRUD
 {

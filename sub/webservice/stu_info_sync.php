@@ -1,5 +1,5 @@
 <?php
-exit();
+//exit();
 /*
  * 幼儿信息与教委信息采集系统同步
  */
@@ -17,8 +17,8 @@ header ( 'content-type:text/html; charset=utf-8' );
  */
 $key = 'www.bjsql.com';
 $license = 'MNJIHKI6525489';
-//$s_url = 'http://3.36.220.52/xcye_collect/xcyey_admin/sub/webservice/';
-$s_url = 'http://yeygl.xchjw.cn/sub/webservice/';//接口地址
+$s_url = 'http://192.168.0.8/xcye_collect/xcyey_admin/sub/webservice/';
+//$s_url = 'http://yeygl.xchjw.cn/sub/webservice/';//接口地址
 //$s_url = 'http://810717.cicp.net/xcye_collect/xcyey_admin/sub/webservice/';//花生壳接口地址
 $license = encrypt ( $license, 'E', $key );
 /*

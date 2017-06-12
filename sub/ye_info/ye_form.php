@@ -11,7 +11,7 @@
 		<span class="must">*</span> 证件类型：
 	</label>
 	<br />
-	<select disabled="disabled" name="Vcl_IdType" id="Vcl_IdType" class="selectpicker" data-style="btn-default" onchange="change_idtype(this)">
+	<select name="Vcl_IdType" id="Vcl_IdType" class="selectpicker" data-style="btn-default" onchange="change_idtype(this)">
 		<option value="居民身份证">居民身份证</option>
 		<option value="香港特区护照/身份证明">香港特区护照/身份证明</option>
 		<option value="澳门特区护照/身份证明">澳门特区护照/身份证明</option>
@@ -26,7 +26,7 @@
 		<span class="must">*</span> 证件号：
 	</label>
 	<br />
-	<input disabled="disabled" name="Vcl_ID" id="Vcl_ID" type="text" onBlur="check_id()" placeholder="必填" style="width: 100%" class="form-control">
+	<input name="Vcl_ID" id="Vcl_ID" type="text" onBlur="check_id()" placeholder="必填" style="width: 100%" class="form-control">
 </div>	
 <div class="item">
 	<label>
