@@ -22,7 +22,17 @@ if ($b_ticket)
     <div class="weui-msg">
         <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
         <div class="weui-msg__text-area">
-            <h2 class="weui-msg__title">幼儿见面入场通过</h2>
+            <h2 class="weui-msg__title">幼儿见面入场通过<br/>
+            <span style="font-size:32px;">时段：<?php 
+        require_once RELATIVITY_PATH.'include/bn_basic.class.php';
+		$o_bn_base=new Bn_Basic();
+        $o_reminder=new Wechat_Wx_User_Reminder();
+		$o_reminder->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
+		$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_bn_base->getWechatSetup('MSGTMP_03')) );
+		$o_reminder->PushOrder(array('Id','D'));
+		$o_reminder->getAllCount();
+		echo($o_reminder->getKeyword4(0));
+            ?></span></h2>
             <p class="weui-msg__desc">您好，请入场进行幼儿见面</p>
         </div>
     </div>
