@@ -15,13 +15,13 @@
 				<div class="weui-cell">
 					<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">户籍详细地址</label></div>
 					<div class="weui-cell__bd">
-				        <input class="weui-input"  name="Vcl_HAdd" id="Vcl_HAdd" placeholder="必填">
+				        <span style="color:#999999" id="Vcl_HAdd"></span>
 				   </div>
 			    </div>
 			<div class="weui-cell" id="z_address">
 				<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">现住址详细地址</label></div>
 				<div class="weui-cell__bd">
-					<input class="weui-input" name="Vcl_ZAdd" id="Vcl_ZAdd" placeholder="必填">
+					<span style="color:#999999" id="Vcl_ZAdd"></span>
 			    </div>
 		    </div>
 		</div>

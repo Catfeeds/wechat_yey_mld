@@ -11,7 +11,6 @@ if ($o_temp->getAllCount()==0)
 	exit(0);
 }
 //判断幼儿信息状态，如果不为小于1，那么提示为通知核验
-
 $o_stu=new Student_Info_Wechat_Wiew();
 $o_stu->PushWhere ( array ('&&', 'StudentId', '=',$_GET['id']) ); 
 if ($o_stu->getAllCount()==0)
@@ -39,7 +38,17 @@ if ($o_stu->getState(0)>1)
 		<input type="hidden" id="Vcl_FunName" name="Vcl_FunName" value="AuditApprove"/>
 		<input type="hidden" name="Vcl_StudentId" value="<?php echo($_GET['id'])?>"/>
 		<div class="page__hd" style="padding:0px;padding-top:10px;">
-	        <h1 class="page__title" style="font-size:28px;padding:0px;text-align:center">幼儿信息</h1>
+	        <h1 class="page__title" style="font-size:28px;padding:0px;text-align:center">        
+            <span>时段：<?php 
+	        require_once RELATIVITY_PATH.'include/bn_basic.class.php';
+			$o_bn_base=new Bn_Basic();
+	        $o_reminder=new Wechat_Wx_User_Reminder();
+			$o_reminder->PushWhere ( array ('&&', 'UserId', '=',$o_stu->getUserId(0)) );
+			$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_bn_base->getWechatSetup('MSGTMP_02')) );
+			$o_reminder->PushOrder(array('Id','D'));
+			$o_reminder->getAllCount();
+			echo($o_reminder->getKeyword4(0));
+	        ?></span></h1>
 	    </div>
 			<?php 
 				require_once 'audit_search_result_detail.php';
@@ -134,13 +143,13 @@ if ($o_stu->getState(0)>1)
 	');
 	echo('document.getElementById("Vcl_ID").value="'.$o_stu->getId(0).'";
 	');
-	echo('document.getElementById("Vcl_HAdd").value="'.$o_stu->getHAdd(0).'";');
+	echo('document.getElementById("Vcl_HAdd").innerHTML="'.$o_stu->getHAdd(0).'";');
 	if($o_stu->getZSame(0)=='否')
 	{
-		echo('document.getElementById("Vcl_ZAdd").value="'.$o_stu->getZAdd(0).'";
+		echo('document.getElementById("Vcl_ZAdd").innerHTML="'.$o_stu->getZAdd(0).'";
 		');		
 	}else{
-		echo('document.getElementById("Vcl_ZAdd").value="'.$o_stu->getHAdd(0).'";
+		echo('document.getElementById("Vcl_ZAdd").innerHTML="'.$o_stu->getHAdd(0).'";
 		');	
 	}
 ?>

@@ -38,6 +38,18 @@ if ($o_stu->getState(0)>2)
 		<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
 		<input type="hidden" name="Vcl_FunName" value="MeetSubmit"/>
 		<input type="hidden" name="Vcl_StudentId" value="<?php echo($_GET['id'])?>"/>
+		<div class="page__hd" style="padding:0px;padding-top:10px;">
+	        <h1 class="page__title" style="font-size:28px;padding:0px;text-align:center">时段：<?php 
+	        require_once RELATIVITY_PATH.'include/bn_basic.class.php';
+			$o_bn_base=new Bn_Basic();
+	        $o_reminder=new Wechat_Wx_User_Reminder();
+			$o_reminder->PushWhere ( array ('&&', 'UserId', '=',$o_stu->getUserId(0)) );
+			$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_bn_base->getWechatSetup('MSGTMP_03')) );
+			$o_reminder->PushOrder(array('Id','D'));
+			$o_reminder->getAllCount();
+			echo($o_reminder->getKeyword4(0));
+	        ?></h1>
+	    </div>
 		<div class="weui-cells__title">基本信息</div>
 		<div class="weui-form-preview">
 	        <div class="weui-form-preview__hd">
