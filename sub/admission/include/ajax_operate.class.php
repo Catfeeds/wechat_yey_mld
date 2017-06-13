@@ -779,7 +779,17 @@ class Operate extends Bn_Basic {
 				';
 				continue;
 			}
-			//第三步，移动到在园信息中，1.先修改当前记录ID为返回值，2. 复制信息，3.删除报名信息
+			//第三步，移动到在园信息中，1复制绑定记录，2.修改当前记录ID为返回值，3. 复制信息，3.删除报名信息
+			$o_binding=new Student_Info_Wechat();
+			$o_binding->PushWhere ( array ('&&', 'StudentId', '=',$o_signup->getStudentId()) );
+			if ($o_binding->getAllCount()>0)
+			{
+				//将绑定记录复制
+				$o_onboard_binding=new Student_Onboard_Info_Wechat();
+				$o_onboard_binding->setUserId($o_binding->getUserId(0));
+				$o_onboard_binding->setStudentId($n_student_id);
+				$o_onboard_binding->Save();
+			}
 			$o_class=new Student_Class($this->getPost('ClassId'));
 			$o_signup->setStudentId($n_student_id);
 			$o_signup->setState(1);
