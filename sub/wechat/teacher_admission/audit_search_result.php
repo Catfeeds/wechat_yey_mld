@@ -143,6 +143,8 @@ if ($o_stu->getState(0)>1)
 	');
 	echo('document.getElementById("Vcl_ID").value="'.$o_stu->getId(0).'";
 	');
+	echo('document.getElementById("Vcl_Shequ").innerHTML="'.$o_stu->getHShequ(0).'";
+	');
 	echo('document.getElementById("Vcl_HAdd").innerHTML="'.$o_stu->getHAdd(0).'";');
 	if($o_stu->getZSame(0)=='否')
 	{
