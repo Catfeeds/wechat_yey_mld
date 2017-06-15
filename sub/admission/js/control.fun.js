@@ -206,6 +206,26 @@ function meet_select_submit()
 	document.getElementById('Vcl_StuId').value=arrayToJson(a_data)
 	dialog_confirm("确认通知选中幼儿监护人进行幼儿体检吗？<br/><br/>确认后：<br/>1. 幼儿监护人的微信将收到体检通知。<br/>2. 选中的幼儿报名信息将会进入“<b>等待体检审核</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
 }
+function audit_select_submit()
+{
+	var a_data=[];
+	for(var i=0;i<$('tbody input[type=checkbox]').length;i++)
+	{
+		obj=$('tbody input[type=checkbox]')[i]
+		if (obj.checked)
+		{
+			a_data.push(obj.value);
+		}
+	}
+	if(a_data.length==0)
+	{
+		dialog_message("请先选择报名信息！")
+		return
+	}
+	document.getElementById('Vcl_FunName').value='SendMeetNotice';
+	document.getElementById('Vcl_StuId').value=arrayToJson(a_data)
+	dialog_confirm("确认通知选中幼儿监护人吗？<br/><br/>确认后：<br/>1. 幼儿监护人的微信将收到见面通知。<br/>2. 选中的幼儿报名信息将会进入“<b>等待见面</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
+}
 function health_select_submit()
 {
 	var a_data=[];

@@ -120,7 +120,7 @@ class Operate extends Bn_Basic {
 			$s_remark='';
 			if ($o_user->getAuditorName ( $i )!='')
 			{
-				$s_remark=$o_user->getAuditorName ( $i ).'<br/><span style="color:#999999">备注：'.$o_user->getAuditorRemark ( $i ).'</span>';
+				$s_remark=$o_user->getAuditorName ( $i ).'<br/><span style="color:#999999">备注：'.$o_user->getAuditRemark ( $i ).'</span>';
 			}
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
@@ -326,6 +326,73 @@ class Operate extends Bn_Basic {
 			}
 		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发送信息核验通知成功！\',function(){parent.table_refresh(\'StudentSignupTable\')})");' );
+	}
+	public function SendMeetNotice($n_uid)
+	{	
+		sleep(1);
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}		
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120102 ))return;//如果没有权限，不返回任何值
+		$a_data=json_decode($_POST['Vcl_StuId']);
+		$o_admission_setup=new Admission_Setup(1);
+		$o_system_setup=new Base_Setup(1);
+		for($i=0;$i<count($a_data);$i++)
+		{
+			$o_stu=new Student_Info($a_data[$i]);
+			if ($o_stu->getState()==1)
+			{
+				$o_stu->setState(2);
+				$o_stu->setReject(0);
+				$o_stu->Save();
+				//获取幼儿关联的微信
+				$o_wechat_user=new Student_Info_Wechat_Wiew();
+				$o_wechat_user->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId()) );
+				for($j=0;$j<$o_wechat_user->getAllCount();$j++)
+				{
+					//添加消息队列					
+					$o_msg=new Wechat_Wx_User_Reminder();
+				    $o_msg->setUserId($o_wechat_user->getUserId($j));
+				    $o_msg->setCreateDate($this->GetDateNow());
+				    $o_msg->setSendDate('0000-00-00');
+				    $o_msg->setMsgId($this->getWechatSetup('MSGTMP_03'));
+				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
+				    $o_msg->setActivityId(0);
+				    $o_msg->setSend(0);
+				    $o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，如错过见面视为自行放弃入园资格：');
+				    $o_msg->setKeyword1($o_stu->getStudentId());
+				    $o_msg->setKeyword2($o_stu->getName());
+				    $a_time=$this->getMeetDateAndTime($o_admission_setup->getMeetDate(), $o_admission_setup->getMeetTime());
+				    $o_msg->setKeyword3($a_time[0]);
+				    $o_msg->setKeyword4($a_time[1]);
+				    $o_msg->setKeyword5($o_admission_setup->getMeetAddress());
+				    $o_msg->setRemark('
+见面会注意事项请点击详情查看。');
+				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId().'');
+				    $o_msg->setKeywordSum(5);
+				    $o_msg->Save();
+				}				
+			}
+		}
+		$this->setReturn ( 'parent.form_return("dialog_success(\'发送见面通知成功！\',function(){parent.table_refresh(\'WaitAuditTable\')})");' );
+	}
+	private function getMeetDateAndTime($s_date,$s_time)
+	{
+		//读取见面设置
+		$o_table=new Admission_Time();
+		$o_table->PushWhere ( array ('&&', 'Type', '=', 'meet' ) );
+		$o_table->PushOrder ( array ('Id', 'A' ) );
+        for($i=0;$i<$o_table->getAllCount();$i++)
+        {
+        	if ($o_table->getUseSum($i)<$o_table->getSum($i))
+        	{
+        		$s_time=$o_table->getTime($i);
+        		$s_date=$o_table->getDate($i);
+        		$o_table->SumAdd1($o_table->getId($i));
+        	}
+        }
+        return array($s_date,$s_time);
 	}
 	private function getAuditDateAndTime($s_date,$s_time)
 	{

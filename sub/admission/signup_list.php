@@ -45,7 +45,6 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                                 <span  class="glyphicon glyphicon glyphicon-remove"></span>&nbsp;不通过</button>
 								<button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="select_submit()">
                                 <span  class="glyphicon glyphicon-ok"></span>&nbsp;发送核验通知</button>
-                                
                             </div>
                         <table class="table table-striped">
                             <thead>
