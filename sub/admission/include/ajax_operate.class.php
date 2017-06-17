@@ -52,9 +52,14 @@ class Operate extends Bn_Basic {
 		$n_count = $o_user->getCount ();
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
+			$s_flag='';
+			if ($o_user->getReject ( $i )==1)
+			{
+				$s_flag=' <span class="label label-danger">不通过</span>';
+			}
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
-				$o_user->getStudentId ( $i ),
+				$o_user->getStudentId ( $i ).$s_flag,
 				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
 				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
@@ -117,6 +122,11 @@ class Operate extends Bn_Basic {
 		$n_count = $o_user->getCount ();
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
+			$s_flag='';
+			if ($o_user->getReject ( $i )==1)
+			{
+				$s_flag=' <span class="label label-danger">不通过</span>';
+			}
 			$s_remark='';
 			if ($o_user->getAuditorName ( $i )!='')
 			{
@@ -124,7 +134,7 @@ class Operate extends Bn_Basic {
 			}
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
-				$o_user->getStudentId ( $i ),
+				$o_user->getStudentId ( $i ).$s_flag,
 				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
 				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
@@ -189,9 +199,14 @@ class Operate extends Bn_Basic {
 		$n_count = $o_user->getCount ();
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
+			$s_flag='';
+			if ($o_user->getReject ( $i )==1)
+			{
+				$s_flag=' <span class="label label-danger">不通过</span>';
+			}
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
-				$o_user->getStudentId ( $i ),
+				$o_user->getStudentId ( $i ).$s_flag,
 				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
 				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
@@ -256,9 +271,14 @@ class Operate extends Bn_Basic {
 		$n_count = $o_user->getCount ();
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
+			$s_flag='';
+			if ($o_user->getReject ( $i )==1)
+			{
+				$s_flag=' <span class="label label-danger">不通过</span>';
+			}
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
-				$o_user->getStudentId ( $i ),
+				$o_user->getStudentId ( $i ).$s_flag,
 				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
 				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
@@ -573,9 +593,14 @@ class Operate extends Bn_Basic {
 		$n_count = $o_user->getCount ();
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
+			$s_flag='';
+			if ($o_user->getReject ( $i )==1)
+			{
+				$s_flag=' <span class="label label-danger">不通过</span>';
+			}
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
-				$o_user->getStudentId ( $i ),
+				$o_user->getStudentId ( $i ).$s_flag,
 				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
 				$o_user->getBirthday ( $i ),
 				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
