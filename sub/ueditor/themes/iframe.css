@@ -1,0 +1,33 @@
+/*可以在这里添加你自己的css*/
+*{
+	margin:0px !important;
+	padding:0px !important;
+	overflow:hidden;
+}
+p{
+	margin-top:16px !important;
+	font-size:16px;
+	line-height:160%;
+	
+}
+img{
+    float:left;
+	width:100% !important;
+	height:auto !important;
+}
+body{
+	font-size:16px;
+	padding-left:10px !important;
+	padding-right:5px !important;
+	font-family: 微软雅黑, Microsoft Yahei, Hiragino Sans GB, tahoma, arial, 宋体 !important;
+}
+iframe{
+	width:100% !important;
+	margin-top:10px !important;
+}
+strong{
+	font-size:18px;  
+}
+edui-button-body{
+	
+}

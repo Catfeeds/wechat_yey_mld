@@ -1,14 +1,4 @@
-/******** background process starts here ********/
-            ignore_user_abort(true);//在关闭连接后，继续运行php脚本
-            /******** background process ********/
-            set_time_limit(0);
-        }
-        else {
-            fastcgi_finish_request();
-        }
-        
 INSERT INTO  `wechat_yey_mld`.`wechat_base_module` (
-
 `module_id` ,
 `name` ,
 `module` ,
@@ -20,6 +10,26 @@ INSERT INTO  `wechat_yey_mld`.`wechat_base_module` (
 `wait_read_table`
 )
 VALUES (
-'120204',  '基教统计报表',  '202_04_0',  '',  '120200',  'sub/ye_info/jijiao.php',  '120200',  '120200',  ''
-)
-        
+'120300',  '通知中心',  '203_00_0',  '发送微信消息给相关幼儿家长',  '120300',  'sub/notice_center/index.php',  '0',  '120300',  ''
+), (
+'120301',  '发送对象',  '203_01_0',  '',  '120300',  'sub/notice_center/target_list.php',  '120300',  '120300',  ''
+);
+
+INSERT INTO `wechat_yey_mld`.`wechat_base_module_icon` (`icon_id`, `path`) VALUES ('120300', 'glyphicon-bullhorn');
+
+CREATE TABLE `notice_center_record` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `creat_date` datetime NOT NULL COMMENT '创建日期',
+  `dept_id` mediumint(8) unsigned NOT NULL COMMENT '发送部门',
+  `uid` mediumint(8) unsigned NOT NULL COMMENT '发送人',
+  `target` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '接收人群',
+  `first` text COLLATE utf8_unicode_ci NOT NULL COMMENT '通知标题',
+  `remark` text COLLATE utf8_unicode_ci NOT NULL COMMENT '通知内容',
+  `comment` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '备注',
+  `send_date` datetime NOT NULL COMMENT '发送日期',
+  `is_send` int(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否已经发送',
+  `target_name` char(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '接收人群名称',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='通知中心的通知记录' AUTO_INCREMENT=1 ;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `notice_center_record_view` AS select `notice_center_record`.`id` AS `id`,`notice_center_record`.`creat_date` AS `creat_date`,`notice_center_record`.`send_date` AS `send_date`,`notice_center_record`.`is_send` AS `is_send`,`notice_center_record`.`dept_id` AS `dept_id`,`wechat_base_dept`.`name` AS `dept_name`,`notice_center_record`.`uid` AS `uid`,`wechat_base_user_info`.`name` AS `user_name`,`notice_center_record`.`first` AS `first`,`notice_center_record`.`remark` AS `remark`,`notice_center_record`.`comment` AS `comment`,`notice_center_record`.`target` AS `target`,`notice_center_record`.`target_name` AS `target_name` from ((`notice_center_record` join `wechat_base_dept` on((`notice_center_record`.`dept_id` = `wechat_base_dept`.`dept_id`))) join `wechat_base_user_info` on((`notice_center_record`.`uid` = `wechat_base_user_info`.`uid`)));
