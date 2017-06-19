@@ -4,6 +4,7 @@ require_once RELATIVITY_PATH . 'include/db_table.class.php';
 require_once RELATIVITY_PATH . 'include/db_view.class.php';
 require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
 require_once RELATIVITY_PATH . 'include/bn_user.class.php';
+require_once RELATIVITY_PATH . 'sub/notice_center/include/db_table.class.php';
 class Operate extends Bn_Basic {
 	protected $N_PageSize= 50;	
 	public function NoticeCenterTargetList($n_uid)
@@ -100,7 +101,71 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'第一监护人', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,70);
 		$this->SendJsonResultForTable($n_allcount,'NoticeCenterTargetList', 'yes', $n_page, $a_title, $a_row);
-	}	
+	}
+	public function SendNoticeMultiple($n_uid)
+	{
+		sleep(1);
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120301 ))return;//如果没有权限，不返回任何值
+		//获取目标人群
+		$o_stu=new Student_Onboard_Info_Class_Wechat_View();
+		if ($this->getPost('Target')>0)
+		{
+			$o_stu->PushWhere ( array ('&&', 'ClassNumber', '=',$this->getPost('Target')) );
+		}
+		$a_target=array();
+		for($i=0;$i<$o_stu->getAllCount();$i++)
+		{
+			array_push($a_target, array($o_stu->getName($i),$o_stu->getOpenid($i)));
+		}
+		//获得目标人群名称
+		$s_target='所有在园幼儿';
+		if($this->getPost('Target')>0)
+		{
+			$s_grade_name='';
+			$o_class=new Student_Class($this->getPost('Target'));
+			//区分年级
+			switch ($o_class->getGrade())
+			{
+				case 0:
+					$s_grade_name='半日班';
+						break;
+				case 1:
+					$s_grade_name='托班';
+						break;
+				case 2:
+					$s_grade_name='小班';
+					break;
+				case 3:
+					$s_grade_name='中班';
+					break;
+				case 4:
+					$s_grade_name='大班';
+					break;
+			}
+			$s_target=$s_grade_name.'('.$o_class->getClassName().')';
+		}
+		//写入消息记录
+		$o_notice=new Notice_Center_Record();
+		$o_notice->setCreateDate($this->GetDateNow());
+		$a_deptid=$o_user->getDeptId();
+		$o_notice->setDeptId($a_deptid[0]);
+		$o_notice->setUid($n_uid);
+		$o_notice->setTarget(json_encode($a_target));		
+		$o_notice->setTargetName($s_target);
+		$o_notice->setFirst($this->getPost('First'));
+		$o_notice->setRemark($this->getPost('Remark'));
+		$o_notice->setComment($this->getPost('Comment'));
+		$o_notice->setSendDate($this->GetDateNow());
+		$o_notice->setIsSend(1);
+		$o_notice->Save();
+		//循环写入消息队列
+		
+		$this->setReturn ( 'parent.form_return("dialog_success(\'发送通知成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
+	}
 }
 
 ?>

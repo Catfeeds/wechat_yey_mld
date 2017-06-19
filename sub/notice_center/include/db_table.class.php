@@ -4,7 +4,7 @@ require_once RELATIVITY_PATH.'include/db_connect.class.php';
 class Notice_Center_Record extends CRUD
 {
     protected $Id;
-    protected $CreatDate;
+    protected $CreateDate;
     protected $DeptId;
     protected $Uid;
     protected $Target;
@@ -27,7 +27,7 @@ class Notice_Center_Record extends CRUD
     {
         return(array(
                     'id' => 'Id',
-                    'creat_date' => 'CreatDate',
+                    'create_date' => 'CreateDate',
                     'dept_id' => 'DeptId',
                     'uid' => 'Uid',
                     'target' => 'Target',
@@ -43,7 +43,7 @@ class Notice_Center_Record extends CRUD
 class Notice_Center_Record_View extends CRUD
 {
     protected $Id;
-    protected $CreatDate;
+    protected $CreateDate;
     protected $SendDate;
     protected $IsSend;
     protected $DeptId;
@@ -68,7 +68,7 @@ class Notice_Center_Record_View extends CRUD
     {
         return(array(
                     'id' => 'Id',
-                    'creat_date' => 'CreatDate',
+                    'create_date' => 'CreateDate',
                     'send_date' => 'SendDate',
                     'is_send' => 'IsSend',
                     'dept_id' => 'DeptId',

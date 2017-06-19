@@ -1417,6 +1417,59 @@ class Student_Onboard_Info_Wechat extends CRUD
         ));
     }
 }
+class Student_Onboard_Info_Class_Wechat_View extends CRUD
+{
+    protected $StudentId;
+    protected $State;
+    protected $Name;
+    protected $Sex;
+    protected $IdType;
+    protected $Id;
+    protected $ClassNumber;
+    protected $Grade;
+    protected $ClassName;
+    protected $UserId;
+    protected $Photo;
+    protected $Nickname;
+    protected $UserName;
+    protected $Phone;
+    protected $GroupId;
+    protected $RegisterDate;
+    protected $Openid;
+    protected $ParentSex;
+
+    protected function DefineKey()
+    {
+        return 'student_id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_onboard_info_class_wechat_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'student_id' => 'StudentId',
+                    'state' => 'State',
+                    'name' => 'Name',
+                    'sex' => 'Sex',
+                    'id_type' => 'IdType',
+                    'id' => 'Id',
+                    'class_number' => 'ClassNumber',
+                    'grade' => 'Grade',
+                    'class_name' => 'ClassName',
+                    'user_id' => 'UserId',
+                    'photo' => 'Photo',
+                    'nickname' => 'Nickname',
+                    'user_name' => 'UserName',
+                    'phone' => 'Phone',
+                    'group_id' => 'GroupId',
+                    'register_date' => 'RegisterDate',
+                    'openid' => 'Openid',
+                    'parent_sex' => 'ParentSex'
+        ));
+    }
+}
 class Student_Onboard_Info_Class_View extends CRUD
 {
     protected $StudentId;
