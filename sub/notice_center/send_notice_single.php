@@ -19,14 +19,15 @@ $o_table->getAllCount();
 					<div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
                         <div class="caption">
-                        	<span  class="glyphicon fa fa-users"></span>&nbsp;群发通知
+                        	<span  class="glyphicon fa fa-user"></span>&nbsp;单发通知
                             </div>
                             </div>
                     </div>
                     <form action="include/bn_submit.switch.php" id="submit_form" method="post" target="submit_form_frame">
 						<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 						<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
-						<input type="hidden" name="Vcl_FunName" value="SendNoticeMultiple"/>
+						<input type="hidden" name="Vcl_Target" value="<?php echo($_GET['id'])?>"/>
+						<input type="hidden" name="Vcl_FunName" value="SendNoticeSingle"/>
 						<textarea id="Vcl_Comment" name="Vcl_Comment" cols="1" rows="1" style="width: 1px; height: 1px; visibility: hidden"></textarea>
                     	<div class="sss_form">
 	                     	<div class="item">
@@ -50,41 +51,10 @@ $o_table->getAllCount();
 	                     	</div>
 	                     	<div class="item">
 	                     		<label><span class="must">*</span> 发送对象：</label>
-	                     		<select id="Vcl_Target" name="Vcl_Target" class="selectpicker" data-style="btn-default" >
-	                     			<option value="">请选择</option>
-									<option value="0">全部在园幼儿</option>
-									<?php 
-										//根据学校，动态读取年级与班级
-										$o_class=new Student_Class();
-										$o_class->PushOrder ( array ('Grade','A') );
-										$o_class->PushOrder ( array ('ClassId','A') );
-										$n_count=$o_class->getAllCount();
-										for($i=0;$i<$n_count;$i++)
-										{
-											$s_grade_name='';
-											//区分年级
-										 	switch ($o_class->getGrade($i))
-										 	{
-										 		case 0:
-										 			$s_grade_name='半日班';
-										 			break;
-										 		case 1:
-										 			$s_grade_name='托班';
-										 			break;
-										 		case 2:
-										 			$s_grade_name='小班';
-										 			break;
-										 		case 3:
-										 			$s_grade_name='中班';
-										 			break;
-										 		case 4:
-										 			$s_grade_name='大班';
-										 			break;
-										 	}
-											echo('<option value="'.$o_class->getClassId($i).'">'.$s_grade_name.'('.$o_class->getClassName($i).')</option>');
-										}		                    	
-									?>
-								</select>	                     		
+	                     		<input disabled="disabled" type="text" style="width: 100%" class="form-control" value="<?php 
+	                     		$o_stu=new Student_Onboard_Info_Class_Wechat_View($_GET['id']);
+	                     		echo($o_stu->getName().'（'.$o_stu->getClassName().'）');
+	                     		?>"/>                     		
 	                     	</div>
 	                     	<div class="item">
 	                     	<style>
@@ -97,7 +67,7 @@ $o_table->getAllCount();
 	                     	</div>
 	                     	<div class="item">
 								<button id="user_add_btn" type="button" class="btn btn-default cancel" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="location='<?php echo($_SERVER['HTTP_REFERER'])?>'"><?php echo(Text::Key('Cancel'))?></button>
-								<button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="send_notice_multiple()"><span class="glyphicon fa fa-send"></span>&nbsp;发送</button>
+								<button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="send_notice_single()"><span class="glyphicon fa fa-send"></span>&nbsp;发送</button>
 							</div>                   	
                      	</div>
                      </form>

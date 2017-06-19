@@ -41,6 +41,36 @@ function send_notice_multiple()
 		dialog_message("标题不能为空！")
 		return
 	}
+	if (document.getElementById("Vcl_Type").value == "") {
+		dialog_message("请选择通知类型！")
+		return
+	}
+	if (document.getElementById("Vcl_Remark").value == "") {
+		dialog_message("内容不能为空！")
+		return
+	}
+	if (document.getElementById("Vcl_Target").value == "") {
+		dialog_message("请选择发送对象！")
+		return
+	}
+	if(check_remark(document.getElementById("Vcl_Remark").value)==false)
+	{
+		dialog_message("内容不能超过80个字！")
+		return
+	}
+	document.getElementById ('Vcl_Comment').value=encodeURIComponent(ue.getContent())
+	dialog_confirm("确认要群发通知吗？<br/><br/>确认后：<br/>1. 所有微信绑定过的幼儿家长将陆续收到微信通知。<br/>2. 发送后，可以在“<b>通知记录</b>”模块中查看历史记录。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
+}
+function send_notice_single()
+{
+	if (document.getElementById("Vcl_First").value == "") {
+		dialog_message("标题不能为空！")
+		return
+	}
+	if (document.getElementById("Vcl_Type").value == "") {
+		dialog_message("请选择通知类型！")
+		return
+	}
 	if (document.getElementById("Vcl_Remark").value == "") {
 		dialog_message("内容不能为空！")
 		return
@@ -51,6 +81,6 @@ function send_notice_multiple()
 		return
 	}
 	document.getElementById ('Vcl_Comment').value=encodeURIComponent(ue.getContent())
-	dialog_confirm("确认要群发通知吗？<br/><br/>确认后：<br/>1. 所有微信绑定过的幼儿家长将陆续收到微信通知。<br/>2. 发送后，可以在“<b>通知记录</b>”模块中查看历史记录。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
+	dialog_confirm("确认要单发通知吗？<br/><br/>确认后：<br/>1. 微信绑定的幼儿家长将收到微信通知。<br/>2. 发送后，可以在“<b>通知记录</b>”模块中查看历史记录。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
 }
 

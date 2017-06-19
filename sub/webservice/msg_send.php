@@ -82,7 +82,7 @@ for($i=0;$i<$n_count;$i++)
 '.$o_reminder->getRemark($i)) 
 				)
 		);
-	}else{
+	}else if($o_temp->getKeywordSum()==2){
 		$data = array(
 		'touser' => $o_reminder->getOpenId($i), // openid是发送消息的基础
 		'template_id' => $o_reminder->getMsgId($i), // 模板id
@@ -95,6 +95,23 @@ for($i=0;$i<$n_count;$i++)
 		'keyword2' => array('value' => $o_reminder->getKeyword2($i),'color'=>'#173177'),
 		'remark' => array('value' =>'
 '.$o_reminder->getRemark($i)) 
+				)
+		);
+	}else if($o_temp->getKeywordSum()==10)
+	{
+		//班级通知
+		$data = array(
+		'touser' => $o_reminder->getOpenId($i), // openid是发送消息的基础
+		'template_id' => $o_reminder->getMsgId($i), // 模板id
+		'url' => $o_reminder->getUrl($i), // 点击跳转地址
+		'topcolor' => '#FF0000', // 顶部颜色
+		'data' => array(
+		'first' => array('value' => $o_reminder->getFirst($i)),
+		'keyword1' => array('value' =>$o_reminder->getKeyword1($i)),
+		'keyword2' => array('value' => $o_reminder->getKeyword2($i)),
+		'keyword3' => array('value' => $o_reminder->getKeyword3($i)),
+		'keyword4' => array('value' => $o_reminder->getKeyword4($i),'color'=>'#173177'),
+		'remark' => array('value' =>'') 
 				)
 		);
 	}

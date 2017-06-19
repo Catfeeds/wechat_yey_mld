@@ -35,7 +35,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  </div>
 								</div>
 								<button id="user_add_btn" type="button" title="群发通知" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" data-toggle="tooltip" onclick="location='send_notice_multiple.php'">
-                                <span class="glyphicon glyphicon-plus"></span>&nbsp;群发通知</button>   								 
+                                <span class="glyphicon fa fa-send"></span>&nbsp;群发通知</button>   								 
 								</div>
 						<div class="table_nav">
 							<div class="<?php if($s_key=='')echo('on')?>" onclick="change_table_nav('<?php echo($s_fun)?>','')">

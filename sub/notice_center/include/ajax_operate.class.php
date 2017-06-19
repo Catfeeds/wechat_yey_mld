@@ -119,7 +119,7 @@ class Operate extends Bn_Basic {
 		$a_target=array();
 		for($i=0;$i<$o_stu->getAllCount();$i++)
 		{
-			array_push($a_target, array($o_stu->getName($i),$o_stu->getOpenid($i)));
+			array_push($a_target, array($o_stu->getName($i),$o_stu->getClassName($i),$o_stu->getUserId($i),$o_stu->getOpenid($i)));
 		}
 		//获得目标人群名称
 		$s_target='所有在园幼儿';
@@ -159,13 +159,102 @@ class Operate extends Bn_Basic {
 		$o_notice->setFirst($this->getPost('First'));
 		$o_notice->setRemark($this->getPost('Remark'));
 		$o_notice->setComment($this->getPost('Comment'));
+		$o_notice->setType($this->getPost('Type'));
 		$o_notice->setSendDate($this->GetDateNow());
 		$o_notice->setIsSend(1);
 		$o_notice->Save();
+		$o_system_setup=new Base_Setup(1);
 		//循环写入消息队列
-		
+		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+		for($i=0;$i<count($a_target);$i++)
+		{
+			$a_temp=$a_target[$i];
+			//添加消息队列
+			$o_msg=new Wechat_Wx_User_Reminder();
+			$o_msg->setUserId($a_temp[2]);
+			$o_msg->setCreateDate($this->GetDateNow());
+			$o_msg->setSendDate('0000-00-00');
+			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+			$o_msg->setOpenId($a_temp[3]);
+			$o_msg->setActivityId(0);
+			$o_msg->setSend(0);
+			$o_msg->setFirst($this->getPost('First').'
+
+通知类型：'.$this->getPost('Type').'
+幼儿姓名：'.$a_temp[0]);
+			$o_msg->setKeyword1($a_temp[1]);
+			$s_teacher_name=$o_user->getName();
+			$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+			$o_msg->setKeyword3($this->GetDate());
+			$o_msg->setKeyword4($this->getPost('Remark'));
+			$o_msg->setKeyword5('');
+			$o_msg->setRemark('');
+			$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/notice_review.php?id='.$o_notice->getId().'');
+			$o_msg->setKeywordSum(10);
+			$o_msg->Save();
+		}
+		$this->setReturn ( 'parent.form_return("dialog_success(\'发送通知成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
+	}
+	public function SendNoticeSingle($n_uid)
+	{
+		sleep(1);
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120301 ))return;//如果没有权限，不返回任何值
+		//获取目标人群
+		$o_stu=new Student_Onboard_Info_Class_Wechat_View($this->getPost('Target'));
+		$a_target=array();
+		array_push($a_target, array($o_stu->getName(),$o_stu->getClassName(),$o_stu->getUserId(),$o_stu->getOpenid()));
+		//获得目标人群名称
+		$s_target=$o_stu->getName().'（'.$o_stu->getClassName().'）';
+		//写入消息记录
+		$o_notice=new Notice_Center_Record();
+		$o_notice->setCreateDate($this->GetDateNow());
+		$a_deptid=$o_user->getDeptId();
+		$o_notice->setDeptId($a_deptid[0]);
+		$o_notice->setUid($n_uid);
+		$o_notice->setTarget($this->getPost('Target'));		
+		$o_notice->setTargetName($s_target);
+		$o_notice->setFirst($this->getPost('First'));
+		$o_notice->setRemark($this->getPost('Remark'));
+		$o_notice->setComment($this->getPost('Comment'));
+		$o_notice->setType($this->getPost('Type'));
+		$o_notice->setSendDate($this->GetDateNow());
+		$o_notice->setIsSend(1);
+		$o_notice->Save();
+		$o_system_setup=new Base_Setup(1);
+		//循环写入消息队列
+		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+		for($i=0;$i<count($a_target);$i++)
+		{
+			$a_temp=$a_target[$i];
+			//添加消息队列
+			$o_msg=new Wechat_Wx_User_Reminder();
+			$o_msg->setUserId($a_temp[2]);
+			$o_msg->setCreateDate($this->GetDateNow());
+			$o_msg->setSendDate('0000-00-00');
+			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+			$o_msg->setOpenId($a_temp[3]);
+			$o_msg->setActivityId(0);
+			$o_msg->setSend(0);
+			$o_msg->setFirst($this->getPost('First').'
+
+通知类型：'.$this->getPost('Type').'
+幼儿姓名：'.$a_temp[0]);
+			$o_msg->setKeyword1($a_temp[1]);
+			$s_teacher_name=$o_user->getName();
+			$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+			$o_msg->setKeyword3($this->GetDate());
+			$o_msg->setKeyword4($this->getPost('Remark'));
+			$o_msg->setKeyword5('');
+			$o_msg->setRemark('');
+			$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/notice_review.php?id='.$o_notice->getId().'');
+			$o_msg->setKeywordSum(10);
+			$o_msg->Save();
+		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发送通知成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
 	}
 }
-
 ?>

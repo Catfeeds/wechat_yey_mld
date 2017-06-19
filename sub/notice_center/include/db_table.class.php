@@ -14,6 +14,7 @@ class Notice_Center_Record extends CRUD
     protected $SendDate;
     protected $IsSend;
     protected $TargetName;
+    protected $Type;
 
     protected function DefineKey()
     {
@@ -36,6 +37,7 @@ class Notice_Center_Record extends CRUD
                     'comment' => 'Comment',
                     'send_date' => 'SendDate',
                     'is_send' => 'IsSend',
+        			'type' => 'Type',
                     'target_name' => 'TargetName'
         ));
     }
@@ -55,6 +57,7 @@ class Notice_Center_Record_View extends CRUD
     protected $Comment;
     protected $Target;
     protected $TargetName;
+    protected $Type;
 
     protected function DefineKey()
     {
@@ -79,6 +82,7 @@ class Notice_Center_Record_View extends CRUD
                     'remark' => 'Remark',
                     'comment' => 'Comment',
                     'target' => 'Target',
+        			'type' => 'Type',
                     'target_name' => 'TargetName'
         ));
     }

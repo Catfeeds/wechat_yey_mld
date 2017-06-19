@@ -158,7 +158,7 @@ $o_setup=new Base_Setup(1);
 				}
 				else{
 					echo(RELATIVITY_PATH.$o_user->getPhoto());
-				}	
+				}				
 			}?>" alt="" />
                 </div>
                 <div class="sss_nav_top_right">
