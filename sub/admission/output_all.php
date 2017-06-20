@@ -41,8 +41,11 @@ function get_column_number($column,$row)
 		return $a_number[$column].$row;
 	}
 }
-
 function OutputList($S_State,$s_filename) {
+	require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+	$o_setup_audit=new Wechat_Wx_Setup('MSGTMP_02');
+	$o_setup_meet=new Wechat_Wx_Setup('MSGTMP_03');
+	$o_setup_health=new Wechat_Wx_Setup('MSGTMP_04');
 	$n_counter=1;
 	$s_filename='output/'.$s_filename;
 	
@@ -120,6 +123,7 @@ function OutputList($S_State,$s_filename) {
 	//班级信息
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '报名班级类型');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '是否服从班级类型调剂');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '信息核验时段');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '信息核验员');$n_counter++;
 	$o_question=new Student_Audit_Question();
 	$o_question->PushOrder ( array ('Number','A') );   
@@ -128,6 +132,7 @@ function OutputList($S_State,$s_filename) {
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), $o_question->getText($i));$n_counter++;
 	}
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '核验备注');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '见面时段');$n_counter++;
 	//如果是3，已见面，那么要添加相应的列
 	if($S_State>=3)
 	{
@@ -151,6 +156,7 @@ function OutputList($S_State,$s_filename) {
 	    }
 	    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1),'家长见面-备注');$n_counter++;
 	}
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '体检时段');$n_counter++;
 	$o_dept = new Student_Info ();
 	$o_dept->PushWhere ( array ('&&', 'State', '=', $S_State ) );
 	$o_dept->PushOrder ( array ('StudentId', 'A' ) );
@@ -237,6 +243,17 @@ function OutputList($S_State,$s_filename) {
 		//附加信息信息		
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getClassMode( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getCompliance( $i ));$n_counter++;
+		//查找消息提醒的信息核验提醒
+		$o_reminder=new Wechat_Wx_User_Reminder();
+		$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=', $o_dept->getStudentId( $i ) ) );
+		$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_setup_audit->getValue()) );
+		$o_reminder->PushOrder ( array ('Id', 'D' ) );
+		if ($o_reminder->getAllCount()>0)
+		{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_reminder->getKeyword3(0).' '.$o_reminder->getKeyword4(0));$n_counter++;
+		}else{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), '无');$n_counter++;
+		}	
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getAuditorName( $i ));$n_counter++;
 		$a_option=json_decode($o_dept->getAuditOption( $i ));
 		if (count($a_option)>0)
@@ -252,6 +269,17 @@ function OutputList($S_State,$s_filename) {
 			}
 		}	
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getAuditRemark( $i ));$n_counter++;
+		//查找见面提醒的信息核验提醒
+		$o_reminder=new Wechat_Wx_User_Reminder();
+		$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=', $o_dept->getStudentId( $i ) ) );
+		$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_setup_meet->getValue()) );
+		$o_reminder->PushOrder ( array ('Id', 'D' ) );
+		if ($o_reminder->getAllCount()>0)
+		{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_reminder->getKeyword3(0).' '.$o_reminder->getKeyword4(0));$n_counter++;
+		}else{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), '无');$n_counter++;
+		}
 		if($S_State>=3)
 		{
 			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),$o_dept->getMeetAuditorName( $i ));$n_counter++;
@@ -273,6 +301,17 @@ function OutputList($S_State,$s_filename) {
 		    	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),$a_temp->value);$n_counter++;	    	
 		    }
 		    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),$o_dept->getMeetParentRemark($i));$n_counter++;
+		}
+		//查找体检提醒的信息核验提醒
+		$o_reminder=new Wechat_Wx_User_Reminder();
+		$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=', $o_dept->getStudentId( $i ) ) );
+		$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_setup_health->getValue()) );
+		$o_reminder->PushOrder ( array ('Id', 'D' ) );
+		if ($o_reminder->getAllCount()>0)
+		{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_reminder->getKeyword3(0).' '.$o_reminder->getKeyword4(0));$n_counter++;
+		}else{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), '无');$n_counter++;
 		}
 	}	
 	$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);

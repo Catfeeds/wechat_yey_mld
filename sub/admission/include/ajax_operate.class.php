@@ -145,14 +145,14 @@ class Operate extends Bn_Basic {
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
-		$a_title=$this->setTableTitle($a_title,'<input style="margin-top:0px;" type="checkbox" onclick="select_all(this)"/> 全选', '', 0, 40);
-		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'<input style="margin-top:0px;" type="checkbox" onclick="select_all(this)"/> 全选', '', 0, 50);
+		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'信息核验员', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'信息核验员', '', 180, 0);
 		$this->SendJsonResultForTable($n_allcount,'WaitAuditTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function AuditPassTable($n_uid)
