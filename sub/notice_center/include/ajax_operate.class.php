@@ -76,8 +76,6 @@ class Operate extends Bn_Basic {
 			{
 				array_push ( $a_button, array ('发通知', "location='send_notice_single.php?id=".$o_user->getStudentId($i)."'" ) );//查看
 				$s_binding_wx='<span class="glyphicon fa fa-weixin" title="已绑定微信" aria-hidden="true" style="color:#2AA144" data-placement="left" data-toggle="tooltip"></span> ';
-			}else{
-				array_push ( $a_button, array ('发通知', "dialog_message('对不起，该幼儿家长没有绑定微信，不能发生通知。')" ) );//查看
 			}		
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
@@ -189,7 +187,12 @@ class Operate extends Bn_Basic {
 			$o_msg->setKeyword4($this->getPost('Remark'));
 			$o_msg->setKeyword5('');
 			$o_msg->setRemark('');
-			$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/notice_review.php?id='.$o_notice->getId().'');
+			//如果Comment为空，那么就没有点击事件了
+			$o_msg->setUrl('');
+			if($this->getPost('Comment')!='')
+			{
+				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/notice_review.php?id='.$o_notice->getId().'');
+			}
 			$o_msg->setKeywordSum(10);
 			$o_msg->Save();
 		}
@@ -208,7 +211,7 @@ class Operate extends Bn_Basic {
 		$a_target=array();
 		array_push($a_target, array($o_stu->getName(),$o_stu->getClassName(),$o_stu->getUserId(),$o_stu->getOpenid()));
 		//获得目标人群名称
-		$s_target=$o_stu->getName().'（'.$o_stu->getClassName().'）';
+		$s_target=$o_stu->getName().'('.$o_stu->getClassName().')';
 		//写入消息记录
 		$o_notice=new Notice_Center_Record();
 		$o_notice->setCreateDate($this->GetDateNow());
@@ -250,11 +253,67 @@ class Operate extends Bn_Basic {
 			$o_msg->setKeyword4($this->getPost('Remark'));
 			$o_msg->setKeyword5('');
 			$o_msg->setRemark('');
-			$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/notice_review.php?id='.$o_notice->getId().'');
+			//如果Comment为空，那么就没有点击事件了
+			$o_msg->setUrl('');
+			if($this->getPost('Comment')!='')
+			{
+				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/notice_review.php?id='.$o_notice->getId().'');
+			}
 			$o_msg->setKeywordSum(10);
 			$o_msg->Save();
 		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发送通知成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
+	}
+	public function NoticeRecordTable($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120302 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Notice_Center_Record_View(); 
+		$o_user->PushWhere ( array ('&&', 'Uid', '=',$n_uid) );		
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$a_button = array ();
+			if($o_user->getComment($i)!='')
+			{
+				array_push ( $a_button, array ('详情', "location='record_detail.php?id=".$o_user->getId($i)."'" ) );//查看
+			}
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),
+				str_replace(' ', '<br/>', $o_user->getSendDate ( $i )),
+				str_replace('(', '<br/>(', $o_user->getTargetName ( $i )),
+				$o_user->getFirst ( $i ),
+				$o_user->getType ( $i ),
+				$o_user->getRemark ( $i ),
+				$a_button
+				));				
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'序号', '', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'发送时间', 'SendDate', 0, 90);
+		$a_title=$this->setTableTitle($a_title,'发送对象', '', 0, 90);
+		$a_title=$this->setTableTitle($a_title,'通知标题', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'通知类型', 'Type', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'通知内容', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,70);
+		$this->SendJsonResultForTable($n_allcount,'NoticeRecordTable', 'yes', $n_page, $a_title, $a_row);
 	}
 }
 ?>
