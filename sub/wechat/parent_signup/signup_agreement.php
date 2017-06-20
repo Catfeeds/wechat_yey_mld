@@ -37,17 +37,24 @@ require_once '../header.php';
       	</p>
     </div>
     <div style="padding:15px;">
+    	<?php 
+    	//判断是否为合法报名时段
+		$o_setup=new Admission_Setup(1); 
+		$o_date = new DateTime('Asia/Chongqing');
+		$s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ) . ' ' . $o_date->format ( 'H' ) . ':' . $o_date->format ( 'i' ) . ':' . $o_date->format ( 's' );
+		if (strtotime($s_date)>=strtotime($o_setup->getSignupStart()) && strtotime($s_date)<=strtotime($o_setup->getSignupEnd()))
+		{
+    	?>
 		 <a class="weui-btn weui-btn_disabled weui-btn_primary"><span>20</span> 已阅读并同意</a>
 		 <a id="next" href="signup_form.php" class="weui-btn weui-btn_primary" style="display:none">已阅读并同意</a>
 		 <a onclick="document.addEventListener('WeixinJSBridgeReady', WeixinJSBridge.call('closeWindow'));" class="weui-btn weui-btn_default">不同意</a>
+		 <?php 
+		}
+		 ?>
 	</div>
 <script>
 $(function(){
 <?php 
-//判断是否为合法报名时段
-$o_setup=new Admission_Setup(1); 
-$o_date = new DateTime('Asia/Chongqing');
-$s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ) . ' ' . $o_date->format ( 'H' ) . ':' . $o_date->format ( 'i' ) . ':' . $o_date->format ( 's' );
 if (strtotime($s_date)<strtotime($o_setup->getSignupStart()))
 {
 	echo('Dialog_Message("报名开始时间为：<br/>'.$o_setup->getSignupStart().' <br/>请在有效日期内进行报名。",function(){location=\'my_signup.php\'});
