@@ -28,14 +28,14 @@ if (!($o_notice->getUid()>0))
 	margin-top:10px !important;
 	padding-top:0px !important;
 	padding-bottom:0px !important;
-	font-size:14px !important;
+	font-size:18px !important;
 	line-height:150% !important;;
 }
 .weui-media-box_text b{
-	font-size:16px !important;
+	font-size:20px !important;
 }
 .weui-media-box_text strong{
-	font-size:16px !important;
+	font-size:20px !important;
 }
 </style>
      <div class="page__bd">
