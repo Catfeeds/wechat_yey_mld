@@ -139,6 +139,7 @@ class Operate_YeInfo extends Bn_Basic {
 			$s_binding_wx='';
 			if ($o_onboard_wechat->getAllCount()>0)
 			{
+				array_push ( $a_button, array ('解绑', "stu_unbinding(".$o_user->getStudentId($i).")" ) );//查看
 				$s_binding_wx='<span class="glyphicon fa fa-weixin" title="已绑定微信" aria-hidden="true" style="color:#2AA144" data-placement="left" data-toggle="tooltip"></span> ';
 			}			
 			array_push ($a_row, array (
@@ -599,6 +600,39 @@ class Operate_YeInfo extends Bn_Basic {
 			);
 			echo (json_encode ( $a_general ));	
 		}
+	}
+	public function StuUnbinding($n_uid) {
+		
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120201 ))return; //如果没有权限，不返回任何值
+		//取消微信绑定，查找所有绑定记录，然后循环删除			
+		require_once RELATIVITY_PATH . 'sub/wechat/include/userGroup.class.php';
+		$o_group = new userGroup();
+		$o_binding=new Student_Onboard_Info_Wechat();
+		$o_binding->PushWhere ( array ('||', 'StudentId', '=', $this->getPost('id') ) );
+		for($i=0;$i<$o_binding->getAllCount();$i++)
+		{
+			$o_temp=new Student_Onboard_Info_Wechat($o_binding->getId($i));
+			//如果该家长没有其他绑定信息，那么删除用户分组
+			$o_temp_binding=new Student_Onboard_Info_Wechat();
+			$o_temp_binding->PushWhere ( array ('||', 'UserId', '=',$o_temp->getUserId()) );
+			$o_temp_binding->PushWhere ( array ('&&', 'Id', '<>',$o_temp->getId()) );
+			if ($o_temp_binding->getAllCount()==0)
+			{
+				//没有其他信息，才删除用户分组
+				$o_parent=new WX_User_Info($o_temp->getUserId());
+				$o_group->updateGroup($o_parent->getOpenId(),0);
+			}				
+			$o_temp->Deletion();
+		}			
+		$a_general = array (
+			'success' => 1,
+			'text' =>''
+		);
+		echo (json_encode ( $a_general ));
 	}
 	public function StuChangeClass($n_uid) {
 		if (! ($n_uid > 0)) {
