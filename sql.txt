@@ -1,4 +1,132 @@
-INSERT INTO `wechat_base_module` (`module_id`, `name`, `module`, `explain`, `icon_id`, `path`, `parent_module_id`, `mini_icon_id`, `wait_read_table`) VALUES 
-(120302, '通知记录', '203_02_0', '', 120300, 'sub/notice_center/record.php', 120300, 120300, '');
 
-UPDATE `wechat_yey_mld`.`wechat_base_module` SET `wait_read_table` = 'YeInfo' WHERE `wechat_base_module`.`module_id` = 120200;
+CREATE TABLE `survey` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `title` char(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '标题',
+  `create_date` datetime NOT NULL COMMENT '建立日期',
+  `state` int(2) unsigned NOT NULL COMMENT '0.暂存 1.已发布',
+  `owner_id` mediumint(9) NOT NULL COMMENT '拥有者',
+  `release_date` datetime NOT NULL COMMENT '发布日期',
+  `target_name` char(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '对象群体名称',
+  `target_list` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '对象ID数组',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='问卷调查' AUTO_INCREMENT=1 ;
+
+-- 
+-- Dumping data for table `survey`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `survey_answers`
+-- 
+
+CREATE TABLE `survey_answers` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `survey_id` mediumint(8) unsigned NOT NULL COMMENT '问卷编号',
+  `user_id` mediumint(8) unsigned NOT NULL COMMENT '微信用户id',
+  `date` datetime NOT NULL COMMENT '答题日期',
+  `answer_1` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_2` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_3` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_4` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_5` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_6` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_7` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_8` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_9` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_10` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_11` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_12` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_13` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_14` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_15` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_16` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_17` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_18` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_19` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_20` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_21` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_22` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_23` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_24` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_25` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_26` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_27` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_28` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_29` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_30` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_31` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_32` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_33` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_34` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_35` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_36` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_37` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_38` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_39` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_40` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_41` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_42` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_43` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_44` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_45` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_46` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_47` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_48` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_49` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_50` char(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='问卷调查答案' AUTO_INCREMENT=1 ;
+
+-- 
+-- Dumping data for table `survey_answers`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `survey_options`
+-- 
+
+CREATE TABLE `survey_options` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `question_id` mediumint(8) unsigned NOT NULL COMMENT '问题编号',
+  `option` char(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '选项',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='调查问卷的题目选项' AUTO_INCREMENT=1 ;
+
+-- 
+-- Dumping data for table `survey_options`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `survey_questions`
+-- 
+
+CREATE TABLE `survey_questions` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `survey_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '问卷编号',
+  `question` char(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '题目',
+  `type` int(1) unsigned NOT NULL DEFAULT '0' COMMENT '1.单选 2.多选 3.文本',
+  `number` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '顺序',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='问卷调查题目' AUTO_INCREMENT=1 ;
+
+-- 
+-- Dumping data for table `survey_questions`
+-- 
+
+INSERT INTO `wechat_yey_mld`.`wechat_base_module` (`module_id`, `name`, `module`, `explain`, `icon_id`, `path`, `parent_module_id`, `mini_icon_id`, `wait_read_table`) VALUES ('120400', '调查问卷', '204_00_0', '包含调查问卷、投票管理能以及后期统计', '120400', 'sub/survey/index.php', '0', '120400', ''), ('120401', '问卷管理', '204_01_0', '', '120400', 'sub/survey/manage.php', '120400', '120400', '');
+
+INSERT INTO `wechat_yey_mld`.`wechat_base_module_icon` (`icon_id`, `path`) VALUES ('120400', 'fa fa-pencil-square-o');
+
+
+
+
+
