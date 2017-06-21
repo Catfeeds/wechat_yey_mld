@@ -301,7 +301,7 @@ function table_load(fun,item,sort,page,key,other_key)
 						s_sign=' <span class="glyphicon glyphicon-triangle-bottom"></span>';
 					}
 				}		
-				a_arr.push('<span class="sort_title" onclick="table_sort(\''+json.funname+'\',\''+a_temp.item+'\',\''+sort+'\',1,\''+key+'\',\''+other_key+'\')">'+a_temp.title+'</span>'+s_sign);
+				a_arr.push('<span class="sort_title" onclick="table_sort(\''+json.funname+'\',\''+a_temp.item+'\',\''+sort+'\',1,\''+decodeURIComponent(key)+'\',\''+decodeURIComponent(other_key)+'\')">'+a_temp.title+'</span>'+s_sign);
 			}
 			a_arr.push('</th>');
 		}

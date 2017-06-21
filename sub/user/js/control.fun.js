@@ -79,11 +79,45 @@ function search_for_user()
 	var item=$.cookie(fun+"Item"); 
 	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value));    
 }
+function search_for_user_onboard()
+{
+	var fun='UserListOnboard';
+	var id='Vcl_KeyUserOnboard'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value));    
+}
+function search_for_user_signup()
+{
+	var fun='UserListSignup';
+	var id='Vcl_KeyUserSignup'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value));    
+}
 $(function(){
 	$('#Vcl_KeyUser').keypress(function(event){  
 	    var keycode = (event.keyCode ? event.keyCode : event.which);  
 	    if(keycode == '13'){  
-	    	search_for_user()   
+	    	search_for_user()
+	    }  
+	}); 
+	$('#Vcl_KeyUserOnboard').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_user_onboard()   
+	    }  
+	}); 
+	$('#Vcl_KeyUserSignup').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_user_signup()   
 	    }  
 	}); 
 })

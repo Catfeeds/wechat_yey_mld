@@ -126,6 +126,9 @@ INSERT INTO `wechat_yey_mld`.`wechat_base_module` (`module_id`, `name`, `module`
 
 INSERT INTO `wechat_yey_mld`.`wechat_base_module_icon` (`icon_id`, `path`) VALUES ('120400', 'fa fa-pencil-square-o');
 
+INSERT INTO `wechat_yey_mld`.`wechat_base_module` (`module_id`, `name`, `module`, `explain`, `icon_id`, `path`, `parent_module_id`, `mini_icon_id`, `wait_read_table`) VALUES ('100503', '在园家长', '07_2_0', '', '100500', 'sub/user/user_list_onboard.php', '100500', '100500', ''), ('100504', '报名家长', '07_3_0', '', '100500', 'sub/user/user_list_signup.php', '100500', '100500', '');
+
+UPDATE `wechat_yey_mld`.`wechat_base_module` SET `module` = '07_4_0' WHERE `wechat_base_module`.`module_id` = 100502 LIMIT 1;
 
 
 

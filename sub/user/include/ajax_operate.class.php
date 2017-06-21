@@ -87,6 +87,146 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0, 65);
 		$this->SendJsonResultForTable($n_allcount,'UserList', 'yes', $n_page, $a_title, $a_row);
 	}
+	public function UserListOnboard($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 100503 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Student_Onboard_Info_Class_Wechat_View(); 
+		$s_key=$this->getPost('key');
+		if ($s_key!='')
+		{
+			$o_user->PushWhere ( array ('||', 'Nickname', 'like','%'.$s_key.'%') );
+			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$s_key.'%') );
+			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
+		}
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$s_grade_name='';
+			//区分年级
+			switch ($o_user->getGrade($i))
+			{
+				case 0:
+					$s_grade_name='半日班';
+						break;
+				case 1:
+					$s_grade_name='托班';
+						break;
+				case 2:
+					$s_grade_name='小班';
+					break;
+				case 3:
+					$s_grade_name='中班';
+					break;
+				case 4:
+					$s_grade_name='大班';
+					break;
+			}
+			//如果已经取消关注，需要加标签
+			$s_sign_name='';
+			if ($o_user->getDelFlag ( $i )==1)
+			{
+				$s_sign_name=' <span class="label label-danger">取消关注</span>';
+			}
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),
+				'<img style="width:32px;height:32px;cursor:pointer;" src="'.$o_user->getPhoto ( $i ).'" onclick="open_photo(\''.$o_user->getPhoto ( $i ).'\')">',
+				$o_user->getNickname ( $i ).$s_sign_name,
+				$o_user->getName ( $i ),
+				$s_grade_name.'('.$o_user->getClassName ( $i ).')',
+				$o_user->getSex ( $i ),
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType( $i ).'</span>',
+				$o_user->getUserName ( $i ).'<br/><span style="color:#999999">'.$o_user->getPhone ( $i ).'</span>'
+				));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'头像', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'微信昵称', 'Nickname', 150, 0);	
+		$a_title=$this->setTableTitle($a_title,'幼儿姓名', 'Name', 0, 0);	
+		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassNumber', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 0);		
+		$a_title=$this->setTableTitle($a_title,'证件号', 'Id', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'监护人', 'UserName', 0, 60);
+		$this->SendJsonResultForTable($n_allcount,'UserListOnboard', 'no', $n_page, $a_title, $a_row);
+	}
+	public function UserListSignup($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 100504 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Student_Info_Wechat_Wiew(); 
+		$s_key=$this->getPost('key');
+		if ($s_key!='')
+		{
+			$o_user->PushWhere ( array ('||', 'Nickname', 'like','%'.$s_key.'%') );
+			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$s_key.'%') );
+			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
+		}
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			//如果已经取消关注，需要加标签
+			$s_sign_name='';
+			if ($o_user->getDelFlag ( $i )==1)
+			{
+				$s_sign_name=' <span class="label label-danger">取消关注</span>';
+			}
+			array_push ($a_row, array (
+				$o_user->getStudentId ( $i ),
+				'<img style="width:32px;height:32px;cursor:pointer;" src="'.$o_user->getPhoto ( $i ).'" onclick="open_photo(\''.$o_user->getPhoto ( $i ).'\')">',
+				$o_user->getNickname ( $i ).$s_sign_name,
+				$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getSex ( $i ).'</span>',
+				$o_user->getBirthday ( $i ),
+				$o_user->getId ( $i ).'<br/><span style="color:#999999">'.$o_user->getIdType ( $i ).'</span>',
+				$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getSignupPhone ( $i ).'</span>',
+				$o_user->getSignupPhoneBackup ( $i )
+				));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'幼儿编号', 'StudentId', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'头像', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'微信昵称', 'Nickname', 150, 0);	
+		$a_title=$this->setTableTitle($a_title,'幼儿姓名', 'Name', 0, 80);	
+		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 80);		
+		$a_title=$this->setTableTitle($a_title,'证件信息', 'Id', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
+		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 0);
+		$this->SendJsonResultForTable($n_allcount,'UserListSignup', 'no', $n_page, $a_title, $a_row);
+	}
 	public function BlockList($n_uid)
 	{	
 		if (! ($n_uid > 0)) {
