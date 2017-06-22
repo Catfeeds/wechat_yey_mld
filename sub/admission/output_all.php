@@ -292,9 +292,8 @@ function OutputList($S_State,$s_filename) {
 		    }
 		    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),$o_dept->getMeetRemark($i));$n_counter++;
 		    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),$o_dept->getMeetParentAuditorName( $i ));$n_counter++;
-		    $n_temp=$j+2;
 			//读取幼儿的见面结果
-			$a_result=json_decode($o_dept->getMeetParentItem($i));$n_counter++;
+			$a_result=json_decode($o_dept->getMeetParentItem($i));
 		    for($j=0;$j<count($a_result);$j++)
 		    {
 		    	$a_temp=$a_result[$j];
