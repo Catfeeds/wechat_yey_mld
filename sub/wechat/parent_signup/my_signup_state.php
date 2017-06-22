@@ -23,6 +23,7 @@ switch($o_stu->getState(0))
 		//读取核验通过提醒，已发消息的最近一条
 		$o_reminder=new Wechat_Wx_User_Reminder();
 		$o_reminder->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
+		$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=',$_GET['id']) );
 		$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_bn_base->getWechatSetup('MSGTMP_02')) );
 		$o_reminder->PushOrder(array('Id','D'));
 		$o_reminder->getAllCount();
@@ -58,6 +59,7 @@ switch($o_stu->getState(0))
 		//读取核验通过提醒，已发消息的最近一条
 		$o_reminder=new Wechat_Wx_User_Reminder();
 		$o_reminder->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
+		$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=',$_GET['id']) );
 		$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_bn_base->getWechatSetup('MSGTMP_03')) );
 		$o_reminder->PushOrder(array('Id','D'));
 		$o_reminder->getAllCount();
@@ -93,6 +95,7 @@ switch($o_stu->getState(0))
 		//读取核验通过提醒，已发消息的最近一条
 		$o_reminder=new Wechat_Wx_User_Reminder();
 		$o_reminder->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
+		$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=',$_GET['id']) );
 		$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_bn_base->getWechatSetup('MSGTMP_04')) );
 		$o_reminder->PushOrder(array('Id','D'));
 		$o_reminder->getAllCount();
@@ -124,6 +127,7 @@ switch($o_stu->getState(0))
 		//读取核验通过提醒，已发消息的最近一条
 		$o_reminder=new Wechat_Wx_User_Reminder();
 		$o_reminder->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
+		$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=',$_GET['id']) );
 		$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_bn_base->getWechatSetup('MSGTMP_06')) );
 		$o_reminder->PushOrder(array('Id','D'));
 		$o_reminder->getAllCount();
