@@ -164,6 +164,7 @@ class Survey_Options extends CRUD
     protected $Id;
     protected $QuestionId;
     protected $Option;
+    protected $Number;
 
     protected function DefineKey()
     {
@@ -178,6 +179,7 @@ class Survey_Options extends CRUD
         return(array(
                     'id' => 'Id',
                     'question_id' => 'QuestionId',
+        			'number' => 'Number',
                     'option' => 'Option'
         ));
     }

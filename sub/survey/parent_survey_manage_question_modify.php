@@ -31,13 +31,13 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
                             <?php
                             $s_funname='ParentSurveyManageQuestionAdd'; 
-                            if($_GET[id]>0)
+                            if($_GET['questionid']>0)
                             {
-                            	$o_table=new Survey_Questions($_GET['id']);
+                            	$o_table=new Survey_Questions($_GET['questionid']);
                             	$o_parent=new Survey($o_table->getSurveyId());
                             	$s_funname='ParentSurveyManageQuestionModify'; 
                             	echo('修改题目');
-								if($o_table->getTitle()==null || $o_table->getTitle()=='' || $o_parent->getState()==1)
+								if($o_parent->getState()!='0')
 								{
 									echo("<script>location='parent_survey_manage.php'</script>");
 									exit(0);
@@ -54,22 +54,31 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 						<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
 						<input type="hidden" name="Vcl_FunName" value="<?php echo($s_funname)?>"/>
 						<input type="hidden" name="Vcl_Id" value="<?php echo($_GET['id'])?>"/>
+						<input type="hidden" name="Vcl_QuestionId" value="<?php echo($_GET['questionid'])?>"/>
                     	<div class="sss_form">
                     		<div class="item">
 	                     		<label>题号：</label>
 	                     		<select name="Vcl_Number" id="Vcl_Number" class="selectpicker" data-style="btn-default">
-	                     		<?php 
-	                     		$o_temp=new Survey_Questions();
-	                     		$o_temp->PushWhere ( array ('', 'SurveyId', '=',$_GET['id']) );
-	                     		$n_count=$o_temp->getAllCount();
-	                     		for($i=0;$i<$n_count;$i++)
+	                     		<?php
+	                     		if($_GET['questionid']>0)
 	                     		{
-	                     			echo('<option value="'.($i+1).'">'.($i+1).'</option>');
-	                     		}
-	                     		if (!isset($_GET['id']))
-	                     		{
+		                     		$o_temp=new Survey_Questions();
+		                     		$o_temp->PushWhere ( array ('&&', 'SurveyId', '=',$o_table->getSurveyId()) );
+		                     		$n_count=$o_temp->getAllCount();
+		                     		for($i=0;$i<$n_count;$i++)
+		                     		{
+		                     			echo('<option value="'.($i+1).'">'.($i+1).'</option>');	                     			
+		                     		}
+	                     		}else{
 	                     			//说明是新建
-	                     			echo('<option value="'.($i+1).'">'.($i+1).'</option>');
+	                     			$o_temp=new Survey_Questions();
+		                     		$o_temp->PushWhere ( array ('&&', 'SurveyId', '=',$_GET['id']) );
+		                     		$n_count=$o_temp->getAllCount();
+		                     		for($i=0;$i<$n_count;$i++)
+		                     		{
+		                     			echo('<option value="'.($i+1).'">'.($i+1).'</option>');	                     			
+		                     		}
+		                     		echo('<option value="'.($n_count+1).'" selected="selected">'.($n_count+1).'</option>');
 	                     		}
 	                     		?>
    								</select>
@@ -81,12 +90,12 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 	                     	<div class="item">
 	                     		<label>题型：</label><br/>
 	                     		<select name="Vcl_Type" id="Vcl_Type" class="selectpicker" data-style="btn-default" onchange="change_type(this)">
-	                     			<option value="1">单选</option>
+	                     			<option value="1" selected="selected">单选</option>
         							<option value="2">多选</option>
         							<option value="3">简答</option>
    								</select>
 	                     	</div>
-	                     	<div class="item option">
+	                     	<div class="item option" style="display:none">
 	                     		<label><span class="must">*</span> 选项（请按照顺序填写选项，如果中间有空行，系统将自动舍弃之后的内容）：</label>
 	                     		<div class="input-group">
 									<span class="input-group-addon">A</span>
@@ -121,15 +130,6 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                      </form>
 <script src="js/control.fun.js" type="text/javascript"></script>
 <script type="text/javascript">
-<?php 
-if($_GET['id']>0)
-{
-?>
-$('#Vcl_Question').val('<?php echo($o_table->getQuestion())?>');
-$('#Vcl_Type').val('<?php echo($o_table->getType())?>');
-<?php 
-}
-?>
 function change_type(obj)
 {
 	if (obj.value==3)
@@ -139,6 +139,33 @@ function change_type(obj)
 		$('.option').show();
 	}
 }
+<?php 
+if($_GET['questionid']>0)
+{
+	$o_option=new Survey_Options();
+	$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$_GET['questionid']) );
+	$o_option->PushOrder ( array ('Id','A') );
+	for($i=0;$i<$o_option->getAllCount();$i++)
+	{
+		//循环设置选项内容
+		echo("$('#Vcl_Option_".($i+1)."').val('".$o_option->getOption($i)."');");
+	}
+?>
+$('#Vcl_Question').val('<?php echo($o_table->getQuestion())?>');
+$('#Vcl_Type').val('<?php echo($o_table->getType())?>');
+$('#Vcl_Number').val('<?php echo($o_table->getNumber())?>');
+<?php 
+}else{
+	//如果超过50题，给出提示
+	$o_table=new Survey_Questions();
+	$o_table->PushWhere ( array ('&&', 'SurveyId', '=',$_GET['id']) );
+	if ($o_table->getAllCount()>=50)
+	{
+		echo("dialog_message('对不起，问卷最大题目数为50，已经达到上限！',function(){parent.location='".$_SERVER['HTTP_REFERER']."'});");
+	}
+}
+?>
+change_type(document.getElementById('Vcl_Type'))
 </script>
 <?php
 require_once RELATIVITY_PATH . 'foot.php';

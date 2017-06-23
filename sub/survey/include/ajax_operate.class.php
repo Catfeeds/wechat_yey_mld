@@ -61,11 +61,11 @@ class Operate extends Bn_Basic {
 			$o_temp=new Survey_Questions();
 			$o_temp->PushWhere ( array ('&&', 'SurveyId', '=',$o_user->getId($i)) );
 			$o_temp->PushWhere ( array ('&&', 'Type', '=',1) );
-			$s_single=$o_temp->getAllCount();
+			$n_single=$o_temp->getAllCount();
 			$o_temp=new Survey_Questions();
 			$o_temp->PushWhere ( array ('&&', 'SurveyId', '=',$o_user->getId($i)) );
 			$o_temp->PushWhere ( array ('&&', 'Type', '=',2) );
-			$s_multiple=$o_temp->getAllCount();
+			$n_multiple=$o_temp->getAllCount();
 			$o_temp=new Survey_Questions();
 			$o_temp->PushWhere ( array ('&&', 'SurveyId', '=',$o_user->getId($i)) );
 			$o_temp->PushWhere ( array ('&&', 'Type', '=',3) );
@@ -115,8 +115,115 @@ class Operate extends Bn_Basic {
 		sleep(1);
 		$o_user = new Single_User ( $n_uid );
 		if (! $o_user->ValidModule ( 120401 ))return; //如果没有权限，不返回任何值
-		
+		//判断是否大于50题
+		$o_table=new Survey_Questions();
+		$o_table->PushWhere ( array ('&&', 'SurveyId', '=',$this->getPost('Id')) );
+		if ($o_table->getAllCount()>=50)
+		{
+			$this->setReturn ( 'parent.form_return("dialog_message(\'对不起，问卷最大题目数为50，已经达到上限！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+		}
+		$o_table = new Survey ($this->getPost('Id'));
+		if ($o_table->getState()=='0')
+		{
+			//如果为未发布，才可以更改
+			$o_question=new Survey_Questions();
+			$o_question->setQuestion($this->getPost('Question'));
+			$o_question->setType($this->getPost('Type'));
+			$o_question->setNumber($this->getPost('Number'));
+			$o_question->setSurveyId($this->getPost('Id'));
+			$o_question->Save();
+			$this->QuestionSort($o_question->getId(), $this->getPost('Number'), $this->getPost('Id'));
+			//循环添加选项
+			$a_number=array('','A','B','C','D','E','F','G','H','I','J');
+			for($i=1;$i<=10;$i++)
+			{
+				if ($this->getPost('Option_'.$i)=='')
+				{
+					break;
+				}
+				$o_option=new Survey_Options();
+				$o_option->setQuestionId($o_question->getId());
+				$o_option->setNumber($a_number[$i]);
+				$o_option->setOption($this->getPost('Option_'.$i));
+				$o_option->Save();				
+			}
+		}		
 		$this->setReturn ( 'parent.form_return("dialog_success(\'添加题目成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+	}
+	public function ParentSurveyManageQuestionModify($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		sleep(1);
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120401 ))return; //如果没有权限，不返回任何值
+		$o_question=new Survey_Questions($this->getPost('QuestionId'));
+		$o_survey = new Survey ($o_question->getSurveyId());
+		if ($o_survey->getState()=='0')
+		{
+			//如果为未发布，才可以更改			
+			$o_question->setQuestion($this->getPost('Question'));
+			$o_question->setType($this->getPost('Type'));
+			$o_question->setNumber($this->getPost('Number'));
+			$o_question->Save();
+			$this->QuestionSort($o_question->getId(), $this->getPost('Number'), $o_question->getSurveyId());
+			//循环添加选项
+			$o_option=new Survey_Options();
+			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId()) );
+			$o_option->DeletionWhere();
+			$a_number=array('','A','B','C','D','E','F','G','H','I','J');
+			for($i=1;$i<=10;$i++)
+			{
+				if ($this->getPost('Option_'.$i)=='')
+				{
+					break;
+				}
+				$o_option=new Survey_Options();
+				$o_option->setQuestionId($o_question->getId());
+				$o_option->setNumber($a_number[$i]);
+				$o_option->setOption($this->getPost('Option_'.$i));
+				$o_option->Save();				
+			}
+		}		
+		$this->setReturn ( 'parent.form_return("dialog_success(\'修改题目成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+	}
+	public function ParentSurveyManageQuestionDelete($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120401 ))return; //如果没有权限，不返回任何值
+		$o_question=new Survey_Questions($this->getPost('id'));
+		$o_survey = new Survey ($o_question->getSurveyId());
+		if ($o_survey->getState()=='0')
+		{
+			$o_question->Deletion();
+			$o_option=new Survey_Options();
+			$o_option->PushWhere ( array ('&&', 'QuestionId', '=', $this->getPost('id') ) );
+			$o_option->DeletionWhere();
+			$this->QuestionSort($this->getPost('id'),100, $o_survey->getId());
+		}
+		$a_general = array (
+			'success' => 1,
+			'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
+	private function QuestionSort($n_questionid, $n_number, $n_surveyid) {
+		$o_all = new Survey_Questions ();
+		$o_all->PushWhere ( array ('&&', 'Id', '<>', $n_questionid ) );
+		$o_all->PushWhere ( array ('&&', 'SurveyId', '=', $n_surveyid ) );
+		$o_all->PushOrder ( array ('Number', 'A' ) );
+		$n_count = $o_all->getAllCount ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$o_focus = new Survey_Questions ( $o_all->getId ( $i ) );
+			if (($i + 1) >= $n_number) {
+				$o_focus->setNumber ( $i + 2 );
+			} else {
+				$o_focus->setNumber ( $i + 1 );
+			}
+			$o_focus->Save ();
+		}
 	}
 	public function ParentSurveyManageModify($n_uid) {
 		if (! ($n_uid > 0)) {
@@ -126,13 +233,13 @@ class Operate extends Bn_Basic {
 		$o_user = new Single_User ( $n_uid );
 		if (! $o_user->ValidModule ( 120401 ))return; //如果没有权限，不返回任何值
 		$o_table = new Survey ($this->getPost('Id'));
-		if ($o_table->getState()==0)
+		if ($o_table->getState()=='0')
 		{
 			$o_table->setTitle($this->getPost('Title'));
 			$o_table->Save();
 		}		
 		$this->setReturn ( 'parent.form_return("dialog_success(\'修改问卷成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
-	}
+	}	
 	public function ParentSurveyManageQuestion($n_uid)
 	{	
 		$this->N_PageSize= 50;
@@ -145,7 +252,7 @@ class Operate extends Bn_Basic {
 		if ($n_page<=0)$n_page=1;
 		$o_user = new Survey_Questions(); 
 		$s_id=$this->getPost('key');
-		$o_user->PushWhere ( array ('', 'SurveyId', '=',$s_id) );
+		$o_user->PushWhere ( array ('&&', 'SurveyId', '=',$s_id) );
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
 		$o_user->setCountLine ( $this->N_PageSize );
@@ -160,28 +267,48 @@ class Operate extends Bn_Basic {
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
 			$a_button = array ();
+			array_push ( $a_button, array ('修改', "location='parent_survey_manage_question_modify.php?questionid=".$o_user->getId($i)."'") );
+			array_push ( $a_button, array ('删除', "parent_survey_manage_question_delete(".$o_user->getId($i).")"));
 			$s_type='';
-			if ($o_user->getState ( $i )==1)
+			$s_option='<span class="glyphicon glyphicon-chevron-down"></span>';
+			if ($o_user->getType ( $i )==1)
 			$s_type='单选';
-			if ($o_user->getState ( $i )==1)
+			if ($o_user->getType ( $i )==2)
 			$s_type='多选';
-			if ($o_user->getState ( $i )==1)
-			$s_type='简答';
+			if ($o_user->getType ( $i )==3)
+			{
+				$s_type='简答';
+				$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+			}			
 			array_push ($a_row, array (
-				$o_user->getNumber ( $i ),
-				$o_user->getTitle( $i ),
+				'<span class="label label-success">'.$o_user->getNumber ( $i ).'</span>',
+				$o_user->getQuestion( $i ),
 				$s_type,
-				'',
+				$s_option,
 				$a_button
-			));				
+			));
+			//循环读取选项
+			$o_option=new Survey_Options();
+			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
+			$o_option->PushOrder ( array ('Id','A') );
+			for($j=0;$j<$o_option->getAllCount();$j++)
+			{
+				array_push ($a_row, array (
+					'',
+					'',
+					'',
+					$o_option->getNumber($j).'. '.$o_option->getOption($j),
+					array ()
+				));
+			}					
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
-		$a_title=$this->setTableTitle($a_title,'题号', '', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'题号', 'Number', 70, 0);
 		$a_title=$this->setTableTitle($a_title,'问题', '', 0, 0);
-		$a_title=$this->setTableTitle($a_title,'类型', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'类型', '', 80, 0);
 		$a_title=$this->setTableTitle($a_title,'选项', '', 0, 0);
-		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,70);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 80,0);
 		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageQuestion', 'yes', $n_page, $a_title, $a_row);
 	}
 }
