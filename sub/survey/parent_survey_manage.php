@@ -33,7 +33,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								    <div class="input-group" style="width:300px;" >
 								      <input id="Vcl_KeyParentSurveyManage" type="text" class="form-control" placeholder="标题/问卷对象" value="<?php echo($s_key)?>">
 								      <span class="input-group-btn">
-								        <button class="btn btn-primary" type="button" onclick="search_for_parent_manage()"><span  class="glyphicon glyphicon-search"></span></button>
+								        <button class="btn btn-primary" type="button" onclick="search_for_parent_survey_manage()"><span  class="glyphicon glyphicon-search"></span></button>
 								      </span>
 								    </div>
 								  </div>

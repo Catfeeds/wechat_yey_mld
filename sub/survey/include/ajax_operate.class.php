@@ -21,8 +21,8 @@ class Operate extends Bn_Basic {
 		$s_key=$this->getPost('key');
 		if ($s_key!='')
 		{
-			$o_user->PushWhere ( array ('||', 'Name', 'like','%'.$s_key.'%') );
-			$o_user->PushWhere ( array ('||', 'Id', 'like','%'.$s_key.'%') );
+			$o_user->PushWhere ( array ('||', 'Title', 'like','%'.$s_key.'%') );
+			$o_user->PushWhere ( array ('||', 'TargetName', 'like','%'.$s_key.'%') );
 		}
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
@@ -49,7 +49,7 @@ class Operate extends Bn_Basic {
 				array_push ( $a_button, array ('修改标题', "location='parent_survey_manage_modify.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('编辑题目', "location='parent_survey_manage_question.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('发布问卷', "location='send_notice_single.php?id=".$o_user->getStudentId($i)."'" ) );
-				array_push ( $a_button, array ('删除', "location='parent_survey_manage_modify.php?id=".$o_user->getStudentId($i)."'" ) );
+				array_push ( $a_button, array ('删除', "parent_survey_manage_delete(".$o_user->getId($i).")" ) );
 			}
 			$s_release_date=str_replace('0000-00-00 00:00:00', '', $o_user->getReleaseDate ( $i ));
 			$o_answer=new Survey_Answers();
@@ -208,7 +208,7 @@ class Operate extends Bn_Basic {
 			'text' =>''
 		);
 		echo (json_encode ( $a_general ));
-	}
+	}	
 	private function QuestionSort($n_questionid, $n_number, $n_surveyid) {
 		$o_all = new Survey_Questions ();
 		$o_all->PushWhere ( array ('&&', 'Id', '<>', $n_questionid ) );
@@ -239,7 +239,34 @@ class Operate extends Bn_Basic {
 			$o_table->Save();
 		}		
 		$this->setReturn ( 'parent.form_return("dialog_success(\'修改问卷成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
-	}	
+	}
+	public function ParentSurveyManageDelete($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120401 ))return; //如果没有权限，不返回任何值
+		$o_survey = new Survey ($this->getPost('id'));
+		if ($o_survey->getState()=='0')
+		{
+			$o_survey->Deletion();
+			//循环删除问题
+			$o_question=new Survey_Questions();
+			$o_question->PushWhere ( array ('&&', 'SurveyId', '=', $this->getPost('id') ) );
+			for($i=0;$i<$o_question->getAllCount();$i++)
+			{
+				$o_option=new Survey_Options();
+				$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId($i)) );
+				$o_option->DeletionWhere();
+			}
+			$o_question->DeletionWhere();
+		}
+		$a_general = array (
+			'success' => 1,
+			'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
 	public function ParentSurveyManageQuestion($n_uid)
 	{	
 		$this->N_PageSize= 50;
