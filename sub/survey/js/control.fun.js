@@ -28,3 +28,23 @@ function parent_survey_manage_modify()
 	loading_show();
 	$('#submit_form').submit();
 }
+function parent_survey_manage_question_modify()
+{	
+    var val = $('#Vcl_Question').val();
+    if (val.length == 0) {
+        dialog_message('对不起，题目不能为空！')
+        return
+    }
+    var val = $('#Vcl_Option_1').val();
+    if (val.length == 0) {
+        dialog_message('对不起，选项A不能为空！')
+        return
+    }
+    var val = $('#Vcl_Option_2').val();
+    if (val.length == 0) {
+    	dialog_message('对不起，选项B不能为空！')
+        return
+    }
+	loading_show();
+	$('#submit_form').submit();
+}

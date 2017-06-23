@@ -1,0 +1,145 @@
+<?php
+define ( 'RELATIVITY_PATH', '../../' );
+define ( 'MODULEID', 120401);
+$O_Session = '';
+require_once RELATIVITY_PATH . 'include/it_include.inc.php';
+require_once RELATIVITY_PATH . 'head.php';
+require_once RELATIVITY_PATH . 'sub/survey/include/db_table.class.php';
+ExportMainTitle(MODULEID,$O_Session->getUid());
+//获取子模块菜单
+
+?>
+<style>
+.sss_form div.item {
+	width:80%;
+	margin-left:10%;
+}
+.sss_form div.option a{
+	background-color: #d9534f;
+    border-color: #d9534f;
+	color:white;
+    transition-duration: 0.3s;
+}
+.sss_form div.option a:hover{
+	color:white;
+	background-color: #c9302c;
+}
+</style>
+					<div class="panel panel-default sss_sub_table">
+                        <div class="panel-heading">
+                        <div class="caption">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                            <?php
+                            $s_funname='ParentSurveyManageQuestionAdd'; 
+                            if($_GET[id]>0)
+                            {
+                            	$o_table=new Survey_Questions($_GET['id']);
+                            	$o_parent=new Survey($o_table->getSurveyId());
+                            	$s_funname='ParentSurveyManageQuestionModify'; 
+                            	echo('修改题目');
+								if($o_table->getTitle()==null || $o_table->getTitle()=='' || $o_parent->getState()==1)
+								{
+									echo("<script>location='parent_survey_manage.php'</script>");
+									exit(0);
+								}
+                            }else{
+                            	echo('添加题目');
+                            }
+                            ?>
+                            </div>
+                            </div>
+                    </div>
+                    <form action="include/bn_submit.switch.php" id="submit_form" method="post" target="submit_form_frame">
+						<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
+						<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
+						<input type="hidden" name="Vcl_FunName" value="<?php echo($s_funname)?>"/>
+						<input type="hidden" name="Vcl_Id" value="<?php echo($_GET['id'])?>"/>
+                    	<div class="sss_form">
+                    		<div class="item">
+	                     		<label>题号：</label>
+	                     		<select name="Vcl_Number" id="Vcl_Number" class="selectpicker" data-style="btn-default">
+	                     		<?php 
+	                     		$o_temp=new Survey_Questions();
+	                     		$o_temp->PushWhere ( array ('', 'SurveyId', '=',$_GET['id']) );
+	                     		$n_count=$o_temp->getAllCount();
+	                     		for($i=0;$i<$n_count;$i++)
+	                     		{
+	                     			echo('<option value="'.($i+1).'">'.($i+1).'</option>');
+	                     		}
+	                     		if (!isset($_GET['id']))
+	                     		{
+	                     			//说明是新建
+	                     			echo('<option value="'.($i+1).'">'.($i+1).'</option>');
+	                     		}
+	                     		?>
+   								</select>
+	                     	</div>
+	                     	<div class="item">
+	                     		<label><span class="must">*</span> 题目名称：</label>
+	                     		<input name="Vcl_Question" maxlength="50" id="Vcl_Question" type="text" style="width:100%" placeholder="必填" class="form-control" aria-describedby="basic-addon1" />
+	                     	</div>	
+	                     	<div class="item">
+	                     		<label>题型：</label><br/>
+	                     		<select name="Vcl_Type" id="Vcl_Type" class="selectpicker" data-style="btn-default" onchange="change_type(this)">
+	                     			<option value="1">单选</option>
+        							<option value="2">多选</option>
+        							<option value="3">简答</option>
+   								</select>
+	                     	</div>
+	                     	<div class="item option">
+	                     		<label><span class="must">*</span> 选项（请按照顺序填写选项，如果中间有空行，系统将自动舍弃之后的内容）：</label>
+	                     		<div class="input-group">
+									<span class="input-group-addon">A</span>
+									<input id="Vcl_Option_1" name="Vcl_Option_1" type="text" placeholder="必填" class="form-control" aria-label="Amount (to the nearest dollar)">
+								</div>
+								<div class="input-group" style="margin-top:10px;">
+									<span class="input-group-addon">B</span>
+									<input id="Vcl_Option_2" name="Vcl_Option_2" type="text" placeholder="必填" class="form-control" aria-label="Amount (to the nearest dollar)">
+								</div>
+								<?php 
+								$a_number=array('C','D','E','F','G','H','I','J');
+								for($i=0;$i<8;$i++)
+								{
+									?>
+								<div id="<?php echo('option_'.($i+1))?>" class="input-group" style="margin-top:10px;">
+									<span class="input-group-addon"><?php echo($a_number[$i])?></span>
+									<input placeholder="选填" id="Vcl_Option_<?php echo($i+3)?>" name="Vcl_Option_<?php echo($i+3)?>" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+									<!--<a class="input-group-addon" href="javascript:;">
+											<span class="glyphicon glyphicon-minus"></span>
+										</a>
+									--></div>	
+									<?php
+								}
+								?>								
+								<!--<button type="button" class="btn btn-primary" aria-hidden="true" style="margin-top:10px;margin-left:50%;outline: medium none" data-placement="left" onclick="plus_option()"><span class="glyphicon glyphicon-plus"></span></button>
+	                     	--></div>                    	
+							<div class="item">
+							<button id="user_add_btn" type="button" class="btn btn-default cancel" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="location='<?php echo($_SERVER['HTTP_REFERER'])?>'"><?php echo(Text::Key('Cancel'))?></button>
+							<button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="parent_survey_manage_question_modify()"><?php echo(Text::Key('Submit'))?></button>
+							</div>
+                     	</div>
+                     </form>
+<script src="js/control.fun.js" type="text/javascript"></script>
+<script type="text/javascript">
+<?php 
+if($_GET['id']>0)
+{
+?>
+$('#Vcl_Question').val('<?php echo($o_table->getQuestion())?>');
+$('#Vcl_Type').val('<?php echo($o_table->getType())?>');
+<?php 
+}
+?>
+function change_type(obj)
+{
+	if (obj.value==3)
+	{
+		$('.option').hide();
+	}else{
+		$('.option').show();
+	}
+}
+</script>
+<?php
+require_once RELATIVITY_PATH . 'foot.php';
+ ?>

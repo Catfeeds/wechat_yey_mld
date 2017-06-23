@@ -108,6 +108,16 @@ class Operate extends Bn_Basic {
 		$o_table->Save ();
 		$this->setReturn ( 'parent.form_return("dialog_success(\'新建问卷成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
 	}
+	public function ParentSurveyManageQuestionAdd($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		sleep(1);
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120401 ))return; //如果没有权限，不返回任何值
+		
+		$this->setReturn ( 'parent.form_return("dialog_success(\'添加题目成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+	}
 	public function ParentSurveyManageModify($n_uid) {
 		if (! ($n_uid > 0)) {
 			$this->setReturn('parent.goto_login()');
@@ -167,7 +177,7 @@ class Operate extends Bn_Basic {
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
-		$a_title=$this->setTableTitle($a_title,'顺序', '', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'题号', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'问题', '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'类型', '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'选项', '', 0, 0);
