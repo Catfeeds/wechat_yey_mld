@@ -163,26 +163,29 @@ function search_for_user()
 }
 function uncheck_parent(obj,loop)
 {
-	var father=$(obj.parentNode.parentNode.parentNode).children('.icheckbox_square-blue').children('input')//获取父选项
-	var bother=$(obj.parentNode.parentNode.parentNode).children('.sub_role')//获取同级的DIV
-	var b=false
-	for(var i=0;i<bother.length;i++)
-	{
-		var temp=$(bother[i]).children('.icheckbox_square-blue').children('input')
-		if (temp[0].checked)//检验每个并列的是否被选中
+	try{
+		var father=$(obj.parentNode.parentNode.parentNode).children('.icheckbox_square-blue').children('input')//获取父选项
+		var bother=$(obj.parentNode.parentNode.parentNode).children('.sub_role')//获取同级的DIV
+		var b=false
+		for(var i=0;i<bother.length;i++)
 		{
-			b=true
-			break;
+			var temp=$(bother[i]).children('.icheckbox_square-blue').children('input')
+			if (temp[0].checked)//检验每个并列的是否被选中
+			{
+				b=true
+				break;
+			}
 		}
-	}
-	if (b==false)
-	{
-		$(father[0]).iCheck('uncheck')//如果并列的选项都未选，那么取消父选项的勾选
-	}
-	if (loop)
-	{
-		uncheck_parent(father[0],false)//在往上看一级的父选项
-	}	
+		if (b==false)
+		{
+			$(father[0]).iCheck('uncheck')//如果并列的选项都未选，那么取消父选项的勾选
+		}
+		if (loop)
+		{
+			uncheck_parent(father[0],false)//在往上看一级的父选项
+		}
+	} catch (e) {
+    }
 }
 function role_modify()
 {

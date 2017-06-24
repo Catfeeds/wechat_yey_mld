@@ -42,16 +42,20 @@ class Operate extends Bn_Basic {
 			if($o_user->getState($i)==1)
 			{
 				$s_state='<span class="label label-success">已发布</span>';
-				array_push ( $a_button, array ('查看统计', "location='parent_survey_manage_modify.php?id=".$o_user->getId($i)."'" ) );
-				array_push ( $a_button, array ('再次提醒', "location='parent_survey_manage_modify.php?id=".$o_user->getId($i)."'" ) );
-				array_push ( $a_button, array ('进度详情', "location='send_notice_single.php?id=".$o_user->getStudentId($i)."'" ) );
+				array_push ( $a_button, array ('查看统计', "" ) );
+				array_push ( $a_button, array ('再次提醒', "" ) );
+				array_push ( $a_button, array ('进度详情', "" ) );
+				array_push ( $a_button, array ('结束问卷', "" ) );
 			}else{				
 				array_push ( $a_button, array ('修改标题', "location='parent_survey_manage_modify.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('编辑题目', "location='parent_survey_manage_question.php?id=".$o_user->getId($i)."'" ) );
-				array_push ( $a_button, array ('发布问卷', "location='send_notice_single.php?id=".$o_user->getStudentId($i)."'" ) );
+				array_push ( $a_button, array ('发布问卷', "location='parent_survey_manage_release.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('删除', "parent_survey_manage_delete(".$o_user->getId($i).")" ) );
 			}
-			$s_release_date=str_replace('0000-00-00 00:00:00', '', $o_user->getReleaseDate ( $i ));
+			if($o_user->getState($i)==2)
+			{
+				$s_state='<span class="label label-danger">已结束</span>';
+			}
 			$o_answer=new Survey_Answers();
 			$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_user->getId($i)) );
 			//查询问卷下的题型
@@ -70,11 +74,13 @@ class Operate extends Bn_Basic {
 			$o_temp->PushWhere ( array ('&&', 'SurveyId', '=',$o_user->getId($i)) );
 			$o_temp->PushWhere ( array ('&&', 'Type', '=',3) );
 			$n_text=$o_temp->getAllCount();
+			$a_release=explode(' ', str_replace('0000-00-00 00:00:00', '', $o_user->getReleaseDate ( $i )));
+			$a_end=explode(' ', str_replace('0000-00-00 00:00:00', '', $o_user->getEndDate ( $i )));
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
 				str_replace(' ', '<br/>', $o_user->getCreateDate ( $i )),
 				$o_user->getTitle ( $i ).'<br/><span style="color:#999999">单选:'.$n_single.'</span> <span style="color:#999999">多选:'.$n_multiple.'</span> <span style="color:#999999">简答:'.$n_text.'</span>',
-				str_replace(' ', '<br/>', $o_user->getReleaseDate ( $i )),
+				'发布:'.$a_release[0].'<br/>结束:'.$a_end[0],
 				$o_user->getTargetName ( $i ),
 				$s_state,
 				$o_answer->getAllCount(),
@@ -86,7 +92,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'序号', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'建立日期', 'CreateDate', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'问卷标题', 'Title', 0, 0);
-		$a_title=$this->setTableTitle($a_title,'发布日期', 'ReleaseDate', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'发布、结束日期', '', 0, 90);
 		$a_title=$this->setTableTitle($a_title,'问卷对象', '', 120, 0);
 		$a_title=$this->setTableTitle($a_title,'当前状态', 'State', 0, 60);
 		$a_title=$this->setTableTitle($a_title,'已答人数', '', 0, 60);
@@ -337,6 +343,106 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'选项', '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 80,0);
 		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageQuestion', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function ParentSurveyManageRelease($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120401 ))return;//如果没有权限，不返回任何值
+		//检查问卷对象是否被选择
+		$a_target=array();
+		$s_target_name='';
+		$o_class=new Student_Class();
+		$o_class->PushOrder ( array ('Grade','A') );
+		$o_class->PushOrder ( array ('ClassId','A') );
+		$n_count=$o_class->getAllCount();
+		for($i=0;$i<$n_count;$i++)
+		{
+			if ($this->getPost('Target_'.$o_class->getClassId($i))=='on')
+			{
+				array_push($a_target, $o_class->getClassId($i));
+				//区分年级
+				switch ($o_class->getGrade($i))
+				{
+					case 0:
+						$s_grade_name='半日班';
+						break;
+					case 1:
+						$s_grade_name='托班';
+						break;
+					case 2:
+						$s_grade_name='小班';
+						break;
+					case 3:
+						$s_grade_name='中班';
+						break;
+					case 4:
+						$s_grade_name='大班';
+						break;
+				}
+				$s_target_name.=$o_class->getClassName($i).';';
+			}			
+		}
+		if ($s_target_name=='')
+		{
+			$this->setReturn ( 'parent.form_return("dialog_message(\'对不起，请选择问卷对象！\')");' );
+		}
+		//修正文字发送对象
+		if($n_count==count($a_target))
+		{
+			$s_target_name='所有在园幼儿;';
+		}
+		//保存数据到问卷信息
+		$o_survey=new Survey($this->getPost('Id'));
+		{
+			if($o_survey->getState()=='0')
+			{
+				//只有未发布的问卷才能往下进行
+				$o_survey->setReleaseDate($this->GetDateNow());
+				$o_survey->setTargetName(substr($s_target_name,0,strlen($s_target_name)-1));
+				$o_survey->setTargetList(json_encode($a_target));
+				$o_survey->setState(1);
+				$o_survey->Save();
+			}
+		}
+		//根据问卷对象循环发送通知
+		$o_system_setup=new Base_Setup(1);
+		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+		for($i=0;$i<count($a_target);$i++)
+		{
+			//获取用户列表
+			$o_stu=new Student_Onboard_Info_Class_Wechat_View();
+			$o_stu->PushWhere ( array ('&&', 'ClassNumber', '=',$a_target[$i]) );
+			for($j=0;$j<$o_stu->getAllCount();$j++)
+			{
+				//添加消息队列
+				$o_msg=new Wechat_Wx_User_Reminder();
+				$o_msg->setUserId($o_stu->getUserId($j));
+				$o_msg->setCreateDate($this->GetDateNow());
+				$o_msg->setSendDate('0000-00-00');
+				$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+				$o_msg->setOpenId($o_stu->getOpenid($j));
+				$o_msg->setActivityId(0);
+				$o_msg->setSend(0);
+				$o_msg->setFirst($this->getPost('First').'
+	
+	通知类型：问卷调查
+	幼儿姓名：'.$o_stu->getName($j));
+				$o_msg->setKeyword1($o_stu->getClassName($j));
+				$s_teacher_name=$o_user->getName();
+				$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+				$o_msg->setKeyword3($this->GetDate());
+				$o_msg->setKeyword4($this->getPost('Remark'));
+				$o_msg->setKeyword5('');
+				$o_msg->setRemark('');
+				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/survey_answer.php?id='.$this->getPost('Id').'');
+				$o_msg->setKeywordSum(10);
+				$o_msg->Save();	
+			}			
+		}
+		$this->setReturn ( 'parent.form_return("dialog_success(\'发布问卷成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
 	}
 }
 ?>

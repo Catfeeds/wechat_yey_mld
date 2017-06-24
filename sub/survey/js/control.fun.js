@@ -5,7 +5,53 @@ $(function(){
 	    	search_for_parent_survey_manage()   
 	    }  
 	}); 
+	$('ins').click(function(){
+		//先获得自己是否选中
+		var parent=this.parentNode
+		var own=$(parent).find('input')
+		own=own[0]
+		//将是他的子，都选上
+		if (own.checked) {
+			$(this.parentNode.parentNode).find('.sub_role').iCheck('check')
+			uncheck_parent(this,true)
+		}else{
+			$(this.parentNode.parentNode).find('.sub_role').iCheck('uncheck')
+			uncheck_parent(this,true)
+		}		
+	})
 })
+function uncheck_parent(obj,loop)
+{
+	try{
+	var father=$(obj.parentNode.parentNode.parentNode).children('.icheckbox_square-blue').children('input')//获取父选项
+	var bother=$(obj.parentNode.parentNode.parentNode).children('.sub_role')//获取同级的DIV
+	var b=false
+	var b2=true
+	for(var i=0;i<bother.length;i++)
+	{
+		var temp=$(bother[i]).children('.icheckbox_square-blue').children('input')
+		if (temp[0].checked)//检验每个并列的是否被选中
+		{
+			b=true
+		}else{
+			b2=false
+		}
+	}
+	if (b==true)
+	{
+		$(father[0]).iCheck('uncheck')//如果并列的选项都未选，那么取消父选项的勾选
+	}
+	if (b2==true)
+	{
+		$(father[0]).iCheck('check')//如果并列的都选中，那么勾选父选项
+	}
+	if (loop)
+	{
+		uncheck_parent(father[0],false)//在往上看一级的父选项
+	}
+	} catch (e) {
+    }
+}
 function search_for_parent_survey_manage()
 {
 	var fun='ParentSurveyManage';
@@ -84,4 +130,21 @@ function parent_survey_manage_question_modify()
 	}    
 	loading_show();
 	$('#submit_form').submit();
+}
+function parent_survey_manage_release()
+{	
+    var val = $('#Vcl_First').val();
+    if (val.length == 0) {
+        dialog_message('对不起，微信提醒标题不能为空！')
+        return
+    }
+	var val = $('#Vcl_Remark').val();
+    if (val.length == 0) {
+        dialog_message('对不起，微信提醒内容不能为空！')
+        return
+    }
+	dialog_confirm('确认要发布问卷吗！<br/><br/>确认后：<br/>1. 所有问卷对象的幼儿家长将陆续收到微信问卷提醒。<br/>2. 此问卷将不能被修改。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
+		loading_show();
+		$('#submit_form').submit();	
+	})
 }

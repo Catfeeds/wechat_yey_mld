@@ -9,6 +9,7 @@ class Survey extends CRUD
     protected $State;
     protected $OwnerId;
     protected $ReleaseDate;
+    protected $EndDate;
     protected $TargetName;
     protected $TargetList;
 
@@ -29,6 +30,7 @@ class Survey extends CRUD
                     'state' => 'State',
                     'owner_id' => 'OwnerId',
                     'release_date' => 'ReleaseDate',
+        			'end_date' => 'EndDate',
                     'target_name' => 'TargetName',
                     'target_list' => 'TargetList'
         ));

@@ -5,3 +5,6 @@ UPDATE  `wechat_yey_mld`.`wechat_base_module` SET  `path` =  'sub/survey/my_pare
 UPDATE `wechat_yey_mld`.`wechat_base_module` SET `name` = '家长问卷', `path` = 'sub/survey/parent_survey_manage.php' WHERE `wechat_base_module`.`module_id` = 120401 LIMIT 1;
 
 ALTER TABLE `survey_options` ADD `number` CHAR(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '选项序号' AFTER `option`;
+
+ALTER TABLE `survey` ADD `end_date` DATETIME NOT NULL COMMENT '结束日期' AFTER `release_date`;
+
