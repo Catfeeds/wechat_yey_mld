@@ -42,14 +42,14 @@ class Operate extends Bn_Basic {
 			if($o_user->getState($i)==1)
 			{
 				$s_state='<span class="label label-success">已发布</span>';
-				array_push ( $a_button, array ('查看统计', "" ) );
+				array_push ( $a_button, array ('查看统计', "location='parent_survey_manage_summary.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('再次提醒', "" ) );
 				array_push ( $a_button, array ('进度详情', "location='parent_survey_manage_progress.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('结束问卷', "parent_survey_manage_end(".$o_user->getId($i).")" ) );
 			}elseif ($o_user->getState($i)==2){		
 				$s_state='<span class="label label-danger">已结束</span>';		
-				array_push ( $a_button, array ('查看统计', "" ) );
-				array_push ( $a_button, array ('进度详情', "" ) );
+				array_push ( $a_button, array ('查看统计', "location='parent_survey_manage_summary.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('进度详情', "location='parent_survey_manage_progress.php?id=".$o_user->getId($i)."'" ) );
 			}else{
 				array_push ( $a_button, array ('修改标题', "location='parent_survey_manage_modify.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('编辑题目', "location='parent_survey_manage_question.php?id=".$o_user->getId($i)."'" ) );
@@ -594,6 +594,189 @@ class Operate extends Bn_Basic {
 					'status' =>'<span class="label label-success">完成 '.$n_completed.'</span>&nbsp;&nbsp;<span class="label label-warning">未完 '.($n_count-$n_completed).'</span>&nbsp;&nbsp;<span class="label label-primary">完成率 '.sprintf("%.0f", ($n_completed/$n_count)*100).'%</span>'
 				);
 		echo(json_encode ($a_result));
+	}
+	public function ParentSurveyManageSummary($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120401 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Survey_Questions(); 
+		$s_id=$this->getPost('key');
+		$o_user->PushWhere ( array ('&&', 'SurveyId', '=',$s_id) );
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		//计算答题总人数
+		$o_answer=new Survey_Answers();
+		$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$s_id) );
+		$n_answer_sum=$o_answer->getAllCount();
+		for($i = 0; $i < $n_count; $i ++) {
+			$a_button = array ();
+			$s_type='';
+			$s_option='<span class="glyphicon glyphicon-chevron-down"></span>';
+			if ($o_user->getType ( $i )==1)
+			$s_type='单选';
+			if ($o_user->getType ( $i )==2)
+			$s_type='多选';
+			if ($o_user->getType ( $i )==3)
+			{
+				$s_type='简述';
+				//统计简述的答题人数
+				$o_answer=new Survey_Answers();
+				$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$s_id) );
+				$o_answer->PushWhere ( array ('&&', 'Answer'.$o_user->getNumber($i), '<>','') );
+				$s_option=$o_answer->getAllCount().' 人';
+				array_push ( $a_button, array ('详情', "location='parent_survey_manage_summary_detail.php?id=".$o_user->getId($i)."'") );
+			}			
+			array_push ($a_row, array (
+				'<span class="label label-success">'.$o_user->getNumber ( $i ).'</span>',
+				$o_user->getQuestion( $i ),
+				$s_type,
+				$s_option,
+				$a_button
+			));
+			//循环读取选项
+			$o_option=new Survey_Options();
+			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
+			$o_option->PushOrder ( array ('Id','A') );
+			for($j=0;$j<$o_option->getAllCount();$j++)
+			{
+				$a_button = array ();
+				$o_answer=new Survey_Answers();
+				$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$s_id) );
+				$o_answer->PushWhere ( array ('&&', 'Answer'.$o_user->getNumber($i), 'like','%"'.$o_option->getId($j).'"%') );
+				$n_people=$o_answer->getAllCount();
+				$n_rate=round(($n_people/$n_answer_sum)*1000)/10;//结果*1000取整再除以10
+				if($n_rate>0)
+				{
+					array_push ( $a_button, array ('人群', "location='parent_survey_manage_summary_people.php?id=".$o_option->getId($j)."'") );
+				}
+				array_push ($a_row, array (
+					'',
+					'',
+					$n_people.'人 ('.$n_rate.'%)',
+					$o_option->getNumber($j).'. '.$o_option->getOption($j),
+					$a_button
+				));
+			}
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'题号', 'Number', 70, 0);
+		$a_title=$this->setTableTitle($a_title,'问题', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'类型', '', 120, 0);
+		$a_title=$this->setTableTitle($a_title,'选项', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 80,0);
+		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageSummary', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function ParentSurveyManageSummaryPeople($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120401 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_option=new Survey_Options($this->getPost('key'));
+		$o_question=new Survey_Questions($o_option->getQuestionId());
+		$o_table = new Survey_Answers();
+		//获得target的班级list
+		$o_table->PushWhere ( array ('&&', 'Answer'.$o_question->getNumber(), 'like','%"'.$o_option->getId().'"%') );
+		$o_table->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_table->setCountLine ( $this->N_PageSize );
+		$n_count = $o_table->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_table->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_table->getAllCount ();//总记录数
+		$n_count = $o_table->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {						
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),				
+				$o_table->getName ( $i ),
+				$o_table->getClassName ( $i ),
+				$o_table->getSex ( $i ),
+				$o_table->getCardId ( $i ),
+				$o_table->getUserName ( $i )
+				));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'幼儿姓名', 'Name', 0, 80);	
+		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassName', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'性别', '', 0, 0);		
+		$a_title=$this->setTableTitle($a_title,'证件号', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'监护人', 'UserName', 0, 80);
+		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageProgress', 'no', $n_page, $a_title, $a_row);
+	}
+	public function ParentSurveyManageSummaryDetail($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120401 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_question=new Survey_Questions($this->getPost('key'));
+		$o_table = new Survey_Answers();
+		//获得target的班级list
+		$o_table->PushWhere ( array ('&&', 'Answer'.$o_question->getNumber(), '<>','') );
+		$o_table->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_table->setCountLine ( $this->N_PageSize );
+		$n_count = $o_table->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_table->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_table->getAllCount ();//总记录数
+		$n_count = $o_table->getCount ();
+		$a_row = array ();		
+		for($i = 0; $i < $n_count; $i ++) {	
+			eval('$s_answer=$o_table->getAnswer'.$o_question->getNumber().'($i);');
+			$s_answer=rawurldecode(str_replace('"', '', $s_answer));	
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),				
+				$o_table->getName ( $i ).$o_question->getNumber(),
+				$o_table->getClassName ( $i ),
+				$o_table->getSex ( $i ),
+				$o_table->getUserName ( $i ),
+				$s_answer
+				));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 60, 0);
+		$a_title=$this->setTableTitle($a_title,'幼儿姓名', 'Name', 0, 0);	
+		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassName', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'性别', '', 0, 0);		
+		$a_title=$this->setTableTitle($a_title,'监护人', 'UserName', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'简述', '', 0, 0);
+		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageSummaryDetail', 'no', $n_page, $a_title, $a_row);
 	}
 }
 ?>
