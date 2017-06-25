@@ -728,7 +728,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'性别', '', 0, 0);		
 		$a_title=$this->setTableTitle($a_title,'证件号', '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'监护人', 'UserName', 0, 80);
-		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageProgress', 'no', $n_page, $a_title, $a_row);
+		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageSummaryPeople', 'no', $n_page, $a_title, $a_row);
 	}
 	public function ParentSurveyManageSummaryDetail($n_uid)
 	{	
