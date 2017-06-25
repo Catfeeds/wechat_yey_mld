@@ -80,6 +80,22 @@ function parent_survey_manage_delete(id) {
         })
     })
 }
+function parent_survey_manage_end(id) {
+    dialog_confirm('确认要结束这个问卷吗？<br/><br/>确认后：<br/>1. 所有未进行问卷的对象将不能再答题。<br/>2. 结束后将无法再次开启。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=ParentSurveyManageEnd'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('ParentSurveyManage')
+        	}        	
+        })
+    })
+}
 function parent_survey_manage_question_delete(id) {
     dialog_confirm('真的要删除这个问题吗？删除后不能恢复，请谨慎操作。',function(){
     	$('.small_loading').fadeIn(100);

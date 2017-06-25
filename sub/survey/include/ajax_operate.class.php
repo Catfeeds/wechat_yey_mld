@@ -45,16 +45,16 @@ class Operate extends Bn_Basic {
 				array_push ( $a_button, array ('查看统计', "" ) );
 				array_push ( $a_button, array ('再次提醒', "" ) );
 				array_push ( $a_button, array ('进度详情', "" ) );
-				array_push ( $a_button, array ('结束问卷', "" ) );
-			}else{				
+				array_push ( $a_button, array ('结束问卷', "parent_survey_manage_end(".$o_user->getId($i).")" ) );
+			}elseif ($o_user->getState($i)==2){		
+				$s_state='<span class="label label-danger">已结束</span>';		
+				array_push ( $a_button, array ('查看统计', "" ) );
+				array_push ( $a_button, array ('进度详情', "" ) );
+			}else{
 				array_push ( $a_button, array ('修改标题', "location='parent_survey_manage_modify.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('编辑题目', "location='parent_survey_manage_question.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('发布问卷', "location='parent_survey_manage_release.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('删除', "parent_survey_manage_delete(".$o_user->getId($i).")" ) );
-			}
-			if($o_user->getState($i)==2)
-			{
-				$s_state='<span class="label label-danger">已结束</span>';
 			}
 			$o_answer=new Survey_Answers();
 			$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_user->getId($i)) );
@@ -266,6 +266,25 @@ class Operate extends Bn_Basic {
 				$o_option->DeletionWhere();
 			}
 			$o_question->DeletionWhere();
+		}
+		$a_general = array (
+			'success' => 1,
+			'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
+	public function ParentSurveyManageEnd($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120401 ))return; //如果没有权限，不返回任何值
+		$o_survey = new Survey ($this->getPost('id'));
+		if ($o_survey->getState()=='1')
+		{
+			$o_survey->setState(2);
+			$o_survey->setEndDate($this->GetDateNow());
+			$o_survey->Save();
 		}
 		$a_general = array (
 			'success' => 1,
