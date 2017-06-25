@@ -164,3 +164,11 @@ function parent_survey_manage_release()
 		$('#submit_form').submit();	
 	})
 }
+function parent_survey_manage_get_progress(id)
+{
+	//window.alert(id);
+    var data='Ajax_FunName=ParentSurveyManageGetProgress&id='+id;//后台方法
+    $.getJSON("include/bn_submit.switch.php",data,function (json){
+		$('#status').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+json.status);
+    })  
+}

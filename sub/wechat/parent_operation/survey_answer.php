@@ -97,7 +97,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 			                    <p>'.$o_option->getNumber($j).'. '.$o_option->getOption($j).'</p>
 			                </div>
 			                <div class="weui-cell__ft">
-			                    <input value="'.$o_option->getOption($j).'" type="radio" class="weui-check" name="Vcl_Question_'.$o_question->getId($i).'" id="Vcl_Option_'.$o_option->getId($j).'">
+			                    <input value="'.$o_option->getId($j).'" type="radio" class="weui-check" name="Vcl_Question_'.$o_question->getId($i).'" id="Vcl_Option_'.$o_option->getId($j).'">
 			                    <span class="weui-icon-checked"></span>
 			                </div>
 			            </label>

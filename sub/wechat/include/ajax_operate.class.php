@@ -1238,7 +1238,7 @@ class Operate extends Bn_Basic {
 	    		{
 	    			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'“第'.$o_question->getNumber($i).'题”未作答！\');' );
 	    		}
-	    		array_push($a_question_result,$o_question->getId($i));
+	    		array_push($a_question_result,$this->getPost('Question_'.$o_question->getId($i)));
 	    	}elseif ($o_question->getType($i)==2){
 	    		//多选
 	    		$a_temp=array();

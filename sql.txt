@@ -1,14 +1,4 @@
-UPDATE  `wechat_yey_mld`.`wechat_base_module` SET  `name` =  '我的家长问卷' WHERE  `wechat_base_module`.`module_id` =120401 LIMIT 1 ;
+DROP VIEW  `student_onboard_info_class_wechat_view`;
 
-UPDATE  `wechat_yey_mld`.`wechat_base_module` SET  `path` =  'sub/survey/my_parent_manage.php' WHERE  `wechat_base_module`.`module_id` =120401 LIMIT 1 ;
-
-UPDATE `wechat_yey_mld`.`wechat_base_module` SET `name` = '家长问卷', `path` = 'sub/survey/parent_survey_manage.php' WHERE `wechat_base_module`.`module_id` = 120401 LIMIT 1;
-
-ALTER TABLE `survey_options` ADD `number` CHAR(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '选项序号' AFTER `option`;
-
-ALTER TABLE `survey` ADD `end_date` DATETIME NOT NULL COMMENT '结束日期' AFTER `release_date`;
-
-ALTER TABLE `survey_answers` ADD `name` CHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '学生姓名' AFTER `user_id`, ADD `sex` CHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '性别' AFTER `name`, ADD `id_type` CHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '证件类型' AFTER `sex`, ADD `card_id` CHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '证件编号' AFTER `id_type`, ADD `class_name` CHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '班级名称' AFTER `card_id`, ADD `user_name` CHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '家长姓名' AFTER `class_name`;
-
-ALTER TABLE `survey_answers` ADD `student_id` MEDIUMINT(8) UNSIGNED NOT NULL COMMENT '幼儿编号' AFTER `user_id`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `student_onboard_info_class_wechat_view` AS select `student_onboard_info`.`student_id` AS `student_id`,`student_onboard_info`.`state` AS `state`,`student_onboard_info`.`name` AS `name`,`student_onboard_info`.`sex` AS `sex`,`student_onboard_info`.`id_type` AS `id_type`,`student_onboard_info`.`id` AS `id`,`student_onboard_info`.`class_number` AS `class_number`,`student_class`.`grade` AS `grade`,`student_class`.`class_name` AS `class_name`,`student_onboard_info_wechat`.`user_id` AS `user_id`,`wechat_wx_user_info`.`photo` AS `photo`,`wechat_wx_user_info`.`nickname` AS `nickname`,`wechat_wx_user_info`.`user_name` AS `user_name`,`wechat_wx_user_info`.`phone` AS `phone`,`wechat_wx_user_info`.`group_id` AS `group_id`,`wechat_wx_user_info`.`register_date` AS `register_date`,`wechat_wx_user_info`.`openid` AS `openid`,`wechat_wx_user_info`.`sex` AS `parent_sex`,`wechat_wx_user_info`.`del_flag` AS `del_flag` from (((`student_onboard_info` join `student_onboard_info_wechat` on((`student_onboard_info`.`student_id` = `student_onboard_info_wechat`.`student_id`))) join `student_class` on((`student_onboard_info`.`class_number` = `student_class`.`class_id`))) join `wechat_wx_user_info` on((`student_onboard_info_wechat`.`user_id` = `wechat_wx_user_info`.`id`)));
 

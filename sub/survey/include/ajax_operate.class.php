@@ -44,7 +44,7 @@ class Operate extends Bn_Basic {
 				$s_state='<span class="label label-success">已发布</span>';
 				array_push ( $a_button, array ('查看统计', "" ) );
 				array_push ( $a_button, array ('再次提醒', "" ) );
-				array_push ( $a_button, array ('进度详情', "" ) );
+				array_push ( $a_button, array ('进度详情', "location='parent_survey_manage_progress.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('结束问卷', "parent_survey_manage_end(".$o_user->getId($i).")" ) );
 			}elseif ($o_user->getState($i)==2){		
 				$s_state='<span class="label label-danger">已结束</span>';		
@@ -329,7 +329,7 @@ class Operate extends Bn_Basic {
 			$s_type='多选';
 			if ($o_user->getType ( $i )==3)
 			{
-				$s_type='简答';
+				$s_type='简述';
 				$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
 			}			
 			array_push ($a_row, array (
@@ -462,6 +462,132 @@ class Operate extends Bn_Basic {
 			}			
 		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发布问卷成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
+	}
+	public function ParentSurveyManageProgress($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120401 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_survey = new Survey($this->getPost('key'));
+		//获得target的班级list
+		$a_target=json_decode($o_survey->getTargetList());
+		$o_table=new Student_Onboard_Info_Class_Wechat_View();
+		for($i=0;$i<count($a_target);$i++)
+		{
+			$o_table->PushWhere ( array ('||', 'ClassNumber', '=',$a_target[$i]) );
+		}
+		$o_table->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_table->setCountLine ( $this->N_PageSize );
+		$n_count = $o_table->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_table->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_table->getAllCount ();//总记录数
+		$n_count = $o_table->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$s_grade_name='';			
+			//区分年级
+			switch ($o_table->getGrade($i))
+			{
+				case 0:
+					$s_grade_name='半日班';
+						break;
+				case 1:
+					$s_grade_name='托班';
+						break;
+				case 2:
+					$s_grade_name='小班';
+					break;
+				case 3:
+					$s_grade_name='中班';
+					break;
+				case 4:
+					$s_grade_name='大班';
+					break;
+			}
+			$s_sign_name='';
+			if ($o_table->getDelFlag ( $i )==1)
+			{
+				$s_sign_name=' <span class="label label-danger">取消关注</span>';
+			}
+			$a_button = array ();
+			//判断是否完成问卷
+			$o_answer=new Survey_Answers();
+			$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
+			$o_answer->PushWhere ( array ('&&', 'UserId', '=',$o_table->getUserId($i)) );
+			$o_answer->PushWhere ( array ('&&', 'StudentId', '=',$o_table->getStudentId($i)) );
+			if ($o_answer->getAllCount()>0)
+			{
+				$s_sign_name.=' <span class="label label-success"><span class="glyphicon glyphicon-ok"></span></span>';
+				array_push ( $a_button, array ('查看答卷', "location='parent_survey_manage_progress_sheet.php?id=".$o_answer->getId(0)."'" ) );//删除
+				array_push ( $a_button, array ('打印', "window.open('parent_survey_manage_progress_pdf.php?id=".$o_answer->getId(0)."','_blank')" ) );//删除
+			}			
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),
+				'<img style="width:32px;height:32px;" src="'.$o_table->getPhoto ( $i ).'">',
+				$o_table->getNickname ( $i ).$s_sign_name,
+				$o_table->getName ( $i ),
+				$s_grade_name.'('.$o_table->getClassName ( $i ).')',
+				$o_table->getSex ( $i ),
+				$o_table->getId ( $i ).'<br/><span style="color:#999999">'.$o_table->getIdType( $i ).'</span>',
+				$o_table->getUserName ( $i ).'<br/><span style="color:#999999">'.$o_table->getPhone ( $i ).'</span>',
+				$a_button
+				));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'头像', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'微信昵称', 'Nickname', 150, 0);	
+		$a_title=$this->setTableTitle($a_title,'幼儿姓名', 'Name', 0, 0);	
+		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassNumber', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 0);		
+		$a_title=$this->setTableTitle($a_title,'证件号', 'Id', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'监护人', 'UserName', 0, 60);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
+		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageProjress', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function ParentSurveyManageGetProgress($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User($n_uid);
+		if (!$o_user->ValidModule ( 120401 ))return;//如果没有权限，不返回任何值
+		$o_survey = new Survey($this->getPost('id'));
+		//获得target的班级list
+		$a_target=json_decode($o_survey->getTargetList());
+		$o_table=new Student_Onboard_Info_Class_Wechat_View();
+		for($i=0;$i<count($a_target);$i++)
+		{
+			$o_table->PushWhere ( array ('||', 'ClassNumber', '=',$a_target[$i]) );
+		}
+		$n_count = $o_table->getAllCount ();
+		$n_completed=0;
+		for($i = 0; $i < $n_count; $i ++) {
+			//判断是否完成问卷
+			$o_answer=new Survey_Answers();
+			$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
+			$o_answer->PushWhere ( array ('&&', 'UserId', '=',$o_table->getUserId($i)) );
+			$o_answer->PushWhere ( array ('&&', 'StudentId', '=',$o_table->getStudentId($i)) );
+			if ($o_answer->getAllCount()>0)
+			{
+				$n_completed++;
+			}
+		}		
+		$a_result = array (
+					'status' =>'<span class="label label-success">完成 '.$n_completed.'</span>&nbsp&nbsp&nbsp&nbsp<span class="label label-warning">未完 '.($n_count-$n_completed).'</span>&nbsp&nbsp&nbsp&nbsp<span class="label label-primary">完成率 '.sprintf("%.0f", ($n_completed/$n_count)*100).'%</span>'
+				);
+		echo(json_encode ($a_result));
 	}
 }
 ?>

@@ -1437,6 +1437,7 @@ class Student_Onboard_Info_Class_Wechat_View extends CRUD
     protected $RegisterDate;
     protected $Openid;
     protected $ParentSex;
+    protected $DelFlag;
 
     protected function DefineKey()
     {
@@ -1466,7 +1467,8 @@ class Student_Onboard_Info_Class_Wechat_View extends CRUD
                     'group_id' => 'GroupId',
                     'register_date' => 'RegisterDate',
                     'openid' => 'Openid',
-                    'parent_sex' => 'ParentSex'
+                    'parent_sex' => 'ParentSex',
+                    'del_flag' => 'DelFlag'
         ));
     }
 }
