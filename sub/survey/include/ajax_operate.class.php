@@ -480,6 +480,12 @@ class Operate extends Bn_Basic {
 		for($i=0;$i<count($a_target);$i++)
 		{
 			$o_table->PushWhere ( array ('||', 'ClassNumber', '=',$a_target[$i]) );
+			if ($this->getPost('other_key')!='')
+			{
+				$o_table->PushWhere ( array ('&&', 'Name', 'like','%'.$this->getPost('other_key').'%') );
+				$o_table->PushWhere ( array ('||', 'ClassNumber', '=',$a_target[$i]) );
+				$o_table->PushWhere ( array ('&&', 'Id', 'like','%'.$this->getPost('other_key').'%') );
+			}
 		}
 		$o_table->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
@@ -554,7 +560,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'证件号', 'Id', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'监护人', 'UserName', 0, 60);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
-		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageProjress', 'yes', $n_page, $a_title, $a_row);
+		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageProgress', 'yes', $n_page, $a_title, $a_row);
 	}
 	public function ParentSurveyManageGetProgress($n_uid)
 	{
@@ -585,7 +591,7 @@ class Operate extends Bn_Basic {
 			}
 		}		
 		$a_result = array (
-					'status' =>'<span class="label label-success">完成 '.$n_completed.'</span>&nbsp&nbsp&nbsp&nbsp<span class="label label-warning">未完 '.($n_count-$n_completed).'</span>&nbsp&nbsp&nbsp&nbsp<span class="label label-primary">完成率 '.sprintf("%.0f", ($n_completed/$n_count)*100).'%</span>'
+					'status' =>'<span class="label label-success">完成 '.$n_completed.'</span>&nbsp;&nbsp;<span class="label label-warning">未完 '.($n_count-$n_completed).'</span>&nbsp;&nbsp;<span class="label label-primary">完成率 '.sprintf("%.0f", ($n_completed/$n_count)*100).'%</span>'
 				);
 		echo(json_encode ($a_result));
 	}

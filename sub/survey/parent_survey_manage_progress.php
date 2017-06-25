@@ -28,8 +28,18 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 ?>
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading" style="position:static;">
-                            <div class="caption" id="table_title"><?php echo($o_table->getTitle())?></div>
+                            <div class="caption" id="table_title" title="<?php echo($o_table->getTitle())?>" style="max-width:300px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"><?php echo($o_table->getTitle())?></div>
                             <div class="caption" id="status">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                            <div class="row">
+								  <div class="col-lg-6">
+								    <div class="input-group" style="width:200px;" >
+								      <input id="Vcl_KeyParentSurveyManageProgress" type="text" class="form-control" placeholder="幼儿姓名/证件号" value="<?php echo($s_otherkey)?>">
+								      <span class="input-group-btn">
+								        <button class="btn btn-primary" type="button" onclick="search_for_parent_survey_manage_progress()"><span  class="glyphicon glyphicon-search"></span></button>
+								      </span>
+								    </div>
+								  </div>
+								</div>
                             <button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;
                                 margin-top: 0px; outline: medium none;margin-left:10px;" onclick="location='parent_survey_manage.php'">
                                 <?php echo(Text::Key('Back'))?></button>

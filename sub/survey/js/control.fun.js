@@ -5,6 +5,12 @@ $(function(){
 	    	search_for_parent_survey_manage()   
 	    }  
 	}); 
+	$('#Vcl_KeyParentSurveyManageProgress').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_parent_survey_manage_progress()   
+	    }  
+	}); 
 	$('ins').click(function(){
 		//先获得自己是否选中
 		var parent=this.parentNode
@@ -20,6 +26,18 @@ $(function(){
 		}		
 	})
 })
+function search_for_parent_survey_manage_progress()
+{
+	var fun='ParentSurveyManageProgress';
+	var id='Vcl_KeyParentSurveyManageProgress'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+$.cookie(fun+"Key")+"OtherKey",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,key,encodeURIComponent(document.getElementById(id).value));    
+}
 function uncheck_parent(obj,loop)
 {
 	try{
@@ -169,6 +187,6 @@ function parent_survey_manage_get_progress(id)
 	//window.alert(id);
     var data='Ajax_FunName=ParentSurveyManageGetProgress&id='+id;//后台方法
     $.getJSON("include/bn_submit.switch.php",data,function (json){
-		$('#status').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+json.status);
+		$('#status').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+json.status);
     })  
 }
