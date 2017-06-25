@@ -41,6 +41,13 @@ class Survey_Answers extends CRUD
     protected $Id;
     protected $SurveyId;
     protected $UserId;
+    protected $StudentId;
+    protected $Name;
+    protected $Sex;
+    protected $IdType;
+    protected $CardId;
+    protected $ClassName;
+    protected $UserName;
     protected $Date;
     protected $Answer1;
     protected $Answer2;
@@ -107,6 +114,13 @@ class Survey_Answers extends CRUD
                     'id' => 'Id',
                     'survey_id' => 'SurveyId',
                     'user_id' => 'UserId',
+        			'student_id' => 'StudentId',
+                    'name' => 'Name',
+                    'sex' => 'Sex',
+                    'id_type' => 'IdType',
+                    'card_id' => 'CardId',
+                    'class_name' => 'ClassName',
+                    'user_name' => 'UserName',
                     'date' => 'Date',
                     'answer_1' => 'Answer1',
                     'answer_2' => 'Answer2',

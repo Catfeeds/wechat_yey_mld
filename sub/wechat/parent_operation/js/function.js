@@ -31,3 +31,8 @@ function submit_binding()
 	Common_OpenLoading();
 	document.getElementById("submit_form").submit();	 
 }
+function survey_answer_submit()
+{
+	Common_OpenLoading();
+	document.getElementById("submit_form").submit();	
+}

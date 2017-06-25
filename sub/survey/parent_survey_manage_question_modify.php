@@ -92,7 +92,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 	                     		<select name="Vcl_Type" id="Vcl_Type" class="selectpicker" data-style="btn-default" onchange="change_type(this)">
 	                     			<option value="1" selected="selected">单选</option>
         							<option value="2">多选</option>
-        							<option value="3">简答</option>
+        							<option value="3">简述</option>
    								</select>
 	                     	</div>
 	                     	<div class="item option" style="display:none">

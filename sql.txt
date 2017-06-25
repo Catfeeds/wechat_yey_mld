@@ -8,3 +8,7 @@ ALTER TABLE `survey_options` ADD `number` CHAR(2) CHARACTER SET utf8 COLLATE utf
 
 ALTER TABLE `survey` ADD `end_date` DATETIME NOT NULL COMMENT '结束日期' AFTER `release_date`;
 
+ALTER TABLE `survey_answers` ADD `name` CHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '学生姓名' AFTER `user_id`, ADD `sex` CHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '性别' AFTER `name`, ADD `id_type` CHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '证件类型' AFTER `sex`, ADD `card_id` CHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '证件编号' AFTER `id_type`, ADD `class_name` CHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '班级名称' AFTER `card_id`, ADD `user_name` CHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '家长姓名' AFTER `class_name`;
+
+ALTER TABLE `survey_answers` ADD `student_id` MEDIUMINT(8) UNSIGNED NOT NULL COMMENT '幼儿编号' AFTER `user_id`;
+

@@ -79,7 +79,7 @@ class Operate extends Bn_Basic {
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
 				str_replace(' ', '<br/>', $o_user->getCreateDate ( $i )),
-				$o_user->getTitle ( $i ).'<br/><span style="color:#999999">单选:'.$n_single.'</span> <span style="color:#999999">多选:'.$n_multiple.'</span> <span style="color:#999999">简答:'.$n_text.'</span>',
+				$o_user->getTitle ( $i ).'<br/><span style="color:#999999">单选:'.$n_single.'</span> <span style="color:#999999">多选:'.$n_multiple.'</span> <span style="color:#999999">简述:'.$n_text.'</span>',
 				'发布:'.$a_release[0].'<br/>结束:'.$a_end[0],
 				$o_user->getTargetName ( $i ),
 				$s_state,
@@ -437,7 +437,7 @@ class Operate extends Bn_Basic {
 				$o_msg->setKeyword4($this->getPost('Remark'));
 				$o_msg->setKeyword5('');
 				$o_msg->setRemark('');
-				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/survey_answer.php?id='.$this->getPost('Id').'');
+				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/survey_answer.php?id='.$this->getPost('Id').'&studentid='.$o_stu->getStudentId($j));
 				$o_msg->setKeywordSum(10);
 				$o_msg->Save();	
 			}			
