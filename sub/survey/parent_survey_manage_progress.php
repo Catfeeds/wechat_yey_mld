@@ -43,7 +43,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                             <button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;
                                 margin-top: 0px; outline: medium none;margin-left:10px;" onclick="location='parent_survey_manage.php'">
                                 <?php echo(Text::Key('Back'))?></button>
-                                <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="location='parent_survey_manage_question_modify.php?id=<?php echo($_GET['id'])?>'">
+                                <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="parent_survey_manage_remember(<?php echo($_GET['id'])?>)">
                                 <span  class="glyphicon glyphicon-info-sign"></span>&nbsp;再次提醒</button>                             
                             </div>
                         <table class="table table-striped">

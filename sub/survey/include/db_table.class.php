@@ -11,6 +11,8 @@ class Survey extends CRUD
     protected $ReleaseDate;
     protected $EndDate;
     protected $TargetName;
+    protected $First;
+    protected $Remark;
     protected $TargetList;
 
     protected function DefineKey()
@@ -28,6 +30,8 @@ class Survey extends CRUD
                     'title' => 'Title',
                     'create_date' => 'CreateDate',
                     'state' => 'State',
+        			'remark' => 'Remark',
+        			'first' => 'First',
                     'owner_id' => 'OwnerId',
                     'release_date' => 'ReleaseDate',
         			'end_date' => 'EndDate',

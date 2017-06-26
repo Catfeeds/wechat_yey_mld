@@ -43,7 +43,7 @@ class Operate extends Bn_Basic {
 			{
 				$s_state='<span class="label label-success">已发布</span>';
 				array_push ( $a_button, array ('查看统计', "location='parent_survey_manage_summary.php?id=".$o_user->getId($i)."'" ) );
-				array_push ( $a_button, array ('再次提醒', "" ) );
+				array_push ( $a_button, array ('再次提醒', "parent_survey_manage_remember(".$o_user->getId($i).")" ) );
 				array_push ( $a_button, array ('进度详情', "location='parent_survey_manage_progress.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('结束问卷', "parent_survey_manage_end(".$o_user->getId($i).")" ) );
 			}elseif ($o_user->getState($i)==2){		
@@ -422,6 +422,8 @@ class Operate extends Bn_Basic {
 				$o_survey->setReleaseDate($this->GetDateNow());
 				$o_survey->setTargetName(substr($s_target_name,0,strlen($s_target_name)-1));
 				$o_survey->setTargetList(json_encode($a_target));
+				$o_survey->setFirst($this->getPost('First'));
+				$o_survey->setRemark($this->getPost('Remark'));
 				$o_survey->setState(1);
 				$o_survey->Save();
 			}
@@ -777,6 +779,69 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'监护人', 'UserName', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'简述', '', 0, 0);
 		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageSummaryDetail', 'no', $n_page, $a_title, $a_row);
+	}
+	public function ParentSurveyManageRemember($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		sleep(1);
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120401 ))return;//如果没有权限，不返回任何值
+		$o_survey=new Survey($this->getPost('id'));
+		$a_target=json_decode($o_survey->getTargetList());
+		if ($o_survey->getState()=='1')
+		{
+			//根据问卷对象循环发送通知
+			$o_system_setup=new Base_Setup(1);
+			require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+			for($i=0;$i<count($a_target);$i++)
+			{
+				//获取用户列表
+				$o_stu=new Student_Onboard_Info_Class_Wechat_View();
+				$o_stu->PushWhere ( array ('&&', 'ClassNumber', '=',$a_target[$i]) );
+				for($j=0;$j<$o_stu->getAllCount();$j++)
+				{
+					//判断是否已经答题，如果答题那么跳过
+					$o_answer=new Survey_Answers();
+					$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
+					$o_answer->PushWhere ( array ('&&', 'UserId', '=',$o_stu->getUserId($j)) );
+					$o_answer->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId($j)) );
+					if ($o_answer->getAllCount()>0)
+					{
+						continue;
+					}
+					//添加消息队列
+					$o_msg=new Wechat_Wx_User_Reminder();
+					$o_msg->setUserId($o_stu->getUserId($j));
+					$o_msg->setCreateDate($this->GetDateNow());
+					$o_msg->setSendDate('0000-00-00');
+					$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+					$o_msg->setOpenId($o_stu->getOpenid($j));
+					$o_msg->setActivityId(0);
+					$o_msg->setSend(0);
+					$o_msg->setFirst($o_survey->getFirst().'
+		
+		通知类型：问卷调查
+		幼儿姓名：'.$o_stu->getName($j));
+					$o_msg->setKeyword1($o_stu->getClassName($j));
+					$s_teacher_name=$o_user->getName();
+					$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+					$o_msg->setKeyword3($this->GetDate());
+					$o_msg->setKeyword4($o_survey->getRemark());
+					$o_msg->setKeyword5('');
+					$o_msg->setRemark('');
+					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/survey_answer.php?id='.$o_survey->getId().'&studentid='.$o_stu->getStudentId($j));
+					$o_msg->setKeywordSum(10);
+					$o_msg->Save();	
+				}			
+			}
+		}	
+		$a_general = array (
+			'success' => 1,
+			'text' =>'再次发送提醒成功！'
+		);
+		echo (json_encode ( $a_general ));
 	}
 }
 ?>

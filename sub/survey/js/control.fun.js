@@ -190,3 +190,20 @@ function parent_survey_manage_get_progress(id)
 		$('#status').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+json.status);
     })  
 }
+function parent_survey_manage_remember(id) {
+    dialog_confirm('确认要发送再次提醒吗！<br/><br/>确认后：<br/>1. 所有未完成问卷的幼儿家长将陆续收到微信问卷提醒。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=ParentSurveyManageRemember'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		$('.small_loading').fadeOut(100);
+        		dialog_success(json.text)
+        	}        	
+        })
+    })
+}
