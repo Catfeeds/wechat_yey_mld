@@ -32,7 +32,10 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                             <div class="caption" id="status">&nbsp;&nbsp;&nbsp;&nbsp;</div>
                             <button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;
                                 margin-top: 0px; outline: medium none;margin-left:10px;" onclick="location='parent_survey_manage.php'">
-                                <?php echo(Text::Key('Back'))?></button>                              
+                                <?php echo(Text::Key('Back'))?></button>
+                                <button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;
+                                margin-top: 0px; outline: medium none;margin-left:10px;" onclick="window.open('parent_survey_manage_summary_pdf.php?id=<?php echo($o_table->getId())?>','_blank')">
+                                <span class="glyphicon glyphicon-print"></span>&nbsp;打印</button>                            
                             </div>
                         <table class="table table-striped">
                             <thead>
