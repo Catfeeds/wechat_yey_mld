@@ -33,6 +33,11 @@ for($i=0;$i<$o_binding->getAllCount();$i++)
 			//没有其他信息，才删除用户分组
 			$o_parent=new WX_User_Info($o_temp->getUserId());
 			$o_group->updateGroup($o_parent->getOpenId(),0);
+			//清空微信用户电话与姓名信息
+			$o_wechat_user=new WX_User_Info($o_temp->getUserId());
+			$o_wechat_user->setUserName('');
+			$o_wechat_user->setPhone('');
+			$o_wechat_user->Save();		
 		}
 		$o_temp->Deletion();
 	}
