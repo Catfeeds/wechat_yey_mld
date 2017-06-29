@@ -43,7 +43,9 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								    <li><a href="javascript:;" onclick="window.open('output_roster.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">Excel 花名册</a></li>
 								    <li><a href="javascript:;" onclick="download_pdf('download_pdf_multiple.php?classid='+$.cookie('<?php echo($s_fun)?>Key'))">PDF 幼儿信息</a></li>
 								  </ul>
-								</div>														 
+								</div>
+								<button id="user_add_btn" type="button" title="添加幼儿" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" data-toggle="tooltip" onclick="location='ye_modify.php'">
+	                                <span class="glyphicon glyphicon-plus"></span>&nbsp;添加幼儿</button>  														 
 								</div>
 						<div class="table_nav">
 							<div class="<?php if($s_key=='')echo('on')?>" onclick="change_table_nav('<?php echo($s_fun)?>','')">
