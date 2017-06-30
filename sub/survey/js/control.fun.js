@@ -11,6 +11,12 @@ $(function(){
 	    	search_for_parent_survey_manage_progress()   
 	    }  
 	}); 
+	$('#Vcl_KeyParentSurveyManageAnswered').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_parent_survey_manage_answered()   
+	    }  
+	}); 
 	$('ins').click(function(){
 		//先获得自己是否选中
 		var parent=this.parentNode
@@ -30,6 +36,18 @@ function search_for_parent_survey_manage_progress()
 {
 	var fun='ParentSurveyManageProgress';
 	var id='Vcl_KeyParentSurveyManageProgress'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+$.cookie(fun+"Key")+"OtherKey",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,key,encodeURIComponent(document.getElementById(id).value));    
+}
+function search_for_parent_survey_manage_answered()
+{
+	var fun='ParentSurveyManageAnswered';
+	var id='Vcl_KeyParentSurveyManageAnswered'
 	$('.small_loading').fadeIn(100);
 	$.cookie(fun+"Page",1);
 	$.cookie(fun+$.cookie(fun+"Key")+"OtherKey",document.getElementById(id).value);
