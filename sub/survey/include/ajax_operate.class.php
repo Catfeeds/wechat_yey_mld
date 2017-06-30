@@ -49,7 +49,7 @@ class Operate extends Bn_Basic {
 			}elseif ($o_user->getState($i)==2){		
 				$s_state='<span class="label label-danger">已结束</span>';		
 				array_push ( $a_button, array ('查看统计', "location='parent_survey_manage_summary.php?id=".$o_user->getId($i)."'" ) );
-				array_push ( $a_button, array ('进度详情', "location='parent_survey_manage_progress.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('查看答卷', "location='parent_survey_manage_answered.php?id=".$o_user->getId(0)."'" ) );//删除
 			}else{
 				array_push ( $a_button, array ('修改标题', "location='parent_survey_manage_modify.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('编辑题目', "location='parent_survey_manage_question.php?id=".$o_user->getId($i)."'" ) );
@@ -591,7 +591,7 @@ class Operate extends Bn_Basic {
 			{
 				$n_completed++;
 			}
-		}		
+		}
 		$a_result = array (
 					'status' =>'<span class="label label-success">完成 '.$n_completed.'</span>&nbsp;&nbsp;<span class="label label-warning">未完 '.($n_count-$n_completed).'</span>&nbsp;&nbsp;<span class="label label-primary">完成率 '.sprintf("%.0f", ($n_completed/$n_count)*100).'%</span>'
 				);

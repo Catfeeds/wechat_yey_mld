@@ -11,9 +11,11 @@ class Survey extends CRUD
     protected $ReleaseDate;
     protected $EndDate;
     protected $TargetName;
+    protected $TargetList;
     protected $First;
     protected $Remark;
-    protected $TargetList;
+    protected $CompletedSum;
+    protected $PendingSum;
 
     protected function DefineKey()
     {
@@ -30,13 +32,15 @@ class Survey extends CRUD
                     'title' => 'Title',
                     'create_date' => 'CreateDate',
                     'state' => 'State',
-        			'remark' => 'Remark',
-        			'first' => 'First',
                     'owner_id' => 'OwnerId',
                     'release_date' => 'ReleaseDate',
-        			'end_date' => 'EndDate',
+                    'end_date' => 'EndDate',
                     'target_name' => 'TargetName',
-                    'target_list' => 'TargetList'
+                    'target_list' => 'TargetList',
+                    'first' => 'First',
+                    'remark' => 'Remark',
+                    'completed_sum' => 'CompletedSum',
+                    'pending_sum' => 'PendingSum'
         ));
     }
 }
