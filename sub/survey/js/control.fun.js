@@ -148,6 +148,22 @@ function parent_survey_manage_question_delete(id) {
         })
     })
 }
+function parent_survey_manage_copy(id) {
+    dialog_confirm('确认要复制这个问卷吗？<br/><br/>确认后：<br/>1. 将创建一个未发布的问卷副本。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=ParentSurveyManageCopy'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('ParentSurveyManage')
+        	}        	
+        })
+    })
+}
 function parent_survey_manage_modify()
 {	
     var val = $('#Vcl_Title').val();

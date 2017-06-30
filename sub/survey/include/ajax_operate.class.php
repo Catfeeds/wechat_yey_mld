@@ -46,14 +46,17 @@ class Operate extends Bn_Basic {
 				array_push ( $a_button, array ('再次提醒', "parent_survey_manage_remember(".$o_user->getId($i).")" ) );
 				array_push ( $a_button, array ('进度详情', "location='parent_survey_manage_progress.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('结束问卷', "parent_survey_manage_end(".$o_user->getId($i).")" ) );
+				array_push ( $a_button, array ('复制问卷', "parent_survey_manage_copy(".$o_user->getId($i).")" ) );
 			}elseif ($o_user->getState($i)==2){		
 				$s_state='<span class="label label-danger">已结束</span>';		
 				array_push ( $a_button, array ('查看统计', "location='parent_survey_manage_summary.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('查看答卷', "location='parent_survey_manage_answered.php?id=".$o_user->getId($i)."'" ) );//删除
+				array_push ( $a_button, array ('复制问卷', "parent_survey_manage_copy(".$o_user->getId($i).")" ) );
 			}else{
 				array_push ( $a_button, array ('修改标题', "location='parent_survey_manage_modify.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('编辑题目', "location='parent_survey_manage_question.php?id=".$o_user->getId($i)."'" ) );
-				array_push ( $a_button, array ('发布问卷', "location='parent_survey_manage_release.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('复制问卷', "parent_survey_manage_copy(".$o_user->getId($i).")" ) );
+				array_push ( $a_button, array ('发布问卷', "location='parent_survey_manage_release.php?id=".$o_user->getId($i)."'" ) );				
 				array_push ( $a_button, array ('删除', "parent_survey_manage_delete(".$o_user->getId($i).")" ) );
 			}
 			$o_answer=new Survey_Answers();
@@ -311,6 +314,49 @@ class Operate extends Bn_Basic {
 			$o_survey->setEndDate($this->GetDateNow());
 			$o_survey->Save();
 		}
+		$a_general = array (
+			'success' => 1,
+			'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
+	public function ParentSurveyManageCopy($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120401 ))return; //如果没有权限，不返回任何值
+		$o_survey = new Survey ($this->getPost('id'));
+		//创建问卷
+		$o_survey_new=new Survey();
+		$o_survey_new->setCreateDate($this->GetDateNow());
+		$o_survey_new->setTitle('（副本）'.$o_survey->getTitle());
+	    $o_survey_new->setState(0);
+	    $o_survey_new->setOwnerId($n_uid);
+	    $o_survey_new->Save();
+	    //循环创建题
+	    $o_question=new Survey_Questions();
+	    $o_question->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
+	    for($i=0;$i<$o_question->getAllCount();$i++)
+	    {
+	    	$o_temp=new Survey_Questions();
+	    	$o_temp->setSurveyId($o_survey_new->getId());
+    		$o_temp->setQuestion($o_question->getQuestion($i));
+    		$o_temp->setType($o_question->getType($i));
+    		$o_temp->setNumber($o_question->getNumber($i));
+    		$o_temp->Save();
+    		//循环选项
+    		$o_option=new Survey_Options();
+    		$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId($i)) );
+    		for($j=0;$j<$o_option->getAllCount();$j++)
+    		{
+    			$o_temp2=new Survey_Options();
+    			$o_temp2->setQuestionId($o_temp->getId());
+    			$o_temp2->setOption($o_option->getOption($j));
+    			$o_temp2->setNumber($o_option->getNumber($j));
+    			$o_temp2->Save();    			
+    		}
+	    }
 		$a_general = array (
 			'success' => 1,
 			'text' =>''
