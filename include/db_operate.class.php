@@ -101,7 +101,7 @@ abstract class CRUD extends DB_Connect {
 	private function SetAccessor($s_member, $s_newValue) {
 		if (property_exists ( $this, $s_member )) {
 			//$s_newValue = str_replace ( "\\", "\\\\\\\\", $s_newValue );		
-			eval ( '$this->' . $s_member . '=\'' . str_replace ( '\'', '`', $s_newValue ) . '\';' );
+			eval ( '$this->' . $s_member . '=\'' . str_replace ( '\'', '`',  $s_newValue) . '\';' );
 			$this->A_ModifiedRelations [$s_member] = '1';
 		} else {
 			return false;

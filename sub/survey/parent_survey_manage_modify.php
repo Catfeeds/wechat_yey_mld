@@ -19,7 +19,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                             {
                             	$o_table=new Survey($_GET['id']);
                             	$s_funname='ParentSurveyManageModify'; 
-                            	echo('修改问卷标题');
+                            	echo('修改问卷');
 								if($o_table->getTitle()==null || $o_table->getTitle()=='' || $o_table->getState()==1)
 								{
 									echo("<script>location='parent_survey_manage.php'</script>");
@@ -41,7 +41,11 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 	                     	<div class="item">
 	                     		<label><span class="must">*</span> 问卷标题：</label>
 	                     		<input name="Vcl_Title" maxlength="50" id="Vcl_Title" type="text" style="width:100%" placeholder="必填" class="form-control" aria-describedby="basic-addon1" />
-	                     	</div>	                     	
+	                     	</div>	
+	                     	<div class="item">
+	                     		<label>问卷说明简述：</label>
+	                     		<textarea  name="Vcl_Comment" maxlength="500" id="Vcl_Comment" type="text" style="width:100%" placeholder="选填，不能超过500字" class="form-control" rows="10"/><?php echo($o_table->getComment())?></textarea>
+	                     	</div>                     	
 							<div class="item">
 							<button id="user_add_btn" type="button" class="btn btn-default cancel" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="location='<?php echo($_SERVER['HTTP_REFERER'])?>'"><?php echo(Text::Key('Cancel'))?></button>
 							<button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="parent_survey_manage_modify()"><?php echo(Text::Key('Submit'))?></button>

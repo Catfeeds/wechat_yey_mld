@@ -5,6 +5,7 @@ class Survey extends CRUD
 {
     protected $Id;
     protected $Title;
+    protected $Comment;
     protected $CreateDate;
     protected $State;
     protected $OwnerId;
@@ -30,6 +31,7 @@ class Survey extends CRUD
         return(array(
                     'id' => 'Id',
                     'title' => 'Title',
+        			'comment' => 'Comment',
                     'create_date' => 'CreateDate',
                     'state' => 'State',
                     'owner_id' => 'OwnerId',

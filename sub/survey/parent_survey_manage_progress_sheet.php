@@ -42,7 +42,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 .answer h4
 {
 	font-size:12px;
-	text-align:center;
+	text-align:left;
 	line-height:18px;
 }
 .answer h3 span
@@ -63,10 +63,18 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                             </div>
                     </div>
 					<div class="answer">
-						<h1><?php echo($o_survey->getTitle())?>
+						
 							<h4>
-							姓名：<?php echo($o_answer->getName())?><br/>班级：<?php echo($o_answer->getClassName())?><br/>提交时间：<?php echo($o_answer->getDate())?>
+							姓名：<?php echo($o_answer->getName())?>&nbsp;&nbsp;&nbsp;&nbsp;班级：<?php echo($o_answer->getClassName())?>&nbsp;&nbsp;&nbsp;&nbsp;提交时间：<?php echo($o_answer->getDate())?>
 							</h4>
+						<h1>
+							<?php echo($o_survey->getTitle())?>
+							<h3>
+							<?php 
+				require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
+				$o_bn_base=new Bn_Basic();
+				echo($o_bn_base->AilterTextArea($o_survey->getComment()))?>
+							</h3>
 						</h1>
 						<?php 
 						$o_question=new Survey_Questions();

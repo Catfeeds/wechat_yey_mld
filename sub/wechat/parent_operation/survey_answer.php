@@ -4,13 +4,6 @@ require_once '../include/it_include.inc.php';
 $s_title='问卷调查';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'sub/survey/include/db_table.class.php';
-//想判断教师权限，是否为绑定用户
-$o_temp=new Base_User_Wechat();
-$o_temp->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) ); 
-if ($o_temp->getAllCount()==0)
-{
-	exit(0);
-}
 $o_survey=new Survey($_GET['id']);
 //判断用户是否已经做过此问卷
 $o_answer=new Survey_Answers();
@@ -66,8 +59,14 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 		<input type="hidden" id="Vcl_FunName" name="Vcl_FunName" value="ParentSurveyAnswer"/>
 		<input type="hidden" name="Vcl_Id" value="<?php echo($_GET['id'])?>"/>
 		<input type="hidden" name="Vcl_StudentId" value="<?php echo($_GET['studentid'])?>"/>
-		<div class="page__hd" style="padding:0px;padding-top:15px;">
+		<div class="page__hd" style="padding:15px;padding-bottom:0px;">
 	        <h1 class="page__title" style="font-size:28px;padding:0px;text-align:center"><?php echo($o_survey->getTitle())?></h1>
+	         <p class="page__desc" style="color:#666666;font-size:16px;">
+				<?php 
+				require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
+				$o_bn_base=new Bn_Basic();
+				echo($o_bn_base->AilterTextArea($o_survey->getComment()))?>
+			</p>
 	    </div>
 	    <?php 
 	    $o_question=new Survey_Questions();

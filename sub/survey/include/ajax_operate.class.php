@@ -53,7 +53,7 @@ class Operate extends Bn_Basic {
 				array_push ( $a_button, array ('查看答卷', "location='parent_survey_manage_answered.php?id=".$o_user->getId($i)."'" ) );//删除
 				array_push ( $a_button, array ('复制问卷', "parent_survey_manage_copy(".$o_user->getId($i).")" ) );
 			}else{
-				array_push ( $a_button, array ('修改标题', "location='parent_survey_manage_modify.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('修改问卷', "location='parent_survey_manage_modify.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('编辑题目', "location='parent_survey_manage_question.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('复制问卷', "parent_survey_manage_copy(".$o_user->getId($i).")" ) );
 				array_push ( $a_button, array ('发布问卷', "location='parent_survey_manage_release.php?id=".$o_user->getId($i)."'" ) );				
@@ -113,6 +113,7 @@ class Operate extends Bn_Basic {
 		$o_table->setTitle($this->getPost('Title'));
 		$o_table->setCreateDate($this->GetDateNow());
 		$o_table->setState(0);
+		$o_table->setComment($this->FilterUserInput($this->getPost('Comment')));
 		$o_table->setOwnerId($n_uid);
 		$o_table->Save ();
 		$this->setReturn ( 'parent.form_return("dialog_success(\'新建问卷成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
@@ -245,6 +246,7 @@ class Operate extends Bn_Basic {
 		if ($o_table->getState()=='0')
 		{
 			$o_table->setTitle($this->getPost('Title'));
+			$o_table->setComment($this->getPost('Comment'));
 			$o_table->Save();
 		}		
 		$this->setReturn ( 'parent.form_return("dialog_success(\'修改问卷成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
@@ -331,6 +333,7 @@ class Operate extends Bn_Basic {
 		$o_survey_new=new Survey();
 		$o_survey_new->setCreateDate($this->GetDateNow());
 		$o_survey_new->setTitle('（副本）'.$o_survey->getTitle());
+		$o_survey_new->setComment($o_survey->getComment());
 	    $o_survey_new->setState(0);
 	    $o_survey_new->setOwnerId($n_uid);
 	    $o_survey_new->Save();

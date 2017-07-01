@@ -285,6 +285,7 @@ function select_submit_assign_class(obj)
 	if(a_data.length==0)
 	{
 		dialog_message("请先选择报名信息！")
+		$('#Vcl_ClassId').selectpicker('val','');//下拉框归位
 		return
 	}
 	document.getElementById('Vcl_StuId').value=arrayToJson(a_data)

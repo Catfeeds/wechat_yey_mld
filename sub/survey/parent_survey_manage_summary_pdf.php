@@ -15,7 +15,7 @@ if($o_survey->getTitle()==null || $o_survey->getTitle()=='' || $o_survey->getSta
 ob_start();
 ?>
 					<div class="answer">
-						<h1><?php echo($o_survey->getTitle())?>
+						<h1>
 							<h4>
 							答题人数：<?php 
 							$o_answer=new Survey_Answers();
@@ -23,6 +23,13 @@ ob_start();
 							$n_answer_sum=$o_answer->getAllCount();
 							echo($o_answer->getAllCount());
 							?> 人&nbsp;&nbsp;&nbsp;&nbsp;问卷对象：<?php echo($o_survey->getTargetName())?>&nbsp;&nbsp;&nbsp;&nbsp;开始时间：<?php echo($o_survey->getReleaseDate())?>&nbsp;&nbsp;&nbsp;&nbsp;结束时间：<?php echo(str_replace('0000-00-00 00:00:00', '', $o_survey->getEndDate()))?>
+							</h4>
+							<?php echo($o_survey->getTitle())?>
+							<h4>
+							<?php 
+				require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
+				$o_bn_base=new Bn_Basic();
+				echo($o_bn_base->AilterTextArea($o_survey->getComment()))?>
 							</h4>
 						</h1>
 						<?php 

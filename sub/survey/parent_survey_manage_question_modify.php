@@ -93,6 +93,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 	                     			<option value="1" selected="selected">单选</option>
         							<option value="2">多选</option>
         							<option value="3">简述</option>
+        							<option value="4">子标题</option>
    								</select>
 	                     	</div>
 	                     	<div class="item option" style="display:none">
