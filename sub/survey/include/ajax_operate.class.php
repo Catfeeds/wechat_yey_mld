@@ -523,8 +523,8 @@ class Operate extends Bn_Basic {
 				$o_msg->setSend(0);
 				$o_msg->setFirst($this->getPost('First').'
 	
-	通知类型：问卷调查
-	幼儿姓名：'.$o_stu->getName($j));
+通知类型：问卷调查
+幼儿姓名：'.$o_stu->getName($j));
 				$o_msg->setKeyword1($o_stu->getClassName($j));
 				$s_teacher_name=$o_user->getName();
 				$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');

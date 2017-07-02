@@ -1291,5 +1291,117 @@ class Operate extends Bn_Basic {
 		}
 		$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."survey_answer_completed.php';" );
 	}
+	public function OnboardParentSurveyAnswer($n_uid)
+	{
+		if ($n_uid>0)
+		{
+			
+		}else{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
+		}
+		$o_survey=new Student_Onboard_Survey($this->getPost ( 'Id' ));
+		//判断用户是否已经做过此问卷
+		$o_answer=new Student_Onboard_Survey_Answers();
+		$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) ); 
+		$o_answer->PushWhere ( array ('&&', 'UserId', '=',$n_uid) );
+		$o_answer->PushWhere ( array ('&&', 'StudentId', '=',$this->getPost ( 'StudentId' )) );
+		if ($o_answer->getAllCount()>0)
+		{
+			//已经答题，跳转到完成页面
+			$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."survey_answer_completed.php';" );
+		}
+		//检查微信用户是否有权限访问此问卷
+		$o_stu=new Student_Onboard_Info_Class_Wechat_View();
+		$o_stu->PushWhere ( array ('&&', 'UserId', '=',$n_uid) ); 
+		$o_stu->getAllCount();
+		if ($o_stu->getAllCount()==0 )
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1002]\');' );
+			exit(0);
+		}
+		//开始记录核验选项
+	    $o_question=new Student_Onboard_Survey_Questions();
+	    $o_question->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) ); 
+	    $o_question->PushOrder ( array ('Number','A') );   
+	    $a_question_result=array();
+	    $n_number=1;//用来记录题的顺序
+	    //将问卷标题，与问卷摘要保存进数组
+	    array_push($a_question_result,rawurlencode($o_survey->getTitle()));
+	    array_push($a_question_result,rawurlencode($this->AilterTextArea($o_survey->getComment())));
+	    for($i=0;$i<$o_question->getAllCount();$i++)
+	    {
+	    	if ($o_question->getType($i)==1)
+	    	{
+	    		//单选
+	    		if ($this->getPost('Question_'.$o_question->getId($i))=='')
+	    		{
+	    			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'“'.$o_question->getQuestion($i).'”未作答！\');' );
+	    		}
+	    		$o_option=new Student_Onboard_Survey_Options($this->getPost('Question_'.$o_question->getId($i)));
+	    		array_push($a_question_result,array(
+	    			$n_number,
+	    			$o_question->getType($i),
+	    			rawurlencode($o_question->getQuestion($i)),
+	    			rawurlencode($o_option->getOption())
+	    			));//把用户单选的题目记录到数组
+	    	}elseif ($o_question->getType($i)==2){
+	    		//多选
+	    		$a_temp=array();
+	    		$o_option=new Student_Onboard_Survey_Options();
+	    		$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId($i)) ); 
+	    		$o_option->PushOrder ( array ('Number','A') ); 
+	    		for($j=0;$j<$o_option->getAllCount();$j++)
+	    		{
+	    			if ($this->getPost('Option_'.$o_option->getId($j))=='on')
+	    			{
+	    				array_push($a_temp, rawurlencode($o_option->getOption($j)));
+	    			}
+	    		}
+	    		if (count($a_temp)==0)
+	    		{
+	    			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'“'.$o_question->getQuestion($i).'”未作答！\');' );
+	    		}
+	    		array_push($a_question_result,array(
+	    			$n_number,
+	    			$o_question->getType($i),
+	    			rawurlencode($o_question->getQuestion($i)),
+	    			$a_temp
+	    			));
+	    	}elseif ($o_question->getType($i)==3){
+	    		//简述
+	    		if ($this->getPost('Question_'.$o_question->getId($i))=='')
+	    		{
+	    			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'“'.$o_question->getQuestion($i).'”未作答！\');' );
+	    		}
+	    		array_push($a_question_result,array(
+	    			$n_number,
+	    			$o_question->getType($i),
+	    			rawurlencode($o_question->getQuestion($i)),
+	    			rawurlencode($this->getPost('Question_'.$o_question->getId($i)))
+	    			));//把用户简述内容记录到数组
+	    	}else{
+	    		//简述
+	    		array_push($a_question_result,array(
+	    			$n_number,
+	    			$o_question->getType($i),
+	    			rawurlencode($o_question->getQuestion($i)),
+	    			''
+	    			));//把用户简述内容记录到数组;
+	    		$n_number=0;
+	    	}
+	    	$n_number++;
+	    }
+		//开始保存至答案。
+		$o_answer=new Student_Onboard_Survey_Answers();
+		$o_answer->setSurveyId($o_survey->getId());
+		$o_answer->setUserId($n_uid);
+		$o_answer->setStudentId($o_stu->getStudentId(0));
+		$o_answer->setAnswer(json_encode($a_question_result));
+		if ($o_answer->Save()==false)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，服务器忙，请重试！\');' );
+		}
+		$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."survey_answer_completed.php';" );
+	}
 }
 ?>

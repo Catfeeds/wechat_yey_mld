@@ -2234,4 +2234,112 @@ class Student_Audit_Question_View extends CRUD
         ));
     }
 }
+class Student_Onboard_Survey extends CRUD
+{
+    protected $Id;
+    protected $Title;
+    protected $Comment;
+    protected $First;
+    protected $Remark;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_onboard_survey';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'title' => 'Title',
+                    'comment' => 'Comment',
+                    'first' => 'First',
+                    'remark' => 'Remark'
+        ));
+    }
+}
+class Student_Onboard_Survey_Questions extends CRUD
+{
+    protected $Id;
+    protected $SurveyId;
+    protected $Question;
+    protected $Type;
+    protected $Number;
+    protected $Explain;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_onboard_survey_questions';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'survey_id' => 'SurveyId',
+                    'question' => 'Question',
+                    'type' => 'Type',
+                    'number' => 'Number',
+                    'explain' => 'Explain'
+        ));
+    }
+}
+class Student_Onboard_Survey_Answers extends CRUD
+{
+    protected $Id;
+    protected $SurveyId;
+    protected $UserId;
+    protected $StudentId;
+    protected $Answer;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_onboard_survey_answers';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'survey_id' => 'SurveyId',
+                    'user_id' => 'UserId',
+                    'student_id' => 'StudentId',
+                    'answer' => 'Answer'
+        ));
+    }
+}
+class Student_Onboard_Survey_Options extends CRUD
+{
+    protected $Id;
+    protected $QuestionId;
+    protected $Option;
+    protected $Number;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_onboard_survey_options';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'question_id' => 'QuestionId',
+                    'option' => 'Option',
+                    'number' => 'Number'
+        ));
+    }
+}
 ?>

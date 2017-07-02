@@ -5,6 +5,12 @@ $(function(){
 	    	search_for_yeinfo()   
 	    }  
 	});
+	$('#Vcl_KeyTeacherYeInfo').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_teacher_yeinfo()   
+	    }  
+	});
 	$('#Vcl_KeyYeGraduate').keypress(function(event){  
 	    var keycode = (event.keyCode ? event.keyCode : event.which);  
 	    if(keycode == '13'){  
@@ -17,6 +23,18 @@ function search_for_yeinfo()
 {
 	var fun='YeInfo';
 	var id='Vcl_KeyYeInfo'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"OtherKey",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,key,encodeURIComponent(document.getElementById(id).value));    
+}
+function search_for_teacher_yeinfo()
+{
+	var fun='TeacherYeInfo';
+	var id='Vcl_KeyTeacherYeInfo'
 	$('.small_loading').fadeIn(100);
 	$.cookie(fun+"Page",1);
 	$.cookie(fun+"OtherKey",document.getElementById(id).value);

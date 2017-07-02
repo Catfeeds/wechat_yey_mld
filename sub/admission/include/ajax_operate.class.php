@@ -832,6 +832,8 @@ class Operate extends Bn_Basic {
 		$o_admission_setup=new Admission_Setup(1);
 		require_once RELATIVITY_PATH . 'sub/ye_info/include/ajax_operate.class.php';
 		$o_operate = new Operate_YeInfo ();
+		$o_system_setup=new Base_Setup(1);
+		$o_survey=new Student_Onboard_Survey(1);//读取入园问卷
 		for($i=0;$i<count($a_data);$i++)
 		{
 			//第一步，去采集系统验证是否可以添加
@@ -889,6 +891,32 @@ class Operate extends Bn_Basic {
 			$o_signup->setClassNumber($this->getPost('ClassId'));
 			$o_signup->Save();
 			$o_signup->CutSignupToOnboard($n_student_id);
+			//发送入园问卷调查			
+			$o_stu=new Student_Onboard_Info_Class_Wechat_View();
+			$o_stu->PushWhere ( array ('&&', 'StudentId', '=',$n_student_id) );
+			$o_stu->getAllCount();
+			$o_msg=new Wechat_Wx_User_Reminder();
+			$o_msg->setUserId($o_stu->getUserId(0));
+			$o_msg->setCreateDate($this->GetDateNow());
+			$o_msg->setSendDate('0000-00-00');
+			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+			$o_msg->setOpenId($o_stu->getOpenid(0));
+			$o_msg->setActivityId(0);
+			$o_msg->setSend(0);
+			$o_msg->setFirst($o_survey->getFirst().'
+	
+通知类型：问卷调查
+幼儿姓名：'.$o_stu->getName());
+				$o_msg->setKeyword1($o_stu->getClassName());
+				$s_teacher_name=$o_user->getName();
+				$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+				$o_msg->setKeyword3($this->GetDate());
+				$o_msg->setKeyword4($o_survey->getRemark());
+				$o_msg->setKeyword5('');
+				$o_msg->setRemark('');
+				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/onboard_survey_answer.php?id='.$o_survey->getId().'&studentid='.$o_stu->getStudentId(0));
+				$o_msg->setKeywordSum(10);
+				$o_msg->Save();	
 		}
 		if($s_result=='')
 		{
