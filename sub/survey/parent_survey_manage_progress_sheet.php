@@ -30,13 +30,13 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 .answer h2
 {
 	font-size:16px;
-	border-top: 1px solid #EFEFEF;
+	border-top: 1px solid #dddddd;
 	padding-top:10px;
 }
 .answer h3
 {
 	font-size:14px;
-	margin-left:20px;
+	margin-left:40px;
 	margin-top:15px;
 }
 .answer h4
@@ -69,14 +69,15 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 							</h4>
 						<h1>
 							<?php echo($o_survey->getTitle())?>
-							<h3>
+							<h3 style="margin-left:20px;">
 							<?php 
 				require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
 				$o_bn_base=new Bn_Basic();
 				echo($o_bn_base->AilterTextArea($o_survey->getComment()))?>
 							</h3>
 						</h1>
-						<?php 
+						<?php
+						$n_number=1;
 						$o_question=new Survey_Questions();
 						$o_question->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
 						$o_question->PushOrder ( array ('Number', 'A') );
@@ -91,9 +92,17 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								$s_type='简述';
 								$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
 							}
-							echo('
-							<h2><b>'.$o_question->getNumber($i).'. '.$o_question->getQuestion($i).'</b>（'.$s_type.'）
-							');
+							if ($o_question->getType ( $i )==4)
+							{
+								echo('
+								<h2><b>'.$o_question->getQuestion($i).'</b>
+								');
+								$n_number--;
+							}else{
+								echo('
+								<h2 style="margin-left:20px;border-top: 0px;">'.$n_number.'. '.$o_question->getQuestion($i).'（'.$s_type.'）
+								');
+							}							
 							$o_option=new Survey_Options();
 							$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId ( $i )) );
 							$o_option->PushOrder ( array ('Id','A') );
@@ -153,6 +162,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								');
 							}
 							echo('</h2>');
+							$n_number++;
 						}
 						?>
 						<button id="user_add_btn" type="button" class="btn btn-primary cancel" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="location='<?php echo($_SERVER['HTTP_REFERER'])?>'">返回</button>

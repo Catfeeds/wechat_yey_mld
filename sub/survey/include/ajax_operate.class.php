@@ -391,11 +391,14 @@ class Operate extends Bn_Basic {
 		$n_allcount = $o_user->getAllCount ();//总记录数
 		$n_count = $o_user->getCount ();
 		$a_row = array ();
+		$n_number=1;
 		for($i = 0; $i < $n_count; $i ++) {
 			$a_button = array ();
 			array_push ( $a_button, array ('修改', "location='parent_survey_manage_question_modify.php?questionid=".$o_user->getId($i)."'") );
 			array_push ( $a_button, array ('删除', "parent_survey_manage_question_delete(".$o_user->getId($i).")"));
 			$s_type='';
+			$s_number='<span class="label label-success">'.$n_number.'</span>';
+			$s_question='&nbsp;&nbsp;&nbsp;&nbsp;'.$o_user->getQuestion( $i );
 			$s_option='<span class="glyphicon glyphicon-chevron-down"></span>';
 			if ($o_user->getType ( $i )==1)
 			$s_type='单选';
@@ -405,10 +408,18 @@ class Operate extends Bn_Basic {
 			{
 				$s_type='简述';
 				$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+			}
+			if ($o_user->getType ( $i )==4)			
+			{
+				$s_type='子标题';
+				$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+				$s_question='<b style="font-size:14px;">'.$o_user->getQuestion( $i ).'</b>';
+				$s_number='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+				$n_number--;	
 			}			
 			array_push ($a_row, array (
-				'<span class="label label-success">'.$o_user->getNumber ( $i ).'</span>',
-				$o_user->getQuestion( $i ),
+				$s_number,
+				$s_question,
 				$s_type,
 				$s_option,
 				$a_button
@@ -426,7 +437,8 @@ class Operate extends Bn_Basic {
 					$o_option->getNumber($j).'. '.$o_option->getOption($j),
 					array ()
 				));
-			}					
+			}
+			$n_number++;				
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
@@ -707,9 +719,12 @@ class Operate extends Bn_Basic {
 		$o_answer=new Survey_Answers();
 		$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$s_id) );
 		$n_answer_sum=$o_answer->getAllCount();
+		$n_number=1;
 		for($i = 0; $i < $n_count; $i ++) {
 			$a_button = array ();
 			$s_type='';
+			$s_number='<span class="label label-success">'.$n_number.'</span>';
+			$s_question='&nbsp;&nbsp;&nbsp;&nbsp;'.$o_user->getQuestion( $i );
 			$s_option='<span class="glyphicon glyphicon-chevron-down"></span>';
 			if ($o_user->getType ( $i )==1)
 			$s_type='单选';
@@ -724,10 +739,18 @@ class Operate extends Bn_Basic {
 				$o_answer->PushWhere ( array ('&&', 'Answer'.$o_user->getNumber($i), '<>','') );
 				$s_option=$o_answer->getAllCount().' 人';
 				array_push ( $a_button, array ('详情', "location='parent_survey_manage_summary_detail.php?id=".$o_user->getId($i)."'") );
-			}			
+			}
+			if ($o_user->getType ( $i )==4)			
+			{
+				$s_type='子标题';
+				$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+				$s_question='<b style="font-size:14px;">'.$o_user->getQuestion( $i ).'</b>';
+				$s_number='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+				$n_number--;	
+			}		
 			array_push ($a_row, array (
-				'<span class="label label-success">'.$o_user->getNumber ( $i ).'</span>',
-				$o_user->getQuestion( $i ),
+				$s_number,
+				$s_question,
 				$s_type,
 				$s_option,
 				$a_button
@@ -756,6 +779,7 @@ class Operate extends Bn_Basic {
 					$a_button
 				));
 			}
+			$n_number++;
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();

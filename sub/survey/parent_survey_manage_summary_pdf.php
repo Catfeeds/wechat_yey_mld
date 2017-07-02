@@ -32,7 +32,8 @@ ob_start();
 				echo($o_bn_base->AilterTextArea($o_survey->getComment()))?>
 							</h4>
 						</h1>
-						<?php 
+						<?php
+						$n_number=1;
 						$o_question=new Survey_Questions();
 						$o_question->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
 						$o_question->PushOrder ( array ('Number', 'A') );
@@ -47,9 +48,17 @@ ob_start();
 								$s_type='简述';
 								$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
 							}
-							echo('
-							<h2><b>'.$o_question->getNumber($i).'. '.$o_question->getQuestion($i).'</b>（'.$s_type.'）
-							');
+							if ($o_question->getType ( $i )==4)
+							{
+								echo('
+								<h2><b>'.$o_question->getQuestion($i).'</b>
+								');
+								$n_number--;
+							}else{
+								echo('
+								<h2 style="margin-left:20px;border-top: 0px;">'.$n_number.'. '.$o_question->getQuestion($i).'（'.$s_type.'）
+								');
+							}
 							$o_option=new Survey_Options();
 							$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId ( $i )) );
 							$o_option->PushOrder ( array ('Id','A') );
@@ -90,6 +99,7 @@ ob_start();
 								
 							}
 							echo('</h2>');
+							$n_number++;
 						}
 						?>
 					</div>

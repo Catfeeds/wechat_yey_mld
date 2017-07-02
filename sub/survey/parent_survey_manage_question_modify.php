@@ -57,7 +57,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 						<input type="hidden" name="Vcl_QuestionId" value="<?php echo($_GET['questionid'])?>"/>
                     	<div class="sss_form">
                     		<div class="item">
-	                     		<label>题号：</label>
+	                     		<label>顺序：</label>
 	                     		<select name="Vcl_Number" id="Vcl_Number" class="selectpicker" data-style="btn-default">
 	                     		<?php
 	                     		if($_GET['questionid']>0)
@@ -133,7 +133,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 <script type="text/javascript">
 function change_type(obj)
 {
-	if (obj.value==3)
+	if (obj.value>=3)
 	{
 		$('.option').hide();
 	}else{

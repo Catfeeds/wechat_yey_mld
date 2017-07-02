@@ -48,6 +48,10 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 	font-size:16px;	
 	color:#000000;
 }
+.sub_title{
+	font-weight: bold;
+	font-size:20px;
+}
 .weui-cell__bd p
 {
 	color:#666666;
@@ -68,7 +72,8 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 				echo($o_bn_base->AilterTextArea($o_survey->getComment()))?>
 			</p>
 	    </div>
-	    <?php 
+	    <?php
+	    $n_number=1;
 	    $o_question=new Survey_Questions();
 	    $o_question->PushWhere ( array ('&&', 'SurveyId', '=',$_GET['id']) ); 
 	    $o_question->PushOrder ( array ('Number','A') );   
@@ -79,7 +84,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 	    	if ($o_question->getType($i)==1)
 	    	{
 	    		echo('
-		    	<div class="weui-cells__title">'.$o_question->getNumber($i).'. '.$o_question->getQuestion($i).' （单选）</div>
+		    	<div class="weui-cells__title">'.$n_number.'. '.$o_question->getQuestion($i).' （单选）</div>
 		    	');
 	    		//单选
 	    		echo('
@@ -93,7 +98,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 	    			echo('
 				    	<label class="weui-cell weui-check__label" for="Vcl_Option_'.$o_option->getId($j).'">
 			                <div class="weui-cell__bd">
-			                    <p>'.$o_option->getNumber($j).'. '.$o_option->getOption($j).'</p>
+			                    <p>&nbsp;&nbsp;&nbsp;&nbsp;'.$o_option->getNumber($j).'. '.$o_option->getOption($j).'</p>
 			                </div>
 			                <div class="weui-cell__ft">
 			                    <input value="'.$o_option->getId($j).'" type="radio" class="weui-check" name="Vcl_Question_'.$o_question->getId($i).'" id="Vcl_Option_'.$o_option->getId($j).'">
@@ -107,7 +112,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 		    	');
 	    	}else if ($o_question->getType($i)==2){
 	    		echo('
-		    	<div class="weui-cells__title">'.$o_question->getNumber($i).'. '.$o_question->getQuestion($i).' （多选）</div>
+		    	<div class="weui-cells__title">'.$n_number.'. '.$o_question->getQuestion($i).' （多选）</div>
 		    	');
 	    		//多选
 	    		echo('
@@ -121,7 +126,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 	    			echo('
 		    			<label class="weui-cell weui-check__label" for="Vcl_Option_'.$o_option->getId($j).'">			                
 			                <div class="weui-cell__bd">
-			                    <p>'.$o_option->getNumber($j).'. '.$o_option->getOption($j).'</p>
+			                    <p>&nbsp;&nbsp;&nbsp;&nbsp;'.$o_option->getNumber($j).'. '.$o_option->getOption($j).'</p>
 			                </div>
 			                <div class="weui-cell__hd">
 			                    <input type="checkbox" class="weui-check" name="Vcl_Option_'.$o_option->getId($j).'" id="Vcl_Option_'.$o_option->getId($j).'">
@@ -133,10 +138,10 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 	    		echo('
 		    	</div>
 		    	');
-	    	}else{
+	    	}else if ($o_question->getType($i)==3){
 	    		//简答
 	    		echo('
-	    		<div class="weui-cells__title">'.$o_question->getNumber($i).'. '.$o_question->getQuestion($i).' （简述）</div>
+	    		<div class="weui-cells__title">'.$n_number.'. '.$o_question->getQuestion($i).' （简述）</div>
 				<div class="weui-cells weui-cells_checkbox" style="margin-top:0px;">
 			        <div class="weui-cell">
 			            <div class="weui-cell__bd">
@@ -145,7 +150,14 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 			        </div>
 		        </div>
 	    		');
+	    	}else{
+	    		//简答
+	    		echo('
+	    		<div class="weui-cells__title sub_title">'.$o_question->getQuestion($i).'</div>	    		
+	    		');
+	    		$n_number--;
 	    	}
+	    	$n_number++;
 	    }
 	    ?>
 	    <div style="padding:15px;">

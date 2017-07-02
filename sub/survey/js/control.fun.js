@@ -181,7 +181,7 @@ function parent_survey_manage_question_modify()
         dialog_message('对不起，题目不能为空！')
         return
     }
-	if ($('#Vcl_Type').val()=='3')
+	if ($('#Vcl_Type').val()=='3' || $('#Vcl_Type').val()=='4')
 	{
 		
 	}else{
