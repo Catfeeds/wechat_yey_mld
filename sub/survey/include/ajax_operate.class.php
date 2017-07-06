@@ -851,6 +851,7 @@ class Operate extends Bn_Basic {
 		$o_table = new Survey_Answers();
 		//获得target的班级list
 		$o_table->PushWhere ( array ('&&', 'Answer'.$o_question->getNumber(), '<>','') );
+		$o_table->PushWhere ( array ('&&', 'SurveyId', '=',$o_question->getSurveyId()) );
 		$o_table->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
 		$o_table->setCountLine ( $this->N_PageSize );
@@ -868,7 +869,7 @@ class Operate extends Bn_Basic {
 			$s_answer=rawurldecode(str_replace('"', '', $s_answer));	
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),				
-				$o_table->getName ( $i ).$o_question->getNumber(),
+				$o_table->getName ( $i ),
 				$o_table->getClassName ( $i ),
 				$o_table->getSex ( $i ),
 				$o_table->getUserName ( $i ),
