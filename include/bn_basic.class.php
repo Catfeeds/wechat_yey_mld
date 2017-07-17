@@ -15,6 +15,12 @@ class Bn_Basic {
 	protected $S_UserPhoto;
 	protected $O_SelectItem=null;
 	protected $N_SelectItemCount=0;
+	protected function ImageCompress($s_from,$s_to,$n_percent)
+	{
+		require_once RELATIVITY_PATH . 'include/imageCompress.class.php';
+		$o_image=new ImgCompress($s_from,$n_percent);
+		$o_image->compressImg($s_to);
+	}
 	public function getWechatSetup($s_key)
 	{
 		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';

@@ -182,7 +182,8 @@ class Operate extends Bn_Basic {
 幼儿姓名：'.$a_temp[0]);
 			$o_msg->setKeyword1($a_temp[1]);
 			$s_teacher_name=$o_user->getName();
-			$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+			//$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+			$o_msg->setKeyword2($s_teacher_name.'老师');
 			$o_msg->setKeyword3($this->GetDate());
 			$o_msg->setKeyword4($this->getPost('Remark'));
 			$o_msg->setKeyword5('');
@@ -248,7 +249,7 @@ class Operate extends Bn_Basic {
 幼儿姓名：'.$a_temp[0]);
 			$o_msg->setKeyword1($a_temp[1]);
 			$s_teacher_name=$o_user->getName();
-			$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+			$o_msg->setKeyword2($s_teacher_name.'老师');
 			$o_msg->setKeyword3($this->GetDate());
 			$o_msg->setKeyword4($this->getPost('Remark'));
 			$o_msg->setKeyword5('');
