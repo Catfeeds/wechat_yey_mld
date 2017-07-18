@@ -1369,7 +1369,7 @@ class Operate extends Bn_Basic {
 	    			rawurlencode($o_question->getQuestion($i)),
 	    			$a_temp
 	    			));
-	    	}elseif ($o_question->getType($i)==3){
+	    	}elseif ($o_question->getType($i)==3 || $o_question->getType($i)==4){
 	    		//简述
 	    		if ($this->getPost('Question_'.$o_question->getId($i))=='')
 	    		{

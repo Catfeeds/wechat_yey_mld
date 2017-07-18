@@ -129,10 +129,10 @@ if ($o_stu->getAllCount()==0)
 	    		echo('
 		    	</div>
 		    	');
-	    	}elseif ($o_question->getType($i)==3){
+	    	}elseif ($o_question->getType($i)==3 || $o_question->getType($i)==4){
 	    		//简答
 	    		echo('
-	    		<div class="weui-cells__title">'.$n_number.'. '.$o_question->getQuestion($i).' （简述）</div>
+	    		<div class="weui-cells__title">'.$n_number.'. '.$o_question->getQuestion($i).'</div>
 				<div class="weui-cells weui-cells_checkbox" style="margin-top:0px;">
 			        <div class="weui-cell">
 			            <div class="weui-cell__bd">

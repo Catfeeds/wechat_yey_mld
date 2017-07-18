@@ -74,14 +74,13 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 							<?php 
 				require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
 				$o_bn_base=new Bn_Basic();
-				echo($o_bn_base->AilterTextArea(rawurldecode($a_answer[1])))?>
-							我的我的</h3>
+				echo($o_bn_base->AilterTextArea(rawurldecode($a_answer[1])))?></h3>
 						</h1>
 						<?php
 						for($i=2;$i<count($a_answer);$i++)
 						{
 							$a_temp=$a_answer[$i];
-							if ($a_temp[1]==4)
+							if ($a_temp[1]==0)
 							{
 								echo('
 								<h2><b>'.rawurldecode($a_temp[2]).'</b>
