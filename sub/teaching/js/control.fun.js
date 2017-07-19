@@ -1,15 +1,15 @@
 $(function(){
-	$('#Vcl_KeyParentSurveyManage').keypress(function(event){  
+	$('#Vcl_KeyWeiTeach').keypress(function(event){  
 	    var keycode = (event.keyCode ? event.keyCode : event.which);  
 	    if(keycode == '13'){  
-	    	search_for_parent_survey_manage()   
+	    	search_for_wei_teach()   
 	    }  
 	}); 
 })
-function search_for_parent_survey_manage()
+function search_for_wei_teach()
 {
-	var fun='ParentSurveyManage';
-	var id='Vcl_KeyParentSurveyManage'
+	var fun='WeiTeachTable';
+	var id='Vcl_KeyWeiTeach'
 	$('.small_loading').fadeIn(100);
 	$.cookie(fun+"Page",1);
 	$.cookie(fun+"Key",document.getElementById(id).value);

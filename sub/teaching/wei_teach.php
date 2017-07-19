@@ -1,10 +1,10 @@
 <?php
 define ( 'RELATIVITY_PATH', '../../' );
-define ( 'MODULEID', 120401);
+define ( 'MODULEID', 120501);
 $O_Session = '';
 require_once RELATIVITY_PATH . 'include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'head.php';
-$s_fun='ParentSurveyManage';
+$s_fun='WeiTeachTable';
 $s_item='CreateDate';
 $s_page=1;
 $s_sort='D';
@@ -21,19 +21,19 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 ?>
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
-                            <div class="caption">家长问卷列表</div>
+                            <div class="caption">微教学列表</div>
                             	<div class="row">
 								  <div class="col-lg-6">
 								    <div class="input-group" style="width:300px;" >
-								      <input id="Vcl_KeyParentSurveyManage" type="text" class="form-control" placeholder="标题/问卷对象" value="<?php echo($s_key)?>">
+								      <input id="Vcl_KeyWeiTeach" type="text" class="form-control" placeholder="标题/创建人" value="<?php echo($s_key)?>">
 								      <span class="input-group-btn">
-								        <button class="btn btn-primary" type="button" onclick="search_for_parent_survey_manage()"><span  class="glyphicon glyphicon-search"></span></button>
+								        <button class="btn btn-primary" type="button" onclick="search_for_wei_teach()"><span  class="glyphicon glyphicon-search"></span></button>
 								      </span>
 								    </div>
 								  </div>
 								</div>
-                                <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="location='parent_survey_manage_modify.php'">
-                                <span  class="glyphicon glyphicon-plus"></span>&nbsp;新建问卷</button>
+                                <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="location='wei_teach_modify.php'">
+                                <span  class="glyphicon glyphicon-plus"></span>&nbsp;新建微教学</button>
                             </div>
                         <table class="table table-striped">
                             <thead>
@@ -50,9 +50,6 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 					</script>
 		
 <script>
-clear_cookie('ParentSurveyManageSummary');//从第一页开始显示
-clear_cookie('ParentSurveyManageAnswered');//从第一页开始显示
-clear_cookie('ParentSurveyManageProgress');//从第一页开始显示
 var table='<?php echo($s_fun)?>';
 </script>
 <?php
