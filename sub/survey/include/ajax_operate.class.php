@@ -501,53 +501,51 @@ class Operate extends Bn_Basic {
 		}
 		//保存数据到问卷信息
 		$o_survey=new Survey($this->getPost('Id'));
+		if($o_survey->getState()=='0')
 		{
-			if($o_survey->getState()=='0')
+			//只有未发布的问卷才能往下进行
+			$o_survey->setReleaseDate($this->GetDateNow());
+			$o_survey->setTargetName(substr($s_target_name,0,strlen($s_target_name)-1));
+			$o_survey->setTargetList(json_encode($a_target));
+			$o_survey->setFirst($this->getPost('First'));
+			$o_survey->setRemark($this->getPost('Remark'));
+			$o_survey->setState(1);
+			$o_survey->Save();
+			//根据问卷对象循环发送通知
+			$o_system_setup=new Base_Setup(1);
+			require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+			for($i=0;$i<count($a_target);$i++)
 			{
-				//只有未发布的问卷才能往下进行
-				$o_survey->setReleaseDate($this->GetDateNow());
-				$o_survey->setTargetName(substr($s_target_name,0,strlen($s_target_name)-1));
-				$o_survey->setTargetList(json_encode($a_target));
-				$o_survey->setFirst($this->getPost('First'));
-				$o_survey->setRemark($this->getPost('Remark'));
-				$o_survey->setState(1);
-				$o_survey->Save();
-			}
-		}
-		//根据问卷对象循环发送通知
-		$o_system_setup=new Base_Setup(1);
-		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
-		for($i=0;$i<count($a_target);$i++)
-		{
-			//获取用户列表
-			$o_stu=new Student_Onboard_Info_Class_Wechat_View();
-			$o_stu->PushWhere ( array ('&&', 'ClassNumber', '=',$a_target[$i]) );
-			for($j=0;$j<$o_stu->getAllCount();$j++)
-			{
-				//添加消息队列
-				$o_msg=new Wechat_Wx_User_Reminder();
-				$o_msg->setUserId($o_stu->getUserId($j));
-				$o_msg->setCreateDate($this->GetDateNow());
-				$o_msg->setSendDate('0000-00-00');
-				$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
-				$o_msg->setOpenId($o_stu->getOpenid($j));
-				$o_msg->setActivityId(0);
-				$o_msg->setSend(0);
-				$o_msg->setFirst($this->getPost('First').'
-	
+				//获取用户列表
+				$o_stu=new Student_Onboard_Info_Class_Wechat_View();
+				$o_stu->PushWhere ( array ('&&', 'ClassNumber', '=',$a_target[$i]) );
+				for($j=0;$j<$o_stu->getAllCount();$j++)
+				{
+					//添加消息队列
+					$o_msg=new Wechat_Wx_User_Reminder();
+					$o_msg->setUserId($o_stu->getUserId($j));
+					$o_msg->setCreateDate($this->GetDateNow());
+					$o_msg->setSendDate('0000-00-00');
+					$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+					$o_msg->setOpenId($o_stu->getOpenid($j));
+					$o_msg->setActivityId(0);
+					$o_msg->setSend(0);
+					$o_msg->setFirst($this->getPost('First').'
+		
 通知类型：问卷调查
 幼儿姓名：'.$o_stu->getName($j));
-				$o_msg->setKeyword1($o_stu->getClassName($j));
-				$s_teacher_name=$o_user->getName();
-				$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
-				$o_msg->setKeyword3($this->GetDate());
-				$o_msg->setKeyword4($this->getPost('Remark'));
-				$o_msg->setKeyword5('');
-				$o_msg->setRemark('');
-				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/survey_answer.php?id='.$this->getPost('Id').'&studentid='.$o_stu->getStudentId($j));
-				$o_msg->setKeywordSum(10);
-				$o_msg->Save();	
-			}			
+					$o_msg->setKeyword1($o_stu->getClassName($j));
+					$s_teacher_name=$o_user->getName();
+					$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+					$o_msg->setKeyword3($this->GetDate());
+					$o_msg->setKeyword4($this->getPost('Remark'));
+					$o_msg->setKeyword5('');
+					$o_msg->setRemark('');
+					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/survey_answer.php?id='.$this->getPost('Id').'&studentid='.$o_stu->getStudentId($j));
+					$o_msg->setKeywordSum(10);
+					$o_msg->Save();	
+				}			
+			}
 		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发布问卷成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
 	}

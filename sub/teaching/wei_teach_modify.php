@@ -25,7 +25,7 @@ require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 									exit(0);
 								}
                             }else{
-                            	echo('修改微教学');
+                            	echo('新建微教学');
                             }
                             ?>
                             </div>
@@ -49,14 +49,14 @@ require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 	                     	<div class="item">
 	                     		<label>当前缩略图：</label>
 	                     		<div style="width:100%">
-	                     		<img style="width:414px;height:230px;border: 0px" src="<?php echo($o_dept->getPicUrl())?>" alt="" />
+	                     		<img style="width:128px;height:128px;border: 0px" src="../../<?php echo($o_table->getIcon())?>" alt="" />
 	                     		</div>
 	                     	</div>
 	                     	<div class="item">
 	                     		<label> 修改缩略图：</label><br/>
 	                     		<div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
 	                     		<fieldset disabled>
-                    					<input class="form-control" placeholder="图片建议尺寸：1M以内，正方形，宽度不要大于400像素" size="16" type="text" id="Vcl_Upload" readonly="readonly"/>
+                    					<input class="form-control" placeholder="图片建议尺寸：1M以内，正方形，宽度不要大于200像素" size="16" type="text" id="Vcl_Upload" readonly="readonly"/>
                     					</fieldset>
 										<span class="input-group-addon" style="cursor:pointer;" onclick="$('#Vcl_File').click()"><span class="glyphicon glyphicon-folder-open"></span></span>
                 					</div>
@@ -69,7 +69,7 @@ require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 	                     		<label><span class="must">*</span> 缩略图：</label><br/>
 	                     		<div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
 	                     		<fieldset disabled>
-                    					<input class="form-control" placeholder="图片建议尺寸：1M以内，正方形，宽度不要大于400像素" size="16" type="text" id="Vcl_Upload" readonly="readonly"/>
+                    					<input class="form-control" placeholder="图片建议尺寸：1M以内，正方形，宽度不要大于200像素" size="16" type="text" id="Vcl_Upload" readonly="readonly"/>
                     					</fieldset>
 										<span class="input-group-addon" style="cursor:pointer;" onclick="$('#Vcl_File').click()"><span class="glyphicon glyphicon-folder-open"></span></span>
                 					</div>
@@ -77,16 +77,7 @@ require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 	                     	</div>
 	                     		<?php
 	                     	}
-	                     	?>	                     	
-	                     	<div class="item">
-	                     		<label><span class="must">*</span> 视频地址：</label>
-	                     		<input name="Vcl_Video" maxlength="255" id="Vcl_Video" type="text" style="width:100%" placeholder="必填" class="form-control"/>
-	                     	</div>
-	                     	<div class="item">
-	                     		<label>如何获取视频地址？</label>
-	                     		在浏览器中，打开您的腾讯视频，点击左下方的分享按钮，将“通用代码”复制到文本框中即可，如下图：<br/>
-	                     		<img style="border: 1px solid #ccc;margin-top:5px;" src="images/copy_video_url.jpg">
-	                     	</div>
+	                     	?>	 
 	                     	<div class="item">
 	                     	<style>
 	                     	#edui1,#edui1_iframeholder{
@@ -100,10 +91,19 @@ require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 	                     			echo(rawurldecode($o_table->getComment()));
 	                     		}
 	                     		?></script>
+	                     	</div>                    	
+	                     	<div class="item">
+	                     		<label><span class="must">*</span> 教学视频地址：</label>
+	                     		<input name="Vcl_Video" maxlength="255" id="Vcl_Video" type="text" style="width:100%" placeholder="必填" class="form-control"/>
 	                     	</div>
 	                     	<div class="item">
+	                     		<label><a style="color:#3498DB" href="javascript:;" onclick="$('#explain').show()">如何获取教学视频地址？</a></label>
+	                     		<span id="explain" style="display:none">在浏览器中，打开您的腾讯视频，点击左下方的分享按钮，将“通用代码”复制到文本框中即可，如下图：<br/>
+	                     		<img style="border: 1px solid #ccc;margin-top:5px;" src="images/copy_video_url.jpg"></span>
+	                     	</div>	                     	
+	                     	<div class="item">
 								<button id="user_add_btn" type="button" class="btn btn-default cancel" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="location='<?php echo($_SERVER['HTTP_REFERER'])?>'"><?php echo(Text::Key('Cancel'))?></button>
-								<button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="send_notice_multiple()">暂存</button>
+								<button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="wei_teach_add_submit()">暂存</button>
 							</div>                   	
                      	</div>
                      </form>
@@ -115,13 +115,13 @@ require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 var ue = UE.getEditor('editor',{toolbars:[
                                           [ 'bold', 'italic', 'underline', 'strikethrough', 'removeformat', '|', 'forecolor','insertunorderedlist', '|',
                                            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify']
-                                   ],iframeCssUrl: 'css/ueditor.css'});
+                                   ],iframeCssUrl: 'css/ueditor.css',initialFrameHeight:200});
 <?php 
 if($_GET['id']>0)
 {
 ?>
 $('#Vcl_Title').val('<?php echo($o_table->getTitle())?>');
-$('#Vcl_Video').val('<?php echo($o_table->getVideo())?>');
+$('#Vcl_Video').val('<iframe frameborder="0" width="640" height="498" src="<?php echo($o_table->getVideo())?>" allowfullscreen></iframe>');
 <?php 
 }
 ?>

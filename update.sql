@@ -20,3 +20,5 @@ CREATE TABLE `teaching_wei_teach` (
 DROP TABLE IF EXISTS `teaching_wei_teach_view`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `teaching_wei_teach_view` AS select `teaching_wei_teach`.`id` AS `id`,`teaching_wei_teach`.`owner_id` AS `owner_id`,`wechat_base_user_info`.`name` AS `owner_name`,`teaching_wei_teach`.`create_date` AS `create_date`,`teaching_wei_teach`.`release_date` AS `release_date`,`teaching_wei_teach`.`state` AS `state`,`teaching_wei_teach`.`title` AS `title`,`teaching_wei_teach`.`comment` AS `comment`,`teaching_wei_teach`.`video` AS `video`,`teaching_wei_teach`.`icon` AS `icon`,`teaching_wei_teach`.`target` AS `target`,`teaching_wei_teach`.`target_name` AS `target_name`,`teaching_wei_teach`.`visitor_num` AS `visitor_num` from (`teaching_wei_teach` join `wechat_base_user_info` on((`teaching_wei_teach`.`owner_id` = `wechat_base_user_info`.`uid`)));
+
+ALTER TABLE `teaching_wei_teach` CHANGE `visitor_num` `visitor_num` INT(8) UNSIGNED NOT NULL DEFAULT '0' COMMENT '访问量';
