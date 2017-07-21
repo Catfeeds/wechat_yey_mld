@@ -100,7 +100,7 @@ function wei_teach_delete(id) {
 }
 function wei_teach_review(id)
 {
-	dialog_confirm('请使用微信扫描下方二维码进行预览：<br/><br/><img style="width:50%;margin-left:25%" src="wei_teach_review_qrcode.php?id='+id+'"/>');
+	dialog_message('请使用微信扫描下方二维码进行预览：<br/><br/><img style="width:50%;margin-left:25%" src="wei_teach_review_qrcode.php?id='+id+'"/>');
 }
 function wei_teach_release()
 {	
