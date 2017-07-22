@@ -38,10 +38,10 @@ require_once '../header.php';
  	<div class="page__hd" style="padding:15px;padding-top:0px;">
         <h1 class="page__title" style="font-size:25px;text-align:center;padding-top:20px;padding-bottom:10px;"><?php echo($o_table->getTitle())?></h1>
         <div style="color:#999999">
-			时间：<?php 
+			日期：<?php 
 			$s_release=explode(' ', $o_table->getReleaseDate());
 			echo($s_release[0])?><br/>
-			日期：<?php echo($o_table->getOwnerName())?>老师
+			发布人：<?php echo($o_table->getOwnerName())?>老师
 			</div>
         <div class="weui-media-box_text">
 			<?php echo(rawurldecode($o_table->getComment()))?>			
