@@ -113,7 +113,7 @@ require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 <script type="text/javascript" charset="utf-8" src="<?php echo(RELATIVITY_PATH)?>sub/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
 var ue = UE.getEditor('editor',{toolbars:[
-                                          [ 'bold', 'italic', 'underline', 'strikethrough', 'removeformat', '|', 'forecolor','insertunorderedlist', '|',
+                                          [ 'bold', 'italic', 'underline', 'strikethrough', 'removeformat','forecolor',
                                            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify']
                                    ],iframeCssUrl: 'css/ueditor.css',initialFrameHeight:200});
 <?php 

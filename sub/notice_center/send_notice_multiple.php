@@ -107,8 +107,8 @@ $o_table->getAllCount();
 <script type="text/javascript" charset="utf-8" src="<?php echo(RELATIVITY_PATH)?>sub/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
 var ue = UE.getEditor('editor',{toolbars:[
-                                          [ 'bold', 'italic', 'underline', 'strikethrough', 'removeformat', '|', 'forecolor','insertunorderedlist', '|',
-                                           'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify']
+                                          [ 'bold', 'italic', 'underline', 'strikethrough', 'removeformat','forecolor',
+                                            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify']
                                    ],iframeCssUrl: 'css/ueditor.css'});
 </script>
 <?php
