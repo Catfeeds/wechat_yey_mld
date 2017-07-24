@@ -72,7 +72,7 @@ class Operate extends Bn_Basic {
 			$o_object=new Dailywork_Payroll_Object();
 			$o_object->setOperatorId($n_uid);
 			$o_object->setOperatorDate($this->GetDateNow());
-			$o_object->setDate($this->GetDateNow());
+			$o_object->setDate($this->getPost('Date'));
 			$o_object->Save();
 			$filePath= RELATIVITY_PATH . 'userdata/dailywork/payroll/'.$o_object->getId().'.' . $fileext;
 			copy ( $_FILES ['Vcl_File'] ['tmp_name'],$filePath);
@@ -147,7 +147,7 @@ class Operate extends Bn_Basic {
 						$s_value=sprintf("%.2f",$s_value);
 					}elseif($s_value=='')
 					{
-						$s_value=0;
+						$s_value=sprintf("%.2f",0);
 					}				
 					$a_temp=array(rawurlencode($o_item->getName($i)),rawurlencode($s_value));
 					array_push($a_data,$a_temp);
