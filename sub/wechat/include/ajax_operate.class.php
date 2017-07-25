@@ -396,17 +396,17 @@ class Operate extends Bn_Basic {
 				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId(), // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
-					'first' => array('value' => '您所报名的如下幼儿已经被我园录取，请按时带幼儿进行注册，未能按时注册视为自动放弃入园资格。
+					'first' => array('value' => '您所报名的如下幼儿已经被我园录取，请家长按时参加幼儿园家长学校培训，未能按时参加培训视为自动放弃入园资格。
 '),
 					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
 					'keyword3' => array('value' => $o_stu->getIdType(),'color'=>'#173177'),
 					'keyword4' => array('value' => $o_stu->getId(),'color'=>'#173177'),
 					'keyword5' => array('value' => $o_stu->getClassMode(),'color'=>'#173177'),
-					'remark' => array('value' => '注册时间：2017年8月25日 08：30
-注册地点：北京市西城区红莲中里10号。
+					'remark' => array('value' => '培训时间：2017年8月4日 09:00
+培训地点：北京市西城区红莲南路57-2号。马连道党群活动服务中心。
 				
-报到注意事项请点击详情查看。')
+注意事项请点击详情查看。')
 				)
 				);
 			$curlUtil->https_request($s_url, json_encode($data));
@@ -419,7 +419,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setOpenId($o_parent->getOpenId());
 			$o_msg->setActivityId(0);
 			$o_msg->setSend(1);
-			$o_msg->setFirst('您所报名的如下幼儿已经被我园录取，请按时带幼儿进行注册，未能按时注册视为自动放弃入园资格。');
+			$o_msg->setFirst('您所报名的如下幼儿已经被我园录取，请家长按时参加幼儿园家长学校培训，未能按时参加培训视为自动放弃入园资格。');
 			$o_msg->setKeyword1($o_stu->getStudentId());
 			$o_msg->setKeyword2($o_stu->getName());
 			$o_msg->setKeyword3($o_stu->getIdType());

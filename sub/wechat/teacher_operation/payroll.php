@@ -25,7 +25,10 @@ require_once '../header.php';
         	?>        	
 	            <div class="weui-cell weui-cell_access" onclick="location='payroll_detail.php?id=<?php echo($o_list->getId($i))?>'">
 	                <div class="weui-cell__bd">
-	                    <span style="vertical-align: middle"><?php echo($o_list->getDate($i))?></span>
+	                    <span style="vertical-align: middle"><?php 
+	                    //只显示年月
+	                    $a_temp=explode('-', $o_list->getDate($i));
+	                    echo($a_temp[0].'年'.$a_temp[1].'月')?></span>
 	                </div>
 	                <div class="weui-cell__ft"></div>
 	            </div>              

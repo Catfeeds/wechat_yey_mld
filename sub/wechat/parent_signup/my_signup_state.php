@@ -240,12 +240,9 @@ function format_remark($s_str)
                     if ($o_stu->getState(0)==6)
                     {
                     ?>
-                	<h4 class="weui-media-box__title" style="text-align:center;font-size:22px;padding-top:15px;padding-bottom:15px;"><b>报到注册注意事项</b></h4>
+                	<h4 class="weui-media-box__title" style="text-align:center;font-size:22px;padding-top:15px;padding-bottom:15px;"><b>注意事项</b></h4>
                     <h4 class="weui-media-box__title" style="font-size:14px;color:#333333">
-1. 请您到工商银行的任意一个网点用幼儿的名字办理一张用于收费业务的银行卡，同时开通此卡的网上银行功能。<br/><br/>
-2. 用A4纸复印以上银行卡的正面（带卡号面），在空白处写上持卡人的姓名、卡号、家长手机号，注册登记时交到幼儿园财务室。<br/><br/>
-3. 携带幼儿保健记录本（需到原来管理的保健科迁出），并于注册登记时交到幼儿园保健室。<br/><br/>
-4. 用A4纸复印预防接种证，并于注册登记时交到幼儿园保健室。
+家长您好：请于2017年8月4日早9:00到北京市西城区马连道党群活动服务中心（地址：北京市西城区广外街道红莲南路57-2号）参加马连道幼儿园新生家长学校“育儿有道，做合格家长”培训，请您务必准时参加。（监护人参加不带幼儿）
 					</h4>
 					<?php 
                     }

@@ -33,7 +33,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								    <div class="input-group" style="width:300px;" >
 								      <input id="Vcl_KeyHealthWait" type="text" class="form-control" placeholder="幼儿编号/姓名/证件号" value="<?php echo($s_key)?>">
 								      <span class="input-group-btn">
-								        <button class="btn btn-primary" type="button" onclick="search_for_htalth_wait()"><span  class="glyphicon glyphicon-search"></span></button>
+								        <button class="btn btn-primary" type="button" onclick="search_for_health_wait()"><span  class="glyphicon glyphicon-search"></span></button>
 								      </span>
 								    </div>
 								  </div>

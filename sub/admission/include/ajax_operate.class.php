@@ -906,8 +906,8 @@ class Operate extends Bn_Basic {
 			$o_msg->setFirst($o_survey->getFirst().'
 	
 通知类型：问卷调查
-幼儿姓名：'.$o_stu->getName());
-				$o_msg->setKeyword1($o_stu->getClassName());
+幼儿姓名：'.$o_stu->getName(0));
+				$o_msg->setKeyword1($o_stu->getClassName(0));
 				$s_teacher_name=$o_user->getName();
 				$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
 				$o_msg->setKeyword3($this->GetDate());
