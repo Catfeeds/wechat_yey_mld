@@ -34,7 +34,7 @@ require_once '../header.php';
 		            <span class="weui-form-preview__value"><?php 
 						//只显示年月
 	                    $a_temp=explode('-', $o_detail->getDate());
-	                    echo($a_temp[0].'年'.$a_temp[1].'月')?></span>
+	                    echo($a_temp[0].'年'.(int)$a_temp[1].'月')?></span>
 		        </div>
 		        <?php 
 		        $a_data=json_decode($o_detail->getDetail());

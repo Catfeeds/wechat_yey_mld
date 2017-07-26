@@ -1,6 +1,5 @@
 <?php
-exit(0);
-//管理员自定义菜单
+//教职工自定义菜单
 define ( 'RELATIVITY_PATH', '../../' );
 ini_set("display_errors", "On");
 header('Content-Type: text/html; charset=UTF-8');
@@ -12,29 +11,24 @@ $ACC_TOKEN= $token->access_token;
 $data='{ 
     "button":[
  	{	
-		"name":"学生管理",
+		"name":"幼儿管理",
 		"sub_button": [
                 {
-                    "type": "view", 
-                    "name": "学生录取", 
-                    "url": "http://xchmsxx.xchjw.cn/sub/wechat/wechat_teacher/stu_course_list.php" 
-                }, 
-                {
-					"type": "view", 
-                    "name": "记录考勤", 
-                    "url": "http://xchmsxx.xchjw.cn/sub/wechat/wechat_teacher/stu_checkingin_course.php" 
+					"type": "click", 
+                    "name": "考勤记录", 
+                    "key": "[2]"
                 }
             ]
 	},
-	{	
-		"type":"view",
-		"name":"我的课程",
-		"url": "http://xchmsxx.xchjw.cn/sub/wechat/wechat_teacher/my_course_list.php" 
-	},
     {	
-		"type":"click",
 		"name":"个人信息",
-		"key": "2"
+		"sub_button": [
+                {
+					"type": "view", 
+                    "name": "工资条", 
+                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/payroll.php" 
+                }
+            ]
 	}],
     "matchrule":{
       "tag_id":"101"

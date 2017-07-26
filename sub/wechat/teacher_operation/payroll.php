@@ -28,7 +28,7 @@ require_once '../header.php';
 	                    <span style="vertical-align: middle"><?php 
 	                    //只显示年月
 	                    $a_temp=explode('-', $o_list->getDate($i));
-	                    echo($a_temp[0].'年'.$a_temp[1].'月')?></span>
+	                    echo($a_temp[0].'年'.(int)$a_temp[1].'月')?></span>
 	                </div>
 	                <div class="weui-cell__ft"></div>
 	            </div>              
