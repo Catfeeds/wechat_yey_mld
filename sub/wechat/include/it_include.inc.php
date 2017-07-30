@@ -17,15 +17,17 @@ $b_login=false;
 $n_uid=0;
 $S_Session_Id= $_COOKIE ['SESSIONID'];
 if (isset ( $_COOKIE ['SESSIONID'] )) {//检查是否保存了Session
-	//setcookie ( 'SESSIONID', '805a1061d88608b62d3416dccfc3d7ec',0 ,'/','',false,true);
+	//setcookie ( 'SESSIONID', '68ce2a614b5a87ebb1a2b75e77719230',0 ,'/','',false,true);
 	$S_Session_Id= $_COOKIE ['SESSIONID'];
 	$o_user = new WX_User_Info ();
 	$o_user->PushWhere ( array ('&&', 'SessionId', '=',$S_Session_Id) );
 	if ($o_user->getAllCount () > 0) {
 		$b_login=true;
 		$n_uid=$o_user->getId ( 0 );
+		$n_uid=4;
 	} else {
 		$n_uid=0;
+		//$b_login=true;$n_uid=4;		
 	}
 } else {
 	//如果Sessionid不存在，说明第一次打开，跳转到index页面去获得Sessionid

@@ -5,6 +5,7 @@ require_once RELATIVITY_PATH . 'include/db_view.class.php';
 require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
 require_once RELATIVITY_PATH . 'include/bn_user.class.php';
 require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
 class Operate_YeInfo extends Bn_Basic {
 	protected $N_PageSize= 50;
 	protected $S_Key='';//密钥
@@ -1608,6 +1609,82 @@ class Operate_YeInfo extends Bn_Basic {
 		} else {
 			return true;
 		}
+	}
+	public function TeacherCheckinForm($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User($n_uid);
+		if (!$o_user->ValidModule ( 120200 ))//如果没有权限，不返回任何值
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'非法操作，请与管理员联系。！[001]\');');
+		}
+		//开始记录考勤
+		//1.先检查今天的考勤是否存在。
+		$o_checkingin=new Student_Onboard_Checkingin();
+		$o_checkingin->PushWhere ( array ('&&', 'ClassId', '=',$this->getPost('ClassId')) );
+		$o_checkingin->PushWhere ( array ('&&', 'Date', '=',$this->GetDate()) );
+		if ($o_checkingin->getAllCount()>0)
+		{
+			//更新
+			$o_checkingin=new Student_Onboard_Checkingin($o_checkingin->getId(0));
+		}else{
+			//新建
+			$o_checkingin=new Student_Onboard_Checkingin();
+			$o_checkingin->setClassId($this->getPost('ClassId'));
+			$o_checkingin->setDate($this->GetDate());
+		}
+		//2. 统计人数，所有被录取的人数
+		$a_in=array();
+		$a_out=array();
+		$o_signup=new Student_Onboard_Info_Class_View();
+        $o_signup->PushWhere ( array ('&&', 'ClassNumber', '=',$this->getPost('ClassId')) );
+		$o_signup->PushWhere ( array ('&&', 'State', '=',1) );
+		for($i=0;$i<$o_signup->getAllCount();$i++)
+		{
+			if ($this->getPost('StudentId_'.$o_signup->getStudentId($i))=='on')
+			{
+				array_push($a_in, $o_signup->getStudentId($i));
+			}else{
+				array_push($a_out, $o_signup->getStudentId($i));
+				/*
+				//查找学生都有哪些微信与之关联
+				$o_parent= new Student_Info_Wechat_View();
+				$o_parent->PushWhere ( array ('&&', 'StudentId', '=',$o_signup->getStudentId($i)) );
+				require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';
+				$o_sys_info=new Base_Setup(1);
+				$o_token=new accessToken();
+				$curlUtil = new curlUtil();
+				$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
+				for($j=0;$j<$o_parent->getAllCount();$j++)
+				{
+					$data = array(
+				    	'touser' => $o_parent->getOpenId($j), // openid是发送消息的基础
+						'template_id' => 'E0kCn1ioTruoYRdQfQv8WYSnRK_ra8ionJ_F7EtGg1M', // 模板id
+						'url' => '', // 点击跳转地址
+						'topcolor' => '#FF0000', // 顶部颜色
+						'data' => array(
+							'first' => array('value' =>'学生“'.$o_parent->getName($j).'”考勤异常，请您关注：
+							'),
+							'keyword1' => array('value' => '尚未出勤','color'=>'#FF0000'),
+							'keyword2' => array('value' => $o_course->getTime(),'color'=>'#173177'),
+							'keyword3' => array('value' => $o_course->getName(),'color'=>'#173177'),
+							'keyword4' => array('value' => $o_course->getTeacherName(),'color'=>'#173177'),
+							'remark' => array('value' => '
+如有问题，请与学校核实。')
+						) 
+					);
+					$curlUtil->https_request($s_url, json_encode($data));	
+				}*/
+			}
+		}
+		$o_checkingin->setAbsenteeismStu(json_encode($a_out));
+		$o_checkingin->setAbsenteeismSum(count($a_out));
+		$o_checkingin->setCheckinginSum(count($a_in));
+		$o_checkingin->setActive(1);
+		$o_checkingin->Save();
+		$this->setReturn ( 'parent.location=\''.$this->getPost('Url').'stu_checkin_success.php?id='.$o_checkingin->getId().'\'');
 	}
 }
 
