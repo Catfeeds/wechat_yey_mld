@@ -1405,5 +1405,25 @@ class Operate extends Bn_Basic {
 		}
 		$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."survey_answer_completed.php';" );
 	}
+	public function ParentAskForLeave($n_uid)
+	{
+		sleep(1);
+		if ($n_uid>0)
+		{
+			
+		}else{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
+		}
+		require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
+		$o_checkin=new Student_Onboard_Checkingin_Parent();
+		$o_checkin->setUserId($n_uid);
+		$o_checkin->setStudentId($this->getPost('StudentId'));
+		$o_checkin->setStartDate($this->getPost('StartDate'));
+		$o_checkin->setEndDate(date('Y-m-d',strtotime('+'.((int)$this->getPost('EndDate')-1).' day',strtotime($this->getPost('StartDate')))));//开始日期加上天数
+		$o_checkin->setType($this->getPost('Type'));
+		$o_checkin->setComment($this->getPost('Comment'));
+		$o_checkin->Save();
+		$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."askforleave_apply_success.php';" );
+	}
 }
 ?>
