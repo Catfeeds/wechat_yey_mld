@@ -129,4 +129,43 @@ class Student_Onboard_Checkingin_Parent extends CRUD
         ));
     }
 }
+class Student_Onboard_Checkingin_Parent_View extends CRUD
+{
+    protected $Id;
+    protected $UserId;
+    protected $ParentName;
+    protected $StudentId;
+    protected $Name;
+    protected $ClassNumber;
+    protected $Date;
+    protected $Type;
+    protected $Comment;
+    protected $StartDate;
+    protected $EndDate;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_onboard_checkingin_parent_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'user_id' => 'UserId',
+                    'parent_name' => 'ParentName',
+                    'student_id' => 'StudentId',
+                    'name' => 'Name',
+                    'class_number' => 'ClassNumber',
+                    'date' => 'Date',
+                    'type' => 'Type',
+                    'comment' => 'Comment',
+                    'start_date' => 'StartDate',
+                    'end_date' => 'EndDate'
+        ));
+    }
+}
 ?>

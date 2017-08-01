@@ -44,6 +44,14 @@ function askforleave_submit()
 		})		
 		return
 	}
+	var s_startdate=document.getElementById("Vcl_StartDate").value
+	var s_currentdate=document.getElementById("Vcl_CurrentDate").value
+	if (new Date(s_startdate.replace(/-/g,"\/"))<new Date(s_currentdate.replace(/-/g,"\/")))
+	{
+		Dialog_Message("[请假日期] 必须大于或等于今天！",function(){
+		})		
+		return
+	}
 	if (document.getElementById("Vcl_EndDate").value=="")
 	{
 		Dialog_Message("[请假天数] 不能为空！",function(){
@@ -66,4 +74,15 @@ function askforleave_submit()
 		Common_OpenLoading();
 		document.getElementById("submit_form").submit();	
 	});
+}
+function askforleave_cancel(id)
+{
+    Dialog_Confirm('真的要取消请假吗？',function(){
+    	Common_OpenLoading();
+    	var data = 'Ajax_FunName=ParentAskForLeaveCancel'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("../include/bn_submit.switch.php", data, function (json) {
+        	window.location.href="askforleave_record.php?"+Date.parse(new Date());  	
+        })
+    })
 }
