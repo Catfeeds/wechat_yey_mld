@@ -15,12 +15,23 @@ if ($o_stu->getAllCount()==0)
 	exit(0);
 }
 $o_date = new DateTime ( 'Asia/Chongqing' );
+$s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' );
 require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
 ?>
 <form action="../include/bn_submit.switch.php" id="submit_form" method="post" target="ajax_submit_frame" onsubmit="this.submit()">
 	<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 	<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
-	<input type="hidden" id="Vcl_CurrentDate" value="<?php echo($o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ));?>"/>
+	<input type="hidden" id="Vcl_CurrentDate" value="<?php 
+	//如果老师记录考勤了，那么日期需要+1
+	$o_checkin=new Student_Onboard_Checkingin();
+    $o_checkin->PushWhere ( array ('&&', 'ClassId', '=',$o_stu->getClassNumber(0)));
+	$o_checkin->PushWhere ( array ('&&', 'Date', '=',$s_date) );
+	if ($o_checkin->getAllCount()>0)
+	{
+		$s_date=date('Y-m-d',strtotime('+1 day',strtotime($s_date)));
+	}
+	echo($s_date);
+	?>"/>
 	<input type="hidden" name="Vcl_FunName" value="ParentAskForLeave"/>
 	<div class="page__bd">
 		<div class="weui-tab">
@@ -65,7 +76,7 @@ require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
 					<div class="weui-cell__hd"><label class="weui-label">请假日期</label></div>
 					<div class="weui-cell__bd">
 		            	<input name="Vcl_StartDate" id="Vcl_StartDate" class="weui-input" type="date" value="<?php 
-						echo($o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ));
+						echo($s_date);
 		            	?>"/>
 		            </div>
 		        </div>

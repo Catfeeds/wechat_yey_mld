@@ -48,7 +48,7 @@ function askforleave_submit()
 	var s_currentdate=document.getElementById("Vcl_CurrentDate").value
 	if (new Date(s_startdate.replace(/-/g,"\/"))<new Date(s_currentdate.replace(/-/g,"\/")))
 	{
-		Dialog_Message("[请假日期] 必须大于或等于今天！",function(){
+		Dialog_Message("[请假日期] 必须大于或等于<br/>"+s_currentdate,function(){
 		})		
 		return
 	}

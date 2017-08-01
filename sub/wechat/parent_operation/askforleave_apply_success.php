@@ -14,7 +14,7 @@ require_once '../header.php';
         </div>
     </div>
     <div style="padding:15px;">
-		    <a class="weui-btn weui-btn_primary" onclick="document.addEventListener('WeixinJSBridgeReady', WeixinJSBridge.call('closeWindow'));">确定</a>
+		    <a class="weui-btn weui-btn_primary" href="askforleave_record.php?id=<?php echo(time())?>">确定</a>
 	    </div>
 <script>
 $(function () {

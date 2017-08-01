@@ -33,7 +33,7 @@ require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
 	    	<?php	
 	    	$o_table=new Student_Onboard_Checkingin_Parent_View();
 	    	$o_table->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
-	    	$o_table->PushOrder ( array ('Date',D) );
+	    	$o_table->PushOrder ( array ('StartDate',D) );
 	    	$o_table->setStartLine (0); //起始记录
 			$o_table->setCountLine (5);	    	
 	    	for($i=0;$i<$o_table->getAllCount();$i++)
@@ -48,7 +48,13 @@ require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
 	    			$s_button='<div class="weui-form-preview__ft">				            	
 				            	<a class="weui-form-preview__btn weui-form-preview__btn_default" onclick="askforleave_cancel('.$o_table->getId($i).')" style="color:#d9534f">撤销请假</a>			            	
 				            </div>';
+	    		}elseif ($o_table->getType($i)==''){
+	    			$s_button='<div class="weui-form-preview__ft">				            	
+				            	<a class="weui-form-preview__btn weui-form-preview__btn_primary" href="askforleave_comment.php?id='.$o_table->getId($i).'">补充请假信息</a>			            	
+				            </div>';
 	    		}
+	    		//计算天数
+	    		
 	    		echo('
         				<div class="weui-form-preview">
 				            <div class="weui-form-preview__hd">
@@ -62,7 +68,7 @@ require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
 						        </div>
 						        <div class="weui-form-preview__item">
 						           <label class="weui-form-preview__label">请假天数</label>
-						            <span class="weui-form-preview__value">1</span>
+						            <span class="weui-form-preview__value">'.((strtotime($o_table->getEndDate($i)) - strtotime($o_table->getStartDate($i)))/86400+1).'</span>
 						        </div>			
 						        <div class="weui-form-preview__item">
 						           <label class="weui-form-preview__label">请假类型</label>

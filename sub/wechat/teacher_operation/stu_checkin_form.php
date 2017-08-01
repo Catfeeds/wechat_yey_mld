@@ -1,9 +1,13 @@
 <?php
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
+require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
 $s_title='考勤幼儿列表';
 require_once '../header.php';
 $s_none='<div class="weui-footer" style="padding-top:100px;"><p class="weui-footer__text" style="font-size:1.5em">没有幼儿信息</p></div>';
+$o_date = new DateTime ( 'Asia/Chongqing' );
+$s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' );
+
 ?>      
 
         <?php
@@ -17,6 +21,11 @@ $s_none='<div class="weui-footer" style="padding-top:100px;"><p class="weui-foot
         	echo "<script>location.href='stu_checkin.php'</script>"; 
 			exit(0);
         }    */
+        //读取本日是否已经记录考勤
+        $o_checkin=new Student_Onboard_Checkingin();
+        $o_checkin->PushWhere ( array ('&&', 'ClassId', '=',$_GET['id']) );
+		$o_checkin->PushWhere ( array ('&&', 'Date', '=',$s_date) );
+        
         $o_stu=new Student_Onboard_Info_Class_View();
         $o_stu->PushWhere ( array ('&&', 'ClassNumber', '=',$_GET['id']) );
 		$o_stu->PushWhere ( array ('&&', 'State', '=',1) );
@@ -25,10 +34,34 @@ $s_none='<div class="weui-footer" style="padding-top:100px;"><p class="weui-foot
 		$s_html='';
         for($i=0;$i<$o_stu->getAllCount();$i++)
         {
+        	$s_checked='checked="checked"';
+        	$o_stu_wechat=new Student_Onboard_Info_Class_Wechat_View($o_stu->getStudentId($i));
+        	if ($o_checkin->getAllCount()>0)
+        	{
+        		//查找之前已经记录的考勤
+        		$o_detail=new Student_Onboard_Checkingin_Detail();
+				$o_detail->PushWhere ( array ('&&', 'CheckId', '=',$o_checkin->getId(0)) );
+				$o_detail->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId($i)) );
+				if ($o_detail->getAllCount()>0)
+				{
+					$s_checked='';
+				}
+        	}else{
+        		//查找家长申请的考勤
+        		$o_parent=new Student_Onboard_Checkingin_Parent();
+				$o_parent->PushWhere ( array ('&&', 'UserId', '=',$o_stu_wechat->getUserId()) );
+				$o_parent->PushWhere ( array ('&&', 'StudentId', '=',$o_stu_wechat->getStudentId()) );
+				$o_parent->PushWhere ( array ('&&', 'StartDate', '<=',$s_date) );
+				$o_parent->PushWhere ( array ('&&', 'EndDate', '>=',$s_date) );
+				if ($o_parent->getAllCount()>0)
+				{
+					$s_checked='';
+				}
+        	}
         	$s_html.='
         	<label class="weui-cell weui-check__label" for="Vcl_StudentId_'.$o_stu->getStudentId($i).'">
                 <div class="weui-cell__hd">
-                    <input onchange="total()" type="checkbox" class="weui-check" name="Vcl_StudentId_'.$o_stu->getStudentId($i).'" id="Vcl_StudentId_'.$o_stu->getStudentId($i).'" checked="checked">
+                    <input onchange="total()" type="checkbox" class="weui-check" name="Vcl_StudentId_'.$o_stu->getStudentId($i).'" id="Vcl_StudentId_'.$o_stu->getStudentId($i).'" '.$s_checked.'>
                     <i class="weui-icon-checked"></i>
                 </div>
                 <div class="weui-cell__bd">
@@ -105,7 +138,7 @@ function total()
 	$('#out').html(n_out)
 }
 $(function () {
-	
+	total()
 }); 
 //禁止分享
 document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {WeixinJSBridge.call('hideOptionMenu');});

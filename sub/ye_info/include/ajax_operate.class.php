@@ -1614,11 +1614,11 @@ class Operate_YeInfo extends Bn_Basic {
 	{
 		if (! ($n_uid > 0)) {
 			$this->setReturn('parent.goto_login()');
-		}
+		}		
 		$o_user = new Single_User($n_uid);
 		if (!$o_user->ValidModule ( 120200 ))//如果没有权限，不返回任何值
 		{
-			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'非法操作，请与管理员联系。！[001]\');');
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'非法操作，请与管理员联系。！[1001]\');');
 		}
 		//开始记录考勤
 		//1.先检查今天的考勤是否存在。
@@ -1634,10 +1634,13 @@ class Operate_YeInfo extends Bn_Basic {
 			$o_checkingin=new Student_Onboard_Checkingin();
 			$o_checkingin->setClassId($this->getPost('ClassId'));
 			$o_checkingin->setDate($this->GetDate());
-		}
+			$o_checkingin->setModifyDate($this->GetDateNow());
+			$o_checkingin->Save();
+		}		
 		//2. 统计人数，所有被录取的人数
 		$a_in=array();
 		$a_out=array();
+		$o_system_setup=new Base_Setup(1);
 		$o_signup=new Student_Onboard_Info_Class_View();
         $o_signup->PushWhere ( array ('&&', 'ClassNumber', '=',$this->getPost('ClassId')) );
 		$o_signup->PushWhere ( array ('&&', 'State', '=',1) );
@@ -1646,8 +1649,76 @@ class Operate_YeInfo extends Bn_Basic {
 			if ($this->getPost('StudentId_'.$o_signup->getStudentId($i))=='on')
 			{
 				array_push($a_in, $o_signup->getStudentId($i));
+				//查找之前的考勤，如果有，删除
+				$o_detail=new Student_Onboard_Checkingin_Detail();
+				$o_detail->PushWhere ( array ('&&', 'CheckId', '=',$o_checkingin->getId()) );
+				$o_detail->PushWhere ( array ('&&', 'StudentId', '=',$o_signup->getStudentId($i)) );
+				for($j=0;$j<$o_detail->getAllCount();$j++)
+				{
+					$o_temp=new Student_Onboard_Checkingin_Detail($o_detail->getId($j));
+					$o_temp->Deletion();
+				}
 			}else{
 				array_push($a_out, $o_signup->getStudentId($i));
+				//未出勤，那么查看数据库是否已经记录数据，如果记录，那么跳过
+				$o_detail=new Student_Onboard_Checkingin_Detail();
+				$o_detail->PushWhere ( array ('&&', 'CheckId', '=',$o_checkingin->getId()) );
+				$o_detail->PushWhere ( array ('&&', 'StudentId', '=',$o_signup->getStudentId($i)) );
+				if ($o_detail->getAllCount()==0)
+				{
+					//需要记录数据库
+					$o_detail=new Student_Onboard_Checkingin_Detail();
+					$o_detail->setCheckId($o_checkingin->getId());
+					$o_detail->setStudentId($o_signup->getStudentId($i));
+					//查找家长输入的请假申请，如果有，提取类型与原因，如果没有，那么建立一条新的，让家长补充
+					$o_stu=new Student_Onboard_Info_Class_Wechat_View($o_signup->getStudentId($i));
+					$o_parent=new Student_Onboard_Checkingin_Parent();
+					$o_parent->PushWhere ( array ('&&', 'UserId', '=',$o_stu->getUserId()) );
+					$o_parent->PushWhere ( array ('&&', 'StudentId', '=',$o_signup->getStudentId($i)) );
+					$o_parent->PushWhere ( array ('&&', 'StartDate', '<=',$this->GetDate()) );
+					$o_parent->PushWhere ( array ('&&', 'EndDate', '>=',$this->GetDate()) );
+					$o_parent->PushOrder ( array ('Date', D) );
+					if ($o_parent->getAllCount()>0)
+					{
+						$o_detail->setType($o_parent->getType(0));
+						$o_detail->setComment($o_parent->getComment(0));
+					}else{
+						//新建一条记录，让家长填写
+						$o_parent=new Student_Onboard_Checkingin_Parent();
+						$o_parent->setUserId($o_stu->getUserId());
+						$o_parent->setStudentId($o_signup->getStudentId($i));
+						$o_parent->setStartDate($this->GetDate());
+						$o_parent->setEndDate($this->GetDate());//开始日期加上天数
+						$o_parent->setType('');
+						$o_parent->setComment('');
+						$o_parent->Save();
+						//并且给家长发送一个班级提醒
+						$o_msg=new Wechat_Wx_User_Reminder();
+						$o_msg->setUserId($o_stu->getUserId());
+						$o_msg->setCreateDate($this->GetDateNow());
+						$o_msg->setSendDate('0000-00-00');
+						$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+						$o_msg->setOpenId($o_stu->getOpenid());
+						$o_msg->setActivityId(0);
+						$o_msg->setSend(0);
+						$o_msg->setFirst('
+通知类型：补充缺勤信息
+幼儿姓名：'.$o_stu->getName());
+						$o_msg->setKeyword1($o_stu->getClassName());
+						$s_teacher_name=$o_user->getName();
+						//$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+						$o_msg->setKeyword2($s_teacher_name.'老师');
+						$o_msg->setKeyword3($this->GetDate());
+						$o_msg->setKeyword4('您的幼儿今天缺勤，请点击详情尽快补充缺勤信息。');
+						$o_msg->setKeyword5('');
+						$o_msg->setRemark('');
+						//如果Comment为空，那么就没有点击事件了
+						$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/askforleave_comment.php?id='.$o_parent->getId().'');
+						$o_msg->setKeywordSum(10);
+						$o_msg->Save();					
+					}					
+					$o_detail->Save();
+				}
 				/*
 				//查找学生都有哪些微信与之关联
 				$o_parent= new Student_Info_Wechat_View();

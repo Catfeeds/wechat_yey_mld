@@ -1421,6 +1421,7 @@ class Operate extends Bn_Basic {
 		$o_checkin->setStartDate($this->getPost('StartDate'));
 		$o_checkin->setEndDate(date('Y-m-d',strtotime('+'.((int)$this->getPost('EndDate')-1).' day',strtotime($this->getPost('StartDate')))));//开始日期加上天数
 		$o_checkin->setType($this->getPost('Type'));
+		$o_checkin->setDate($this->GetDateNow());
 		$o_checkin->setComment($this->getPost('Comment'));
 		$o_checkin->Save();
 		$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."askforleave_apply_success.php';" );

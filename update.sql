@@ -25,12 +25,12 @@ CREATE TABLE `student_onboard_checkingin_parent` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
   `user_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '家长微信编号',
   `student_id` mediumint(8) unsigned NOT NULL COMMENT '学生编号',
-  `date` date NOT NULL COMMENT '提交日期',
+  `date` datetime NOT NULL COMMENT '提交日期',
   `type` char(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '请假类型',
   `comment` char(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '类型描述',
   `start_date` date NOT NULL COMMENT '请假开始日期',
   `end_date` date NOT NULL COMMENT '请假结束日期',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='请假详情' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='请假详情' AUTO_INCREMENT=1 ;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `student_onboard_checkingin_parent_view` AS select `student_onboard_checkingin_parent`.`id` AS `id`,`student_onboard_checkingin_parent`.`user_id` AS `user_id`,`wechat_wx_user_info`.`user_name` AS `parent_name`,`student_onboard_checkingin_parent`.`student_id` AS `student_id`,`student_onboard_info`.`name` AS `name`,`student_onboard_info`.`class_number` AS `class_number`,`student_onboard_checkingin_parent`.`date` AS `date`,`student_onboard_checkingin_parent`.`type` AS `type`,`student_onboard_checkingin_parent`.`comment` AS `comment`,`student_onboard_checkingin_parent`.`start_date` AS `start_date`,`student_onboard_checkingin_parent`.`end_date` AS `end_date` from ((`student_onboard_checkingin_parent` join `student_onboard_info` on((`student_onboard_checkingin_parent`.`student_id` = `student_onboard_info`.`student_id`))) join `wechat_wx_user_info` on((`student_onboard_checkingin_parent`.`user_id` = `wechat_wx_user_info`.`id`)));
