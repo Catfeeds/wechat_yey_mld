@@ -1753,6 +1753,7 @@ class Operate_YeInfo extends Bn_Basic {
 		$o_checkingin->setAbsenteeismStu(json_encode($a_out));
 		$o_checkingin->setAbsenteeismSum(count($a_out));
 		$o_checkingin->setCheckinginSum(count($a_in));
+		$o_checkingin->setOwnerId($n_uid);
 		$o_checkingin->setActive(1);
 		$o_checkingin->Save();
 		$this->setReturn ( 'parent.location=\''.$this->getPost('Url').'stu_checkin_success.php?id='.$o_checkingin->getId().'\'');

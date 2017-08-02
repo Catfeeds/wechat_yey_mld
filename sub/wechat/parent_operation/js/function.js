@@ -86,3 +86,16 @@ function askforleave_cancel(id)
         })
     })
 }
+function askforleave_comment_submit()
+{
+	if (document.getElementById("Vcl_Comment").value=="")
+	{
+		Dialog_Message("[简述原因] 不能为空！",function(){
+		})		
+		return
+	}	
+	Dialog_Confirm('请确认是否提交请假信息！',function(){
+		Common_OpenLoading();
+		document.getElementById("submit_form").submit();	
+	});
+}

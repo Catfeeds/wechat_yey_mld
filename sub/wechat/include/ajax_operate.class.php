@@ -1426,6 +1426,38 @@ class Operate extends Bn_Basic {
 		$o_checkin->Save();
 		$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."askforleave_apply_success.php';" );
 	}
+	public function ParentAskForLeaveComment($n_uid)
+	{
+		sleep(1);
+		if ($n_uid>0)
+		{
+			
+		}else{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
+		}
+		require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
+		$o_checkin=new Student_Onboard_Checkingin_Parent($this->getPost('Id'));
+		$o_checkin->setType($this->getPost('Type'));
+		$o_checkin->setDate($this->GetDateNow());
+		$o_checkin->setComment($this->getPost('Comment'));
+		$o_checkin->Save();
+		//更新到考勤数据
+		$o_temp=new Student_Onboard_Checkingin_Detail_View(); 
+		$o_temp->PushWhere ( array ('&&', 'Date', '=',$o_checkin->getStartDate()) ); 
+		$o_temp->PushWhere ( array ('&&', 'StudentId', '=',$o_checkin->getStudentId()) ); 
+		$o_temp->PushWhere ( array ('&&', 'Type', '=','') ); 
+		$o_temp->PushOrder ( array ('Id','D') ); 
+		if ($o_temp->getAllCount()>0)
+		{
+			$o_temp=new Student_Onboard_Checkingin_Detail($o_temp->getId(0));
+			$o_temp->setType($this->getPost('Type'));
+			$o_temp->setComment($this->getPost('Comment'));
+			$o_temp->Save();
+		}
+		$this->setReturn ( "parent.Common_CloseDialog();parent.Dialog_Success('提交补充请假信息成功！',function(){
+		parent.location.href='".$this->getPost ( 'Url' )."askforleave_record.php?id=".time()."'
+		});" ); 
+	}
 	public function ParentAskForLeaveCancel($n_uid)
 	{
 		sleep(1);
