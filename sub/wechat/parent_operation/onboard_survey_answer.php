@@ -15,13 +15,6 @@ if ($o_answer->getAllCount()>0)
 	echo "<script>location.href='survey_answer_completed.php'</script>"; 
 	exit(0);
 }
-//检查问卷状态
-if($o_survey->getState()=='2')
-{
-	//跳转到结束页面
-	echo "<script>location.href='survey_answer_end.php'</script>"; 
-	exit(0);
-}
 //检查微信用户是否有权限访问此问卷
 $o_stu=new Student_Onboard_Info_Class_Wechat_View();
 $o_stu->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) ); 
