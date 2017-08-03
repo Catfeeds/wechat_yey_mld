@@ -883,6 +883,11 @@ class Operate extends Bn_Basic {
 				$o_onboard_binding->setUserId($o_binding->getUserId(0));
 				$o_onboard_binding->setStudentId($n_student_id);
 				$o_onboard_binding->Save();
+				//家长进行公众号分组
+				$o_wechat_user=new WX_User_Info($o_binding->getUserId(0));
+				require_once RELATIVITY_PATH . 'sub/wechat/include/userGroup.class.php';
+				$o_group = new userGroup();
+				$o_group->updateGroup($o_wechat_user->getOpenId(), $this->getWechatSetup('PARENTGROUP'));
 			}
 			$o_class=new Student_Class($this->getPost('ClassId'));
 			$o_signup->setStudentId($n_student_id);
@@ -891,6 +896,7 @@ class Operate extends Bn_Basic {
 			$o_signup->setClassNumber($this->getPost('ClassId'));
 			$o_signup->Save();
 			$o_signup->CutSignupToOnboard($n_student_id);
+			
 			//发送入园问卷调查			
 			$o_stu=new Student_Onboard_Info_Class_Wechat_View();
 			$o_stu->PushWhere ( array ('&&', 'StudentId', '=',$n_student_id) );
