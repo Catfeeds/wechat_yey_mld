@@ -1758,6 +1758,113 @@ class Operate_YeInfo extends Bn_Basic {
 		$o_checkingin->Save();
 		$this->setReturn ( 'parent.location=\''.$this->getPost('Url').'stu_checkin_success.php?id='.$o_checkingin->getId().'\'');
 	}
+	public function YeParentInfoTable($n_uid)
+	{	
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120207 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Student_Onboard_Info_Class_View();
+		$s_key=$this->getPost('key');
+		if ($s_key!='')
+		{
+			$o_user->PushWhere ( array ('||', 'Jh1Danwei', 'Like','%'.$s_key.'%') );	
+			$o_user->PushWhere ( array ('||', 'Jh2Danwei', 'Like','%'.$s_key.'%') );		
+		}
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->PushOrder ( array ('ClassNumber',A) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {		
+			//读取入园问卷最后一道题
+			$s_answer='无';
+			$o_survey=new Student_Onboard_Survey_Answers();
+			$o_survey->PushWhere ( array ('&&', 'StudentId', '=',$o_user->getStudentId( $i )) );
+			if ($o_survey->getAllCount()>0)
+			{
+				//读取最后一道题的答案
+				$a_answer=json_decode($o_survey->getAnswer(0));
+				$a_item=$a_answer[count($a_answer)-1];
+				$s_answer=rawurldecode($a_item[3]);
+			}else{
+				$s_answer='无';
+			}
+			if ($s_key!='')
+			{
+				//如果是搜索，那么要验证这个家长的单位是否有这个关键字
+				if (count(explode($s_key, $o_user->getJh1Danwei ( $i )))>1)
+				{
+					array_push ($a_row, array (
+						$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh1Connection( $i ).'</span>',
+						$o_user->getJh1Jiaoyu ( $i ),
+						$o_user->getJh1Danwei ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh1Job( $i ).'</span>',
+						$o_user->getJh1Phone ( $i ),
+						$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getClassName ( $i ).'</span>',
+						$s_answer,
+					));
+				}
+			}else{
+				array_push ($a_row, array (
+					$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh1Connection( $i ).'</span>',
+					$o_user->getJh1Jiaoyu ( $i ),
+					$o_user->getJh1Danwei ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh1Job( $i ).'</span>',
+					$o_user->getJh1Phone ( $i ),
+					$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getClassName ( $i ).'</span>',
+					$s_answer,
+				));
+			}			
+			if ($o_user->getJh2Name ( $i )!='')
+			{	//如果填写了第二监护人，那么要显示第二监护人信息
+				if ($s_key!='')
+				{
+					//如果是搜索，那么要验证这个家长的单位是否有这个关键字
+					if (count(explode($s_key, $o_user->getJh2Danwei ( $i )))>1)
+					{
+						array_push ($a_row, array (
+							$o_user->getJh2Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh2Connection( $i ).'</span>',
+							$o_user->getJh2Jiaoyu ( $i ),
+							$o_user->getJh2Danwei ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh2Job( $i ).'</span>',
+							$o_user->getJh2Phone ( $i ),
+							$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getClassName ( $i ).'</span>',
+							$s_answer,
+						));
+					}
+				}else{
+					array_push ($a_row, array (
+						$o_user->getJh2Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh2Connection( $i ).'</span>',
+						$o_user->getJh2Jiaoyu ( $i ),
+						$o_user->getJh2Danwei ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh2Job( $i ).'</span>',
+						$o_user->getJh2Phone ( $i ),
+						$o_user->getName ( $i ).'<br/><span style="color:#999999">'.$o_user->getClassName ( $i ).'</span>',
+						$s_answer,
+					));
+				}
+				
+			}
+						
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'姓名/关系', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'教育程度', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'单位/职务', '', 0,0);
+		$a_title=$this->setTableTitle($a_title,'联系电话', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'幼儿姓名', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'志愿服务', '', 200, 0);
+		$this->SendJsonResultForTable($n_allcount,'YeParentInfoTable', 'no', $n_page, $a_title, $a_row);
+	}
 }
 
 ?>

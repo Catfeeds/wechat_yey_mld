@@ -17,6 +17,12 @@ $(function(){
 	    	search_for_yegraduate()   
 	    }  
 	});
+	$('#Vcl_KeyYeParentInfo').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_ye_parent_info()   
+	    }  
+	});
 	audit_get_waiting_number()  
 })
 function search_for_yeinfo()
@@ -30,6 +36,17 @@ function search_for_yeinfo()
 	var item=$.cookie(fun+"Item"); 
 	var key=$.cookie(fun+"Key");
 	table_load(fun,item,sort,1,key,encodeURIComponent(document.getElementById(id).value));    
+}
+function search_for_ye_parent_info()
+{
+	var fun='YeParentInfoTable';
+	var id='Vcl_KeyYeParentInfo'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value));
 }
 function search_for_teacher_yeinfo()
 {
