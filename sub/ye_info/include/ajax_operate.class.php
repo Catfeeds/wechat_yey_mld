@@ -1758,6 +1758,20 @@ class Operate_YeInfo extends Bn_Basic {
 		$o_checkingin->Save();
 		$this->setReturn ( 'parent.location=\''.$this->getPost('Url').'stu_checkin_success.php?id='.$o_checkingin->getId().'\'');
 	}
+	public function getAgeByID($id){         
+		//过了这年的生日才算多了1周岁 
+        if(empty($id)) return ''; 
+        $date=strtotime(substr($id,6,8));
+		//获得出生年月日的时间戳 
+        $today=strtotime('today');
+		//获得今日的时间戳 
+        $diff=floor(($today-$date)/86400/365);
+		//得到两个日期相差的大体年数 
+        
+		//strtotime加上这个年数后得到那日的时间戳后与今日的时间戳相比 
+        $age=strtotime(substr($id,6,8).' +'.$diff.'years')>$today?($diff+1):$diff;   
+        return $age; 
+    } 
 	public function YeParentInfoTable($n_uid)
 	{	
 		if (! ($n_uid > 0)) {
@@ -1808,6 +1822,7 @@ class Operate_YeInfo extends Bn_Basic {
 				{
 					array_push ($a_row, array (
 						$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh1Connection( $i ).'</span>',
+						$this->getAgeByID($o_user->getJh1Id ( $i )),
 						$o_user->getJh1Jiaoyu ( $i ),
 						$o_user->getJh1Danwei ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh1Job( $i ).'</span>',
 						$o_user->getJh1Phone ( $i ),
@@ -1818,6 +1833,7 @@ class Operate_YeInfo extends Bn_Basic {
 			}else{
 				array_push ($a_row, array (
 					$o_user->getJh1Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh1Connection( $i ).'</span>',
+					$this->getAgeByID($o_user->getJh1Id ( $i )),
 					$o_user->getJh1Jiaoyu ( $i ),
 					$o_user->getJh1Danwei ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh1Job( $i ).'</span>',
 					$o_user->getJh1Phone ( $i ),
@@ -1834,6 +1850,7 @@ class Operate_YeInfo extends Bn_Basic {
 					{
 						array_push ($a_row, array (
 							$o_user->getJh2Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh2Connection( $i ).'</span>',
+							$this->getAgeByID($o_user->getJh2Id ( $i )),
 							$o_user->getJh2Jiaoyu ( $i ),
 							$o_user->getJh2Danwei ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh2Job( $i ).'</span>',
 							$o_user->getJh2Phone ( $i ),
@@ -1844,6 +1861,7 @@ class Operate_YeInfo extends Bn_Basic {
 				}else{
 					array_push ($a_row, array (
 						$o_user->getJh2Name ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh2Connection( $i ).'</span>',
+						$this->getAgeByID($o_user->getJh2Id ( $i )),
 						$o_user->getJh2Jiaoyu ( $i ),
 						$o_user->getJh2Danwei ( $i ).'<br/><span style="color:#999999">'.$o_user->getJh2Job( $i ).'</span>',
 						$o_user->getJh2Phone ( $i ),
@@ -1858,11 +1876,12 @@ class Operate_YeInfo extends Bn_Basic {
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
 		$a_title=$this->setTableTitle($a_title,'姓名/关系', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'年龄', '', 0, 60);
 		$a_title=$this->setTableTitle($a_title,'教育程度', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'单位/职务', '', 0,0);
 		$a_title=$this->setTableTitle($a_title,'联系电话', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'幼儿姓名', '', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'志愿服务', '', 200, 0);
+		$a_title=$this->setTableTitle($a_title,'志愿服务', '', 0, 200);
 		$this->SendJsonResultForTable($n_allcount,'YeParentInfoTable', 'no', $n_page, $a_title, $a_row);
 	}
 }
