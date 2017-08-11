@@ -1884,6 +1884,86 @@ class Operate_YeInfo extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'志愿服务', '', 0, 200);
 		$this->SendJsonResultForTable($n_allcount,'YeParentInfoTable', 'no', $n_page, $a_title, $a_row);
 	}
+	public function YeCheckinginTable($n_uid)
+	{
+	    if (! ($n_uid > 0)) {
+	        $this->setReturn('parent.goto_login()');
+	    }
+	    $o_user = new Single_User ( $n_uid );
+	    if (!$o_user->ValidModule ( 120208 ))return;//如果没有权限，不返回任何值
+	    $n_page=$this->getPost('page');
+	    if ($n_page<=0)$n_page=1;
+	    $o_user = new Student_Class();
+	    $o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+	    $o_user->PushOrder ( array ('ClassId','A') );
+	    $o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+	    $o_user->setCountLine ( $this->N_PageSize );
+	    $n_count = $o_user->getAllCount ();
+	    if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+	        $n_page = ceil ( $n_count / $this->N_PageSize );
+	        $o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+	        $o_user->setCountLine ( $this->N_PageSize );
+	    }
+	    $n_allcount = $o_user->getAllCount ();//总记录数
+	    $n_count = $o_user->getCount ();
+	    $a_row = array ();
+	    for($i = 0; $i < $n_count; $i ++) {
+	        //区分年级
+	        switch ($o_user->getGrade($i))
+	        {
+	            case 0:
+	                $s_grade_name='半日班';
+	                break;
+	            case 1:
+	                $s_grade_name='托班';
+	                break;
+	            case 2:
+	                $s_grade_name='小班';
+	                break;
+	            case 3:
+	                $s_grade_name='中班';
+	                break;
+	            case 4:
+	                $s_grade_name='大班';
+	                break;
+	        }
+	        $s_absenteeism='-';
+	        $s_total='-';
+	        $s_owner='-';
+	        //读取班级今天的考勤数据
+	        $o_checkingin=new Student_Onboard_Checkingin_Class_View();
+	        $o_checkingin->PushWhere ( array ('&&', 'Date', '=', $this->getPost('key')) );
+	        $o_checkingin->PushWhere ( array ('&&', 'ClassId', '=', $o_user->getClassId($i)) );
+	        if ($o_checkingin->getAllCount()>0)
+	        {
+	            if($o_checkingin->getAbsenteeismSum(0)==0)
+	            {
+	                $s_absenteeism='0';
+	            }else{
+	                $s_absenteeism='<span class="label label-danger">'.$o_checkingin->getAbsenteeismSum(0).'</span>';
+	            }
+	            $s_total=$o_checkingin->getCheckinginSum(0);
+	            $s_owner=$o_checkingin->getOwnerName(0);
+	        }
+	        array_push ($a_row, array (
+	        ($i+1+$this->N_PageSize*($n_page-1)),
+	        $s_grade_name,
+	        $o_user->getClassName ( $i ),
+	        $s_absenteeism,
+	        $s_total,
+	        $s_owner
+	        ));
+	    }
+	    //标题行,列名，排序名称，宽度，最小宽度
+	    $a_title = array ();
+	    $a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'年级', 'Grade', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'班级名称', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'缺勤人数', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'应到人数', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'记录人', '', 0, 0);
+	    $this->SendJsonResultForTable($n_allcount,'YeCheckinginTable', 'no', $n_page, $a_title, $a_row);
+	}
 }
 
 ?>

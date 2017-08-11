@@ -43,6 +43,9 @@ class Student_Onboard_Checkingin_Class_View extends CRUD
     protected $ClassId;
     protected $ClassName;
     protected $Date;
+    protected $OwnerId;
+    protected $OwnerName;
+    protected $ModifyDate;
     protected $AbsenteeismStu;
     protected $AbsenteeismSum;
     protected $CheckinginSum;
@@ -64,6 +67,9 @@ class Student_Onboard_Checkingin_Class_View extends CRUD
                     'class_id' => 'ClassId',
                     'class_name' => 'ClassName',
                     'date' => 'Date',
+                    'owner_id' => 'OwnerId',
+                    'owner_name' => 'OwnerName',
+                    'modify_date' => 'ModifyDate',
                     'absenteeism_stu' => 'AbsenteeismStu',
                     'absenteeism_sum' => 'AbsenteeismSum',
                     'checkingin_sum' => 'CheckinginSum',
