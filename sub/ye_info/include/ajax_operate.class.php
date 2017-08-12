@@ -1964,6 +1964,170 @@ class Operate_YeInfo extends Bn_Basic {
 	    $a_title=$this->setTableTitle($a_title,'记录人', '', 0, 0);
 	    $this->SendJsonResultForTable($n_allcount,'YeCheckinginTable', 'no', $n_page, $a_title, $a_row);
 	}
+	public function YeCheckinginRateTable($n_uid)
+	{
+	    if (! ($n_uid > 0)) {
+	        $this->setReturn('parent.goto_login()');
+	    }
+	    $o_user = new Single_User ( $n_uid );
+	    if (!$o_user->ValidModule ( 120209 ))return;//如果没有权限，不返回任何值
+	    $n_page=$this->getPost('page');
+	    if ($n_page<=0)$n_page=1;
+	    $o_user = new Student_Class();
+	    $o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+	    $o_user->PushOrder ( array ('ClassId','A') );
+	    $o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+	    $o_user->setCountLine ( $this->N_PageSize );
+	    $n_count = $o_user->getAllCount ();
+	    if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+	        $n_page = ceil ( $n_count / $this->N_PageSize );
+	        $o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+	        $o_user->setCountLine ( $this->N_PageSize );
+	    }
+	    $n_allcount = $o_user->getAllCount ();//总记录数
+	    $n_count = $o_user->getCount ();
+	    $a_row = array ();
+	    for($i = 0; $i < $n_count; $i ++) {
+	        //区分年级
+	        switch ($o_user->getGrade($i))
+	        {
+	            case 0:
+	                $s_grade_name='半日班';
+	                break;
+	            case 1:
+	                $s_grade_name='托班';
+	                break;
+	            case 2:
+	                $s_grade_name='小班';
+	                break;
+	            case 3:
+	                $s_grade_name='中班';
+	                break;
+	            case 4:
+	                $s_grade_name='大班';
+	                break;
+	        }
+	        $a_button = array ();
+	        array_push ( $a_button, array ('缺勤统计', "location='ye_checkingin_rate_stu.php?studentid=".$o_user->getClassId($i)."&date=".$this->getPost('key')."'" ) );//查看
+            //计算统计出勤率的开始日期和结束日期
+	        $s_start_date=$this->getPost('key').'-01';
+	        $s_start_end=date("Y-m-d", strtotime("+1 months", strtotime($s_start_date)));
+	        //读取班级今天的考勤数据
+	        $o_checkingin=new Student_Onboard_Checkingin_Class_View();
+	        $o_checkingin->PushWhere ( array ('&&', 'Date', '>=', $s_start_date) );
+	        $o_checkingin->PushWhere ( array ('&&', 'Date', '<', $s_start_end) );
+	        $o_checkingin->PushWhere ( array ('&&', 'ClassId', '=', $o_user->getClassId($i)) );
+	        $n_days=$o_checkingin->getAllCount();
+	        $n_rate=0;
+	        for($j=0;$j<$n_days;$j++)
+	        {
+	            //出勤率累加：应来人数减去未来人数除以应来人数
+	            $n_rate=$n_rate+(($o_checkingin->getCheckinginSum($j)-$o_checkingin->getAbsenteeismSum($j))/$o_checkingin->getCheckinginSum($j));
+	        }
+	        //累加出勤率除以天数，就是总的出勤率，然后乘以100，为了计算半分比
+	        $n_rate=$n_rate/$n_days*100;
+	        $n_rate=sprintf("%.1f",$n_rate);//百分比保留1位小数
+	        array_push ($a_row, array (
+	        ($i+1+$this->N_PageSize*($n_page-1)),
+	        $s_grade_name,
+	        $o_user->getClassName ( $i ),
+	        $n_days,
+	        $n_rate.'%',
+	        $a_button
+	        ));
+	    }
+	    //标题行,列名，排序名称，宽度，最小宽度
+	    $a_title = array ();
+	    $a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'年级', 'Grade', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'班级名称', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'出勤天数', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'出勤率', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,75);
+	    $this->SendJsonResultForTable($n_allcount,'YeCheckinginRateTable', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function YeCheckinginRateStuTable($n_uid)
+	{
+	    if (! ($n_uid > 0)) {
+	        $this->setReturn('parent.goto_login()');
+	    }
+	    $this->N_PageSize = 500;
+	    $o_user = new Single_User ( $n_uid );
+	    if (!$o_user->ValidModule ( 120209 ))return;//如果没有权限，不返回任何值
+	    $n_page=$this->getPost('page');
+	    if ($n_page<=0)$n_page=1;
+	    $o_user = new Student_Onboard_Info_Class_View();
+	    $o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+	    $o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+	    $o_user->setCountLine ( $this->N_PageSize );
+	    $n_count = $o_user->getAllCount ();
+	    if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+	        $n_page = ceil ( $n_count / $this->N_PageSize );
+	        $o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+	        $o_user->setCountLine ( $this->N_PageSize );
+	    }
+	    $n_allcount = $o_user->getAllCount ();//总记录数
+	    $n_count = $o_user->getCount ();
+	    $a_row = array ();
+	    for($i = 0; $i < $n_count; $i ++) {
+	        //区分年级
+	        switch ($o_user->getGrade($i))
+	        {
+	            case 0:
+	                $s_grade_name='半日班';
+	                break;
+	            case 1:
+	                $s_grade_name='托班';
+	                break;
+	            case 2:
+	                $s_grade_name='小班';
+	                break;
+	            case 3:
+	                $s_grade_name='中班';
+	                break;
+	            case 4:
+	                $s_grade_name='大班';
+	                break;
+	        }
+	        $a_button = array ();
+	        array_push ( $a_button, array ('缺勤统计', "location='ye_checkingin_rate_stu.php?studentid=".$o_user->getClassId($i)."&date=".$this->getPost('key')."'" ) );//查看
+	        //计算统计出勤率的开始日期和结束日期
+	        $s_start_date=$this->getPost('key').'-01';
+	        $s_start_end=date("Y-m-d", strtotime("+1 months", strtotime($s_start_date)));
+	        //读取班级今天的考勤数据
+	        $o_checkingin=new Student_Onboard_Checkingin_Class_View();
+	        $o_checkingin->PushWhere ( array ('&&', 'Date', '>=', $s_start_date) );
+	        $o_checkingin->PushWhere ( array ('&&', 'Date', '<', $s_start_end) );
+	        $o_checkingin->PushWhere ( array ('&&', 'ClassId', '=', $o_user->getClassId($i)) );
+	        $n_days=$o_checkingin->getAllCount();
+	        $n_rate=0;
+	        for($j=0;$j<$n_days;$j++)
+	        {
+	        //出勤率累加：应来人数减去未来人数除以应来人数
+	        $n_rate=$n_rate+(($o_checkingin->getCheckinginSum($j)-$o_checkingin->getAbsenteeismSum($j))/$o_checkingin->getCheckinginSum($j));
+	        }
+	        //累加出勤率除以天数，就是总的出勤率，然后乘以100，为了计算半分比
+	        $n_rate=$n_rate/$n_days*100;
+	        $n_rate=sprintf("%.1f",$n_rate);//百分比保留1位小数
+	        array_push ($a_row, array (
+	        ($i+1+$this->N_PageSize*($n_page-1)),
+	        $s_grade_name,
+	        $o_user->getClassName ( $i ),
+	        $n_days,
+	        $n_rate.'%',
+	        $a_button
+	        ));
+	}
+	//标题行,列名，排序名称，宽度，最小宽度
+	$a_title = array ();
+	$a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
+	$a_title=$this->setTableTitle($a_title,'年级', 'Grade', 0, 0);
+	$a_title=$this->setTableTitle($a_title,'班级名称', '', 0, 0);
+	$a_title=$this->setTableTitle($a_title,'出勤天数', '', 0, 0);
+	$a_title=$this->setTableTitle($a_title,'出勤率', '', 0, 0);
+	$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,75);
+	$this->SendJsonResultForTable($n_allcount,'YeCheckinginRateTable', 'yes', $n_page, $a_title, $a_row);
+	}
 }
 
 ?>
