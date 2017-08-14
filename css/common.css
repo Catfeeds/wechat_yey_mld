@@ -526,6 +526,16 @@ img
     margin:0px;
     margin-right:30px;
     }
+.sss_page .pagination li input
+{
+    height:auto;
+    font-size:12px;
+    display:inherit;
+    border:0px;
+    float:left;
+    width:50px;
+    text-align:center;
+    }
 .sss_page .pagination li a
 {
     border-radius: 0px;
