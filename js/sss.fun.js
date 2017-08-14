@@ -345,7 +345,7 @@ function table_load(fun,item,sort,page,key,other_key)
 		var page=parseInt(json.current)
 		var pagesize=parseInt(json.pagesize)
 		var pagesum=Math.ceil(parseInt(json.total)/parseInt(json.pagesize))
-		var show=8;
+		var show=10;
 		a_arr.push('<div class="explain">'+json.total+' '+Language['TableTotal']+'&nbsp;&nbsp;&nbsp;&nbsp;'+Language['Total']+' '+pagesum+' '+Language['Page']+' </div>');
 		if(pagesum>1)
 		{
