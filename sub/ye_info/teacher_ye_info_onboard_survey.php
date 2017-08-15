@@ -83,7 +83,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 							if ($a_temp[1]==0)
 							{
 								echo('
-								<h2><b>'.rawurldecode($a_temp[2]).'</b>
+								<h2><b>'.rawurldecode($a_temp[2]).'</b></h2>
 								');
 							}else{
 									echo('
@@ -109,10 +109,12 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 									</h3>
 								');
 								}
+								echo('</h2>');
 								
 							}	
 						}
 						?>
+						
 						<button id="user_add_btn" type="button" class="btn btn-primary cancel" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="location='<?php echo($_SERVER['HTTP_REFERER'])?>'">返回</button>
 						<button id="user_add_btn" type="button" class="btn btn-primary cancel" aria-hidden="true" style="float: right;outline: medium none;margin-right:10px;;display:none" data-placement="left" onclick="window.open('parent_survey_manage_progress_pdf.php?id=<?php echo($o_answer->getId())?>','_blank')"><span class="glyphicon glyphicon-print"></span>&nbsp;打印</button>
 					</div>

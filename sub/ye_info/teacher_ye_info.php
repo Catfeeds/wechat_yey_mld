@@ -33,7 +33,15 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								      </span>
 								    </div>
 								  </div>
-								</div>												 
+								</div>	
+								<div class="btn-group output" style="float:right;outline: medium none;margin-left:10px;display:none">
+								  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								    导出 <span class="caret"></span>
+								  </button>
+								  <ul class="dropdown-menu" style="transition-duration: 0.3s;">
+								    <li><a href="javascript:;" onclick="window.open('teacher_ye_info_onboard_survey_pdf.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">导出入园问卷</a></li>
+								  </ul>
+								</div>											 
 								</div>
 						<div class="table_nav">
 							<div class="<?php if($s_key=='')echo('on')?>" onclick="change_table_nav('<?php echo($s_fun)?>','')">
@@ -105,6 +113,18 @@ function change_table_nav(fun,class_id)
 {
 	table_sort(fun,'State','D',1,class_id,'');
 	$('#Vcl_KeyYeInfo').val('');
+	if (class_id!='')
+	{
+		//显示导出按钮
+		$('.output').css('display','black');
+	}else{
+		//不显示导出按钮
+		$('.output').css('display','none');
+	}
+}
+set_btu_state('<?php echo($s_key)?>');
+function set_btu_state(class_id)
+{
 	if (class_id!='')
 	{
 		//显示导出按钮
