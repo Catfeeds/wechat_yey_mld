@@ -221,7 +221,6 @@ class Operate extends Bn_Basic {
 		{
 			$s_target_name='所有在园幼儿;';
 		}
-		//保存数据到问卷信息
 		$o_survey=new Teaching_Wei_Teach($this->getPost('Id'));
 		if($o_survey->getState()=='0')
 		{
@@ -231,7 +230,42 @@ class Operate extends Bn_Basic {
 			$o_survey->setTarget(json_encode($a_target));
 			$o_survey->setState(1);
 			$o_survey->Save();			
-		}	
+		}
+		//群发微信提醒
+		$o_system_setup=new Base_Setup(1);
+		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+		for($i=0;$i<count($a_target);$i++)
+			{
+				//获取用户列表
+				$o_stu=new Student_Onboard_Info_Class_Wechat_View();
+				$o_stu->PushWhere ( array ('&&', 'ClassNumber', '=',$a_target[$i]) );
+				for($j=0;$j<$o_stu->getAllCount();$j++)
+				{
+					//添加消息队列
+					$o_msg=new Wechat_Wx_User_Reminder();
+					$o_msg->setUserId($o_stu->getUserId($j));
+					$o_msg->setCreateDate($this->GetDateNow());
+					$o_msg->setSendDate('0000-00-00');
+					$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+					$o_msg->setOpenId($o_stu->getOpenid($j));
+					$o_msg->setActivityId(0);
+					$o_msg->setSend(0);
+					$o_msg->setFirst('最新发布了一个微视频教学！
+		
+通知类型：微视频教学
+幼儿姓名：'.$o_stu->getName($j));
+					$o_msg->setKeyword1($o_stu->getClassName($j));
+					$s_teacher_name=$o_user->getName();
+					$o_msg->setKeyword2($s_teacher_name.'老师');
+					$o_msg->setKeyword3($this->GetDate());
+					$o_msg->setKeyword4('点击详情查看微视频教学。');
+					$o_msg->setKeyword5('');
+					$o_msg->setRemark('');
+					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/wei_teach_view.php?id='.$this->getPost('Id'));
+					$o_msg->setKeywordSum(10);
+					$o_msg->Save();	
+				}			
+			}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发布微教学成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
 	}
 }

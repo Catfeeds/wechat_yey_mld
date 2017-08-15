@@ -104,7 +104,7 @@ function wei_teach_review(id)
 }
 function wei_teach_release()
 {	
-	dialog_confirm('确认要发布微教学吗！<br/><br/>确认后：<br/>1. 此微教学将不能被修改。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
+	dialog_confirm('确认要发布微教学吗！<br/><br/>确认后：<br/>1. 此微教学将不能被修改。<br/>2. 所有选中班级的幼儿家长将收到微信提醒。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
 		loading_show();
 		$('#submit_form').submit();	
 	})
