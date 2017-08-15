@@ -101,7 +101,7 @@ for($i = 0; $i < $n_count; $i ++) {
 										echo('<br/>&nbsp;&nbsp;');
 									}
 									echo('									
-									'.$j.rawurldecode($a_temp[3]).'
+									'.rawurldecode($a_temp[3]).'
 									
 								');
 								}
