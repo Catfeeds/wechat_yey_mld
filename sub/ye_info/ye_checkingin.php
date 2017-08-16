@@ -15,6 +15,7 @@ if($_COOKIE [$s_fun.'Item'])
 	$s_item=$_COOKIE [$s_fun.'Item'];
 	$s_page=$_COOKIE [$s_fun.'Page'];
 	$s_sort=$_COOKIE [$s_fun.'Sort'];
+	$s_key=$_COOKIE [$s_fun.'Key'];
 }
 ExportMainTitle(MODULEID,$O_Session->getUid());
 //获取子模块菜单
@@ -64,8 +65,9 @@ function checkingin_change_date(obj)
 	$.cookie(fun+"Page",1);
 	var sort=$.cookie(fun+"Sort"); 
 	var item=$.cookie(fun+"Item"); 
-	table_load(fun,item,sort,1,obj.value,'');    
+	table_sort(fun,item,sort,1,obj.value,'');    
 }
+clear_cookie('YeCheckinginDetailTable')
 </script>
 <?php
 require_once RELATIVITY_PATH . 'foot.php';

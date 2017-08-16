@@ -1908,6 +1908,7 @@ class Operate_YeInfo extends Bn_Basic {
 	    $n_count = $o_user->getCount ();
 	    $a_row = array ();
 	    for($i = 0; $i < $n_count; $i ++) {
+	    	$a_button = array ();
 	        //区分年级
 	        switch ($o_user->getGrade($i))
 	        {
@@ -1941,17 +1942,19 @@ class Operate_YeInfo extends Bn_Basic {
 	                $s_absenteeism='0';
 	            }else{
 	                $s_absenteeism='<span class="label label-danger">'.$o_checkingin->getAbsenteeismSum(0).'</span>';
+	                 array_push ( $a_button, array ('查看详情', "location='ye_checkingin_detail.php?id=".$o_checkingin->getId(0)."'" ) );//查看
 	            }
 	            $s_total=$o_checkingin->getCheckinginSum(0);
-	            $s_owner=$o_checkingin->getOwnerName(0);
-	        }
+	            $s_owner=$o_checkingin->getOwnerName(0);	           
+	        }	        
 	        array_push ($a_row, array (
 	        ($i+1+$this->N_PageSize*($n_page-1)),
 	        $s_grade_name,
 	        $o_user->getClassName ( $i ),
 	        $s_absenteeism,
 	        $s_total,
-	        $s_owner
+	        $s_owner,
+	        $a_button
 	        ));
 	    }
 	    //标题行,列名，排序名称，宽度，最小宽度
@@ -1962,7 +1965,8 @@ class Operate_YeInfo extends Bn_Basic {
 	    $a_title=$this->setTableTitle($a_title,'缺勤人数', '', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'应到人数', '', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'记录人', '', 0, 0);
-	    $this->SendJsonResultForTable($n_allcount,'YeCheckinginTable', 'no', $n_page, $a_title, $a_row);
+	    $a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,75);
+	    $this->SendJsonResultForTable($n_allcount,'YeCheckinginTable', 'yes', $n_page, $a_title, $a_row);
 	}
 	public function YeCheckinginRateTable($n_uid)
 	{
@@ -2103,16 +2107,57 @@ class Operate_YeInfo extends Bn_Basic {
 	        $n_days,
 	        $n_rate.'%',
 	        ));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'班级名称', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'缺勤天数', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'应出勤天数', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'月出勤率', '', 0, 0);
+		$this->SendJsonResultForTable($n_allcount,'YeCheckinginRateStuTable', 'no', $n_page, $a_title, $a_row);
 	}
-	//标题行,列名，排序名称，宽度，最小宽度
-	$a_title = array ();
-	$a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
-	$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 0);
-	$a_title=$this->setTableTitle($a_title,'班级名称', '', 0, 0);
-	$a_title=$this->setTableTitle($a_title,'缺勤天数', '', 0, 0);
-	$a_title=$this->setTableTitle($a_title,'应出勤天数', '', 0, 0);
-	$a_title=$this->setTableTitle($a_title,'月出勤率', '', 0, 0);
-	$this->SendJsonResultForTable($n_allcount,'YeCheckinginRateStuTable', 'no', $n_page, $a_title, $a_row);
+	public function YeCheckinginDetailTable($n_uid)
+	{
+	    if (! ($n_uid > 0)) {
+	        $this->setReturn('parent.goto_login()');
+	    }
+	    $o_user = new Single_User ( $n_uid );
+	    if (!$o_user->ValidModule ( 120208 ))return;//如果没有权限，不返回任何值
+	    $n_page=$this->getPost('page');
+	    if ($n_page<=0)$n_page=1;
+	    $o_user = new Student_Onboard_Checkingin_Detail_View();
+	    $o_user->PushWhere ( array ('&&', 'CheckId', '=',$this->getPost('key')) );
+	    $o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+	    $o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+	    $o_user->setCountLine ( $this->N_PageSize );
+	    $n_count = $o_user->getAllCount ();
+	    if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+	        $n_page = ceil ( $n_count / $this->N_PageSize );
+	        $o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+	        $o_user->setCountLine ( $this->N_PageSize );
+	    }
+	    $n_allcount = $o_user->getAllCount ();//总记录数
+	    $n_count = $o_user->getCount ();
+	    $a_row = array ();
+	    for($i = 0; $i < $n_count; $i ++) {	        
+	        array_push ($a_row, array (
+	        ($i+1+$this->N_PageSize*($n_page-1)),
+	        $o_user->getClassName ( $i ),
+	        $o_user->getName ( $i ),
+	        $o_user->getType ( $i ),
+	        $o_user->getComment( $i )
+	        ));
+	    }
+	    //标题行,列名，排序名称，宽度，最小宽度
+	    $a_title = array ();
+	    $a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'班级名称', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'幼儿姓名', 'Name', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'请假类型', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'请假原因', '', 0, 0);
+	    $this->SendJsonResultForTable($n_allcount,'YeCheckinginDetailTable', 'no', $n_page, $a_title, $a_row);
 	}
 }
 
