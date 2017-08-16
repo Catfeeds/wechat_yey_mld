@@ -40,6 +40,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  </button>
 								  <ul class="dropdown-menu" style="transition-duration: 0.3s;">
 								    <li><a href="javascript:;" onclick="window.open('teacher_ye_info_onboard_survey_pdf.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">导出入园问卷</a></li>
+								    <li><a href="javascript:;" onclick="window.open('teacher_ye_info_onboard_signin_pdf.php?classid='+$.cookie('<?php echo($s_fun)?>Key'),'_blank')">导出新入园登记表</a></li>
 								  </ul>
 								</div>											 
 								</div>
