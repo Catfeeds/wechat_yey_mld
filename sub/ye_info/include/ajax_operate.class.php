@@ -1646,6 +1646,20 @@ class Operate_YeInfo extends Bn_Basic {
 		$o_signup->PushWhere ( array ('&&', 'State', '=',1) );
 		for($i=0;$i<$o_signup->getAllCount();$i++)
 		{
+			//先清除所有考勤数据
+			$o_detail=new Student_Onboard_Checkingin_Detail();
+			$o_detail->PushWhere ( array ('&&', 'CheckId', '=',$o_checkingin->getId()) );
+			$o_detail->PushWhere ( array ('&&', 'StudentId', '=',$o_signup->getStudentId($i)) );
+			for($j=0;$j<$o_detail->getAllCount();$j++)
+			{
+				$o_temp=new Student_Onboard_Checkingin_Detail($o_detail->getId($j));
+				$o_temp->Deletion();
+				$o_temp='';
+			}
+		}
+		//重新记录考勤
+		for($i=0;$i<$o_signup->getAllCount();$i++)
+		{
 			if ($this->getPost('StudentId_'.$o_signup->getStudentId($i))=='on')
 			{
 				array_push($a_in, $o_signup->getStudentId($i));
@@ -1680,7 +1694,12 @@ class Operate_YeInfo extends Bn_Basic {
 					$o_parent->PushOrder ( array ('Date', D) );
 					if ($o_parent->getAllCount()>0)
 					{
+						//如果老师选择了请假类型，以老师的为准
 						$o_detail->setType($o_parent->getType(0));
+						if($this->getPost('Type_'.$o_signup->getStudentId($i))!='')
+						{
+							$o_detail->setType($this->getPost('Type_'.$o_signup->getStudentId($i)));
+						}						
 						$o_detail->setComment($o_parent->getComment(0));
 					}else{
 						//新建一条记录，让家长填写
@@ -1690,6 +1709,12 @@ class Operate_YeInfo extends Bn_Basic {
 						$o_parent->setStartDate($this->GetDate());
 						$o_parent->setEndDate($this->GetDate());//开始日期加上天数
 						$o_parent->setType('');
+						//如果老师选择了请假类型，以老师的为准
+						if($this->getPost('Type_'.$o_signup->getStudentId($i))!='')
+						{
+							$o_detail->setType($this->getPost('Type_'.$o_signup->getStudentId($i)));
+							$o_parent->setType($this->getPost('Type_'.$o_signup->getStudentId($i)));
+						}
 						$o_parent->setComment('');
 						$o_parent->Save();
 						//并且给家长发送一个班级提醒

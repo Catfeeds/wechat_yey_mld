@@ -35,6 +35,8 @@ $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date-
         for($i=0;$i<$o_stu->getAllCount();$i++)
         {
         	$s_checked='checked="checked"';
+        	$s_display='display:none';
+        	$s_set_type='';
         	$o_stu_wechat=new Student_Onboard_Info_Class_Wechat_View($o_stu->getStudentId($i));
         	if ($o_checkin->getAllCount()>0)
         	{
@@ -45,6 +47,15 @@ $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date-
 				if ($o_detail->getAllCount()>0)
 				{
 					$s_checked='';
+					$s_display='';
+					if ($o_detail->getType(0)=='病假')
+					{
+						$s_set_type='$("#Vcl_Type_'.$o_stu->getStudentId($i).'_1").attr("checked","true");';
+					}
+					if ($o_detail->getType(0)=='事假')
+					{
+						$s_set_type='$("#Vcl_Type_'.$o_stu->getStudentId($i).'_2").attr("checked","true");';
+					}
 				}
         	}else{
         		//查找家长申请的考勤
@@ -56,12 +67,22 @@ $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date-
 				if ($o_parent->getAllCount()>0)
 				{
 					$s_checked='';
+					$s_display='';
+					if ($o_parent->getType(0)=='病假')
+					{
+						$s_set_type='$("#Vcl_Type_'.$o_stu->getStudentId($i).'_1").attr("checked","true");';
+					}
+					if ($o_parent->getType(0)=='事假')
+					{
+						$s_set_type='$("#Vcl_Type_'.$o_stu->getStudentId($i).'_2").attr("checked","true");';
+					}
 				}
         	}
         	$s_html.='
+        	<div class="weui-cells weui-cells_checkbox">
         	<label class="weui-cell weui-check__label" for="Vcl_StudentId_'.$o_stu->getStudentId($i).'">
                 <div class="weui-cell__hd">
-                    <input onchange="total()" type="checkbox" class="weui-check" name="Vcl_StudentId_'.$o_stu->getStudentId($i).'" id="Vcl_StudentId_'.$o_stu->getStudentId($i).'" '.$s_checked.'>
+                    <input onchange="total('.$o_stu->getStudentId($i).')" type="checkbox" class="weui-check stu" name="Vcl_StudentId_'.$o_stu->getStudentId($i).'" id="Vcl_StudentId_'.$o_stu->getStudentId($i).'" '.$s_checked.'/>
                     <i class="weui-icon-checked"></i>
                 </div>
                 <div class="weui-cell__bd">
@@ -71,10 +92,38 @@ $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date-
 					                <br>
 					                <span style="font-size:0.7em;color:#999999">监护人：'.$o_stu->getJh1Name($i).'</span>
 					                <br>
-					                <span style="font-size:0.7em;color:#999999">监护人手机：'.$o_stu->getJh1Phone($i).'</span>
-					                </p>	
-                </div>
-            </label>';
+					                <span style="font-size:0.7em;color:#999999">监护人手机：'.$o_stu->getJh1Phone($i).'</span>				                
+					                </p> 
+                </div>                          			
+            </label> 
+            </div>
+            <div id="type_'.$o_stu->getStudentId($i).'" style="'.$s_display.'">
+	            <div class="weui-cells__title">选择未出勤幼儿请假类型，可不选</div>
+		        <div class="weui-cells weui-cells_radio">
+		            <label class="weui-cell weui-check__label" for="Vcl_Type_'.$o_stu->getStudentId($i).'_1">
+		                <div class="weui-cell__bd">
+		                    <p>病假</p>
+		                </div>
+		                <div class="weui-cell__ft">
+		                    <input value="病假" type="radio" class="weui-check" name="Vcl_Type_'.$o_stu->getStudentId($i).'" id="Vcl_Type_'.$o_stu->getStudentId($i).'_1">
+		                    <span class="weui-icon-checked"></span>
+		                </div>
+		            </label>
+		            <label class="weui-cell weui-check__label" for="Vcl_Type_'.$o_stu->getStudentId($i).'_2">	
+		                <div class="weui-cell__bd">
+		                    <p>事假</p>
+		                </div>
+		                <div class="weui-cell__ft">
+		                    <input value="事假" type="radio" name="Vcl_Type_'.$o_stu->getStudentId($i).'" class="weui-check" id="Vcl_Type_'.$o_stu->getStudentId($i).'_2">
+		                    <span class="weui-icon-checked"></span>
+		                </div>
+		            </label>
+		        </div> 
+	        </div>  
+	        <script>
+	        '.$s_set_type.'
+	        </script>       
+           ';
         }
         if ($i==0)
         {
@@ -87,9 +136,9 @@ $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date-
 			<input type="hidden" name="Vcl_FunName" value="TeacherCheckinForm"/>
 			<input type="hidden" name="Vcl_ClassId" value="<?php echo($_GET['id'])?>"/>
         	<div class="weui-cells__title">幼儿列表</div>
-        	<div class="weui-cells weui-cells_checkbox">
+        	
         		<?php echo($s_html)?>
-        	</div>
+        	
         	<div class="weui-form-preview" style="margin-top:15px;">
 				<div class="weui-form-preview__bd">
 					<div class="weui-form-preview__item">
@@ -120,19 +169,29 @@ function teacher_stu_checkin() {
     	document.getElementById('submit_form').onsubmit();
     })
 }
-function total()
+function total(id)
 {
 	var n_in=0;
 	var n_out=0;
-	var input=$('.weui-check')
+	var input=$('.stu')
 	for(var i=0;i<input.length;i++)
 	{
 		if ($(input[i]).is(':checked'))
 		{
-			n_in++
-		}else{
+			n_in++			
+		}else{			
 			n_out++
 		}
+	}
+	if($('#Vcl_StudentId_'+id).is(':checked'))
+	{
+		//隐藏类型
+		$('#type_'+id).hide()
+		$('#Vcl_Type_'+id+'_1').removeAttr("checked"); 
+		$('#Vcl_Type_'+id+'_2').removeAttr("checked"); 
+	}else{
+		//显示类型
+		$('#type_'+id).show()
 	}
 	$('#in').html(n_in)
 	$('#out').html(n_out)

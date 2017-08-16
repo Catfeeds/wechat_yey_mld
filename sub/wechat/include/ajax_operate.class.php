@@ -1446,7 +1446,7 @@ class Operate extends Bn_Basic {
 		$o_temp=new Student_Onboard_Checkingin_Detail_View(); 
 		$o_temp->PushWhere ( array ('&&', 'Date', '=',$o_checkin->getStartDate()) ); 
 		$o_temp->PushWhere ( array ('&&', 'StudentId', '=',$o_checkin->getStudentId()) ); 
-		$o_temp->PushWhere ( array ('&&', 'Type', '=','') ); 
+		$o_temp->PushWhere ( array ('&&', 'Comment', '=','') ); 
 		$o_temp->PushOrder ( array ('Id','D') ); 
 		if ($o_temp->getAllCount()>0)
 		{

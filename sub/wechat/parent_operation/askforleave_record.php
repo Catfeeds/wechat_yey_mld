@@ -48,7 +48,7 @@ require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
 	    			$s_button='<div class="weui-form-preview__ft">				            	
 				            	<a class="weui-form-preview__btn weui-form-preview__btn_default" onclick="askforleave_cancel('.$o_table->getId($i).')" style="color:#d9534f">撤销请假</a>			            	
 				            </div>';
-	    		}elseif ($o_table->getType($i)==''){
+	    		}elseif ($o_table->getComment($i)==''){
 	    			$s_button='<div class="weui-form-preview__ft">				            	
 				            	<a class="weui-form-preview__btn weui-form-preview__btn_primary" href="askforleave_comment.php?id='.$o_table->getId($i).'">补充请假信息</a>			            	
 				            </div>';

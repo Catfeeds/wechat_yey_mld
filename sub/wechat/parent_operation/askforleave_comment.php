@@ -16,7 +16,7 @@ if ($o_stu->getAllCount()==0)
 }
 //读取家长请假必填项目
 $o_parent= new Student_Onboard_Checkingin_Parent_View($_GET['id']);
-if ($o_parent->getUserId()!=$o_wx_user->getId() || $o_wx_user->getType()!='')
+if ($o_parent->getUserId()!=$o_wx_user->getId() || $o_wx_user->getComment()!='')
 {
 	echo "<script>document.addEventListener('WeixinJSBridgeReady', WeixinJSBridge.call('closeWindow'));</script>"; 
 	exit(0);
@@ -55,10 +55,33 @@ if ($o_parent->getUserId()!=$o_wx_user->getId() || $o_wx_user->getType()!='')
 				<div class="weui-cell">
 		            <div class="weui-cell__hd"><label class="weui-label">请假类型</label></div>
 					<div class="weui-cell__bd">
-		            	<select class="weui-select" name="Vcl_Type" id="Vcl_Type">
-			                <option value="病假">病假</option>
-							<option value="事假">事假</option>
+					<?php 
+					//判断是否老师已经选择了请假类型，如果选择了，这个地方是只读
+					$s_readonly='';
+					$s_html='<option value="病假">病假</option>
+							 <option value="事假">事假</option>';
+					if ($o_parent->getType()!='')
+					{
+						$s_readonly='disabled';	
+						if ($o_parent->getType()=='事假')
+						{
+							$s_html='<option value="病假">病假</option>
+									 <option value="事假" selected="selected">事假</option>';
+						}
+						echo('
+						<select class="weui-select" disabled>
+			                '.$s_html.'
 			            </select>
+			            <input type="hidden" name="Vcl_Type" value="'.$o_parent->getType().'"/>
+						');					
+					}else{
+						echo('
+						<select class="weui-select" name="Vcl_Type" id="Vcl_Type">
+			                '.$s_html.'
+			            </select>
+						');
+					}					
+					?>		            	
 		            </div>
 				</div>
 				<div class="weui-cell">
