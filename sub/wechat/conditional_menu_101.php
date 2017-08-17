@@ -14,9 +14,9 @@ $data='{
 		"name":"幼儿管理",
 		"sub_button": [
                 {
-					"type": "click", 
+					"type": "view", 
                     "name": "考勤记录", 
-                    "key": "[2]"
+                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/stu_checkin.php"
                 }
             ]
 	},
