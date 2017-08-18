@@ -1971,26 +1971,42 @@ class Operate_YeInfo extends Bn_Basic {
 	            {
 	                $s_absenteeism='0';
 	            }else{
-	                $s_absenteeism='<span class="label label-danger">'.$o_checkingin->getAbsenteeismSum(0).'</span>';
-	                 array_push ( $a_button, array ('查看详情', "location='ye_checkingin_detail.php?id=".$o_checkingin->getId(0)."'" ) );//查看
+	                $s_absenteeism=$o_checkingin->getAbsenteeismSum(0);
+	                array_push ( $a_button, array ('查看详情', "location='ye_checkingin_detail.php?id=".$o_checkingin->getId(0)."'" ) );//查看
 	            }
 	            $s_total=$o_checkingin->getCheckinginSum(0);
 	            $s_owner=$o_checkingin->getOwnerName(0);
-	            $n_rate=sprintf("%.1f",($s_total-$o_checkingin->getAbsenteeismSum(0))/$s_total*100).'%';
+	            $n_rate=sprintf("%.1f",($s_total-$s_absenteeism)/$s_total*100).'%';
 	            //计算事假与病假人数
 	            //获取请假学生ID
 	            $a_stu=json_decode($o_checkingin->getAbsenteeismStu(0));
 	            for($j=0;$j<count($a_stu);$j++)
 	            {
-	            	//查找请假详情，计算病假还是事假	            	
+	            	//查找请假详情，计算病假还是事假	
+	            	$o_stu_detail=new Student_Onboard_Checkingin_Detail();
+	            	$o_stu_detail->PushWhere ( array ('&&', 'CheckId', '=',$o_checkingin->getId(0)) );
+	            	$o_stu_detail->PushWhere ( array ('&&', 'StudentId', '=', $a_stu[$j]) );
+	            	$o_stu_detail->getAllCount();
+	            	if ($o_stu_detail->getType(0)=='病假')
+	            	{
+	            		$n_bing++;
+	            	} 
+	            	if ($o_stu_detail->getType(0)=='事假')
+	            	{
+	            		$n_shi++;
+	            	}       	
 	            }  
-	        }	        
+	        }	     
+	        if (($n_bing+$n_shi)!=$s_absenteeism)   
+	        {
+	        	$s_absenteeism='<span class="label label-danger">'.$s_absenteeism.'</span>';
+	        }
 	        array_push ($a_row, array (
 	        ($i+1+$this->N_PageSize*($n_page-1)),
 	        $s_grade_name.'('.$o_user->getClassName ( $i ).')',
 	        $s_absenteeism,
-	        //$n_bing,
-	        //$n_shi,
+	        $n_bing,
+	        $n_shi,
 	        $s_total,
 	        $n_rate,
 	        $s_owner,
@@ -2002,8 +2018,8 @@ class Operate_YeInfo extends Bn_Basic {
 	    $a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'班级名称', 'Grade', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'缺勤人数', '', 0, 0);
-	    //$a_title=$this->setTableTitle($a_title,'病假', '', 0, 0);
-	    //$a_title=$this->setTableTitle($a_title,'事假', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'病假', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'事假', '', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'应到人数', '', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'出勤率', '', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'记录人', '', 0, 0);
