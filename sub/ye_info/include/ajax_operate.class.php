@@ -1956,12 +1956,17 @@ class Operate_YeInfo extends Bn_Basic {
 	        $s_absenteeism='-';
 	        $s_total='-';
 	        $s_owner='-';
+	        $n_rate='-';
+	        $n_bing='-';
+	        $n_shi='-';
 	        //读取班级今天的考勤数据
 	        $o_checkingin=new Student_Onboard_Checkingin_Class_View();
 	        $o_checkingin->PushWhere ( array ('&&', 'Date', '=', $this->getPost('key')) );
 	        $o_checkingin->PushWhere ( array ('&&', 'ClassId', '=', $o_user->getClassId($i)) );
 	        if ($o_checkingin->getAllCount()>0)
 	        {
+	        	$n_bing=0;
+	       	 	$n_shi=0;
 	            if($o_checkingin->getAbsenteeismSum(0)==0)
 	            {
 	                $s_absenteeism='0';
@@ -1970,14 +1975,24 @@ class Operate_YeInfo extends Bn_Basic {
 	                 array_push ( $a_button, array ('查看详情', "location='ye_checkingin_detail.php?id=".$o_checkingin->getId(0)."'" ) );//查看
 	            }
 	            $s_total=$o_checkingin->getCheckinginSum(0);
-	            $s_owner=$o_checkingin->getOwnerName(0);	           
+	            $s_owner=$o_checkingin->getOwnerName(0);
+	            $n_rate=sprintf("%.1f",($s_total-$o_checkingin->getAbsenteeismSum(0))/$s_total*100).'%';
+	            //计算事假与病假人数
+	            //获取请假学生ID
+	            $a_stu=json_decode($o_checkingin->getAbsenteeismStu(0));
+	            for($j=0;$j<count($a_stu);$j++)
+	            {
+	            	//查找请假详情，计算病假还是事假	            	
+	            }  
 	        }	        
 	        array_push ($a_row, array (
 	        ($i+1+$this->N_PageSize*($n_page-1)),
-	        $s_grade_name,
-	        $o_user->getClassName ( $i ),
+	        $s_grade_name.'('.$o_user->getClassName ( $i ).')',
 	        $s_absenteeism,
+	        //$n_bing,
+	        //$n_shi,
 	        $s_total,
+	        $n_rate,
 	        $s_owner,
 	        $a_button
 	        ));
@@ -1985,10 +2000,12 @@ class Operate_YeInfo extends Bn_Basic {
 	    //标题行,列名，排序名称，宽度，最小宽度
 	    $a_title = array ();
 	    $a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
-	    $a_title=$this->setTableTitle($a_title,'年级', 'Grade', 0, 0);
-	    $a_title=$this->setTableTitle($a_title,'班级名称', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'班级名称', 'Grade', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'缺勤人数', '', 0, 0);
+	    //$a_title=$this->setTableTitle($a_title,'病假', '', 0, 0);
+	    //$a_title=$this->setTableTitle($a_title,'事假', '', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'应到人数', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'出勤率', '', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'记录人', '', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,75);
 	    $this->SendJsonResultForTable($n_allcount,'YeCheckinginTable', 'yes', $n_page, $a_title, $a_row);
@@ -2180,7 +2197,7 @@ class Operate_YeInfo extends Bn_Basic {
 	    $a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'班级名称', '', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'幼儿姓名', 'Name', 0, 0);
-	    $a_title=$this->setTableTitle($a_title,'请假类型', '', 0, 0);
+	    $a_title=$this->setTableTitle($a_title,'请假类型', 'Type', 0, 0);
 	    $a_title=$this->setTableTitle($a_title,'请假原因', '', 0, 0);
 	    $this->SendJsonResultForTable($n_allcount,'YeCheckinginDetailTable', 'no', $n_page, $a_title, $a_row);
 	}
