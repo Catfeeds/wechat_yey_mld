@@ -1974,7 +1974,7 @@ class Operate_YeInfo extends Bn_Basic {
 	                $s_absenteeism=$o_checkingin->getAbsenteeismSum(0);
 	                array_push ( $a_button, array ('查看详情', "location='ye_checkingin_detail.php?id=".$o_checkingin->getId(0)."'" ) );//查看
 	            }
-	            $s_total=$o_checkingin->getCheckinginSum(0);
+	            $s_total=$o_checkingin->getCheckinginSum(0)+$o_checkingin->getAbsenteeismSum(0);
 	            $s_owner=$o_checkingin->getOwnerName(0);
 	            $n_rate=sprintf("%.1f",($s_total-$s_absenteeism)/$s_total*100).'%';
 	            //计算事假与病假人数

@@ -1,10 +1,10 @@
 <?php
 define ( 'RELATIVITY_PATH', '../../' );
-define ( 'MODULEID', 120302);
+define ( 'MODULEID', 120306);
 $O_Session = '';
 require_once RELATIVITY_PATH . 'include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'head.php';
-$s_fun='NoticeRecordTable';
+$s_fun='NoticeTeacherRecordAllTable';
 $s_item='SendDate';
 $s_page=1;
 $s_sort='D';
@@ -21,7 +21,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 ?>
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
-                            <div class="caption">我的历史发送通知记录</div>
+                            <div class="caption">所有历史发送通知记录</div>
                             </div>
                         <table class="table table-striped">
                             <thead>

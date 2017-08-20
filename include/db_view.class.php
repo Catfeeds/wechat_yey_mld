@@ -304,6 +304,7 @@ class View_User_Dept extends CRUD
    {
       return(array('wechat_base_dept.dept_id' => 'DeptId',
       				'wechat_base_dept.name' => 'DeptName',
+      				'wechat_base_dept.address' => 'Address',
       				'wechat_base_dept.parent_id' => 'ParentId',
       				'wechat_base_dept.number' => 'Number',
       				'wechat_base_user_info.uid' => 'Uid',

@@ -114,6 +114,21 @@ for($i=0;$i<$n_count;$i++)
 		'remark' => array('value' =>'') 
 				)
 		);
+	}else if($o_temp->getKeywordSum()==11)
+	{
+		//班级通知
+		$data = array(
+		'touser' => $o_reminder->getOpenId($i), // openid是发送消息的基础
+		'template_id' => $o_reminder->getMsgId($i), // 模板id
+		'url' => $o_reminder->getUrl($i), // 点击跳转地址
+		'topcolor' => '#FF0000', // 顶部颜色
+		'data' => array(
+		'first' => array('value' => $o_reminder->getFirst($i)),
+		'keyword1' => array('value' =>$o_reminder->getKeyword1($i)),
+		'keyword2' => array('value' => $o_reminder->getKeyword2($i),'color'=>'#173177'),
+		'remark' => array('value' =>'') 
+				)
+		);
 	}
 	$a_result=json_decode($curlUtil->https_request($s_url, json_encode($data)));
 	if ($a_result->errmsg=='ok')

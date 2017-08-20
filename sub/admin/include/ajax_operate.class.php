@@ -66,7 +66,7 @@ class Operate extends Bn_Basic {
 			{
 				$s_rolename='
 				<br/>
-				<span class="ge_form_gray">'.Text::Key('AssistantRole').'：'.$s_rolename.'</span>
+				<span style="color:#999999">'.Text::Key('AssistantRole').'：'.$s_rolename.'</span>
 				';
 			}
 			//数据行
