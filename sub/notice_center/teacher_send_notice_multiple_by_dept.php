@@ -65,6 +65,7 @@ $o_table->getAllCount();
 											}
 										}
 										$a_address=array_unique($a_address);
+										$a_address=array_merge($a_address);//修改数组键值
 										for($i=0;$i<count($a_address);$i++)
 										{
 											echo('<option value="'.$a_address[$i].'">'.$a_address[$i].'</option>');

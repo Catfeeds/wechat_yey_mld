@@ -4,3 +4,4 @@ UPDATE `wechat_yey_mld`.`wechat_base_module` SET `module` = '203_04_0' WHERE `we
 
 UPDATE `wechat_yey_mld`.`wechat_base_module` SET `name` = '我的家长通知记录' WHERE `wechat_base_module`.`module_id` = 120302 LIMIT 1; UPDATE `wechat_yey_mld`.`wechat_base_module` SET `name` = '我的教师通知记录' WHERE `wechat_base_module`.`module_id` = 120304 LIMIT 1;
 
+以上已更新到生产环境
