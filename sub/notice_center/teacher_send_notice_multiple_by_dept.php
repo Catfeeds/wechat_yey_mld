@@ -50,7 +50,7 @@ $o_table->getAllCount();
 	                     		<label><span class="must">*</span> 发送对象：</label>
 	                     		<select id="Vcl_Target" name="Vcl_Target" class="selectpicker" data-style="btn-default" >
 	                     			<option value="">请选择</option>
-									<option value="0">全部教师</option>
+									<option value="0">全体教职工</option>
 									<?php 
 										$o_dept=new Base_Dept();
 										$o_dept->PushOrder ( array ('Name','A') );
@@ -71,7 +71,12 @@ $o_table->getAllCount();
 											echo('<option value="'.$a_address[$i].'">'.$a_address[$i].'</option>');
 										}	                    	
 									?>
-								</select>	                     		
+								</select>	
+								<label style="margin-top:3px;"><span class="must">
+								特别注意：<br/>
+								1. 发送“分部”的时候请再单独发送个人“张金波”。<br/>
+								2. 发送“本部”的时候个人“张金波”也可以收到信息。<br/>
+								3. 如需“前勤部门”则需要按部门发送保：教主任+大班组+中班组+小班组，另按角色发送“园长组”。</span></label>                     		
 	                     	</div>
 	                     	<div class="item">
 	                     	<style>

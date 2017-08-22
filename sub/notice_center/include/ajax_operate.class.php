@@ -637,7 +637,7 @@ class Operate extends Bn_Basic {
 		$o_user = new Single_User ( $n_uid );
 		if (!$o_user->ValidModule ( 120303 ))return;//如果没有权限，不返回任何值
 		//获取目标人群
-		$s_target='所有教师';
+		$s_target='全体教职工';
 		$o_stu=new View_User_Dept();
 		if ($this->getPost('Target')!='0')
 		{
@@ -754,7 +754,7 @@ class Operate extends Bn_Basic {
 			}	
 		}
 		//获得目标人群名称
-		$s_target='所有教师';
+		$s_target='全体教职工';
 		if($this->getPost('Target')>0)
 		{
 			$o_role=new Base_Role($this->getPost('Target'));

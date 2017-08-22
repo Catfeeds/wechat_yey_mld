@@ -50,7 +50,7 @@ $o_table->getAllCount();
 	                     		<label><span class="must">*</span> 发送对象：</label>
 	                     		<select id="Vcl_Target" name="Vcl_Target" class="selectpicker" data-style="btn-default" >
 	                     			<option value="">请选择</option>
-									<option value="0">全部教师</option>
+									<option value="0">全体教职工</option>
 									<?php 
 										$o_role=new Base_Role();
 										$o_role->PushOrder ( array ('Name','A') );
