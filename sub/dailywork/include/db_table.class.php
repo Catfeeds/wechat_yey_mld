@@ -138,4 +138,220 @@ class Dailywork_Payroll_Object_View extends CRUD
         ));
     }
 }
+class Dailywork_Workflow_Case extends CRUD
+{
+    protected $Id;
+    protected $Opener;
+    protected $Date;
+    protected $MainId;
+    protected $State;
+    protected $CloseDate;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_case';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'opener' => 'Opener',
+                    'date' => 'Date',
+                    'main_id' => 'MainId',
+                    'state' => 'State',
+                    'close_date' => 'CloseDate'
+        ));
+    }
+}
+class Dailywork_Workflow_Case_Data extends CRUD
+{
+    protected $Id;
+    protected $CaseId;
+    protected $Name;
+    protected $Value;
+    protected $IsDecode;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_case_data';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'case_id' => 'CaseId',
+                    'name' => 'Name',
+                    'value' => 'Value',
+                    'is_decode' => 'IsDecode'
+        ));
+    }
+}
+class Dailywork_Workflow_Case_Step extends CRUD
+{
+    protected $Id;
+    protected $CaseId;
+    protected $StepId;
+    protected $OwnerId;
+    protected $Date;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_case_step';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'case_id' => 'CaseId',
+                    'step_id' => 'StepId',
+                    'owner_id' => 'OwnerId',
+                    'date' => 'Date'
+        ));
+    }
+}
+class Dailywork_Workflow_Case_Step_Data extends CRUD
+{
+    protected $Id;
+    protected $StepId;
+    protected $Name;
+    protected $Value;
+    protected $IsDecode;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_case_step_data';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'step_id' => 'StepId',
+                    'name' => 'Name',
+                    'value' => 'Value',
+                    'is_decode' => 'IsDecode'
+        ));
+    }
+}
+class Dailywork_Workflow_Main extends CRUD
+{
+    protected $Id;
+    protected $Title;
+    protected $StateSum;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_main';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'title' => 'Title',
+                    'state_sum' => 'StateSum'
+        ));
+    }
+}
+class Dailywork_Workflow_Main_Step extends CRUD
+{
+    protected $Id;
+    protected $MainId;
+    protected $Number;
+    protected $RoleId;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_main_step';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'main_id' => 'MainId',
+                    'number' => 'Number',
+                    'role_id' => 'RoleId'
+        ));
+    }
+}
+class Dailywork_Workflow_Main_Step_Vcl extends CRUD
+{
+    protected $Id;
+    protected $StepId;
+    protected $Number;
+    protected $Name;
+    protected $Html;
+    protected $IsMust;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_main_step_vcl';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'step_id' => 'StepId',
+                    'number' => 'Number',
+                    'name' => 'Name',
+                    'html' => 'Html',
+                    'is_must' => 'IsMust'
+        ));
+    }
+}
+class Dailywork_Workflow_Main_Vcl extends CRUD
+{
+    protected $Id;
+    protected $MainId;
+    protected $Number;
+    protected $Name;
+    protected $Html;
+    protected $IsMust;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_main_vcl';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'main_id' => 'MainId',
+                    'number' => 'Number',
+                    'name' => 'Name',
+                    'html' => 'Html',
+                    'is_must' => 'IsMust'
+        ));
+    }
+}
 ?>
