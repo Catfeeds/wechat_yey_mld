@@ -146,6 +146,7 @@ class Dailywork_Workflow_Case extends CRUD
     protected $MainId;
     protected $State;
     protected $CloseDate;
+    protected $Reason;
 
     protected function DefineKey()
     {
@@ -163,7 +164,8 @@ class Dailywork_Workflow_Case extends CRUD
                     'date' => 'Date',
                     'main_id' => 'MainId',
                     'state' => 'State',
-                    'close_date' => 'CloseDate'
+                    'close_date' => 'CloseDate',
+                    'reason' => 'Reason'
         ));
     }
 }
@@ -172,6 +174,7 @@ class Dailywork_Workflow_Case_Data extends CRUD
     protected $Id;
     protected $CaseId;
     protected $Name;
+    protected $Type;
     protected $Value;
     protected $IsDecode;
 
@@ -189,6 +192,7 @@ class Dailywork_Workflow_Case_Data extends CRUD
                     'id' => 'Id',
                     'case_id' => 'CaseId',
                     'name' => 'Name',
+                    'type' => 'Type',
                     'value' => 'Value',
                     'is_decode' => 'IsDecode'
         ));
@@ -198,7 +202,7 @@ class Dailywork_Workflow_Case_Step extends CRUD
 {
     protected $Id;
     protected $CaseId;
-    protected $StepId;
+    protected $MainStepId;
     protected $OwnerId;
     protected $Date;
 
@@ -215,7 +219,7 @@ class Dailywork_Workflow_Case_Step extends CRUD
         return(array(
                     'id' => 'Id',
                     'case_id' => 'CaseId',
-                    'step_id' => 'StepId',
+                    'main_step_id' => 'MainStepId',
                     'owner_id' => 'OwnerId',
                     'date' => 'Date'
         ));
@@ -224,8 +228,9 @@ class Dailywork_Workflow_Case_Step extends CRUD
 class Dailywork_Workflow_Case_Step_Data extends CRUD
 {
     protected $Id;
-    protected $StepId;
+    protected $CaseStepId;
     protected $Name;
+    protected $Type;
     protected $Value;
     protected $IsDecode;
 
@@ -241,8 +246,9 @@ class Dailywork_Workflow_Case_Step_Data extends CRUD
     {
         return(array(
                     'id' => 'Id',
-                    'step_id' => 'StepId',
+                    'case_step_id' => 'CaseStepId',
                     'name' => 'Name',
+                    'type' => 'Type',
                     'value' => 'Value',
                     'is_decode' => 'IsDecode'
         ));
@@ -253,6 +259,7 @@ class Dailywork_Workflow_Main extends CRUD
     protected $Id;
     protected $Title;
     protected $StateSum;
+    protected $RoleId;
 
     protected function DefineKey()
     {
@@ -267,7 +274,8 @@ class Dailywork_Workflow_Main extends CRUD
         return(array(
                     'id' => 'Id',
                     'title' => 'Title',
-                    'state_sum' => 'StateSum'
+                    'state_sum' => 'StateSum',
+                    'role_id' => 'RoleId'
         ));
     }
 }
@@ -303,6 +311,7 @@ class Dailywork_Workflow_Main_Step_Vcl extends CRUD
     protected $Number;
     protected $Name;
     protected $Html;
+    protected $Type;
     protected $IsMust;
 
     protected function DefineKey()
@@ -321,7 +330,41 @@ class Dailywork_Workflow_Main_Step_Vcl extends CRUD
                     'number' => 'Number',
                     'name' => 'Name',
                     'html' => 'Html',
+                    'type' => 'Type',
                     'is_must' => 'IsMust'
+        ));
+    }
+}
+class Dailywork_Workflow_Main_Step_View extends CRUD
+{
+    protected $Id;
+    protected $MainId;
+    protected $Title;
+    protected $StateSum;
+    protected $MainRoleId;
+    protected $Number;
+    protected $RoleId;
+    protected $RoleName;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_main_step_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'main_id' => 'MainId',
+                    'title' => 'Title',
+                    'state_sum' => 'StateSum',
+                    'main_role_id' => 'MainRoleId',
+                    'number' => 'Number',
+                    'role_id' => 'RoleId',
+                    'role_name' => 'RoleName'
         ));
     }
 }
@@ -332,6 +375,7 @@ class Dailywork_Workflow_Main_Vcl extends CRUD
     protected $Number;
     protected $Name;
     protected $Html;
+    protected $Type;
     protected $IsMust;
 
     protected function DefineKey()
@@ -350,6 +394,7 @@ class Dailywork_Workflow_Main_Vcl extends CRUD
                     'number' => 'Number',
                     'name' => 'Name',
                     'html' => 'Html',
+                    'type' => 'Type',
                     'is_must' => 'IsMust'
         ));
     }
