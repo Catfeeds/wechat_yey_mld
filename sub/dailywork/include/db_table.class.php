@@ -257,6 +257,7 @@ class Dailywork_Workflow_Case_Step_Data extends CRUD
 class Dailywork_Workflow_Main extends CRUD
 {
     protected $Id;
+    protected $Number;
     protected $Title;
     protected $StateSum;
     protected $RoleId;
@@ -273,6 +274,7 @@ class Dailywork_Workflow_Main extends CRUD
     {
         return(array(
                     'id' => 'Id',
+        			'number' => 'Number',
                     'title' => 'Title',
                     'state_sum' => 'StateSum',
                     'role_id' => 'RoleId'
@@ -338,6 +340,7 @@ class Dailywork_Workflow_Main_Step_Vcl extends CRUD
 class Dailywork_Workflow_Main_Step_View extends CRUD
 {
     protected $Id;
+    protected $MainNumber;
     protected $MainId;
     protected $Title;
     protected $StateSum;
@@ -358,6 +361,7 @@ class Dailywork_Workflow_Main_Step_View extends CRUD
     {
         return(array(
                     'id' => 'Id',
+                    'main_number' => 'MainNumber',
                     'main_id' => 'MainId',
                     'title' => 'Title',
                     'state_sum' => 'StateSum',

@@ -40,14 +40,15 @@ CREATE TABLE `dailywork_workflow_case_step_data` (
 
 CREATE TABLE `dailywork_workflow_main` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `number` int(3) unsigned NOT NULL COMMENT '显示顺序',
   `title` char(50) COLLATE utf8_unicode_ci NOT NULL COMMENT '标题',
   `state_sum` int(2) unsigned NOT NULL DEFAULT '0' COMMENT '状态总数',
   `role_id` char(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0' COMMENT '可以提case的角色Json数组',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='工作流程主体' AUTO_INCREMENT=2 ;
 
-INSERT INTO `dailywork_workflow_main` (`id`, `title`, `state_sum`, `role_id`) VALUES 
-(1, '工作流测试流程1', 4, '0');
+INSERT INTO `dailywork_workflow_main` (`id`, `number`, `title`, `state_sum`, `role_id`) VALUES 
+(1, 1, '工作流测试流程1', 4, '0');
 
 CREATE TABLE `dailywork_workflow_main_step` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
@@ -97,4 +98,4 @@ INSERT INTO `dailywork_workflow_main_vcl` (`id`, `main_id`, `number`, `name`, `h
 (3, 1, 3, '教育程度', '<div class="weui-cell__hd"><label class="weui-label">教育程度</label></div>\r\n				<div class="weui-cell__bd">\r\n                    <select class="weui-select" name="Vcl_Jh1Jiaoyu" id="Vcl_Jh1Jiaoyu">\r\n	                    <option value="">必选</option>\r\n						<option value="初中及以下">初中及以下</option>\r\n						<option value="高中及中专">高中及中专</option>\r\n						<option value="技校">技校</option>\r\n						<option value="大专">大专</option>\r\n						<option value="本科">本科</option>\r\n						<option value="硕士研究生">硕士研究生</option>\r\n						<option value="博士研究生及以上">博士研究生及以上</option>\r\n	                </select>\r\n                </div>', 'input', 1);
 
 --dailywork_workflow_main_step_view
-select `dailywork_workflow_main_step`.`id` AS `id`,`dailywork_workflow_main_step`.`main_id` AS `main_id`,`dailywork_workflow_main`.`title` AS `title`,`dailywork_workflow_main`.`state_sum` AS `state_sum`,`dailywork_workflow_main`.`role_id` AS `main_role_id`,`dailywork_workflow_main_step`.`number` AS `number`,`dailywork_workflow_main_step`.`role_id` AS `role_id`,`wechat_base_role`.`name` AS `role_name` from ((`dailywork_workflow_main` join `dailywork_workflow_main_step` on((`dailywork_workflow_main`.`id` = `dailywork_workflow_main_step`.`main_id`))) join `wechat_base_role` on((`dailywork_workflow_main_step`.`role_id` = `wechat_base_role`.`role_id`))) order by `dailywork_workflow_main_step`.`main_id`,`dailywork_workflow_main_step`.`number`;
+select `dailywork_workflow_main_step`.`id` AS `id`,`dailywork_workflow_main`.`number` AS `main_number`,`dailywork_workflow_main_step`.`main_id` AS `main_id`,`dailywork_workflow_main`.`title` AS `title`,`dailywork_workflow_main`.`state_sum` AS `state_sum`,`dailywork_workflow_main`.`role_id` AS `main_role_id`,`dailywork_workflow_main_step`.`number` AS `number`,`dailywork_workflow_main_step`.`role_id` AS `role_id`,`wechat_base_role`.`name` AS `role_name` from ((`dailywork_workflow_main` join `dailywork_workflow_main_step` on((`dailywork_workflow_main`.`id` = `dailywork_workflow_main_step`.`main_id`))) join `wechat_base_role` on((`dailywork_workflow_main_step`.`role_id` = `wechat_base_role`.`role_id`))) order by `dailywork_workflow_main`.`number`,`dailywork_workflow_main_step`.`number`;
