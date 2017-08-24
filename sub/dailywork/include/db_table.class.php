@@ -169,6 +169,45 @@ class Dailywork_Workflow_Case extends CRUD
         ));
     }
 }
+class Dailywork_Workflow_Case_View extends CRUD
+{
+    protected $Id;
+    protected $Opener;
+    protected $Name;
+    protected $MainId;
+    protected $Title;
+    protected $StateSum;
+    protected $RoleId;
+    protected $Date;
+    protected $State;
+    protected $CloseDate;
+    protected $Reason;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_case_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'opener' => 'Opener',
+                    'name' => 'Name',
+                    'main_id' => 'MainId',
+                    'title' => 'Title',
+                    'state_sum' => 'StateSum',
+                    'role_id' => 'RoleId',
+                    'date' => 'Date',
+                    'state' => 'State',
+                    'close_date' => 'CloseDate',
+                    'reason' => 'Reason'
+        ));
+    }
+}
 class Dailywork_Workflow_Case_Data extends CRUD
 {
     protected $Id;
@@ -198,6 +237,35 @@ class Dailywork_Workflow_Case_Data extends CRUD
         ));
     }
 }
+class Dailywork_Workflow_Case_Log extends CRUD
+{
+    protected $Id;
+    protected $CaseId;
+    protected $Date;
+    protected $OperatorId;
+    protected $OperatorName;
+    protected $Comment;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_case_log';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'case_id' => 'CaseId',
+                    'date' => 'Date',
+                    'operator_id' => 'OperatorId',
+                    'operator_name' => 'OperatorName',
+                    'comment' => 'Comment'
+        ));
+    }
+}
 class Dailywork_Workflow_Case_Step extends CRUD
 {
     protected $Id;
@@ -222,6 +290,57 @@ class Dailywork_Workflow_Case_Step extends CRUD
                     'main_step_id' => 'MainStepId',
                     'owner_id' => 'OwnerId',
                     'date' => 'Date'
+        ));
+    }
+}
+class Dailywork_Workflow_Case_Step_View extends CRUD
+{
+    protected $Id;
+    protected $CaseId;
+    protected $Opener;
+    protected $Name;
+    protected $MainId;
+    protected $Title;
+    protected $StateSum;
+    protected $CaseDate;
+    protected $State;
+    protected $CloseDate;
+    protected $Reason;
+    protected $MainStepId;
+    protected $Number;
+    protected $RoleId;
+    protected $OwnerId;
+    protected $StepDate;
+    protected $RoleName;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'dailywork_workflow_case_step_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'case_id' => 'CaseId',
+                    'opener' => 'Opener',
+                    'name' => 'Name',
+                    'main_id' => 'MainId',
+                    'title' => 'Title',
+                    'state_sum' => 'StateSum',
+                    'case_date' => 'CaseDate',
+                    'state' => 'State',
+                    'close_date' => 'CloseDate',
+                    'reason' => 'Reason',
+                    'main_step_id' => 'MainStepId',
+                    'number' => 'Number',
+                    'role_id' => 'RoleId',
+                    'owner_id' => 'OwnerId',
+                    'step_date' => 'StepDate',
+                    'role_name' => 'RoleName'
         ));
     }
 }

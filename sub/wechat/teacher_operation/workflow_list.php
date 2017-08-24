@@ -21,7 +21,7 @@ require_once '../header.php';
                 <div class="weui-navbar__item weui-bar__item_on">
                     新申请
                 </div>
-                <div class="weui-navbar__item" onclick="location='mysignup.php'">
+                <div class="weui-navbar__item" onclick="location='workflow_my.php'">
                     我的记录
                 </div>
             </div>
@@ -31,7 +31,7 @@ require_once '../header.php';
         		$o_table=new Dailywork_Workflow_Main();
         		$o_table->PushOrder ( array ('Number', 'A') );
         		for($i=0;$i<$o_table->getAllCount();$i++)
-        		{
+        		{        			
         			echo('
         			<div class="weui-cells">
 			            <div class="weui-cell weui-cell_access" onclick="location=\'workflow_new.php?id='.$o_table->getId($i).'\'">

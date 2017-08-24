@@ -28,7 +28,7 @@ if (!($o_main->getNumber()>0))
     	<form action="<?php echo($RELATIVITY_PATH)?>sub/dailywork/include/bn_submit.switch.php" id="submit_form" method="post" target="ajax_submit_frame" onsubmit="this.submit()">
 			<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 			<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
-			<input type="hidden" name="Vcl_FunName" value="WorkflowNew"/>
+			<input type="hidden" name="Vcl_FunName" value="WechatWorkflowNew"/>
 			<input type="hidden" name="Vcl_Id" value="<?php echo($o_main->getId())?>"/>
 			<script type="text/javascript">
 				var a_must=[];
