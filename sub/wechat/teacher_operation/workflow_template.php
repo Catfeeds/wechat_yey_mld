@@ -102,7 +102,14 @@ require_once '../header.php';
 
 
 
-
+<div class="weui-cells__title">审批意见</div>
+<div class="weui-cells">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<input class="weui-input" id="Vcl_%id%" name="Vcl_%id%" placeholder="选填">
+		</div>
+	</div>
+</div>
 
 
 

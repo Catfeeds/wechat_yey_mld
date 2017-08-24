@@ -208,7 +208,28 @@ class Operate extends Bn_Basic {
 		$o_case->setOpener($n_uid);
 		$o_case->setDate($this->GetDateNow());
 		$o_case->setMainId($o_main->getId());
-		$o_case->setState(1);
+		//计算工作流程的状态标志，因为有些用户是属于工作流程的中间部分，所以可以免去之前的审批。
+		$n_state=1;
+		$o_base_user_role=new Base_User_Role($n_uid);//获取用户的角色
+		$o_step=new Dailywork_Workflow_Main_Step();
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_main->getId()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getRoleId()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_main->getId()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId1()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_main->getId()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId2()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_main->getId()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId3()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_main->getId()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId4()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_main->getId()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId5()));
+		$o_step->PushOrder ( array ('Number', 'D') );
+		if ($o_step->getAllCount()>0)
+		{
+			$n_state=$o_step->getNumber(0)+1;
+		}
+		$o_case->setState($n_state);
 		$o_case->Save();
 		//保存用户提交的数据项
 		for($i=0;$i<$o_main_vcl->getAllCount();$i++)
@@ -223,6 +244,7 @@ class Operate extends Bn_Basic {
 		//给第一步审批人发送消息提醒，同时新建所有审批流程
 		$o_main_step=new Dailywork_Workflow_Main_Step();
 		$o_main_step->PushWhere ( array ('&&', 'MainId', '=',$o_main->getId()) );
+		$o_main_step->PushWhere ( array ('&&', 'Number', '>=',$n_state) );
 		$o_main_step->PushOrder ( array ('Number', 'A') );
 		for($i=0;$i<$o_main_step->getAllCount();$i++)
 		{
@@ -230,7 +252,7 @@ class Operate extends Bn_Basic {
 			$o_case_step->setCaseId($o_case->getId());
 			$o_case_step->setMainStepId($o_main_step->getId($i));
 			$o_case_step->Save();
-			if ($o_main_step->getNumber($i)==1)
+			if ($o_main_step->getNumber($i)==$n_state)
 			{				
 				$this->WorkflowSendNotice($o_main_step->getRoleId($i),$o_case->getId());
 			}

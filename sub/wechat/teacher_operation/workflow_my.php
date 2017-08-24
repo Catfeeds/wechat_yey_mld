@@ -33,6 +33,7 @@ require_once '../header.php';
         		$o_table->PushOrder ( array ('Date', 'D') );
         		for($i=0;$i<$o_table->getAllCount();$i++)
         		{
+        			$s_button='<a class="weui-form-preview__btn weui-form-preview__btn_primary" href="workflow_show.php?id='.$o_table->getId($i).'">查看详情</a>';	
         			//设置状态
         			if($o_table->getState($i)==100)
         			{
@@ -59,12 +60,20 @@ require_once '../header.php';
         				if($o_table->getReason($i)=='')
         				{
         					//说明当前状态是等待审批的
-        					$s_state='<span class="weui-form-preview__value" style="color:#d9534f">等待“'.$o_step->getRoleName(0).'”审核</span>';
+        					$s_state='<span class="weui-form-preview__value" style="color:#FFA200">等待“'.$o_step->getRoleName(0).'”审核</span>';
         				}else{
         					//说明被当前状态的人退回了
+        					$o_step=new Dailywork_Workflow_Case_Step_View();
+	        				$o_step->PushWhere ( array ('&&', 'CaseId', '=',$o_table->getId($i)) ); 
+	        				$o_step->PushWhere ( array ('&&', 'OwnerId', '<>',0) );
+	        				$o_step->PushOrder ( array ('Number', 'D') );
+	        				$o_step->getAllCount();
+        					$s_state='<span class="weui-form-preview__value" style="color:#d9534f">已被“'.$o_step->getRoleName(0).'”退回，等待修改重提</span>';
+        					$s_button.='
+        						<a class="weui-form-preview__btn weui-form-preview__btn_primary" style="color:#FFA200" href="signup_form_modify.php?id='.$o_table->getId($i).'">修改</a>
+        					';
         				}
-        			}      
-        			$s_button='<a class="weui-form-preview__btn weui-form-preview__btn_primary" href="workflow_show.php?id='.$o_table->getId($i).'">查看详情</a>';			
+        			}        					
         			echo('
         				<div class="weui-form-preview">
 				            <div class="weui-form-preview__hd">

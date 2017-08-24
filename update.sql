@@ -22,12 +22,12 @@ CREATE TABLE `dailywork_workflow_case_data` (
 CREATE TABLE `dailywork_workflow_case_log` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
   `case_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT 'Case编号',
-  `date` date NOT NULL COMMENT '日期',
+  `date` datetime NOT NULL COMMENT '日期',
   `operator_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '操作人ID',
   `operator_name` char(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '操作人姓名',
   `comment` text COLLATE utf8_unicode_ci NOT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='case日志' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='case日志' AUTO_INCREMENT=3 ;
 
 CREATE TABLE `dailywork_workflow_case_step` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
@@ -84,6 +84,12 @@ CREATE TABLE `dailywork_workflow_main_step_vcl` (
   `is_must` int(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否必填',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='工作流控件' AUTO_INCREMENT=1 ;
+
+INSERT INTO `dailywork_workflow_main_step_vcl` (`id`, `step_id`, `number`, `name`, `html`, `type`, `is_must`) VALUES 
+(1, 1, 1, '审批意见', '<div class="weui-cells__title">审批意见</div>\r\n        <div class="weui-cells">\r\n            <div class="weui-cell">\r\n                <div class="weui-cell__bd">\r\n                    <input class="weui-input" type="text" placeholder="选填"/>\r\n                </div>\r\n            </div>\r\n        </div>', 'input', 0),
+(2, 2, 2, '审批意见', '<div class="weui-cells__title">审批意见</div>\r\n        <div class="weui-cells">\r\n            <div class="weui-cell">\r\n                <div class="weui-cell__bd">\r\n                    <input class="weui-input" type="text" placeholder="选填"/>\r\n                </div>\r\n            </div>\r\n        </div>', 'input', 0),
+(3, 3, 1, '审批已经', '<div class="weui-cells__title">审批意见</div>\r\n        <div class="weui-cells">\r\n            <div class="weui-cell">\r\n                <div class="weui-cell__bd">\r\n                    <input class="weui-input" type="text" placeholder="选填"/>\r\n                </div>\r\n            </div>\r\n        </div>', 'input', 0),
+(4, 4, 1, '总金额', '<div class="weui-cells__title">总金额</div>\r\n        <div class="weui-cells">\r\n            <div class="weui-cell">\r\n                <div class="weui-cell__bd">\r\n                    <input class="weui-input" type="number" pattern="[0-9]*." placeholder="必填"/>\r\n                </div>\r\n            </div>\r\n        </div>', 'input', 1);
 
 CREATE TABLE `dailywork_workflow_main_vcl` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
