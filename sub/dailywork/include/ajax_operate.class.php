@@ -255,7 +255,7 @@ class Operate extends Bn_Basic {
 			$o_case_step->Save();
 			if ($o_main_step->getNumber($i)==$n_state)
 			{				
-				$this->WorkflowSendNotice($o_main_step->getRoleId($i),$o_case->getId());
+				$this->WorkflowSendAuditNotice($o_main_step->getRoleId($i),$o_case->getId());
 			}
 		}
 		//记录case日志		
@@ -268,7 +268,58 @@ class Operate extends Bn_Basic {
 		$o_case_log->Save();
 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'workflow_new_success.php"');
 	}
-	private function WorkflowSendNotice($n_role_id,$n_case_id)
+	private function WorkflowSendAuditNotice($n_role_id,$n_case_id)
+	{
+		return;
+		$o_case_view=new Dailywork_Workflow_Case_View($n_case_id);	
+		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+		$o_system_setup=new Base_Setup(1);
+		//收集所以这个角色的Uid
+		$o_role=new Base_User_Role();
+		$o_role->PushWhere ( array ('||', 'RoleId', '=',$n_role_id) );
+		$o_role->PushWhere ( array ('||', 'SecRoleId1', '=',$n_role_id) );
+		$o_role->PushWhere ( array ('||', 'SecRoleId2', '=',$n_role_id) );
+		$o_role->PushWhere ( array ('||', 'SecRoleId3', '=',$n_role_id) );
+		$o_role->PushWhere ( array ('||', 'SecRoleId4', '=',$n_role_id) );
+		$o_role->PushWhere ( array ('||', 'SecRoleId5', '=',$n_role_id) );
+		for($i=0;$i<$o_role->getAllCount();$i++)
+		{
+			//读取用户微信信息
+			$o_wechat_user=new Base_User_Wechat_View();
+			$o_wechat_user->PushWhere ( array ('&&', 'Uid', '=',$o_role->getUid($i)) );
+			if ($o_wechat_user->getAllCount()==0)
+			{
+				continue;
+			}
+			//添加消息队列
+			$o_msg=new Wechat_Wx_User_Reminder();
+			$o_msg->setUserId($o_role->getUid($i));
+			$o_msg->setCreateDate($this->GetDateNow());
+			$o_msg->setSendDate('0000-00-00');
+			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_10'));
+			$o_msg->setOpenId($o_wechat_user->getOpenId(0));
+			$o_msg->setActivityId(0);
+			$o_msg->setSend(0);
+			$o_msg->setFirst('你有一个标题为“'.$o_case_view->getTitle().'”的工作流程需要审批！
+申请人：'.$o_case_view->getName().'
+申请时间：'.$o_case_view->getDate());
+			$o_msg->setKeyword1('审批通知');
+			$o_msg->setKeyword2('点击下方的查看详情，进入审批或查看。');
+			$o_msg->setKeyword3('');
+			$o_msg->setKeyword4('');
+			$o_msg->setKeyword5('');
+			$o_msg->setRemark('');
+			//如果Comment为空，那么就没有点击事件了
+			$o_msg->setUrl('');
+			if($this->getPost('Comment')!='')
+			{
+				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/workflow_audit.php?id='.$o_case_view->getId().'');
+			}
+			$o_msg->setKeywordSum(11);
+			$o_msg->Save();
+		}
+	}
+	private function WorkflowSendRejectNotice($n_case_id)
 	{
 		return;
 		$o_case_view=new Dailywork_Workflow_Case_View($n_case_id);	
@@ -323,6 +374,17 @@ class Operate extends Bn_Basic {
 	{
 		if (! ($n_uid > 0)) {
 			$this->setReturn('parent.goto_login()');
+		}
+		//检查是不通过，还是退回
+		if($this->getPost ( 'Type' )=='Reject')
+		{
+			$this->WechatWorkflowReject($n_uid);
+			return;
+		}
+		if($this->getPost ( 'Type' )=='Return')
+		{
+			$this->WechatWorkflowReturn($n_uid);
+			return;
 		}
 		$o_case=new Dailywork_Workflow_Case($this->getPost ( 'Id' ));	
 		$o_case_view=new Dailywork_Workflow_Case_View($this->getPost ( 'Id' ));		
@@ -402,7 +464,7 @@ class Operate extends Bn_Basic {
 		{
 			if ($o_main_step->getNumber($i)==$o_case->getState())
 			{				
-				$this->WorkflowSendNotice($o_main_step->getRoleId($i),$o_case->getId());
+				$this->WorkflowSendAuditNotice($o_main_step->getRoleId($i),$o_case->getId());
 			}
 		}
 		//记录case日志
@@ -415,6 +477,76 @@ class Operate extends Bn_Basic {
 		$o_case_log->setComment($o_main_vcl->getName(0).'：'.$this->getPost($o_main_vcl->getId(0)));
 		$o_case_log->Save();
 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'workflow_audit_success.php"');
+	}
+	Private function WechatWorkflowReject($n_uid)//微信端事件
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_case=new Dailywork_Workflow_Case($this->getPost ( 'Id' ));	
+		$o_case_view=new Dailywork_Workflow_Case_View($this->getPost ( 'Id' ));		
+		//判断用户是否有审批权限
+		$o_base_user_role=new Base_User_Role($n_uid);
+		$o_step=new Dailywork_Workflow_Main_Step();
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getRoleId()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId1()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId2()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId3()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId4()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId5()));
+		if ($o_step->getAllCount()==0)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'此工作流程已被其他人员审批！\',function(){parent.location.reload()});' );
+		}	
+		//验证所有控件提交的合法性
+		if ($this->getPost('Reason')=='')
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'[退回修改/不通过 原因] 不能为空！\');' );
+		}
+		//记录审核人和控件信息
+		$o_case_step=new Dailywork_Workflow_Case_Step_View();
+        $o_case_step->PushWhere ( array ('&&', 'CaseId', '=',$o_case->getId()) ); 
+        $o_case_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()) );
+        $o_case_step->PushWhere ( array ('&&', 'OwnerId', '=',0) );
+        if ($o_case_step->getAllCount()==0)
+        {
+        	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'此工作流程已被其他人员审批！\',function(){parent.location.reload()});' );
+        }
+        $o_case_step_temp=new Dailywork_Workflow_Case_Step($o_case_step->getId(0));
+        $o_case_step_temp->setOwnerId($n_uid);
+        $o_case_step_temp->setDate($this->GetDateNow());
+        $o_case_step_temp->Save();
+        //工作流程状态+1
+        $o_case->setState(0);		
+		$o_case->Save();
+		//给所有参与过的人员发送模板消息
+		$this->WorkflowSendRejectNotice($o_case->getId());
+		//记录case日志
+		$o_user = new Single_User ( $n_uid );
+		$o_case_log=new Dailywork_Workflow_Case_Log();
+		$o_case_log->setCaseId($o_case->getId());
+		$o_case_log->setDate($this->GetDateNow());
+		$o_case_log->setOperatorId($n_uid);
+		$o_case_log->setOperatorName($o_user->getName().'（'.$o_case_step->getRoleName(0).'） <i class="weui-icon-cancel"></i>');
+		$o_case_log->setComment('不通过原因：'.$this->getPost('Reason'));
+		$o_case_log->Save();
+		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'workflow_audit_success.php"');
+	}
+	Private function WechatWorkflowReturn($n_uid)//微信端事件
+	{
+		
 	}
 }
 ?>

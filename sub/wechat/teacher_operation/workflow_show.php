@@ -13,7 +13,7 @@ if ($o_temp->getAllCount()==0)
 }
 require_once '../header.php';
 $o_case=new Dailywork_Workflow_Case_View($_GET['id']);
-if (!($o_case->getState()>0))
+if (!($o_case->getStateSum()>0))
 {
 	//非法ID，那么退出
 	echo "<script>location.href='workflow_my.php'</script>"; 
@@ -30,6 +30,7 @@ if (!($o_case->getState()>0))
 			<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
 			<input type="hidden" name="Vcl_FunName" value="WechatWorkflowAudit"/>
 			<input type="hidden" name="Vcl_Id" value="<?php echo($o_case->getId())?>"/>
+			<input type="hidden" name="Vcl_Type" id="Vcl_Type" value=""/>
     	<?php 
 			$o_case_data=new Dailywork_Workflow_Case_Data();
 			$o_case_data->PushWhere ( array ('&&', 'CaseId', '=',$o_case->getId()) ); 
@@ -182,6 +183,7 @@ if (!($o_case->getState()>0))
 					');
 				}
 				?>
+				
 				<div id="reason">
 					<div class="weui-cells__title">退回修改/不通过 原因</div>
 					<div class="weui-cells">

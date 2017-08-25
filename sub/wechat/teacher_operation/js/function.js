@@ -50,3 +50,18 @@ function dailywork_workflow_pass_submit(a_must,a_name)
 		document.getElementById("submit_form").submit();	
 	});
 }
+function dailywork_workflow_reject_submit()
+{
+	if ($('#Vcl_Reason').val()=='')
+	{
+		Dialog_Message("[退回修改/不通过 原因] 不能为空！",function(){
+			document.getElementById("Vcl_Reason").focus()
+		})		
+		return
+	}
+	Dialog_Confirm('真的要不通过审批吗？<br/>不通过后，本申请将退回申请人处并不等再次修改提交。',function(){
+		$('#Vcl_Type').val('Reject')
+		Common_OpenLoading();
+		document.getElementById("submit_form").submit();	
+	});
+}
