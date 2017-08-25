@@ -186,6 +186,7 @@ class Operate extends Bn_Basic {
 		if (! ($n_uid > 0)) {
 			$this->setReturn('parent.goto_login()');
 		}
+		$o_user = new Single_User ( $n_uid );
 		$o_main=new Dailywork_Workflow_Main($this->getPost ( 'Id' ));//获取总的workflow规则
 		//验证Id是否合法
 		if (!($o_main->getNumber()>0))
@@ -257,19 +258,20 @@ class Operate extends Bn_Basic {
 				$this->WorkflowSendNotice($o_main_step->getRoleId($i),$o_case->getId());
 			}
 		}
-		//记录case日志
-		$o_user = new Single_User ( $n_uid );
+		//记录case日志		
 		$o_case_log=new Dailywork_Workflow_Case_Log();
 		$o_case_log->setCaseId($o_case->getId());
 		$o_case_log->setDate($this->GetDateNow());
 		$o_case_log->setOperatorId($n_uid);
-		$o_case_log->setOperatorName($o_user->getName());
+		$o_case_log->setOperatorName($o_user->getName().' <i class="weui-icon-success-no-circle"></i>');
 		$o_case_log->setComment('提交申请，等待相关部门审批。');
 		$o_case_log->Save();
 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'workflow_new_success.php"');
 	}
 	private function WorkflowSendNotice($n_role_id,$n_case_id)
 	{
+		return;
+		$o_case_view=new Dailywork_Workflow_Case_View($n_case_id);	
 		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
 		$o_system_setup=new Base_Setup(1);
 		//收集所以这个角色的Uid
@@ -298,11 +300,11 @@ class Operate extends Bn_Basic {
 			$o_msg->setOpenId($o_wechat_user->getOpenId(0));
 			$o_msg->setActivityId(0);
 			$o_msg->setSend(0);
-			$o_msg->setFirst('你有一个工作流程需要审批！
-	
-通知时间：'.$this->GetDate());
+			$o_msg->setFirst('你有一个标题为“'.$o_case_view->getTitle().'”的工作流程需要审批！
+申请人：'.$o_case_view->getName().'
+申请时间：'.$o_case_view->getDate());
 			$o_msg->setKeyword1('审批通知');
-			$o_msg->setKeyword2('点击下方的查看详情，进入审批。');
+			$o_msg->setKeyword2('点击下方的查看详情，进入审批或查看。');
 			$o_msg->setKeyword3('');
 			$o_msg->setKeyword4('');
 			$o_msg->setKeyword5('');
@@ -311,11 +313,108 @@ class Operate extends Bn_Basic {
 			$o_msg->setUrl('');
 			if($this->getPost('Comment')!='')
 			{
-				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/workflow_audit.php?id='.$n_case_id.'');
+				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/workflow_audit.php?id='.$o_case_view->getId().'');
 			}
 			$o_msg->setKeywordSum(11);
 			$o_msg->Save();
 		}
+	}
+	public function WechatWorkflowAudit($n_uid)//微信端事件
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_case=new Dailywork_Workflow_Case($this->getPost ( 'Id' ));	
+		$o_case_view=new Dailywork_Workflow_Case_View($this->getPost ( 'Id' ));		
+		//判断用户是否有审批权限
+		$o_base_user_role=new Base_User_Role($n_uid);
+		$o_step=new Dailywork_Workflow_Main_Step();
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getRoleId()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId1()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId2()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId3()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId4()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId5()));
+		if ($o_step->getAllCount()==0)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'此工作流程已被其他人员审批！\',function(){parent.location.reload()});' );
+		}	
+		//验证所有控件提交的合法性
+		$o_main_vcl=new Dailywork_Workflow_Main_Step_Vcl();
+		$o_main_vcl->PushWhere ( array ('&&', 'StepId', '=',$o_step->getId(0)) ); 
+		$o_main_vcl->PushOrder ( array ('Number', 'A') );
+		for($i=0;$i<$o_main_vcl->getAllCount();$i++)
+		{
+			if ($o_main_vcl->getIsMust($i)==1 && $this->getPost($o_main_vcl->getId($i))=='')
+			{
+				$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'['.$o_main_vcl->getName($i).'] 不能为空！\');' );
+			}
+		}
+		//记录审核人和控件信息
+		$o_case_step=new Dailywork_Workflow_Case_Step_View();
+        $o_case_step->PushWhere ( array ('&&', 'CaseId', '=',$o_case->getId()) ); 
+        $o_case_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()) );
+        $o_case_step->PushWhere ( array ('&&', 'OwnerId', '=',0) );
+        if ($o_case_step->getAllCount()==0)
+        {
+        	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'此工作流程已被其他人员审批！\',function(){parent.location.reload()});' );
+        }
+        $o_case_step_temp=new Dailywork_Workflow_Case_Step($o_case_step->getId(0));
+        $o_case_step_temp->setOwnerId($n_uid);
+        $o_case_step_temp->setDate($this->GetDateNow());
+        $o_case_step_temp->Save();
+        //记录审核人的控件值
+		for($i=0;$i<$o_main_vcl->getAllCount();$i++)
+		{
+			$o_case_data=new Dailywork_Workflow_Case_Step_Data();
+			$o_case_data->setCaseStepId($o_case_step->getId(0));
+			$o_case_data->setName($o_main_vcl->getName($i));
+			$o_case_data->setType($o_main_vcl->getType($i));
+			$o_case_data->setValue($this->getPost($o_main_vcl->getId($i)));
+			$o_case_data->Save();
+		}
+        //工作流程状态+1
+        if (($o_case->getState()+1)>$o_case_view->getStateSum())
+        {
+        	$o_case->setState(100);
+        }else{
+        	$o_case->setState($o_case->getState()+1);
+        }		
+		$o_case->Save();
+		//给所有下一步审批的人发送模板消息提醒
+		$o_main_step=new Dailywork_Workflow_Main_Step();
+		$o_main_step->PushWhere ( array ('&&', 'MainId', '=',$o_case->getMainId()) );
+		$o_main_step->PushWhere ( array ('&&', 'Number', '>=',$o_case->getState()) );
+		$o_main_step->PushOrder ( array ('Number', 'A') );
+		for($i=0;$i<$o_main_step->getAllCount();$i++)
+		{
+			if ($o_main_step->getNumber($i)==$o_case->getState())
+			{				
+				$this->WorkflowSendNotice($o_main_step->getRoleId($i),$o_case->getId());
+			}
+		}
+		//记录case日志
+		$o_user = new Single_User ( $n_uid );
+		$o_case_log=new Dailywork_Workflow_Case_Log();
+		$o_case_log->setCaseId($o_case->getId());
+		$o_case_log->setDate($this->GetDateNow());
+		$o_case_log->setOperatorId($n_uid);
+		$o_case_log->setOperatorName($o_user->getName().'（'.$o_case_step->getRoleName(0).'） <i class="weui-icon-success-no-circle"></i>');
+		$o_case_log->setComment($o_main_vcl->getName(0).'：'.$this->getPost($o_main_vcl->getId(0)));
+		$o_case_log->Save();
+		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'workflow_audit_success.php"');
 	}
 }
 ?>

@@ -30,3 +30,23 @@ function dailywork_workflow_submit(a_must,a_name)
 		document.getElementById("submit_form").submit();	
 	});
 }
+function dailywork_workflow_pass_submit(a_must,a_name)
+{
+	for(var i=0;i<a_must.length;i++)
+	{
+		if (a_must[i]==1)
+		{
+			if ($('#Vcl_'+(i+1)).val()=='')
+			{
+				Dialog_Message("["+a_name[i]+"] 不能为空！",function(){
+					document.getElementById("Vcl_"+(i+1)).focus()
+				})		
+				return
+			}
+		}
+	}
+	Dialog_Confirm('真的通过审批吗？',function(){
+		Common_OpenLoading();
+		document.getElementById("submit_form").submit();	
+	});
+}

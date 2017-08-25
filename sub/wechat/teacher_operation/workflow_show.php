@@ -64,7 +64,7 @@ if (!($o_case->getState()>0))
 				}
 			}
 			?>
-		<div class="weui-cells__title">流程历史记录</div>
+		<div class="weui-cells__title">工作流程记录</div>
 		<div class="weui-cells">
 		<?php 
 			$o_log=new Dailywork_Workflow_Case_Log();

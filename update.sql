@@ -34,9 +34,9 @@ CREATE TABLE `dailywork_workflow_case_step` (
   `case_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT 'case编号',
   `main_step_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '步骤编号',
   `owner_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '填写人编号',
-  `date` date NOT NULL COMMENT '日期',
+  `date` datetime NOT NULL COMMENT '日期',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='工作流实际审批记录' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='工作流实际审批记录' AUTO_INCREMENT=28 ;
 
 CREATE TABLE `dailywork_workflow_case_step_data` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
