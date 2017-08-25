@@ -301,6 +301,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setActivityId(0);
 			$o_msg->setSend(0);
 			$o_msg->setFirst('你有一个标题为“'.$o_case_view->getTitle().'”的工作流程需要审批！
+
 申请人：'.$o_case_view->getName().'
 申请时间：'.$o_case_view->getDate());
 			$o_msg->setKeyword1('审批通知');
@@ -321,41 +322,36 @@ class Operate extends Bn_Basic {
 	}
 	private function WorkflowSendRejectNotice($n_case_id)
 	{
-		return;
-		$o_case_view=new Dailywork_Workflow_Case_View($n_case_id);	
 		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
 		$o_system_setup=new Base_Setup(1);
-		//收集所以这个角色的Uid
-		$o_role=new Base_User_Role();
-		$o_role->PushWhere ( array ('||', 'RoleId', '=',$n_role_id) );
-		$o_role->PushWhere ( array ('||', 'SecRoleId1', '=',$n_role_id) );
-		$o_role->PushWhere ( array ('||', 'SecRoleId2', '=',$n_role_id) );
-		$o_role->PushWhere ( array ('||', 'SecRoleId3', '=',$n_role_id) );
-		$o_role->PushWhere ( array ('||', 'SecRoleId4', '=',$n_role_id) );
-		$o_role->PushWhere ( array ('||', 'SecRoleId5', '=',$n_role_id) );
-		for($i=0;$i<$o_role->getAllCount();$i++)
+		$o_case_view=new Dailywork_Workflow_Case_View($n_case_id);	
+		$o_case_step_view=new Dailywork_Workflow_Case_Step_View();
+		$o_case_step_view->PushWhere ( array ('&&', 'OwnerId', '>',0) );
+		$o_case_step_view->PushOrder ( array ('Number', 'D') );
+		for($i=1;$i<$o_case_step_view->getAllCount();$i++)
 		{
+			//从第一个开始，而不是从第零个开始，为了就是不给刚刚操作的人发送模板消息。
 			//读取用户微信信息
 			$o_wechat_user=new Base_User_Wechat_View();
-			$o_wechat_user->PushWhere ( array ('&&', 'Uid', '=',$o_role->getUid($i)) );
+			$o_wechat_user->PushWhere ( array ('&&', 'Uid', '=',$o_case_step_view->getOwnerId($i)) );
 			if ($o_wechat_user->getAllCount()==0)
 			{
 				continue;
 			}
 			//添加消息队列
 			$o_msg=new Wechat_Wx_User_Reminder();
-			$o_msg->setUserId($o_role->getUid($i));
+			$o_msg->setUserId($o_case_step_view->getOwnerId($i));
 			$o_msg->setCreateDate($this->GetDateNow());
 			$o_msg->setSendDate('0000-00-00');
 			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_10'));
 			$o_msg->setOpenId($o_wechat_user->getOpenId(0));
 			$o_msg->setActivityId(0);
 			$o_msg->setSend(0);
-			$o_msg->setFirst('你有一个标题为“'.$o_case_view->getTitle().'”的工作流程需要审批！
-申请人：'.$o_case_view->getName().'
-申请时间：'.$o_case_view->getDate());
-			$o_msg->setKeyword1('审批通知');
-			$o_msg->setKeyword2('点击下方的查看详情，进入审批或查看。');
+			$o_msg->setFirst('你有一个标题为“'.$o_case_view->getTitle().'”的工作流程审批不通过！
+
+审批时间：'.$this->GetDateNow());
+			$o_msg->setKeyword1('审批不通过');
+			$o_msg->setKeyword2('点击下方的查看详情，进行查看。');
 			$o_msg->setKeyword3('');
 			$o_msg->setKeyword4('');
 			$o_msg->setKeyword5('');
