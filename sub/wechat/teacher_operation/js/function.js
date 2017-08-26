@@ -65,3 +65,19 @@ function dailywork_workflow_reject_submit()
 		document.getElementById("submit_form").submit();	
 	});
 }
+function dailywork_workflow_return_submit()
+{
+	if ($('#Vcl_Reason').val()=='')
+	{
+		Dialog_Message("[退回修改/不通过 原因] 不能为空！",function(){
+			document.getElementById("Vcl_Reason").focus()
+		})		
+		return
+	}
+	Dialog_Confirm('真的要退回修改吗？',function(){
+		$('#Vcl_Type').val('Return');
+		Common_OpenLoading();
+		document.getElementById("submit_form").submit();	
+	});
+}
+

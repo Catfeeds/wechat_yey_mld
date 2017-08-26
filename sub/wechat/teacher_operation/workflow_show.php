@@ -202,7 +202,7 @@ if (!($o_case->getStateSum()>0))
     </div>
     <div style="padding:15px;">
     	<?php 
-    	if ($o_step->getAllCount()>0)
+    	if ($o_step->getAllCount()>0 && $o_case->getReason()=='')
     	{
     		?>
     		<a href="javascript:;" class="weui-btn weui-btn_primary" onclick="dailywork_workflow_pass_submit(a_must,a_name)">通过</a>

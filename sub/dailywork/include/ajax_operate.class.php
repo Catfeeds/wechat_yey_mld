@@ -327,20 +327,27 @@ class Operate extends Bn_Basic {
 		$o_case_view=new Dailywork_Workflow_Case_View($n_case_id);	
 		$o_case_step_view=new Dailywork_Workflow_Case_Step_View();
 		$o_case_step_view->PushWhere ( array ('&&', 'OwnerId', '>',0) );
-		$o_case_step_view->PushOrder ( array ('Number', 'D') );
-		for($i=1;$i<$o_case_step_view->getAllCount();$i++)
+		$o_case_step_view->PushWhere ( array ('&&', 'CaseId', '=',$n_case_id) );
+		$o_case_step_view->PushOrder ( array ('Number', 'A') );
+		$a_target=array();
+		array_push($a_target, $o_case_view->getOpener());
+		for($i=0;$i<($o_case_step_view->getAllCount()-1);$i++)
+		{
+			array_push($a_target, $o_case_step_view->getOwnerId($i));
+		}
+		for($i=0;$i<count($a_target);$i++)
 		{
 			//从第一个开始，而不是从第零个开始，为了就是不给刚刚操作的人发送模板消息。
 			//读取用户微信信息
 			$o_wechat_user=new Base_User_Wechat_View();
-			$o_wechat_user->PushWhere ( array ('&&', 'Uid', '=',$o_case_step_view->getOwnerId($i)) );
+			$o_wechat_user->PushWhere ( array ('&&', 'Uid', '=',$a_target[$i]) );
 			if ($o_wechat_user->getAllCount()==0)
 			{
 				continue;
 			}
 			//添加消息队列
 			$o_msg=new Wechat_Wx_User_Reminder();
-			$o_msg->setUserId($o_case_step_view->getOwnerId($i));
+			$o_msg->setUserId($a_target[$i]);
 			$o_msg->setCreateDate($this->GetDateNow());
 			$o_msg->setSendDate('0000-00-00');
 			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_10'));
@@ -350,7 +357,60 @@ class Operate extends Bn_Basic {
 			$o_msg->setFirst('你有一个标题为“'.$o_case_view->getTitle().'”的工作流程审批不通过！
 
 审批时间：'.$this->GetDateNow());
-			$o_msg->setKeyword1('审批不通过');
+			$o_msg->setKeyword1('工作流程审批不通过');
+			$o_msg->setKeyword2('点击下方的查看详情，进行查看。');
+			$o_msg->setKeyword3('');
+			$o_msg->setKeyword4('');
+			$o_msg->setKeyword5('');
+			$o_msg->setRemark('');
+			//如果Comment为空，那么就没有点击事件了
+			$o_msg->setUrl('');
+			if($this->getPost('Comment')!='')
+			{
+				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/workflow_audit.php?id='.$o_case_view->getId().'');
+			}
+			$o_msg->setKeywordSum(11);
+			$o_msg->Save();
+		}
+	}
+	private function WorkflowSendReturnNotice($n_case_id)
+	{
+		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+		$o_system_setup=new Base_Setup(1);
+		$o_case_view=new Dailywork_Workflow_Case_View($n_case_id);	
+		$o_case_step_view=new Dailywork_Workflow_Case_Step_View();
+		$o_case_step_view->PushWhere ( array ('&&', 'OwnerId', '>',0) );
+		$o_case_step_view->PushWhere ( array ('&&', 'CaseId', '=',$n_case_id) );
+		$o_case_step_view->PushOrder ( array ('Number', 'A') );
+		$a_target=array();
+		array_push($a_target, $o_case_view->getOpener());
+		for($i=0;$i<($o_case_step_view->getAllCount()-1);$i++)
+		{
+			array_push($a_target, $o_case_step_view->getOwnerId($i));
+		}
+		for($i=0;$i<count($a_target);$i++)
+		{
+			//从第一个开始，而不是从第零个开始，为了就是不给刚刚操作的人发送模板消息。
+			//读取用户微信信息
+			$o_wechat_user=new Base_User_Wechat_View();
+			$o_wechat_user->PushWhere ( array ('&&', 'Uid', '=',$a_target[$i]) );
+			if ($o_wechat_user->getAllCount()==0)
+			{
+				continue;
+			}
+			//添加消息队列
+			$o_msg=new Wechat_Wx_User_Reminder();
+			$o_msg->setUserId($a_target[$i]);
+			$o_msg->setCreateDate($this->GetDateNow());
+			$o_msg->setSendDate('0000-00-00');
+			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_10'));
+			$o_msg->setOpenId($o_wechat_user->getOpenId(0));
+			$o_msg->setActivityId(0);
+			$o_msg->setSend(0);
+			$o_msg->setFirst('你有一个标题为“'.$o_case_step_view->getAllCount().'”的工作流程被退回！
+
+退回时间：'.$this->GetDateNow());
+			$o_msg->setKeyword1('工作流程退回修改');
 			$o_msg->setKeyword2('点击下方的查看详情，进行查看。');
 			$o_msg->setKeyword3('');
 			$o_msg->setKeyword4('');
@@ -447,6 +507,7 @@ class Operate extends Bn_Basic {
         if (($o_case->getState()+1)>$o_case_view->getStateSum())
         {
         	$o_case->setState(100);
+        	$o_case->setCloseDate($this->GetDateNow());
         }else{
         	$o_case->setState($o_case->getState()+1);
         }		
@@ -525,7 +586,8 @@ class Operate extends Bn_Basic {
         $o_case_step_temp->setDate($this->GetDateNow());
         $o_case_step_temp->Save();
         //工作流程状态+1
-        $o_case->setState(0);		
+        $o_case->setState(0);
+        $o_case->setReason($this->getPost('Reason'));		
 		$o_case->Save();
 		//给所有参与过的人员发送模板消息
 		$this->WorkflowSendRejectNotice($o_case->getId());
@@ -542,7 +604,69 @@ class Operate extends Bn_Basic {
 	}
 	Private function WechatWorkflowReturn($n_uid)//微信端事件
 	{
-		
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_case=new Dailywork_Workflow_Case($this->getPost ( 'Id' ));	
+		$o_case_view=new Dailywork_Workflow_Case_View($this->getPost ( 'Id' ));		
+		//判断用户是否有审批权限
+		$o_base_user_role=new Base_User_Role($n_uid);
+		$o_step=new Dailywork_Workflow_Main_Step();
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getRoleId()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId1()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId2()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId3()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId4()));
+		$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+		$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+		$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId5()));
+		if ($o_step->getAllCount()==0)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'此工作流程已被其他人员审批！\',function(){parent.location.reload()});' );
+		}	
+		//验证所有控件提交的合法性
+		if ($this->getPost('Reason')=='')
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'[退回修改/不通过 原因] 不能为空！\');' );
+		}
+		//记录审核人和控件信息
+		$o_case_step=new Dailywork_Workflow_Case_Step_View();
+        $o_case_step->PushWhere ( array ('&&', 'CaseId', '=',$o_case->getId()) ); 
+        $o_case_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()) );
+        $o_case_step->PushWhere ( array ('&&', 'OwnerId', '=',0) );
+        if ($o_case_step->getAllCount()==0)
+        {
+        	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'此工作流程已被其他人员审批！\',function(){parent.location.reload()});' );
+        }
+        $o_case_step_temp=new Dailywork_Workflow_Case_Step($o_case_step->getId(0));
+        $o_case_step_temp->setOwnerId($n_uid);
+        $o_case_step_temp->setDate($this->GetDateNow());
+        $o_case_step_temp->Save();
+        //工作流程状态+1
+        $o_case->setReason($this->getPost('Reason'));	
+		$o_case->Save();
+		//给所有参与过的人员发送模板消息
+		$this->WorkflowSendReturnNotice($o_case->getId());
+		//记录case日志
+		$o_user = new Single_User ( $n_uid );
+		$o_case_log=new Dailywork_Workflow_Case_Log();
+		$o_case_log->setCaseId($o_case->getId());
+		$o_case_log->setDate($this->GetDateNow());
+		$o_case_log->setOperatorId($n_uid);
+		$o_case_log->setOperatorName($o_user->getName().'（'.$o_case_step->getRoleName(0).'） <i class="weui-icon-cancel"></i>');
+		$o_case_log->setComment('退回修改原因：'.$this->getPost('Reason'));
+		$o_case_log->Save();
+		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'workflow_audit_success.php"');
 	}
 }
 ?>
