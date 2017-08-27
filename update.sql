@@ -12,12 +12,13 @@ CREATE TABLE `dailywork_workflow_case` (
 CREATE TABLE `dailywork_workflow_case_data` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
   `case_id` mediumint(8) unsigned NOT NULL COMMENT 'case编号',
+  `main_vcl_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '工作流数据控件ID',
   `name` char(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '数据名称',
   `type` char(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '控件类型',
   `value` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '数据值',
   `is_decode` int(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否需要解码',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户提交的工作流申请数据' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户提交的工作流申请数据' AUTO_INCREMENT=51 ;
 
 CREATE TABLE `dailywork_workflow_case_log` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',

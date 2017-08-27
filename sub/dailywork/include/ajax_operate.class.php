@@ -237,6 +237,7 @@ class Operate extends Bn_Basic {
 		{
 			$o_case_data=new Dailywork_Workflow_Case_Data();
 			$o_case_data->setCaseId($o_case->getId());
+			$o_case_data->setMainVclId($o_main_vcl->getId($i));
 			$o_case_data->setName($o_main_vcl->getName($i));
 			$o_case_data->setType($o_main_vcl->getType($i));
 			$o_case_data->setValue($this->getPost($o_main_vcl->getId($i)));
@@ -265,6 +266,88 @@ class Operate extends Bn_Basic {
 		$o_case_log->setOperatorId($n_uid);
 		$o_case_log->setOperatorName($o_user->getName().' <i class="weui-icon-success-no-circle"></i>');
 		$o_case_log->setComment('提交申请，等待相关部门审批。');
+		$o_case_log->Save();
+		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'workflow_new_success.php"');
+	}
+	public function WechatWorkflowModify($n_uid)//微信端事件
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		$o_case=new Dailywork_Workflow_Case($this->getPost ( 'Id' ));
+		//验证Id是否合法
+		if (!($o_case->getState()>0 && $o_case->getState()!=0 && $o_case->getState()!=100 && $o_case->getReason()!=''))
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'操作错误，请与管理员联系，001！\');' );
+		}
+		//验证控件合法性
+		$o_main_vcl=new Dailywork_Workflow_Main_Vcl();
+		$o_main_vcl->PushWhere ( array ('&&', 'MainId', '=',$o_case->getMainId()) ); 
+		$o_main_vcl->PushOrder ( array ('Number', 'A') );
+		for($i=0;$i<$o_main_vcl->getAllCount();$i++)
+		{
+			if ($o_main_vcl->getIsMust($i)==1 && $this->getPost($o_main_vcl->getId($i))=='')
+			{
+				$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'['.$o_main_vcl->getName($i).'] 不能为空！\');' );
+			}
+		}
+		//获取Case步骤中，最小的Number，作为这个Case的State
+		$o_case_step=new Dailywork_Workflow_Case_Step_View();
+		$o_case_step->PushWhere ( array ('&&', 'CaseId', '=',$o_case->getId())); 
+		$o_case_step->PushOrder ( array ('Number', 'A') );
+		$o_case_step->getAllCount();
+		$n_state=$o_case_step->getNumber(0);
+		$o_case->setState($o_case_step->getNumber(0));
+		$o_case->setReason('');
+		$o_case->Save();
+		//删除原用户提交的数据项
+		$o_case_data=new Dailywork_Workflow_Case_Data();
+		$o_case_data->PushWhere ( array ('&&', 'CaseId', '=',$o_case->getId()));
+		$o_case_data->DeletionWhere();
+		//保存用户提交的数据项
+		for($i=0;$i<$o_main_vcl->getAllCount();$i++)
+		{
+			$o_case_data=new Dailywork_Workflow_Case_Data();
+			$o_case_data->setCaseId($o_case->getId());
+			$o_case_data->setMainVclId($o_main_vcl->getId($i));
+			$o_case_data->setName($o_main_vcl->getName($i));
+			$o_case_data->setType($o_main_vcl->getType($i));
+			$o_case_data->setValue($this->getPost($o_main_vcl->getId($i)));
+			$o_case_data->Save();
+		}		
+		//给第一步审批人发送消息提醒，同时新建所有审批流程
+		$o_main_step=new Dailywork_Workflow_Main_Step();
+		$o_main_step->PushWhere ( array ('&&', 'MainId', '=',$o_case->getMainId()) );
+		$o_main_step->PushWhere ( array ('&&', 'Number', '>=',$n_state) );
+		$o_main_step->PushOrder ( array ('Number', 'A') );
+		for($i=0;$i<$o_main_step->getAllCount();$i++)
+		{
+			$o_case_step=new Dailywork_Workflow_Case_Step();
+			$o_case_step->PushWhere ( array ('&&', 'CaseId', '=',$o_case->getId()) );
+			$o_case_step->PushWhere ( array ('&&', 'MainStepId', '=',$o_main_step->getId($i)) );
+			if ($o_case_step->getAllCount()>0)
+			{
+				$o_case_step=new Dailywork_Workflow_Case_Step($o_case_step->getId(0));
+				$o_case_step->setOwnerId(0);
+			}else{
+				$o_case_step=new Dailywork_Workflow_Case_Step();
+			}		
+			$o_case_step->setCaseId($o_case->getId());
+			$o_case_step->setMainStepId($o_main_step->getId($i));
+			$o_case_step->Save();
+			if ($o_main_step->getNumber($i)==$n_state)
+			{				
+				$this->WorkflowSendAuditNotice($o_main_step->getRoleId($i),$o_case->getId());
+			}
+		}
+		//记录case日志		
+		$o_case_log=new Dailywork_Workflow_Case_Log();
+		$o_case_log->setCaseId($o_case->getId());
+		$o_case_log->setDate($this->GetDateNow());
+		$o_case_log->setOperatorId($n_uid);
+		$o_case_log->setOperatorName($o_user->getName().' <i class="weui-icon-success-no-circle"></i>');
+		$o_case_log->setComment('提交修改，等待相关部门审批。');
 		$o_case_log->Save();
 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'workflow_new_success.php"');
 	}
@@ -330,14 +413,14 @@ class Operate extends Bn_Basic {
 		$o_case_step_view->PushWhere ( array ('&&', 'CaseId', '=',$n_case_id) );
 		$o_case_step_view->PushOrder ( array ('Number', 'A') );
 		$a_target=array();
-		array_push($a_target, $o_case_view->getOpener());
+		array_push($a_target, $o_case_view->getOpener());//通知申请人
 		for($i=0;$i<($o_case_step_view->getAllCount()-1);$i++)
 		{
+			//总数减一，为了就是不给刚刚操作的人发送模板消息。
 			array_push($a_target, $o_case_step_view->getOwnerId($i));
 		}
 		for($i=0;$i<count($a_target);$i++)
-		{
-			//从第一个开始，而不是从第零个开始，为了就是不给刚刚操作的人发送模板消息。
+		{			
 			//读取用户微信信息
 			$o_wechat_user=new Base_User_Wechat_View();
 			$o_wechat_user->PushWhere ( array ('&&', 'Uid', '=',$a_target[$i]) );
@@ -383,9 +466,10 @@ class Operate extends Bn_Basic {
 		$o_case_step_view->PushWhere ( array ('&&', 'CaseId', '=',$n_case_id) );
 		$o_case_step_view->PushOrder ( array ('Number', 'A') );
 		$a_target=array();
-		array_push($a_target, $o_case_view->getOpener());
+		array_push($a_target, $o_case_view->getOpener());//通知申请人
 		for($i=0;$i<($o_case_step_view->getAllCount()-1);$i++)
 		{
+			//总数减一，为了就是不给刚刚操作的人发送模板消息。
 			array_push($a_target, $o_case_step_view->getOwnerId($i));
 		}
 		for($i=0;$i<count($a_target);$i++)
@@ -431,7 +515,7 @@ class Operate extends Bn_Basic {
 		if (! ($n_uid > 0)) {
 			$this->setReturn('parent.goto_login()');
 		}
-		//检查是不通过，还是退回
+		//检查是不通过，还是退回，如果都不是，那就是审核通过
 		if($this->getPost ( 'Type' )=='Reject')
 		{
 			$this->WechatWorkflowReject($n_uid);
@@ -496,7 +580,15 @@ class Operate extends Bn_Basic {
         //记录审核人的控件值
 		for($i=0;$i<$o_main_vcl->getAllCount();$i++)
 		{
+			//查看数据项是否已经存在，如果存在，那么直接修改
 			$o_case_data=new Dailywork_Workflow_Case_Step_Data();
+			$o_case_data->PushWhere ( array ('&&', 'CaseStepId', '=',$o_case_step->getId(0)) );
+			if($o_case_data->getAllCount()>0)
+			{
+				$o_case_data=new Dailywork_Workflow_Case_Step_Data($o_case_data->getId(0));
+			}else{
+				$o_case_data=new Dailywork_Workflow_Case_Step_Data();
+			}			
 			$o_case_data->setCaseStepId($o_case_step->getId(0));
 			$o_case_data->setName($o_main_vcl->getName($i));
 			$o_case_data->setType($o_main_vcl->getType($i));

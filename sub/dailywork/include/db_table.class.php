@@ -212,6 +212,7 @@ class Dailywork_Workflow_Case_Data extends CRUD
 {
     protected $Id;
     protected $CaseId;
+    protected $MainVclId;
     protected $Name;
     protected $Type;
     protected $Value;
@@ -230,6 +231,7 @@ class Dailywork_Workflow_Case_Data extends CRUD
         return(array(
                     'id' => 'Id',
                     'case_id' => 'CaseId',
+        			'main_vcl_id' => 'MainVclId',
                     'name' => 'Name',
                     'type' => 'Type',
                     'value' => 'Value',
@@ -494,7 +496,7 @@ class Dailywork_Workflow_Main_Step_View extends CRUD
 class Dailywork_Workflow_Main_Vcl extends CRUD
 {
     protected $Id;
-    protected $MainId;
+    protected $MainId;    
     protected $Number;
     protected $Name;
     protected $Html;

@@ -70,7 +70,7 @@ require_once '../header.php';
 	        				$o_step->getAllCount();
         					$s_state='<span class="weui-form-preview__value" style="color:#d9534f">已被“'.$o_step->getRoleName(0).'”退回，等待修改重提</span>';
         					$s_button.='
-        						<a class="weui-form-preview__btn weui-form-preview__btn_primary" style="color:#FFA200" href="signup_form_modify.php?id='.$o_table->getId($i).'">修改</a>
+        						<a class="weui-form-preview__btn weui-form-preview__btn_primary" style="color:#FFA200" href="workflow_modify.php?id='.$o_table->getId($i).'">修改</a>
         					';
         				}
         			}        					

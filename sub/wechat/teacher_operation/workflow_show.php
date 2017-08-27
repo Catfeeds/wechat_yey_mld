@@ -70,6 +70,7 @@ if (!($o_case->getStateSum()>0))
 		<?php 
 			$o_log=new Dailywork_Workflow_Case_Log();
 			$o_log->PushWhere ( array ('&&', 'CaseId', '=',$o_case->getId()) ); 
+			$o_log->PushOrder ( array ('Date', 'A') );
 			for($i=0;$i<$o_log->getAllCount();$i++)
 			{
 				echo('
