@@ -14,7 +14,7 @@ require_once '../header.php';
         </div>
     </div>
     <div style="padding:15px;">
-		    <a class="weui-btn weui-btn_primary" href="workflow_my.php">确定</a>
+		    <a class="weui-btn weui-btn_primary" href="workflow_audit.php">确定</a>
 	    </div>
 <script>
 $(function () {

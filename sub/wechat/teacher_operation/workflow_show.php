@@ -72,6 +72,16 @@ if (!($o_case->getStateSum()>0))
 						</div>
 					</div>
 					');
+				}else if ($o_case_data->getType($i)=='time'){
+					echo('
+					<div class="weui-cells">
+						<div class="weui-cell">
+							<div class="weui-cell__bd">
+								'.str_replace('T', ' ', $o_case_data->getValue($i)).'
+							</div>
+						</div>
+					</div>
+					');
 				}else{
 					echo('
 					<div class="weui-cells">
@@ -157,25 +167,31 @@ if (!($o_case->getStateSum()>0))
 		{
 			//获取当前用户角色编号
 			$o_base_user_role=new Base_User_Role($o_temp->getUid(0));
-			$o_step=new Dailywork_Workflow_Main_Step();
-			$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+			$o_step=new Dailywork_Workflow_Case_Step_View();
+			$o_step->PushWhere ( array ('||', 'CaseId', '=',$o_case->getId()));
 			$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
+			$o_step->PushWhere ( array ('&&', 'OwnerId', '=',0));
 			$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getRoleId()));
-			$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+			$o_step->PushWhere ( array ('||', 'CaseId', '=',$o_case->getId()));
 			$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
 			$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId1()));
-			$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+			$o_step->PushWhere ( array ('&&', 'OwnerId', '=',0));
+			$o_step->PushWhere ( array ('||', 'CaseId', '=',$o_case->getId()));
 			$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
 			$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId2()));
-			$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+			$o_step->PushWhere ( array ('&&', 'OwnerId', '=',0));
+			$o_step->PushWhere ( array ('||', 'CaseId', '=',$o_case->getId()));
 			$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
 			$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId3()));
-			$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+			$o_step->PushWhere ( array ('&&', 'OwnerId', '=',0));
+			$o_step->PushWhere ( array ('||', 'CaseId', '=',$o_case->getId()));
 			$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
 			$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId4()));
-			$o_step->PushWhere ( array ('||', 'MainId', '=',$o_case->getMainId()));
+			$o_step->PushWhere ( array ('&&', 'OwnerId', '=',0));
+			$o_step->PushWhere ( array ('||', 'CaseId', '=',$o_case->getId()));
 			$o_step->PushWhere ( array ('&&', 'Number', '=',$o_case->getState()));
 			$o_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId5()));
+			$o_step->PushWhere ( array ('&&', 'OwnerId', '=',0));
 			if ($o_step->getAllCount()>0)
 			{
 				?>
@@ -187,7 +203,7 @@ if (!($o_case->getStateSum()>0))
 				<?php
 				//有审批权限，显示审批控件
 				$o_step_vcl=new Dailywork_Workflow_Main_Step_Vcl();
-				$o_step_vcl->PushWhere ( array ('&&', 'StepId', '=',$o_step->getId(0)));
+				$o_step_vcl->PushWhere ( array ('&&', 'StepId', '=',$o_step->getMainStepId(0)));
 				$o_step_vcl->PushOrder ( array ('Number', 'D') );
 				for($i=0;$i<$o_step_vcl->getAllCount();$i++)
 				{

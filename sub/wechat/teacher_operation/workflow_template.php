@@ -112,6 +112,32 @@ require_once '../header.php';
 </div>
 
 
+<div class="weui-cells__title">休假时间段（结束时间）</div>
+<div class="weui-cells">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<input class="weui-input" type="datetime-local" value="" placeholder="必填">
+		</div>
+	</div>
+</div>
+
+<div class="weui-cells__title">休假时间段（终止日期）</div>
+<div class="weui-cells">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<input class="weui-input" id="Vcl_%id%" name="Vcl_%id%" type="datetime-local" value="" placeholder="必填">
+		</div>
+	</div>
+</div>
+
+<div class="weui-cells__title">工作安排</div>
+<div class="weui-cells">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<input class="weui-input" id="Vcl_%id%" name="Vcl_%id%" placeholder="必填">
+		</div>
+	</div>
+</div>
 
 </div>
     <div style="padding:15px;">
