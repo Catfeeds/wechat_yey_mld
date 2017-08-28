@@ -33,6 +33,7 @@ if (!($o_case->getOpener()==$o_temp->getUid(0) && $o_case->getReason()!='' && $o
 			<input type="hidden" name="Vcl_FunName" value="WechatWorkflowModify"/>
 			<input type="hidden" name="Vcl_Id" value="<?php echo($o_case->getId())?>"/>
 			<script type="text/javascript">
+				var a_id=[];
 				var a_must=[];
 				var a_name=[];
 			</script>
@@ -50,6 +51,7 @@ if (!($o_case->getOpener()==$o_temp->getUid(0) && $o_case->getReason()!='' && $o
 				}
 				echo('
 				<script type="text/javascript">
+					a_id.push('.$o_main_vcl->getId($i).');
 					a_must.push('.$o_main_vcl->getIsMust($i).');
 					a_name.push(\''.$o_main_vcl->getName($i).'\');
 				</script>
@@ -139,7 +141,7 @@ if (!($o_case->getOpener()==$o_temp->getUid(0) && $o_case->getReason()!='' && $o
 		</form>
     </div>
     <div style="padding:15px;">
-	    <a href="javascript:;" class="weui-btn weui-btn_primary" onclick="dailywork_workflow_submit(a_must,a_name)">提交申请</a>
+	    <a href="javascript:;" class="weui-btn weui-btn_primary" onclick="dailywork_workflow_submit(a_id,a_must,a_name)">提交申请</a>
 	    <a class="weui-btn weui-btn_default" onclick="history.go(-1)">返回</a>
     </div>   					
 </div>

@@ -4,7 +4,7 @@ require_once '../include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'sub/dailywork/include/db_table.class.php';
 $s_title='工作流程详情';
 //想判断教师权限，是否为绑定用户
-$o_temp=new Base_User_Wechat();
+$o_temp=new Base_User_Wechat_View();
 $o_temp->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) ); 
 if ($o_temp->getAllCount()==0)
 {
@@ -25,6 +25,26 @@ if (!($o_case->getStateSum()>0))
         <h1 class="page__title" style="font-size: 1.6em;"><?php echo($o_case->getTitle())?></h1>
     </div>
     <div class="page__bd">
+    	<div class="weui-cells__title">申请人姓名</div>
+		<div class="weui-cells">
+			<div class="weui-cell">
+				<div class="weui-cell__bd">
+					<?php 
+						echo($o_temp->getName(0));
+					?>
+				</div>
+			</div>
+		</div>
+		<div class="weui-cells__title">申请时间</div>
+		<div class="weui-cells">
+			<div class="weui-cell">
+				<div class="weui-cell__bd">
+					<?php 
+						echo($o_case->getDate());
+					?>
+				</div>
+			</div>
+		</div>
     	<form action="<?php echo($RELATIVITY_PATH)?>sub/dailywork/include/bn_submit.switch.php" id="submit_form" method="post" target="ajax_submit_frame" onsubmit="this.submit()">
 			<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 			<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
@@ -160,6 +180,7 @@ if (!($o_case->getStateSum()>0))
 			{
 				?>
 				<script type="text/javascript">
+					var a_id=[];
 					var a_must=[];
 					var a_name=[];
 				</script>
@@ -178,6 +199,7 @@ if (!($o_case->getStateSum()>0))
 					}
 					echo('
 					<script type="text/javascript">
+						a_id.push('.$o_step_vcl->getId($i).');
 						a_must.push('.$o_step_vcl->getIsMust($i).');
 						a_name.push(\''.$o_step_vcl->getName($i).'\');
 					</script>
@@ -206,7 +228,7 @@ if (!($o_case->getStateSum()>0))
     	if ($o_step->getAllCount()>0 && $o_case->getReason()=='')
     	{
     		?>
-    		<a href="javascript:;" class="weui-btn weui-btn_primary" onclick="dailywork_workflow_pass_submit(a_must,a_name)">通过</a>
+    		<a href="javascript:;" class="weui-btn weui-btn_primary" onclick="dailywork_workflow_pass_submit(a_id,a_must,a_name)">通过</a>
     		<a href="javascript:;" class="weui-btn weui-btn_warn" onclick="dailywork_workflow_return_submit()">退回修改</a>
     		<a href="javascript:;" class="weui-btn weui-btn_warn" onclick="dailywork_workflow_reject_submit()">不通过</a>
     		<?php
