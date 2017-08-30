@@ -54,7 +54,7 @@ function user_modify()
 	            return 
 	         }
 	    }
-		if (val.length<6){
+		if (val.length<4){
 	        dialog_message(Language['Message003'])
 	        return
 	    }

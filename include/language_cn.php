@@ -53,7 +53,7 @@ class Text
 			'DeptModifyTitle' => '修改部门信息',
 			'SystemConfigTitle' => '修改系统配置信息',
 			'UserInfo' => '用户信息',
-			'UserNameAlt' => '大于6位的数字或字母',
+			'UserNameAlt' => '至少4位的数字或字母',
 			'PasswordAlt' => '设置大于6位的密码',
 			'ConfirmPasswordAlt' => '再次确认密码',
 			'SystemName' => '系统名称', 
