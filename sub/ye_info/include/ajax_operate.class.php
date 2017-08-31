@@ -1740,39 +1740,10 @@ class Operate_YeInfo extends Bn_Basic {
 						//如果Comment为空，那么就没有点击事件了
 						$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/askforleave_comment.php?id='.$o_parent->getId().'');
 						$o_msg->setKeywordSum(10);
-						//$o_msg->Save();					
+						$o_msg->Save();					
 					}					
 					$o_detail->Save();
-				}
-				/*
-				//查找学生都有哪些微信与之关联
-				$o_parent= new Student_Info_Wechat_View();
-				$o_parent->PushWhere ( array ('&&', 'StudentId', '=',$o_signup->getStudentId($i)) );
-				require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';
-				$o_sys_info=new Base_Setup(1);
-				$o_token=new accessToken();
-				$curlUtil = new curlUtil();
-				$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
-				for($j=0;$j<$o_parent->getAllCount();$j++)
-				{
-					$data = array(
-				    	'touser' => $o_parent->getOpenId($j), // openid是发送消息的基础
-						'template_id' => 'E0kCn1ioTruoYRdQfQv8WYSnRK_ra8ionJ_F7EtGg1M', // 模板id
-						'url' => '', // 点击跳转地址
-						'topcolor' => '#FF0000', // 顶部颜色
-						'data' => array(
-							'first' => array('value' =>'学生“'.$o_parent->getName($j).'”考勤异常，请您关注：
-							'),
-							'keyword1' => array('value' => '尚未出勤','color'=>'#FF0000'),
-							'keyword2' => array('value' => $o_course->getTime(),'color'=>'#173177'),
-							'keyword3' => array('value' => $o_course->getName(),'color'=>'#173177'),
-							'keyword4' => array('value' => $o_course->getTeacherName(),'color'=>'#173177'),
-							'remark' => array('value' => '
-如有问题，请与学校核实。')
-						) 
-					);
-					$curlUtil->https_request($s_url, json_encode($data));	
-				}*/
+				}				
 			}
 		}
 		$o_checkingin->setAbsenteeismStu(json_encode($a_out));
