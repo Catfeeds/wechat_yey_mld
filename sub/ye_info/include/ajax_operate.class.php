@@ -1740,7 +1740,7 @@ class Operate_YeInfo extends Bn_Basic {
 						//如果Comment为空，那么就没有点击事件了
 						$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/askforleave_comment.php?id='.$o_parent->getId().'');
 						$o_msg->setKeywordSum(10);
-						$o_msg->Save();					
+						//$o_msg->Save();					
 					}					
 					$o_detail->Save();
 				}
