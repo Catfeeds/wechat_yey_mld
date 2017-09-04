@@ -59,9 +59,32 @@ for($i = 0; $i < $n_count; $i ++) {
 	$o_stu=new Student_Onboard_Info_Class_View($o_answer->getStudentId(0));
 ?>
 				<div class="answer">
-							<h4>
-							
-							姓名：<?php echo($o_stu->getName())?>&nbsp;&nbsp;&nbsp;&nbsp;班级：<?php echo($o_stu->getClassName())?>
+							<h4>							
+							班级：<?php echo($o_stu->getClassName())?>&nbsp;&nbsp;&nbsp;&nbsp;
+							幼儿姓名：<?php echo($o_stu->getName())?>&nbsp;&nbsp;&nbsp;&nbsp;
+							性别：<?php echo($o_stu->getSex())?>&nbsp;&nbsp;&nbsp;&nbsp;
+							家庭住址：<?php echo($o_stu->getHAdd())?>&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+							第一监护人：<?php echo($o_stu->getJh1Name())?>&nbsp;&nbsp;
+							<?php echo($o_stu->getJh1Phone())?>&nbsp;&nbsp;
+							<?php echo($o_stu->getJh1Danwei())?>&nbsp;&nbsp;
+							<?php echo($o_stu->getJh1Jiaoyu())?>&nbsp;&nbsp;
+							<?php echo($o_stu->getJh1Job())?><br/>
+							<?php 
+							if($o_stu->getJh1Name()!='')
+							{
+								?>
+								第二监护人：<?php echo($o_stu->getJh2Name())?>&nbsp;&nbsp;
+								<?php echo($o_stu->getJh2Phone())?>&nbsp;&nbsp;
+								<?php echo($o_stu->getJh2Danwei())?>&nbsp;&nbsp;
+								<?php echo($o_stu->getJh2Jiaoyu())?>&nbsp;&nbsp;
+								<?php echo($o_stu->getJh2Job())?>
+								<?php
+							}else{
+								?>
+								&nbsp;&nbsp;
+								<?php
+							}
+							?>
 							</h4>
 						<h1>
 							<?php echo(rawurldecode($a_answer[0]))?>
