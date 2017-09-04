@@ -46,7 +46,7 @@ $stylesheet = file_get_contents('css/onboard_survey.css');
 $mpdf->WriteHTML($stylesheet,1);	// The parameter 1 tells that this is css/style only and no body/html/text
 
 
-for($i = 5; $i < 6; $i ++) {
+for($i = 0; $i < $n_count; $i ++) {
 	ob_start();
 	$o_answer=new Student_Onboard_Survey_Answers();
 	$o_answer->PushWhere ( array ('&&', 'StudentId', '=', $o_dept->getStudentId($i) ) );
