@@ -46,7 +46,7 @@ $stylesheet = file_get_contents('css/onboard_survey.css');
 $mpdf->WriteHTML($stylesheet,1);	// The parameter 1 tells that this is css/style only and no body/html/text
 
 
-for($i = 5; $i < 6; $i ++) {
+for($i = 0; $i < $n_count; $i ++) {
 	ob_start();
 	$o_answer=new Student_Onboard_Survey_Answers();
 	$o_answer->PushWhere ( array ('&&', 'StudentId', '=', $o_dept->getStudentId($i) ) );
@@ -60,10 +60,11 @@ for($i = 5; $i < 6; $i ++) {
 ?>
 				<div class="answer">
 							<h4>							
-							班级：<?php echo($o_stu->getClassName())?>&nbsp;&nbsp;&nbsp;&nbsp;
-							幼儿姓名：<?php echo($o_stu->getName())?>&nbsp;&nbsp;&nbsp;&nbsp;
-							性别：<?php echo($o_stu->getSex())?>&nbsp;&nbsp;&nbsp;&nbsp;
-							家庭住址：<?php echo($o_stu->getHAdd())?><br/>
+							幼儿信息：<?php echo($o_stu->getClassName())?>&nbsp;&nbsp;
+							<?php echo($o_stu->getName())?>&nbsp;&nbsp;
+							<?php echo($o_stu->getSex())?>&nbsp;&nbsp;
+							<?php echo($o_stu->getBirthday())?>&nbsp;&nbsp;&nbsp;&nbsp;
+							住址：<?php echo($o_stu->getHAdd())?><br/>
 							第一监护人：<?php echo($o_stu->getJh1Name())?>&nbsp;&nbsp;
 							<?php echo($o_stu->getJh1Phone())?>&nbsp;&nbsp;
 							<?php echo($o_stu->getJh1Danwei())?>&nbsp;&nbsp;
