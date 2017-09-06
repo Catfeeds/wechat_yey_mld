@@ -45,9 +45,12 @@ class Operate extends Bn_Basic {
 				array_push ( $a_button, array ('预览', "wei_teach_review(".$o_user->getId($i).")" ) );
 			}else{
 				array_push ( $a_button, array ('预览', "wei_teach_review(".$o_user->getId($i).")" ) );
-				array_push ( $a_button, array ('修改', "location='wei_teach_modify.php?id=".$o_user->getId($i)."'" ) );
-				array_push ( $a_button, array ('发布', "location='wei_teach_release.php?id=".$o_user->getId($i)."'" ) );				
-				array_push ( $a_button, array ('删除', "wei_teach_delete(".$o_user->getId($i).")" ) );
+				if ($o_user->getOwnerId($i)==$n_uid)
+				{
+					array_push ( $a_button, array ('修改', "location='wei_teach_modify.php?id=".$o_user->getId($i)."'" ) );
+					array_push ( $a_button, array ('发布', "location='wei_teach_release.php?id=".$o_user->getId($i)."'" ) );				
+					array_push ( $a_button, array ('删除', "wei_teach_delete(".$o_user->getId($i).")" ) );
+				}				
 			}			
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
@@ -130,27 +133,30 @@ class Operate extends Bn_Basic {
 		$o_user = new Single_User ( $n_uid );
 		if (!$o_user->ValidModule ( 120501 ))return;//如果没有权限，不返回任何值
 		$o_table=new Teaching_Wei_Teach($this->getPost('Id'));
-		if ($_FILES ['Vcl_File'] ['size'] > 0) {
-			if ($_FILES ['Vcl_File'] ['size']>(1024*1024))
-			{
-				$this->setReturn ( 'parent.form_return("dialog_error(\'缩略图文件大小不能超过1MB！\')");' );
+		if ($o_table->getState()=='0' && $o_table->getOwnerId()==$n_uid)
+		{
+			if ($_FILES ['Vcl_File'] ['size'] > 0) {
+				if ($_FILES ['Vcl_File'] ['size']>(1024*1024))
+				{
+					$this->setReturn ( 'parent.form_return("dialog_error(\'缩略图文件大小不能超过1MB！\')");' );
+				}
+				mkdir ( RELATIVITY_PATH . 'userdata/teaching', 0777 );
+				mkdir ( RELATIVITY_PATH . 'userdata/teaching/wei_teach', 0777 );
+				$allowpictype = array ('jpg', 'jpeg', 'gif', 'png' );
+				$fileext = strtolower ( trim ( substr ( strrchr ( $_FILES ['Vcl_File'] ['name'], '.' ), 1 ) ) );
+				if (! in_array ( $fileext, $allowpictype )) {
+					$this->setReturn ( 'parent.form_return("dialog_error(\''.Text::Key('PhotoUploadError').'\')");' );
+				}
+				//保存Icon
+				$s_filename=$o_table->getId().'.'.$fileext;
+				copy ( $_FILES ['Vcl_File'] ['tmp_name'], RELATIVITY_PATH . 'userdata/teaching/wei_teach/' . $s_filename );
 			}
-			mkdir ( RELATIVITY_PATH . 'userdata/teaching', 0777 );
-			mkdir ( RELATIVITY_PATH . 'userdata/teaching/wei_teach', 0777 );
-			$allowpictype = array ('jpg', 'jpeg', 'gif', 'png' );
-			$fileext = strtolower ( trim ( substr ( strrchr ( $_FILES ['Vcl_File'] ['name'], '.' ), 1 ) ) );
-			if (! in_array ( $fileext, $allowpictype )) {
-				$this->setReturn ( 'parent.form_return("dialog_error(\''.Text::Key('PhotoUploadError').'\')");' );
-			}
-			//保存Icon
-			$s_filename=$o_table->getId().'.'.$fileext;
-			copy ( $_FILES ['Vcl_File'] ['tmp_name'], RELATIVITY_PATH . 'userdata/teaching/wei_teach/' . $s_filename );
-		}
-		//保存其他数据
-		$o_table->setTitle($this->getPost('Title'));
-		$o_table->setComment($this->getPost('Comment'));
-		$o_table->setVideo($this->getVideoUrl($this->getPost('Video')));
-		$o_table->Save();		
+			//保存其他数据
+			$o_table->setTitle($this->getPost('Title'));
+			$o_table->setComment($this->getPost('Comment'));
+			$o_table->setVideo($this->getVideoUrl($this->getPost('Video')));
+			$o_table->Save();		
+		}		
 		$this->setReturn ( 'parent.form_return("dialog_success(\'修改微教学成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
 	}	
 	public function WeiTeachDelete($n_uid) {
@@ -160,7 +166,7 @@ class Operate extends Bn_Basic {
 		$o_user = new Single_User ( $n_uid );
 		if (! $o_user->ValidModule ( 120501 ))return; //如果没有权限，不返回任何值
 		$o_table = new Teaching_Wei_Teach ($this->getPost('id'));
-		if ($o_table->getState()=='0')
+		if ($o_table->getState()=='0' && $o_table->getOwnerId()==$n_uid)
 		{
 			unlink(RELATIVITY_PATH.$o_table->getIcon());
 			$o_table->Deletion();
@@ -222,7 +228,7 @@ class Operate extends Bn_Basic {
 			$s_target_name='所有在园幼儿;';
 		}
 		$o_survey=new Teaching_Wei_Teach($this->getPost('Id'));
-		if($o_survey->getState()=='0')
+		if ($o_survey->getState()=='0' && $o_survey->getOwnerId()==$n_uid)
 		{
 			//只有未发布的问卷才能往下进行
 			$o_survey->setReleaseDate($this->GetDateNow());
@@ -230,6 +236,8 @@ class Operate extends Bn_Basic {
 			$o_survey->setTarget(json_encode($a_target));
 			$o_survey->setState(1);
 			$o_survey->Save();			
+		}else{
+			$this->setReturn ( 'parent.form_return("dialog_message(\'对不起，您进行了非法操作，请与管理员联系！1001\')");' );
 		}
 		//群发微信提醒
 		$o_system_setup=new Base_Setup(1);
@@ -263,7 +271,7 @@ class Operate extends Bn_Basic {
 					$o_msg->setRemark('');
 					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/wei_teach_view.php?id='.$this->getPost('Id'));
 					$o_msg->setKeywordSum(10);
-					$o_msg->Save();	
+					//$o_msg->Save();	
 				}			
 			}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发布微教学成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
