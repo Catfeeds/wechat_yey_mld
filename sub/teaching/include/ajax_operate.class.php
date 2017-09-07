@@ -271,7 +271,7 @@ class Operate extends Bn_Basic {
 					$o_msg->setRemark('');
 					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/wei_teach_view.php?id='.$this->getPost('Id'));
 					$o_msg->setKeywordSum(10);
-					//$o_msg->Save();	
+					$o_msg->Save();	
 				}			
 			}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发布微教学成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	

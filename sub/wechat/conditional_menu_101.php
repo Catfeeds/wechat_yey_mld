@@ -21,6 +21,16 @@ $data='{
             ]
 	},
     {	
+		"name":"日常办公",
+		"sub_button": [
+                {
+					"type": "view", 
+                    "name": "工作流程", 
+                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/workflow_list.php" 
+                }
+            ]
+	},
+    {	
 		"name":"个人信息",
 		"sub_button": [
                 {
