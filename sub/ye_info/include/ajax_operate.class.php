@@ -2203,7 +2203,6 @@ class Operate_YeInfo extends Bn_Basic {
 	    $o_user->PushOrder ( array ('ClassId','A') );
 	    $n_shidao=0;
 		for($i = 0; $i < $o_user->getAllCount(); $i ++) {
-	        $n_shidao=0;
 	        //读取班级今天的考勤数据
 	        $o_checkingin=new Student_Onboard_Checkingin_Class_View();
 	        $o_checkingin->PushWhere ( array ('&&', 'Date', '=', $this->getPost('date')) );
