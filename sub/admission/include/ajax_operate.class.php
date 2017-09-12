@@ -889,14 +889,15 @@ class Operate extends Bn_Basic {
 				$o_group = new userGroup();
 				$o_group->updateGroup($o_wechat_user->getOpenId(), $this->getWechatSetup('PARENTGROUP'));
 			}
-			$o_class=new Student_Class($this->getPost('ClassId'));
-			$o_signup->setStudentId($n_student_id);
-			$o_signup->setState(1);
-			$o_signup->setGradeNumber($o_class->getGrade());
-			$o_signup->setClassNumber($this->getPost('ClassId'));
-			$o_signup->Save();
-			$o_signup->CutSignupToOnboard($n_student_id);
-			
+			$o_class=new Student_Class($this->getPost('ClassId'));//获取班级信息			
+			$o_signup->CutSignupToOnboard($o_signup->getStudentId());//不改变当前数据，直接移动到幼儿再园信息
+			//修改在园信息，纠正ID号吗和班级信息
+			$o_onboard=new Student_Onboard_Info($o_signup->getStudentId());
+			$o_onboard->setStudentId($n_student_id);
+			$o_onboard->setState(1);
+			$o_onboard->setGradeNumber($o_class->getGrade());
+			$o_onboard->setClassNumber($this->getPost('ClassId'));
+			$o_onboard->Save();			
 			//发送入园问卷调查			
 			$o_stu=new Student_Onboard_Info_Class_Wechat_View();
 			$o_stu->PushWhere ( array ('&&', 'StudentId', '=',$n_student_id) );
