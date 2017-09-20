@@ -119,10 +119,14 @@ class Operate extends Bn_Basic {
 	}
 	public function getVideoUrl($s_html)
 	{
-		$s_html=str_replace('\'', '"', $s_html);
-		$a_temp=explode('src="',$s_html);
-		$a_temp=explode('"', $a_temp[1]);
-		return $a_temp[0];
+		$a_temp=explode('id_',$s_html);
+		if (count($a_temp)>1)
+		{
+			$a_temp=explode('.html', $a_temp[1]);
+			return 'http://player.youku.com/embed/'.$a_temp[0];
+		}else{
+			return $s_html;
+		}		
 	}
 	public function WeiTeachModify($n_uid)
 	{

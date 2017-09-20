@@ -93,10 +93,10 @@ require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 	                     		?></script>
 	                     	</div>                    	
 	                     	<div class="item">
-	                     		<label><span class="must">*</span> 教学视频地址：</label>
+	                     		<label><span class="must">*</span> 教学视频地址（请从优酷获取）：</label>
 	                     		<input name="Vcl_Video" maxlength="255" id="Vcl_Video" type="text" style="width:100%" placeholder="必填" class="form-control"/>
 	                     	</div>
-	                     	<div class="item">
+	                     	<div class="item" style="display:none">
 	                     		<label><a style="color:#3498DB" href="javascript:;" onclick="$('#explain').show()">如何获取教学视频地址？</a></label>
 	                     		<span id="explain" style="display:none">在浏览器中，打开您的腾讯视频，点击左下方的分享按钮，将“通用代码”复制到文本框中即可，如下图：<br/>
 	                     		<img style="border: 1px solid #ccc;margin-top:5px;" src="images/copy_video_url.jpg"></span>
@@ -121,7 +121,7 @@ if($_GET['id']>0)
 {
 ?>
 $('#Vcl_Title').val('<?php echo($o_table->getTitle())?>');
-$('#Vcl_Video').val('<iframe frameborder="0" width="640" height="498" src="<?php echo($o_table->getVideo())?>" allowfullscreen></iframe>');
+$('#Vcl_Video').val('<?php echo($o_table->getVideo())?>');
 <?php 
 }
 ?>
