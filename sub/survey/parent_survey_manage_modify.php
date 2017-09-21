@@ -44,7 +44,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 	                     	</div>	
 	                     	<div class="item">
 	                     		<label>问卷说明简述：</label>
-	                     		<textarea  name="Vcl_Comment" maxlength="500" id="Vcl_Comment" type="text" style="width:100%" placeholder="选填，不能超过500字" class="form-control" rows="10"/><?php echo($o_table->getComment())?></textarea>
+	                     		<textarea  name="Vcl_Comment" maxlength="500" id="Vcl_Comment" type="text" style="width:100%" placeholder="选填，不能超过500字" class="form-control" rows="10"/><?php if($_GET['id']>0)echo($o_table->getComment())?></textarea>
 	                     	</div>                     	
 							<div class="item">
 							<button id="user_add_btn" type="button" class="btn btn-default cancel" aria-hidden="true" style="float: right;outline: medium none" data-placement="left" onclick="location='<?php echo($_SERVER['HTTP_REFERER'])?>'"><?php echo(Text::Key('Cancel'))?></button>
