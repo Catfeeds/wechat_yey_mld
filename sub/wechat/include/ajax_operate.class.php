@@ -1291,7 +1291,7 @@ class Operate extends Bn_Basic {
 		{
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，服务器忙，请重试！\');' );
 		}
-		$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."survey_answer_completed.php';" );
+		$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."survey_answer_completed.php?id=".$o_survey->getId()."';" );
 	}
 	public function OnboardParentSurveyAnswer($n_uid)
 	{

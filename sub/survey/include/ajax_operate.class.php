@@ -622,7 +622,8 @@ class Operate extends Bn_Basic {
 				$s_sign_name.=' <span class="label label-success"><span class="glyphicon glyphicon-ok"></span></span>';
 				array_push ( $a_button, array ('查看答卷', "location='parent_survey_manage_progress_sheet.php?id=".$o_answer->getId(0)."'" ) );//删除
 				array_push ( $a_button, array ('打印', "window.open('parent_survey_manage_progress_pdf.php?id=".$o_answer->getId(0)."','_blank')" ) );//删除
-			}			
+			}	
+			$o_student=new Student_Onboard_Info($o_table->getStudentId($i));		
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
 				'<img style="width:32px;height:32px;" src="'.$o_table->getPhoto ( $i ).'">',
@@ -631,7 +632,7 @@ class Operate extends Bn_Basic {
 				$s_grade_name.'('.$o_table->getClassName ( $i ).')',
 				$o_table->getSex ( $i ),
 				$o_table->getId ( $i ).'<br/><span style="color:#999999">'.$o_table->getIdType( $i ).'</span>',
-				$o_table->getUserName ( $i ).'<br/><span style="color:#999999">'.$o_table->getPhone ( $i ).'</span>',
+				$o_student->getJh1Name().'-<span style="color:#999999">'.$o_student->getJh1Phone().'</span><br/>'.$o_student->getJh2Name().'-<span style="color:#999999">'.$o_student->getJh2Phone().'</span>',
 				$a_button
 				));
 		}
@@ -815,14 +816,15 @@ class Operate extends Bn_Basic {
 		$n_allcount = $o_table->getAllCount ();//总记录数
 		$n_count = $o_table->getCount ();
 		$a_row = array ();
-		for($i = 0; $i < $n_count; $i ++) {						
+		for($i = 0; $i < $n_count; $i ++) {
+			$o_student=new Student_Onboard_Info($o_table->getStudentId($i));
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),				
 				$o_table->getName ( $i ),
 				$o_table->getClassName ( $i ),
 				$o_table->getSex ( $i ),
 				$o_table->getCardId ( $i ),
-				$o_table->getUserName ( $i )
+				$o_student->getJh1Name().'-<span style="color:#999999">'.$o_student->getJh1Phone().'</span><br/>'.$o_student->getJh2Name().'-<span style="color:#999999">'.$o_student->getJh2Phone().'</span>'
 				));
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
@@ -832,7 +834,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassName', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'性别', '', 0, 0);		
 		$a_title=$this->setTableTitle($a_title,'证件号', '', 0, 0);
-		$a_title=$this->setTableTitle($a_title,'监护人', 'UserName', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'监护人', '', 0, 80);
 		$this->SendJsonResultForTable($n_allcount,'ParentSurveyManageSummaryPeople', 'no', $n_page, $a_title, $a_row);
 	}
 	public function ParentSurveyManageSummaryDetail($n_uid)
@@ -864,13 +866,14 @@ class Operate extends Bn_Basic {
 		$a_row = array ();		
 		for($i = 0; $i < $n_count; $i ++) {	
 			eval('$s_answer=$o_table->getAnswer'.$o_question->getNumber().'($i);');
-			$s_answer=rawurldecode(str_replace('"', '', $s_answer));	
+			$s_answer=rawurldecode(str_replace('"', '', $s_answer));
+			$o_student=new Student_Onboard_Info($o_table->getStudentId($i));	
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),				
 				$o_table->getName ( $i ),
 				$o_table->getClassName ( $i ),
 				$o_table->getSex ( $i ),
-				$o_table->getUserName ( $i ),
+				$o_student->getJh1Name().'-<span style="color:#999999">'.$o_student->getJh1Phone().'</span><br/>'.$o_student->getJh2Name().'-<span style="color:#999999">'.$o_student->getJh2Phone().'</span>',
 				$s_answer
 				));
 		}
@@ -980,6 +983,7 @@ class Operate extends Bn_Basic {
 		$n_count = $o_table->getCount ();
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {	
+			$o_student=new Student_Onboard_Info($o_table->getStudentId($i));
 			$a_button = array ();
 			array_push ( $a_button, array ('查看答卷', "location='parent_survey_manage_progress_sheet.php?id=".$o_table->getId($i)."'" ) );//删除
 			array_push ( $a_button, array ('打印', "window.open('parent_survey_manage_progress_pdf.php?id=".$o_table->getId($i)."','_blank')" ) );//删除					
@@ -989,7 +993,7 @@ class Operate extends Bn_Basic {
 				$o_table->getClassName ( $i ),
 				$o_table->getSex ( $i ),
 				$o_table->getCardId ( $i ),
-				$o_table->getUserName ( $i ),
+				$o_student->getJh1Name().'-<span style="color:#999999">'.$o_student->getJh1Phone().'</span><br/>'.$o_student->getJh2Name().'-<span style="color:#999999">'.$o_student->getJh2Phone().'</span>',
 				$a_button
 				));
 		}

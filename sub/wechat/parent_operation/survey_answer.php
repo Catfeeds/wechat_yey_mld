@@ -13,14 +13,14 @@ $o_answer->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
 if ($o_answer->getAllCount()>0)
 {
 	//已经答题，跳转到完成页面
-	echo "<script>location.href='survey_answer_completed.php'</script>"; 
+	echo "<script>location.href='survey_answer_completed.php?id=".$o_survey->getId()."'</script>"; 
 	exit(0);
 }
 //检查问卷状态
 if($o_survey->getState()=='2')
 {
 	//跳转到结束页面
-	echo "<script>location.href='survey_answer_end.php'</script>"; 
+	echo "<script>location.href='survey_answer_end.php?id=".$o_survey->getId()."'</script>"; 
 	exit(0);
 }
 if($o_survey->getState()!='1')
