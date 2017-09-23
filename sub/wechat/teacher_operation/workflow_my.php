@@ -39,9 +39,17 @@ require_once '../header.php';
 				$o_case_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId4()));
 				$o_case_step->PushWhere ( array ('||', 'OwnerId', '=',0));
 				$o_case_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId5())); 
-				if ($o_case_step->getAllCount()>0)
+				$n_number=0;
+				for($i=0;$i<$o_case_step->getAllCount();$i++)
 				{
-					echo('<span class="weui-badge">'.$o_case_step->getAllCount().'</span>');
+					if ($o_case_step->getState($i)==$o_case_step->getNumber($i))
+					{
+						$n_number++;//只有当前需要我审核的记录才会累加
+					}					
+				}
+				if ($n_number>0)
+				{
+					echo('<span class="weui-badge">'.$n_number.'</span>');
 				}
                 ?>                
                 </div>

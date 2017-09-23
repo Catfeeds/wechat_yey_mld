@@ -58,41 +58,75 @@ if (!($o_case->getStateSum()>0))
 			for($i=0;$i<$o_case_data->getAllCount();$i++)
 			{
 				echo('<div class="weui-cells__title">'.$o_case_data->getName($i).'</div>');
-				if($o_case_data->getType($i)=='multiple')
+				//要区分控件类型
+				switch ($o_case_data->getType($i))
 				{
-					$s_value=$o_case_data->getValue($i);
-					$s_value=str_replace('%%', '<br/>', $s_value);
-					$s_value=str_replace('%', '', $s_value);
-					echo('
-					<div class="weui-cells">
-						<div class="weui-cell">
-							<div class="weui-cell__bd">
-								'.$s_value.'
+					case 'multiple':
+						//多选
+						$s_value=$o_case_data->getValue($i);
+						$s_value=str_replace('%%', '<br/>', $s_value);
+						$s_value=str_replace('%', '', $s_value);
+						echo('
+						<div class="weui-cells">
+							<div class="weui-cell">
+								<div class="weui-cell__bd">
+									'.$s_value.'
+								</div>
 							</div>
 						</div>
-					</div>
-					');
-				}else if ($o_case_data->getType($i)=='time'){
-					echo('
-					<div class="weui-cells">
-						<div class="weui-cell">
-							<div class="weui-cell__bd">
-								'.str_replace('T', ' ', $o_case_data->getValue($i)).'
+						');
+						break;
+					case 'time':
+						//时间
+						echo('
+						<div class="weui-cells">
+							<div class="weui-cell">
+								<div class="weui-cell__bd">
+									'.str_replace('T', ' ', $o_case_data->getValue($i)).'
+								</div>
 							</div>
 						</div>
-					</div>
-					');
-				}else{
-					echo('
-					<div class="weui-cells">
-						<div class="weui-cell">
-							<div class="weui-cell__bd">
-								'.$o_case_data->getValue($i).'
+						');
+						break;
+					case 'img':
+						//图片
+						$a_img=json_decode($o_case_data->getValue($i));
+						//构建图片列表
+						$s_img='';
+						for($j=0;$j<count($a_img);$j++)
+						{
+							$s_img.='<li onclick="location=\''.RELATIVITY_PATH.$a_img[$j].'\'" class="weui-uploader__file" style="background-image:url('.RELATIVITY_PATH.$a_img[$j].')"></li>';
+						}
+						echo('
+						<div class="weui-cells">
+							<div class="weui-cell">
+								<div class="weui-cell__bd">
+									<div class="weui-uploader">
+										<div class="weui-uploader__bd">
+											<ul class="weui-uploader__files" id="uploaderFiles_'.$o_case_data->getId($i).'">
+											'.$s_img.'
+											</ul>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-					');
-				}
+						<div class="weui-gallery" id="gallery_'.$o_case_data->getId($i).'">
+							<span class="weui-gallery__img" id="galleryImg_'.$o_case_data->getId($i).'" title=""></span>
+						</div>
+						');
+						break;
+					default:
+						echo('
+						<div class="weui-cells">
+							<div class="weui-cell">
+								<div class="weui-cell__bd">
+									'.$o_case_data->getValue($i).'
+								</div>
+							</div>
+						</div>
+						');
+				}				
 			}
 			?>
 		<div class="weui-cells__title">工作流程记录</div>

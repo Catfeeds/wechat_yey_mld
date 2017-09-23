@@ -19,6 +19,31 @@ if (!($o_main->getNumber()>0))
 	echo "<script>location.href='workflow_list.php'</script>"; 
 	exit(0);
 }
+//设置分享图标和标题与说明
+require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';
+$o_token = new accessToken ();
+$s_token = $o_token->getRefreshToken();
+$jsapiTicket =getJsApiTicket($s_token);
+$url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$timestamp = time();
+$nonceStr =createNonceStr();
+$string = 'jsapi_ticket='.$jsapiTicket.'&noncestr='.$nonceStr.'&timestamp='.$timestamp.'&url='.$url;
+$signature = sha1($string);
+function createNonceStr($length = 16) {
+	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	$str = "";
+	for($i = 0; $i < $length; $i ++) {
+		$str .= substr ( $chars, mt_rand ( 0, strlen ( $chars ) - 1 ), 1 );
+	}
+	return $str;
+}
+function getJsApiTicket($s_token) {
+	$url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=".$s_token;
+	$o_util=new curlUtil();
+	$s_return=$o_util->https_request($url);
+	$res=json_decode($s_return, true);
+	return $res['ticket'];
+}
 ?>
 <div class="page">
     <div class="page__hd" style="padding:20px;padding-bottom:10px;">
@@ -51,7 +76,9 @@ if (!($o_main->getNumber()>0))
 			$o_main_vcl->PushOrder ( array ('Number', 'A') );
 			for($i=0;$i<$o_main_vcl->getAllCount();$i++)
 			{
-				echo(str_replace('%id%', $o_main_vcl->getId($i), $o_main_vcl->getHtml($i)));
+				$s_html=str_replace('%id%', $o_main_vcl->getId($i), $o_main_vcl->getHtml($i));
+				$s_html=str_replace('%token%', $s_token, $s_html);
+				echo($s_html);
 				//是否必填项输出数组，去掉单选控件
 				if($o_main_vcl->getType($i)=='single')
 				{
@@ -74,6 +101,19 @@ if (!($o_main->getNumber()>0))
     </div>   					
 </div>
 <script type="text/javascript" src="js/function.js"></script>
+<script src="<?php echo(RELATIVITY_PATH)?>sub/wechat/js/jweixin-1.0.0.js" charset="utf-8"></script>
+<script type="text/javascript">
+$(function(){
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: 'wxf38509d7749bb56d', // 必填，公众号的唯一标识
+        timestamp: <?php echo($timestamp)?>, // 必填，生成签名的时间戳
+        nonceStr: '<?php echo($nonceStr)?>', // 必填，生成签名的随机串
+        signature: '<?php echo($signature);?>',// 必填，签名，见附录1
+        jsApiList: ['chooseImage','uploadImage','wx.checkJsApi'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+});
+</script>
 <?php
 require_once '../footer.php';
 ?>

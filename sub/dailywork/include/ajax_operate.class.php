@@ -235,13 +235,49 @@ class Operate extends Bn_Basic {
 		//保存用户提交的数据项
 		for($i=0;$i<$o_main_vcl->getAllCount();$i++)
 		{
-			$o_case_data=new Dailywork_Workflow_Case_Data();
-			$o_case_data->setCaseId($o_case->getId());
-			$o_case_data->setMainVclId($o_main_vcl->getId($i));
-			$o_case_data->setName($o_main_vcl->getName($i));
-			$o_case_data->setType($o_main_vcl->getType($i));
-			$o_case_data->setValue($this->getPost($o_main_vcl->getId($i)));
-			$o_case_data->Save();
+			//要区分控件类型
+			switch ($o_main_vcl->getType($i))
+			{
+				case 'img':
+					//分析控件
+					$s_value=$this->getPost($o_main_vcl->getId($i));
+					$a_img=array();
+					$a_url=array();
+					$a_url=explode(',', $s_value);
+					for($j=0;$j<count($a_url);$j++)
+					{
+						if (count(explode('file.api.weixin.qq.com', $a_url[$j]))>1)
+						{
+							//说明地址合法那么开始下载
+							$ch = curl_init($a_url[$j]);
+							curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+							$str = curl_exec($ch);
+							mkdir ( RELATIVITY_PATH . 'userdata/dailywork', 0777 );
+							mkdir ( RELATIVITY_PATH . 'userdata/dailywork/workflow', 0777 );
+							mkdir ( RELATIVITY_PATH . 'userdata/dailywork/workflow/'.$o_case->getId().'_'.$o_main_vcl->getId($i), 0777 );
+							$s_file_name='userdata/dailywork/workflow/'.$o_case->getId().'_'.$o_main_vcl->getId($i).'/'.time().rand('10000', '99999').'.jpg';
+							file_put_contents(RELATIVITY_PATH.$s_file_name,$str);
+							array_push($a_img, $s_file_name);
+						}
+					}
+					$o_case_data=new Dailywork_Workflow_Case_Data();
+					$o_case_data->setCaseId($o_case->getId());
+					$o_case_data->setMainVclId($o_main_vcl->getId($i));
+					$o_case_data->setName($o_main_vcl->getName($i));
+					$o_case_data->setType($o_main_vcl->getType($i));
+					$o_case_data->setValue(json_encode($a_img));					
+					$o_case_data->Save();
+					break;
+				default:
+					$o_case_data=new Dailywork_Workflow_Case_Data();
+					$o_case_data->setCaseId($o_case->getId());
+					$o_case_data->setMainVclId($o_main_vcl->getId($i));
+					$o_case_data->setName($o_main_vcl->getName($i));
+					$o_case_data->setType($o_main_vcl->getType($i));
+					$o_case_data->setValue($this->getPost($o_main_vcl->getId($i)));
+					$o_case_data->Save();
+			}			
 		}		
 		//给第一步审批人发送消息提醒，同时新建所有审批流程
 		$o_main_step=new Dailywork_Workflow_Main_Step();
@@ -308,13 +344,52 @@ class Operate extends Bn_Basic {
 		//保存用户提交的数据项
 		for($i=0;$i<$o_main_vcl->getAllCount();$i++)
 		{
-			$o_case_data=new Dailywork_Workflow_Case_Data();
-			$o_case_data->setCaseId($o_case->getId());
-			$o_case_data->setMainVclId($o_main_vcl->getId($i));
-			$o_case_data->setName($o_main_vcl->getName($i));
-			$o_case_data->setType($o_main_vcl->getType($i));
-			$o_case_data->setValue($this->getPost($o_main_vcl->getId($i)));
-			$o_case_data->Save();
+			switch ($o_main_vcl->getType($i))
+			{
+				case 'img':
+					//分析控件
+					$s_value=$this->getPost($o_main_vcl->getId($i));
+					$a_img=array();
+					$a_url=array();
+					$a_url=explode(',', $s_value);
+					for($j=0;$j<count($a_url);$j++)
+					{
+						if (count(explode('file.api.weixin.qq.com', $a_url[$j]))>1)
+						{
+							//说明地址合法那么开始下载
+							$ch = curl_init($a_url[$j]);
+							curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+							$str = curl_exec($ch);
+							mkdir ( RELATIVITY_PATH . 'userdata/dailywork', 0777 );
+							mkdir ( RELATIVITY_PATH . 'userdata/dailywork/workflow', 0777 );
+							mkdir ( RELATIVITY_PATH . 'userdata/dailywork/workflow/'.$o_case->getId().'_'.$o_main_vcl->getId($i), 0777 );
+							$s_file_name='userdata/dailywork/workflow/'.$o_case->getId().'_'.$o_main_vcl->getId($i).'/'.time().rand('10000', '99999').'.jpg';
+							file_put_contents(RELATIVITY_PATH.$s_file_name,$str);
+							array_push($a_img, $s_file_name);
+						}else if (count(explode('userdata/dailywork/workflow', $a_url[$j]))>1)
+						{
+							//说明是以前有的图片，不用下载
+							array_push($a_img, $a_url[$j]);
+						}
+					}
+					$o_case_data=new Dailywork_Workflow_Case_Data();
+					$o_case_data->setCaseId($o_case->getId());
+					$o_case_data->setMainVclId($o_main_vcl->getId($i));
+					$o_case_data->setName($o_main_vcl->getName($i));
+					$o_case_data->setType($o_main_vcl->getType($i));
+					$o_case_data->setValue(json_encode($a_img));					
+					$o_case_data->Save();
+					break;
+				default:
+					$o_case_data=new Dailywork_Workflow_Case_Data();
+					$o_case_data->setCaseId($o_case->getId());
+					$o_case_data->setMainVclId($o_main_vcl->getId($i));
+					$o_case_data->setName($o_main_vcl->getName($i));
+					$o_case_data->setType($o_main_vcl->getType($i));
+					$o_case_data->setValue($this->getPost($o_main_vcl->getId($i)));
+					$o_case_data->Save();
+			}			
 		}		
 		//给第一步审批人发送消息提醒，同时新建所有审批流程
 		$o_main_step=new Dailywork_Workflow_Main_Step();
@@ -338,7 +413,7 @@ class Operate extends Bn_Basic {
 			$o_case_step->Save();
 			if ($o_main_step->getNumber($i)==$n_state)
 			{				
-				$this->WorkflowSendAuditNotice($o_main_step->getRoleId($i),$o_case->getId());
+				//$this->WorkflowSendAuditNotice($o_main_step->getRoleId($i),$o_case->getId());
 			}
 		}
 		//记录case日志		
@@ -448,10 +523,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setRemark('');
 			//如果Comment为空，那么就没有点击事件了
 			$o_msg->setUrl('');
-			if($this->getPost('Comment')!='')
-			{
-				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/workflow_audit.php?id='.$o_case_view->getId().'');
-			}
+			$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/workflow_my.php');
 			$o_msg->setKeywordSum(11);
 			$o_msg->Save();
 		}
@@ -500,14 +572,9 @@ class Operate extends Bn_Basic {
 			$o_msg->setKeyword4('');
 			$o_msg->setKeyword5('');
 			$o_msg->setRemark('');
-			//如果Comment为空，那么就没有点击事件了
-			$o_msg->setUrl('');
-			if($this->getPost('Comment')!='')
-			{
-				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/workflow_audit.php?id='.$o_case_view->getId().'');
-			}
+			$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/workflow_my.php');
 			$o_msg->setKeywordSum(11);
-			$o_msg->Save();
+			//$o_msg->Save();
 		}
 	}
 	public function WechatWorkflowAudit($n_uid)//微信端事件

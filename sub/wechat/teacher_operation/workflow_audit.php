@@ -39,11 +39,19 @@ require_once '../header.php';
 				$o_case_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId4()));
 				$o_case_step->PushWhere ( array ('||', 'OwnerId', '=',0));
 				$o_case_step->PushWhere ( array ('&&', 'RoleId', '=',$o_base_user_role->getSecRoleId5())); 
-				if ($o_case_step->getAllCount()>0)
+				$n_number=0;
+				for($i=0;$i<$o_case_step->getAllCount();$i++)
 				{
-					echo('<span class="weui-badge">'.$o_case_step->getAllCount().'</span>');
+					if ($o_case_step->getState($i)==$o_case_step->getNumber($i))
+					{
+						$n_number++;//只有当前需要我审核的记录才会累加
+					}					
 				}
-                ?>                
+				if ($n_number>0)
+				{
+					echo('<span class="weui-badge">'.$n_number.'</span>');
+				}
+                ?>          
                 </div>
                 <div class="weui-navbar__item" onclick="location='workflow_my.php'">
                     我的记录
@@ -57,6 +65,10 @@ require_once '../header.php';
         		//先显示所有待审核的
         		for($i=0;$i<$o_case_step->getAllCount();$i++)
         		{
+        			if ($o_case_step->getState($i)!=$o_case_step->getNumber($i))
+        			{
+        				continue;
+        			}
         			$o_case=new Dailywork_Workflow_Case_View($o_case_step->getCaseId($i));
         			$s_button='<a class="weui-form-preview__btn weui-form-preview__btn_primary" href="workflow_show.php?id='.$o_case_step->getCaseId($i).'">审核</a>';
         			$s_state='<span class="weui-form-preview__value" style="color:#FFA200">等待审核</span>';	        					
