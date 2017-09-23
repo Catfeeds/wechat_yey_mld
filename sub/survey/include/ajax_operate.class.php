@@ -13,8 +13,8 @@ class Operate extends Bn_Basic {
 		if (! ($n_uid > 0)) {
 			$this->setReturn('parent.goto_login()');
 		}
-		$o_user = new Single_User ( $n_uid );
-		if (!$o_user->ValidModule ( 120401 ))return;//如果没有权限，不返回任何值
+		$o_operator = new Single_User ( $n_uid );
+		if (!$o_operator->ValidModule ( 120401 ))return;//如果没有权限，不返回任何值
 		$n_page=$this->getPost('page');
 		if ($n_page<=0)$n_page=1;
 		$o_user = new Survey(); 
@@ -47,11 +47,21 @@ class Operate extends Bn_Basic {
 				array_push ( $a_button, array ('进度详情', "location='parent_survey_manage_progress.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('结束问卷', "parent_survey_manage_end(".$o_user->getId($i).")" ) );
 				array_push ( $a_button, array ('复制问卷', "parent_survey_manage_copy(".$o_user->getId($i).")" ) );
+				if ($o_operator->getRoleId()==1)
+				{
+					//如果是超级管理员，那么可以删除
+					array_push ( $a_button, array ('删除', "parent_survey_manage_delete(".$o_user->getId($i).")" ) );
+				}
 			}elseif ($o_user->getState($i)==2){		
 				$s_state='<span class="label label-danger">已结束</span>';		
 				array_push ( $a_button, array ('查看统计', "location='parent_survey_manage_summary.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('查看答卷', "location='parent_survey_manage_answered.php?id=".$o_user->getId($i)."'" ) );//删除
 				array_push ( $a_button, array ('复制问卷', "parent_survey_manage_copy(".$o_user->getId($i).")" ) );
+				if ($o_operator->getRoleId()==1)
+				{
+					//如果是超级管理员，那么可以删除
+					array_push ( $a_button, array ('删除', "parent_survey_manage_delete(".$o_user->getId($i).")" ) );
+				}
 			}else{
 				array_push ( $a_button, array ('修改问卷', "location='parent_survey_manage_modify.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('编辑题目', "location='parent_survey_manage_question.php?id=".$o_user->getId($i)."'" ) );
@@ -258,7 +268,7 @@ class Operate extends Bn_Basic {
 		$o_user = new Single_User ( $n_uid );
 		if (! $o_user->ValidModule ( 120401 ))return; //如果没有权限，不返回任何值
 		$o_survey = new Survey ($this->getPost('id'));
-		if ($o_survey->getState()=='0')
+		if ($o_survey->getState()=='0' || $o_user->getRoleId()==1)
 		{
 			$o_survey->Deletion();
 			//循环删除问题
@@ -271,6 +281,10 @@ class Operate extends Bn_Basic {
 				$o_option->DeletionWhere();
 			}
 			$o_question->DeletionWhere();
+			//删除说有答案
+			$o_answer=new Survey_Answers();
+			$o_answer->PushWhere ( array ('&&', 'SurveyId', '=', $this->getPost('id') ) );
+			$o_answer->DeletionWhere();
 		}
 		$a_general = array (
 			'success' => 1,
