@@ -37,9 +37,15 @@ $o_table->getAllCount();
 	                     		<label><span class="must">*</span> 类型：</label>
 	                     		<select id="Vcl_Type" name="Vcl_Type" class="selectpicker" data-style="btn-default" >
 									<option value="">请选择</option>
-									<option value="园所通知">园所通知</option>
-									<option value="会议通知">会议通知</option>
-									<option value="公示公告">公示公告</option>								
+									<?php 
+									$o_type=new Notice_Center_Type();
+									$o_type->PushWhere ( array ('&&', 'Type', '=','parent') );
+									$o_type->PushOrder ( array ('Number','A') );
+									for($i=0;$i<$o_type->getAllCount();$i++)
+									{
+										echo('<option value="'.$o_type->getName($i).'">'.$o_type->getName($i).'</option>');
+									}
+									?>									
 								</select>	                     		
 	                     	</div>
 	                     	<div class="item">

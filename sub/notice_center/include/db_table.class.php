@@ -173,4 +173,29 @@ class Notice_Center_Teacher_Record_View extends CRUD
         ));
     }
 }
+class Notice_Center_Type extends CRUD
+{
+    protected $Id;
+    protected $Number;
+    protected $Type;
+    protected $Name;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'notice_center_type';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'number' => 'Number',
+                    'type' => 'Type',
+                    'name' => 'Name'
+        ));
+    }
+}
 ?>

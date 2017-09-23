@@ -38,14 +38,15 @@ $o_table->getAllCount();
 	                     		<label><span class="must">*</span> 类型：</label>
 	                     		<select id="Vcl_Type" name="Vcl_Type" class="selectpicker" data-style="btn-default" >
 									<option value="">请选择</option>
-									<option value="园所通知">园所通知</option>
-									<option value="办公室通知">办公室通知</option>
-									<option value="开园通知">开园通知</option>
-									<option value="缴费通知">缴费通知</option>
-									<option value="体检通知">体检通知</option>
-									<option value="安全通知">安全通知</option>
-									<option value="放假通知">放假通知</option>
-									<option value="活动通知">活动通知</option>									
+									<?php 
+									$o_type=new Notice_Center_Type();
+									$o_type->PushWhere ( array ('&&', 'Type', '=','parent') );
+									$o_type->PushOrder ( array ('Number','A') );
+									for($i=0;$i<$o_type->getAllCount();$i++)
+									{
+										echo('<option value="'.$o_type->getName($i).'">'.$o_type->getName($i).'</option>');
+									}
+									?>								
 								</select>	                     		
 	                     	</div>
 	                     	<div class="item">
