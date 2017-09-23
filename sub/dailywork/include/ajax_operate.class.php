@@ -413,7 +413,7 @@ class Operate extends Bn_Basic {
 			$o_case_step->Save();
 			if ($o_main_step->getNumber($i)==$n_state)
 			{				
-				//$this->WorkflowSendAuditNotice($o_main_step->getRoleId($i),$o_case->getId());
+				$this->WorkflowSendAuditNotice($o_main_step->getRoleId($i),$o_case->getId());
 			}
 		}
 		//记录case日志		
@@ -574,7 +574,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setRemark('');
 			$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/workflow_my.php');
 			$o_msg->setKeywordSum(11);
-			//$o_msg->Save();
+			$o_msg->Save();
 		}
 	}
 	public function WechatWorkflowAudit($n_uid)//微信端事件
