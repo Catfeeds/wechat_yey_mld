@@ -1215,6 +1215,7 @@ class Operate extends Bn_Basic {
 		//检查微信用户是否有权限访问此问卷
 		$o_stu=new Student_Onboard_Info_Class_Wechat_View();
 		$o_stu->PushWhere ( array ('&&', 'UserId', '=',$n_uid) ); 
+		$o_stu->PushWhere ( array ('&&', 'StudentId', '=',$this->getPost ( 'StudentId' )) );
 		$o_stu->getAllCount();
 		$o_role=new Survey();
 		$o_role->PushWhere ( array ('&&', 'Id', '=',$o_survey->getId()) ); 

@@ -536,6 +536,7 @@ class Operate extends Bn_Basic {
 		$n_page=$this->getPost('page');
 		if ($n_page<=0)$n_page=1;
 		$o_user = new Notice_Center_Teacher_Record_View(); 	
+		$o_user->PushWhere ( array ('&&', 'Uid', '=',$n_uid) );		
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
 		$o_user->setCountLine ( $this->N_PageSize );
@@ -585,8 +586,7 @@ class Operate extends Bn_Basic {
 		if (!$o_user->ValidModule ( 120304 ))return;//如果没有权限，不返回任何值
 		$n_page=$this->getPost('page');
 		if ($n_page<=0)$n_page=1;
-		$o_user = new Notice_Center_Teacher_Record_View(); 
-		$o_user->PushWhere ( array ('&&', 'Uid', '=',$n_uid) );		
+		$o_user = new Notice_Center_Teacher_Record_View(); 		
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
 		$o_user->setCountLine ( $this->N_PageSize );
