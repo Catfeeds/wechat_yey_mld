@@ -148,4 +148,34 @@ function teacher_send_notice_single()
 	document.getElementById ('Vcl_Comment').value=encodeURIComponent(ue.getContent())
 	dialog_confirm("确认要单发通知吗？<br/><br/>确认后：<br/>1. 微信绑定的教师将收到微信通知。<br/>2. 发送后，可以在“<b>教师通知记录</b>”模块中查看历史记录。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
 }
-
+function notice_type_modify()
+{
+	var val = $('#Vcl_Number').val();
+    if (val.length == 0) {
+        dialog_message('显示顺序不能为空！')
+        return
+    }
+	var val = $('#Vcl_Name').val();
+    if (val.length == 0) {
+        dialog_message('类型名称不能为空！')
+        return
+    }	
+    loading_show();
+	$('#submit_form').submit();
+}
+function notice_type_delete(id) {
+    dialog_confirm('真的要删除这个通知类型吗？',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=NoticeTypeDelete'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('NoticeTypeTable')
+        	}        	
+        })
+    })
+}

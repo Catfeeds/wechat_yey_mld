@@ -459,6 +459,9 @@ protected function img2thumb($src_img, $dst_img, $width = 75, $height = 75, $cut
 	}
 	protected function SendJsonResultForTable($n_allcount,$s_fun,$s_button,$n_page,$a_title,$a_row)
 	{
+		$caller = debug_backtrace();
+    	array_shift($caller);
+    	$s_fun=$caller[0]['function'];//获取调用者的名称
 		$a_general = array ('total' => $n_allcount, //总数
 			'pagesize' => $this->N_PageSize, //每页记录数
 			'current' => $n_page, //当前页码

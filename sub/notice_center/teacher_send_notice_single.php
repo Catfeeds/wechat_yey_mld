@@ -40,7 +40,7 @@ $o_table->getAllCount();
 									<option value="">请选择</option>
 									<?php 
 									$o_type=new Notice_Center_Type();
-									$o_type->PushWhere ( array ('&&', 'Type', '=','teacher') );
+									$o_type->PushWhere ( array ('&&', 'Type', '=','教职工') );
 									$o_type->PushOrder ( array ('Number','A') );
 									for($i=0;$i<$o_type->getAllCount();$i++)
 									{

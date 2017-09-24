@@ -583,7 +583,7 @@ class Operate extends Bn_Basic {
 			$this->setReturn('parent.goto_login()');
 		}
 		$o_user = new Single_User ( $n_uid );
-		if (!$o_user->ValidModule ( 120304 ))return;//如果没有权限，不返回任何值
+		if (!$o_user->ValidModule ( 120306 ))return;//如果没有权限，不返回任何值
 		$n_page=$this->getPost('page');
 		if ($n_page<=0)$n_page=1;
 		$o_user = new Notice_Center_Teacher_Record_View(); 		
@@ -811,6 +811,96 @@ class Operate extends Bn_Basic {
 			$o_msg->Save();
 		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发送通知成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
+	}
+	public function NoticeTypeTable($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120307 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Notice_Center_Type(); 		
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->PushOrder ( array ('Number', A) );
+		$o_user->PushOrder ( array ('Id', A) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$a_button = array ();
+			array_push ( $a_button, array ('修改', "location='notice_type_modify.php?id=".$o_user->getId($i)."'" ) );
+			array_push ( $a_button, array ('删除', "notice_type_delete('".$o_user->getId($i)."')"));
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),
+				$o_user->getType ( $i ),
+				$o_user->getNumber ( $i ),
+				$o_user->getName ( $i ),
+				$a_button
+				));				
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'序号', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'通知对象', 'Type', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'显示顺序', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'类型名称', '', 0, 0);		
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,70);
+		$this->SendJsonResultForTable($n_allcount,'', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function NoticeTypeModify($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120307 ))return; //如果没有权限，不返回任何值
+		$o_dept = new Notice_Center_Type ($this->getPost('Id'));
+		$o_dept->setName ($this->getPost('Name'));
+		$o_dept->setNumber ($this->getPost('Number'));
+		$o_dept->setType ($this->getPost('Type'));
+		$o_dept->Save ();
+		$this->setReturn ( 'parent.location=\'' . $this->getPost ( 'BackUrl' ) . '\';' );
+	}
+	public function NoticeTypeAdd($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120307 ))return; //如果没有权限，不返回任何值
+		$o_dept = new Notice_Center_Type ();
+		$o_dept->setName ($this->getPost('Name'));
+		$o_dept->setNumber ($this->getPost('Number'));
+		$o_dept->setType ($this->getPost('Type'));
+		$o_dept->Save ();
+		$this->setReturn ( 'parent.location=\'' . $this->getPost ( 'BackUrl' ) . '\';' );
+	}
+	public function NoticeTypeDelete($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120307 ))
+			return; //如果没有权限，不返回任何值
+		//验证有无用户使用这个角色
+		$n_id=$this->getPost('id');
+		sleep(1);
+		$o_dept = new Notice_Center_Type ($n_id);
+		$o_dept->Deletion ();
+		$a_general = array (
+			'success' => 1,
+			'text' =>''
+		);
+		echo (json_encode ( $a_general ));
 	}
 }
 ?>
