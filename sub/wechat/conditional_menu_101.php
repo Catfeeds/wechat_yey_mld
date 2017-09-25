@@ -13,10 +13,20 @@ $data='{
  	{	
 		"name":"幼儿管理",
 		"sub_button": [
-                {
+				{
 					"type": "view", 
                     "name": "考勤记录", 
                     "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/stu_checkin.php"
+                },
+                {
+					"type": "view", 
+                    "name": "家长通知", 
+                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/notice_list.php"
+                },
+                {
+					"type": "view", 
+                    "name": "微教学", 
+                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/wei_teach.php"
                 }
             ]
 	},
