@@ -2,22 +2,16 @@
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
-$o_stu=new Student_Onboard_Info_Class_Wechat_View();
-$o_stu->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) ); 
-$o_stu->getAllCount();
-$o_table=new Teaching_Wei_Teach_View($_GET['id']);
-$o_tabel_count_visitor=new Teaching_Wei_Teach($_GET['id']);
-$a_target=json_decode($o_table->getTarget());
-//判断用户是否有权限观看
-if (!in_array($o_stu->getClassNumber(0), $a_target))
+//想判断教师权限，是否为绑定用户
+$o_temp=new Base_User_Wechat();
+$o_temp->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) ); 
+if ($o_temp->getAllCount()==0)
 {
-	echo "<script>location.href='wei_teach.php'</script>"; 
+	echo "<script>location.href='access_failed.php'</script>"; 
 	exit(0);
 }
+$o_table=new Teaching_Wei_Teach_View($_GET['id']);
 $s_title=$o_table->getTitle();
-//计算观看次数
-$o_tabel_count_visitor->setVisitorNum($o_tabel_count_visitor->getVisitorNum()+1);
-$o_tabel_count_visitor->Save();
 require_once '../header.php';
 ?>
 <style>

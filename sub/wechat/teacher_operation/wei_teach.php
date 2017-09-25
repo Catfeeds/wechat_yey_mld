@@ -5,18 +5,23 @@ $s_title='微教学';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 $s_none='<div class="weui-footer" style="padding-top:100px;padding-bottom:100px;"><p class="weui-footer__text" style="font-size:1.5em">目前没有微教学</p></div>';
+//想判断教师权限，是否为绑定用户
+$o_temp=new Base_User_Wechat();
+$o_temp->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) ); 
+if ($o_temp->getAllCount()==0)
+{
+	echo "<script>location.href='access_failed.php'</script>"; 
+	exit(0);
+}
 
 $o_stu=new Student_Onboard_Info_Class_Wechat_View();
 $o_stu->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) ); 
 $o_role=new Teaching_Wei_Teach_View();
-for($i=0;$i<$o_stu->getAllCount();$i++)
-{
-	$o_role->PushWhere ( array ('||', 'Target', 'like','%"'.$o_stu->getClassNumber($i).'"%') );
-}
+$o_role->PushWhere ( array ('||', 'State', '=',1) );
 $o_role->PushOrder ( array ('ReleaseDate',D) );
 ?>
 <?php 
-if($o_stu->getAllCount()>0 && $o_role->getAllCount()>0)
+if($o_role->getAllCount()>0)
 {
 	//如果用户存在，并且有微视频
 	?>
@@ -47,8 +52,8 @@ if($o_stu->getAllCount()>0 && $o_role->getAllCount()>0)
                     </div>
                     <div class="weui-media-box__bd">
                         <h4 class="weui-media-box__title">'.$o_role->getTitle($i).'</h4>
-                        <p class="weui-media-box__desc">日期：'.$s_release[0].'<br/>作者：'.$o_role->getOwnerName($i).'老师
-                        </p>
+                        <p class="weui-media-box__desc" style="display:inherit;">日期：'.$s_release[0].'<br/>作者：'.$o_role->getOwnerName($i).'老师
+                        <br/>观看对象：'.$o_role->getTargetName($i).'</p>                        
                     </div>
                 </a>
             	');
