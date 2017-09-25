@@ -163,6 +163,38 @@ function notice_type_modify()
     loading_show();
 	$('#submit_form').submit();
 }
+function parent_record_delete(id) {
+    dialog_confirm('真的要删除这个通知吗？删除后不能恢复，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=NoticeRecordDelete'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('NoticeRecordAllTable')
+        	}        	
+        })
+    })
+}
+function teacher_record_delete(id) {
+    dialog_confirm('真的要删除这个通知吗？删除后不能恢复，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=NoticeTeacherRecordDelete'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('NoticeTeacherRecordAllTable')
+        	}        	
+        })
+    })
+}
 function notice_type_delete(id) {
     dialog_confirm('真的要删除这个通知类型吗？',function(){
     	$('.small_loading').fadeIn(100);

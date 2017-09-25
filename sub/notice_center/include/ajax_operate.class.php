@@ -345,6 +345,7 @@ class Operate extends Bn_Basic {
 			{
 				array_push ( $a_button, array ('详情', "location='record_detail.php?id=".$o_user->getId($i)."'" ) );//查看
 			}
+			array_push ( $a_button, array ('删除', "parent_record_delete('".$o_user->getId($i)."')" ) );
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
 				str_replace(' ', '<br/>', $o_user->getSendDate ( $i )),
@@ -605,6 +606,7 @@ class Operate extends Bn_Basic {
 			{
 				array_push ( $a_button, array ('详情', "location='teacher_record_detail.php?id=".$o_user->getId($i)."'" ) );//查看
 			}
+			array_push ( $a_button, array ('删除', "teacher_record_delete('".$o_user->getId($i)."')" ) );
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
 				str_replace(' ', '<br/>', $o_user->getSendDate ( $i )),
@@ -895,6 +897,42 @@ class Operate extends Bn_Basic {
 		$n_id=$this->getPost('id');
 		sleep(1);
 		$o_dept = new Notice_Center_Type ($n_id);
+		$o_dept->Deletion ();
+		$a_general = array (
+			'success' => 1,
+			'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
+	public function NoticeRecordDelete($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120305 ))
+			return; //如果没有权限，不返回任何值
+		//验证有无用户使用这个角色
+		$n_id=$this->getPost('id');
+		sleep(1);
+		$o_dept = new Notice_Center_Record ($n_id);
+		$o_dept->Deletion ();
+		$a_general = array (
+			'success' => 1,
+			'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
+	public function NoticeTeacherRecordDelete($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120306 ))
+			return; //如果没有权限，不返回任何值
+		//验证有无用户使用这个角色
+		$n_id=$this->getPost('id');
+		sleep(1);
+		$o_dept = new Notice_Center_Teacher_Record($n_id);
 		$o_dept->Deletion ();
 		$a_general = array (
 			'success' => 1,
