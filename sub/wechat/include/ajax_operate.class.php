@@ -1484,5 +1484,38 @@ class Operate extends Bn_Basic {
 		}		
 		echo(json_encode ( $a_result ));
 	}
+	public function LeavemsgReply($n_uid)
+	{
+		if ($n_uid>0)
+		{
+			$o_temp=new Base_User_Wechat();
+			$o_temp->PushWhere ( array ('&&', 'WechatId', '=',$n_uid) ); 
+			if ($o_temp->getAllCount()==0)
+			{
+				$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1002]\');' );
+			}
+		}else{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
+		}
+		sleep(0);
+		$o_reply=new Wechat_Wx_User_Leavemsg_Reply();
+		$o_reply->setMsgId($this->getPost ( 'Id' ));
+		$o_reply->setUid($o_temp->getUid(0));
+		$o_reply->setDate($this->GetDateNow());
+		$o_reply->setComment($this->getPost ( 'Comment' ));
+		$o_reply->Save();
+		//将所有未回复变为已回复
+		$o_leavemsg=new Wechat_Wx_User_Leavemsg($this->getPost ( 'Id' ));
+		$o_leavemsgs=new Wechat_Wx_User_Leavemsg();
+		$o_leavemsgs->PushWhere ( array ('&&', 'UserId', '=',$o_leavemsg->getUserId()) );
+		$o_leavemsgs->PushWhere ( array ('&&', 'IsReply', '=',0) );
+		for($i=0;$i<$o_leavemsgs->getAllCount();$i++)
+		{
+			$o_temp=new Wechat_Wx_User_Leavemsg($o_leavemsgs->getId($i));
+			$o_temp->setIsReply(1);
+			$o_temp->Save();			
+		}
+		$this->setReturn ( 'parent.location.reload();' );
+	}
 }
 ?>

@@ -35,7 +35,7 @@ require_once '../header.php';
 			日期：<?php 
 			$s_release=explode(' ', $o_table->getReleaseDate());
 			echo($s_release[0])?><br/>
-			发布人：<?php echo($o_table->getOwnerName())?>老师
+			发布者：<?php echo($o_table->getOwnerName())?>老师
 			</div>
         <div class="weui-media-box_text">
 			<?php echo(rawurldecode($o_table->getComment()))?>			

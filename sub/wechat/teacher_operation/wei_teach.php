@@ -49,7 +49,7 @@ if($o_role->getAllCount()>0)
                     </div>
                     <div class="weui-media-box__bd">
                         <h4 class="weui-media-box__title">'.$o_role->getTitle($i).'</h4>
-                        <p class="weui-media-box__desc" style="display:inherit;">日期：'.$s_release[0].'<br/>作者：'.$o_role->getOwnerName($i).'老师
+                        <p class="weui-media-box__desc" style="display:inherit;">日期：'.$s_release[0].'<br/>发布者：'.$o_role->getOwnerName($i).'老师
                         <br/>观看对象：'.$o_role->getTargetName($i).'</p>                        
                     </div>
                 </a>

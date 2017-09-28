@@ -603,4 +603,128 @@ class Wechat_Wx_User_Reminder extends CRUD
         ));
     }
 }
+class Wechat_Wx_User_Leavemsg extends CRUD
+{
+    protected $Id;
+    protected $UserId;
+    protected $Comment;
+    protected $Date;
+    protected $IsReply;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_wx_user_leavemsg';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'user_id' => 'UserId',
+                    'comment' => 'Comment',
+                    'date' => 'Date',
+                    'is_reply' => 'IsReply'
+        ));
+    }
+}
+class Wechat_Wx_User_Leavemsg_View extends CRUD
+{
+    protected $Id;
+    protected $UserId;
+    protected $Photo;
+    protected $Nickname;
+    protected $Sex;
+    protected $Openid;
+    protected $SessionId;
+    protected $Comment;
+    protected $Date;
+    protected $IsReply;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_wx_user_leavemsg_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'user_id' => 'UserId',
+                    'photo' => 'Photo',
+                    'nickname' => 'Nickname',
+                    'sex' => 'Sex',
+                    'openid' => 'Openid',
+                    'session_id' => 'SessionId',
+                    'comment' => 'Comment',
+                    'date' => 'Date',
+                    'is_reply' => 'IsReply'
+        ));
+    }
+}
+class Wechat_Wx_User_Leavemsg_Reply extends CRUD
+{
+    protected $Id;
+    protected $MsgId;
+    protected $Uid;
+    protected $Date;
+    protected $Comment;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_wx_user_leavemsg_reply';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'msg_id' => 'MsgId',
+                    'uid' => 'Uid',
+                    'date' => 'Date',
+                    'comment' => 'Comment'
+        ));
+    }
+}
+class Wechat_Wx_User_Leavemsg_Reply_View extends CRUD
+{
+    protected $Id;
+    protected $MsgId;
+    protected $Uid;
+    protected $Username;
+    protected $Date;
+    protected $Comment;
+    protected $Photo;
+    protected $Name;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_wx_user_leavemsg_reply_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'msg_id' => 'MsgId',
+                    'uid' => 'Uid',
+                    'username' => 'Username',
+                    'date' => 'Date',
+                    'comment' => 'Comment',
+                    'photo' => 'Photo',
+                    'name' => 'Name'
+        ));
+    }
+}
 ?>
