@@ -727,4 +727,41 @@ class Wechat_Wx_User_Leavemsg_Reply_View extends CRUD
         ));
     }
 }
+class Wechat_Wx_User_Leavemsg_Onboard_View extends CRUD
+{
+    protected $Id;
+    protected $UserId;
+    protected $StudentId;
+    protected $ClassId;
+    protected $StudentName;
+    protected $StudentSex;
+    protected $ClassName;
+    protected $Comment;
+    protected $Date;
+    protected $IsReply;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_wx_user_leavemsg_onboard_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'user_id' => 'UserId',
+                    'student_id' => 'StudentId',
+                    'class_id' => 'ClassId',
+                    'student_name' => 'StudentName',
+                    'student_sex' => 'StudentSex',
+                    'class_name' => 'ClassName',
+                    'comment' => 'Comment',
+                    'date' => 'Date',
+                    'is_reply' => 'IsReply'
+        ));
+    }
+}
 ?>

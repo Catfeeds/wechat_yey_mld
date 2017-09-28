@@ -6,7 +6,7 @@ header ( 'Expires: Thu, 01 Jan 1970 00:00:00 GMT' );
 header ( 'Last-Modified:' . gmdate ( 'D, d M Y H:i:s' ) . ' GMT' );
 header ( 'content-type:text/html; charset=utf-8' );
 $db = @mysql_connect('127.0.0.1:3306', 'root', 'chutaoIsss');
-$table='wechat_wx_user_leavemsg_reply_view';
+$table='wechat_wx_user_leavemsg_onboard_view';
 mysql_select_db('wechat_yey_mld', $db);
 mysql_query("SET NAMES 'utf8'");
 $result = mysql_query('SHOW FULL COLUMNS FROM '.$table, $db);
