@@ -65,7 +65,7 @@ $o_msg->PushOrder ( array ('Date',D) );
                 <div class="weui-navbar__item" onclick="location='leavemsg.php'">
                     待回复
                 </div>
-                <div class="weui-navbar__item weui-bar__item_on">
+                <div class="weui-navbar__item weui-bar__item_on" onclick="location='leavemsg_replied.php'">
                    已回复
                 </div>
             </div>
@@ -113,7 +113,7 @@ $o_msg->PushOrder ( array ('Date',D) );
 	            	$o_msg_detail->PushOrder ( array ('Date',D) );  
 	            	$o_msg_detail->getAllCount();  	
 	            	$s_html.='
-	            	<a href="leavemsg_detail.php?userid='.$o_msg->getUserId($i).'" class="weui-media-box weui-media-box_appmsg">
+	            	<a href="leavemsg_replied_detail.php?userid='.$o_msg->getUserId($i).'" class="weui-media-box weui-media-box_appmsg">
 	                    <div class="weui-media-box__hd">
 	                        <img class="weui-media-box__thumb" src="'.$o_msg->getPhoto($i).'" alt="">
 	                    </div>

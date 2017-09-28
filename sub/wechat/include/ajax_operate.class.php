@@ -1498,14 +1498,46 @@ class Operate extends Bn_Basic {
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
 		}
 		sleep(0);
+		//发送回复信息接口
+		$o_leavemsg=new Wechat_Wx_User_Leavemsg_View($this->getPost ( 'Id' ));
+		require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';		    
+		$o_token=new accessToken();
+		$data='{
+			    "touser":"'.$o_leavemsg->getOpenid().'",
+			    "msgtype":"text",
+			    "text":
+			    {
+			         "content":"'.$this->getPost ( 'Comment' ).'"
+			    }
+			}';
+		$MENU_URL="https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=".$o_token->access_token;
+		$curl = curl_init($MENU_URL);
+		curl_setopt($curl, CURLOPT_URL, $MENU_URL);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+		if (!empty($data)){
+		    curl_setopt($curl, CURLOPT_POST, 1);
+		    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+		}
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$info = curl_exec($curl);
+		$menu = json_decode($info);
+		if ($menu->errcode !=0)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1003]\');' );
+			Log::DEBUG("Error,Send Msg to user error,Data=".$menu->errmsg);
+		}
+		$o_leavemsgs=new Wechat_Wx_User_Leavemsg();
+		$o_leavemsgs->PushWhere ( array ('&&', 'UserId', '=',$o_leavemsg->getUserId()) );
+		$o_leavemsgs->PushOrder ( array ('Date',D) );
+		$o_leavemsgs->getAllCount();//按用户发送的最后一条回复
 		$o_reply=new Wechat_Wx_User_Leavemsg_Reply();
-		$o_reply->setMsgId($this->getPost ( 'Id' ));
+		$o_reply->setMsgId($o_leavemsgs->getId(0));//按用户发送的最后一条回复
 		$o_reply->setUid($o_temp->getUid(0));
 		$o_reply->setDate($this->GetDateNow());
 		$o_reply->setComment($this->getPost ( 'Comment' ));
 		$o_reply->Save();
-		//将所有未回复变为已回复
-		$o_leavemsg=new Wechat_Wx_User_Leavemsg($this->getPost ( 'Id' ));
+		//将所有未回复变为已回复		
 		$o_leavemsgs=new Wechat_Wx_User_Leavemsg();
 		$o_leavemsgs->PushWhere ( array ('&&', 'UserId', '=',$o_leavemsg->getUserId()) );
 		$o_leavemsgs->PushWhere ( array ('&&', 'IsReply', '=',0) );
@@ -1514,7 +1546,7 @@ class Operate extends Bn_Basic {
 			$o_temp=new Wechat_Wx_User_Leavemsg($o_leavemsgs->getId($i));
 			$o_temp->setIsReply(1);
 			$o_temp->Save();			
-		}
+		}		
 		$this->setReturn ( 'parent.location.reload();' );
 	}
 }

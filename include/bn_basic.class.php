@@ -183,7 +183,7 @@ class Bn_Basic {
 		$o_date = new DateTime ( 'Asia/Chongqing' );
 		return $o_date->format ( 'U' );
 	}
-	protected function GetDateNow() {
+	public function GetDateNow() {
 		$o_date = new DateTime ( 'Asia/Chongqing' );
 		return $o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ) . ' ' . $o_date->format ( 'H' ) . ':' . $o_date->format ( 'i' ) . ':' . $o_date->format ( 's' );
 	}

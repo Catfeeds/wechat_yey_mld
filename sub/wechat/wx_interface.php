@@ -144,7 +144,53 @@ class wechat
 		{
 			return $this->getLibrary($activity->getLibraryId(0), $object); //推送消息
 		}
-		return '';		
+		//如果没有比对成功的关键字，那么将留言保存到数据库的留言中
+		$n_user_id='';	
+		require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
+		require_once 'include/accessToken.class.php';
+		$o_bn_basic=new Bn_Basic();	
+    	if($o_user->getAllCount()>0)
+		{
+			$n_user_id=$o_user->getId(0);
+		}else{
+			//新建用户
+			$o_user = new WX_User_Info();
+			$o_user->setOpenId($postObj->FromUserName);
+			$o_user->setUserName('');
+			$o_user->setCompany('');
+			$o_user->setAddress('');
+			$o_user->setDeptJob('');
+			$o_user->setPhone('');
+			$o_user->setEmail('');
+			//获取用户头像			
+			$o_token=new accessToken();
+			$curlUtil = new curlUtil();					
+			$o_token=new accessToken();
+			$s_token=$o_token->access_token;
+			//通过接口获取用户OpenId
+			$s_url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$s_token.'&openid='.$object->FromUserName.'&lang=zh_CN';
+			$o_util=new curlUtil();
+			$s_return=$o_util->https_request($s_url);
+			$a_user_info=json_decode($s_return, true);
+			$o_user->setPhoto($a_user_info['headimgurl']);
+			$o_user->setNickname($o_bn_basic->FilterEmoji($a_user_info['nickname']));
+			if ($a_user_info['sex']==2)
+			{
+				$o_user->setSex('女');
+			}else{
+				$o_user->setSex('男');
+			}
+			$o_user->setDelFlag(0);
+			$o_user->Save();
+			$n_user_id=$o_user->getId();					
+		}
+		//将用户发送的内容保存到数据库中
+		$o_msg=new Wechat_Wx_User_Leavemsg();
+		$o_msg->setUserId($n_user_id);
+		$o_msg->setComment($o_bn_basic->FilterUserInput($keyword));
+		$o_msg->setDate($o_bn_basic->GetDateNow());
+		$o_msg->Save();
+		return ''; 		
     }
     //接收图片消息
     private function receiveImage($object)

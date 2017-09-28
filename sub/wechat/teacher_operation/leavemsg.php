@@ -62,7 +62,7 @@ $o_msg->PushOrder ( array ('Date',D) );
     <div class="page__bd" style="height: 100%;">
     	<div class="weui-tab">
             <div class="weui-navbar">
-                <div class="weui-navbar__item weui-bar__item_on">
+                <div class="weui-navbar__item weui-bar__item_on" onclick="location='leavemsg.php'">
                     待回复
                 </div>
                 <div class="weui-navbar__item" onclick="location='leavemsg_replied.php'">

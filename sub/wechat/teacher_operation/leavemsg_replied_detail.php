@@ -141,7 +141,7 @@ if($o_msg->getAllCount()>0)
 	            }
 	        ?>
 	        <div style="padding:15px;padding-bottom:0px;">
-	    		<a class="weui-btn weui-btn_default" onclick="location='leavemsg.php?'+Date.parse(new Date())">返回</a>
+	    		<a class="weui-btn weui-btn_default" onclick="location='leavemsg_replied.php?'+Date.parse(new Date())">返回</a>
     		</div>
 	<div class="weui-cells__title">共<?php echo($n_sum)?>条</div>
     <div class="page__bd">

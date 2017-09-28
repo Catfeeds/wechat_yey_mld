@@ -27,3 +27,6 @@ select `wechat_wx_user_leavemsg_reply`.`id` AS `id`,`wechat_wx_user_leavemsg_rep
 
 --wechat_wx_user_leavemsg_onboard_view
 select `wechat_wx_user_leavemsg`.`id` AS `id`,`wechat_wx_user_leavemsg`.`user_id` AS `user_id`,`student_onboard_info_wechat`.`student_id` AS `student_id`,`student_class`.`class_id` AS `class_id`,`student_onboard_info`.`name` AS `student_name`,`student_onboard_info`.`sex` AS `student_sex`,`student_class`.`class_name` AS `class_name`,`wechat_wx_user_leavemsg`.`comment` AS `comment`,`wechat_wx_user_leavemsg`.`date` AS `date`,`wechat_wx_user_leavemsg`.`is_reply` AS `is_reply` from (((`wechat_wx_user_leavemsg` join `student_onboard_info_wechat` on((`wechat_wx_user_leavemsg`.`user_id` = `student_onboard_info_wechat`.`user_id`))) join `student_onboard_info` on((`student_onboard_info_wechat`.`student_id` = `student_onboard_info`.`student_id`))) join `student_class` on((`student_onboard_info`.`class_number` = `student_class`.`class_id`)))
+
+
+------以上已经更新至服务器
