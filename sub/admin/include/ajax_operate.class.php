@@ -96,10 +96,21 @@ class Operate extends Bn_Basic {
 				$s_wechat_state='<span class="label label-primary">绑定微信</span>';
 				array_push ( $a_button,array ('解除绑定', "wechat_unbinding(".$o_user->getUid($i).")"));
 			}
+			//获取所管辖班级的名字
+			$a_class_id=array();
+			$a_class_id=json_decode($o_user->getClassId($i));
+			$s_class_name='';
+			$a_temp=array();
+			for($j=0;$j<count($a_class_id);$j++)
+			{
+				$o_class=new Student_Class($a_class_id[$j]);
+				array_push($a_temp, $o_class->getClassName());
+			}
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
 				$o_user->getUserName ( $i ).' '.$s_wechat_state,
 				$o_user->getName ( $i ),
+				implode(",", $a_temp),
 				$s_deptname,
 				Text::Key('PrimaryRole').'：'. $o_user->getRoleName ( $i ) . ''.$s_rolename,
 				$s_state,
@@ -111,6 +122,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,Text::Key('UserName'), 'UserName', 0, 0);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Name'), 'Name', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'管辖班级', '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Department'), 'DeptId', 0, 0);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Role'), 'RoleName', 0, 0);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Status'), 'State', 0, 0);
@@ -326,6 +338,19 @@ class Operate extends Bn_Basic {
 		$o_user_role->setSecRoleId3 ( $this->getPost('Role3') );
 		$o_user_role->setSecRoleId4 ( $this->getPost('Role4') );
 		$o_user_role->setSecRoleId5 ( $this->getPost('Role5') );
+		//重新设置班级ID数组
+		$a_classid=array();
+		$o_class=new Student_Class();
+		$o_class->PushOrder ( array ('Grade','A') );
+		$o_class->PushOrder ( array ('ClassId','A') );
+		for($i=0;$i<$o_class->getAllCount();$i++)
+		{
+			if ($this->getPost ( 'ClassId_'.$o_class->getClassId($i))=='on')
+			{
+				array_push($a_classid, $o_class->getClassId($i));
+			}
+		}
+		$o_user_role->setClassId (json_encode($a_classid));
 		$o_user_role->Save ();
 		$this->setReturn ( 'parent.form_return("dialog_success(\''.Text::Key('UserAddSuccess').'\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
 	}
@@ -358,6 +383,19 @@ class Operate extends Bn_Basic {
 		$o_user_role->setSecRoleId3 ( $this->getPost('Role3') );
 		$o_user_role->setSecRoleId4 ($this->getPost('Role4') );
 		$o_user_role->setSecRoleId5 ( $this->getPost('Role5') );
+		//重新设置班级ID数组
+		$a_classid=array();
+		$o_class=new Student_Class();
+		$o_class->PushOrder ( array ('Grade','A') );
+		$o_class->PushOrder ( array ('ClassId','A') );
+		for($i=0;$i<$o_class->getAllCount();$i++)
+		{
+			if ($this->getPost ( 'ClassId_'.$o_class->getClassId($i))=='on')
+			{
+				array_push($a_classid, $o_class->getClassId($i));
+			}
+		}
+		$o_user_role->setClassId (json_encode($a_classid));
 		$o_user_role->Save ();
 		$this->setReturn ( 'parent.location=\''.$this->getPost('BackUrl').'\';' );
 	}
@@ -479,8 +517,7 @@ class Operate extends Bn_Basic {
 			$o_right->setRoleId ( $o_role->getRoleId () );
 			$o_right->setModuleId ( $a_role_id [$i] );
 			$o_right->Save ();
-		}
-		//$this->setReturn ( 'parent.window.alert("'.count ( $a_role_id ).'")' );
+		}	
 		$this->setReturn ( 'parent.location=\''.$this->getPost('BackUrl').'\';' );
 	}
 	public function RoleDelete($n_uid) {

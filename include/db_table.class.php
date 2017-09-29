@@ -546,6 +546,7 @@ class Base_User_Role extends CRUD
    protected $SecRoleId3;
    protected $SecRoleId4;
    protected $SecRoleId5;
+   protected $ClassId;
       
    protected function DefineKey()
    {
@@ -564,7 +565,8 @@ class Base_User_Role extends CRUD
                    'sec_role_id_2' => 'SecRoleId2',
                    'sec_role_id_3' => 'SecRoleId3',
                    'sec_role_id_4' => 'SecRoleId4',
-                   'sec_role_id_5' => 'SecRoleId5'
+                   'sec_role_id_5' => 'SecRoleId5',
+      			   'class_id' => 'ClassId'
                    ));
    }
 }

@@ -83,7 +83,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 	                     	<div class="item">
 	                     		<label><?php echo(Text::Key('Phone'))?>：</label>
 	                     		<input name="Vcl_Phone" id="Vcl_Phone"  maxlength="15" type="text" style="width:100%" class="form-control" aria-describedby="basic-addon1" />
-	                     	</div>
+	                     	</div>	                     	
 	                     	<div class="item">
 	                     		<label><?php echo(Text::Key('DiskSpace'))?>：</label><br/>
 	                     		<select name="Vcl_DiskSpace" id="Vcl_DiskSpace" class="selectpicker" data-style="btn-default">
@@ -96,6 +96,49 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
         							<option value="50">50 G</option>
         							<option value="100">100 G</option>
    								</select>
+	                     	</div>
+	                     	<div class="item">
+	                     		<label>管辖幼儿班级（可为空）：</label>
+	                     		<div style="overflow:hidden">
+	                     			<div class="main_role">                     		
+				            			<?php 
+											//根据学校，动态读取年级与班级
+											$o_class=new Student_Class();
+											$o_class->PushOrder ( array ('Grade','A') );
+											$o_class->PushOrder ( array ('ClassId','A') );
+											$n_count=$o_class->getAllCount();
+											for($i=0;$i<$n_count;$i++)
+											{
+												$s_grade_name='';
+												//区分年级
+											 	switch ($o_class->getGrade($i))
+											 	{
+											 		case 0:
+											 			$s_grade_name='半日班';
+											 			break;
+											 		case 1:
+											 			$s_grade_name='托班';
+											 			break;
+											 		case 2:
+											 			$s_grade_name='小班';
+											 			break;
+											 		case 3:
+											 			$s_grade_name='中班';
+											 			break;
+											 		case 4:
+											 			$s_grade_name='大班';
+											 			break;
+											 	}
+												echo('
+												<div class="sub_role" style="float:left;margin-right:5px;">
+													<input type="checkbox" id="Vcl_ClassId_'.$o_class->getClassId($i).'" name="Vcl_ClassId_'.$o_class->getClassId($i).'"/>	                     		
+						            				<label class="radio_text">'.$s_grade_name.'（'.$o_class->getClassName($i).'）</label>
+					            				</div>
+					            				');
+											}		                    	
+										?>
+				            		</div>
+	                     		</div>
 	                     	</div>
 	                     	<div class="item">
 	                     		<label><span class="must">*</span> <?php echo(Text::Key('Department'))?>：</label><br/>
@@ -112,7 +155,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 									echo($s_select);
 									?>
    								</select>
-	                     	</div>
+	                     	</div>	                     	
 	                     	<div class="item">
 	                     		<label><span class="must">*</span> <?php echo(Text::Key('PrimaryRole'))?>：</label><br/>
 	                     		<select name="Vcl_Role0" id="Vcl_Role0" class="selectpicker" data-style="btn-default">
@@ -169,6 +212,10 @@ $('#Vcl_Role3').val('<?php echo($o_user_role->getSecRoleId3())?>');
 $('#Vcl_Role4').val('<?php echo($o_user_role->getSecRoleId4())?>');
 $('#Vcl_Role5').val('<?php echo($o_user_role->getSecRoleId5())?>');
 <?php 
+	$a_classid=json_decode($o_user_role->getClassId());
+	for($i = 0; $i < count($a_classid); $i ++) {
+		echo('try{$(\'#Vcl_ClassId_'.$a_classid[$i].'\').attr(\'checked\',\'true\');}catch(e){}');
+	}
 }
 ?>
 </script>

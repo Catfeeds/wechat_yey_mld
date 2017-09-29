@@ -115,34 +115,6 @@ function user_resetpasswd()
 	$('#submit_form').submit();
 }
 $(function(){
-	$('ins').click(function(){
-		//先获得自己是否选中
-		var parent=this.parentNode
-		var own=$(parent).find('input')
-		own=own[0]
-		if (own.checked)
-		{
-			//如果选中，需要将父勾选，和子的所有都勾选
-			//将是他的父都选上
-			if ($(this.parentNode.parentNode.parentNode).attr('class')!=undefined)
-			{
-				if ($(this.parentNode.parentNode.parentNode.parentNode).attr('class')!=undefined)
-				{
-					var temp=$(this.parentNode.parentNode.parentNode.parentNode).find('input')
-					$(temp[0]).iCheck('check')
-				}
-				var temp=$(this.parentNode.parentNode.parentNode).find('input')
-				$(temp[0]).iCheck('check')
-			}
-			//将是他的子，都选上
-			$(this.parentNode.parentNode).find('.sub_role').iCheck('check')	
-		}else{
-			//将他的子都不选上
-			$(this.parentNode.parentNode).find('.sub_role').iCheck('uncheck')
-			//如果他的父下，所有的平列子都是未选，那么父不选	
-			uncheck_parent(this,true)
-		}
-	})
 	$('#Vcl_KeyUser').keypress(function(event){  
 	    var keycode = (event.keyCode ? event.keyCode : event.which);  
 	    if(keycode == '13'){  

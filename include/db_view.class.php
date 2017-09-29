@@ -348,6 +348,7 @@ class View_User_List extends CRUD
    protected $SecRole3;
    protected $SecRole4;
    protected $SecRole5;
+   protected $ClassId;
    protected $RoleId;
    
    protected function DefineKey()
@@ -381,6 +382,7 @@ class View_User_List extends CRUD
 				    'wechat_base_user_role.sec_role_id_3' => 'SecRole3',
 				    'wechat_base_user_role.sec_role_id_4' => 'SecRole4',
 				    'wechat_base_user_role.sec_role_id_5' => 'SecRole5',
+      				'wechat_base_user_role.class_id' => 'ClassId'
                    ));
    }
 }
