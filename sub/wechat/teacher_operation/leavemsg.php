@@ -3,6 +3,8 @@ $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='公众号留言';
 require_once '../header.php';
+require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
+$o_bn_basic=new Bn_Basic();
 $s_none='<div class="weui-footer" style="padding-top:100px;padding-bottom:100px;"><p class="weui-footer__text" style="font-size:1.5em">目前没有留言</p></div>';
 //想判断教师权限，是否为绑定用户
 $o_temp=new Base_User_Wechat();
@@ -14,6 +16,7 @@ if ($o_temp->getAllCount()==0)
 }
 $o_msg=new Wechat_Wx_User_Leavemsg_View();
 $o_msg->PushWhere ( array ('&&', 'IsReply', '=',0) );
+$o_msg->PushWhere ( array ('&&', 'Date', '>=',date('Y-m-d H:m:s',strtotime($o_bn_basic->GetDateNow()." -10 day"))) ); //10天内的
 $o_msg->PushOrder ( array ('Date',D) );
 ?>
 <style>
@@ -74,9 +77,7 @@ $o_msg->PushOrder ( array ('Date',D) );
         <?php 
 			if($o_msg->getAllCount()>0)
 			{
-				require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
-				$o_bn_basic=new Bn_Basic();
-        		$s_html='';
+				$s_html='';
         		$a_msg_id=array();
         		$o_role=new Base_User_Role($o_temp->getUid(0));
 	            $a_class_id=array();
@@ -135,7 +136,7 @@ $o_msg->PushOrder ( array ('Date',D) );
 	            	';
 	            }
 	            ?>
-        	<div class="weui-cells__title">共<?php echo(count($a_msg_id))?>条</div>
+        	<div class="weui-cells__title">共<?php echo(count($a_msg_id))?>条（10天内）</div>
 	        <div class="weui-panel weui-panel_access">        
 	            <div class="weui-panel__bd">
 	            <?php 
