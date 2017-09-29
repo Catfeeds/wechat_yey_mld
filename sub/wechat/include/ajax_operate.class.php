@@ -1497,6 +1497,7 @@ class Operate extends Bn_Basic {
 		}else{
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
 		}
+		$o_user=new Base_User_Info($o_temp->getUid(0));
 		sleep(0);
 		//发送回复信息接口
 		$o_leavemsg=new Wechat_Wx_User_Leavemsg_View($this->getPost ( 'Id' ));
@@ -1507,7 +1508,7 @@ class Operate extends Bn_Basic {
 			    "msgtype":"text",
 			    "text":
 			    {
-			         "content":"'.$this->getPost ( 'Comment' ).'"
+			         "content":"'.$o_user->getName().'老师：“'.$this->getPost ( 'Comment' ).'”"
 			    }
 			}';
 		$MENU_URL="https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=".$o_token->access_token;

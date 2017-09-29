@@ -78,6 +78,9 @@ $o_msg->PushOrder ( array ('Date',D) );
 				$o_bn_basic=new Bn_Basic();
         		$s_html='';
         		$a_msg_id=array();
+        		$o_role=new Base_User_Role($o_temp->getUid(0));
+	            $a_class_id=array();
+	            $a_class_id=json_decode($o_role->getClassId());
 	            for($i=0;$i<$o_msg->getAllCount();$i++)
 	            {
 	            	//先检查是否UserId在数组里，如果在，那么跳过
@@ -85,13 +88,18 @@ $o_msg->PushOrder ( array ('Date',D) );
 	            	{
 	            		continue;
 	            	}
-	            	array_push($a_msg_id, $o_msg->getUserId($i));
+	            	
 	            	//获取幼儿姓名，如果获取不到，显示昵称
 	            	$n_name='';
 	            	$o_student=new Student_Onboard_Info_Class_Wechat_View();
 	            	$o_student->PushWhere ( array ('&&', 'UserId', '=',$o_msg->getUserId($i)) );
 	            	if ($o_student->getAllCount()>0)
 	            	{
+	            		//说明是绑定用户，需要看教师是否有权限查看此留言	           		
+	            		if (!in_array($o_student->getClassNumber(0), $a_class_id))
+	            		{
+	            			continue;
+	            		}
 	            		$s_stu_name='';
 	            		for ($j=0;$j<$o_student->getAllCount();$j++)
 	            		{
@@ -105,9 +113,15 @@ $o_msg->PushOrder ( array ('Date',D) );
 	            		}
 	            		$n_name=$o_student->getClassName(0).$s_stu_name.'家长('.$o_student->getParentSex(0).')';
 	            	}else{
-	            		
+	            		//说明不是绑定用户，那么看是不是该用户有特定角色
+	            		$n_admin=1;
+	            		if ($o_role->getRoleId()!=$n_admin && $o_role->getSecRoleId1()!=$n_admin && $o_role->getSecRoleId2()!=$n_admin && $o_role->getSecRoleId3()!=$n_admin && $o_role->getSecRoleId4()!=$n_admin && $o_role->getSecRoleId5()!=$n_admin)
+	            		{
+	            			continue;
+	            		}
 	            		$n_name=$o_msg->getNickname($i);
-	            	}	            	
+	            	}	   
+	            	array_push($a_msg_id, $o_msg->getUserId($i));         	
 	            	$s_html.='
 	            	<a href="leavemsg_detail.php?userid='.$o_msg->getUserId($i).'" class="weui-media-box weui-media-box_appmsg">
 	                    <div class="weui-media-box__hd">
