@@ -14,10 +14,6 @@ if ($o_temp->getAllCount()==0)
 	echo "<script>location.href='access_failed.php'</script>"; 
 	exit(0);
 }
-$o_msg=new Wechat_Wx_User_Leavemsg_View();
-$o_msg->PushWhere ( array ('&&', 'Date', '>=',date('Y-m-d H:m:s',strtotime($o_bn_basic->GetDateNow()." -10 day"))) ); //10天内的
-$o_msg->PushWhere ( array ('&&', 'IsReply', '=',1) );
-$o_msg->PushOrder ( array ('Date',D) );
 ?>
 <style>
 .weui-media-box__desc
@@ -67,6 +63,51 @@ $o_msg->PushOrder ( array ('Date',D) );
             <div class="weui-navbar">
                 <div class="weui-navbar__item" onclick="location='leavemsg.php'">
                     待回复
+            <?php
+                //计算显示提醒的数字           
+                $o_msg=new Wechat_Wx_User_Leavemsg_View();
+				$o_msg->PushWhere ( array ('&&', 'Date', '>=',date('Y-m-d H:m:s',strtotime($o_bn_basic->GetDateNow()." -10 day"))) ); //10天内的
+				$o_msg->PushWhere ( array ('&&', 'IsReply', '=',0) );
+				if ($o_msg->getAllCount())
+				{
+					$o_role=new Base_User_Role($o_temp->getUid(0));
+					$a_class_id=array();
+	            	$a_class_id=json_decode($o_role->getClassId());
+				}
+				$a_msg_id=array();
+				for($i=0;$i<$o_msg->getAllCount();$i++)
+	            {
+	            	//先检查是否UserId在数组里，如果在，那么跳过
+	            	if (in_array($o_msg->getUserId($i), $a_msg_id))
+	            	{
+	            		continue;
+	            	}
+	            	//获取幼儿姓名，如果获取不到，显示昵称
+	            	$n_name='';
+	            	$o_student=new Student_Onboard_Info_Class_Wechat_View();
+	            	$o_student->PushWhere ( array ('&&', 'UserId', '=',$o_msg->getUserId($i)) );
+	            	if ($o_student->getAllCount()>0)
+	            	{
+	            		//说明是绑定用户，需要看教师是否有权限查看此留言	           		
+	            		if (!in_array($o_student->getClassNumber(0), $a_class_id))
+	            		{
+	            			continue;
+	            		}
+	            	}else{
+	            		//说明不是绑定用户，那么看是不是该用户有特定角色
+	            		$n_admin=1;
+	            		if ($o_role->getRoleId()!=$n_admin && $o_role->getSecRoleId1()!=$n_admin && $o_role->getSecRoleId2()!=$n_admin && $o_role->getSecRoleId3()!=$n_admin && $o_role->getSecRoleId4()!=$n_admin && $o_role->getSecRoleId5()!=$n_admin)
+	            		{
+	            			continue;
+	            		}
+	            	}	   
+	            	array_push($a_msg_id, $o_msg->getUserId($i));
+	            }	                  
+				if (count($a_msg_id)>0)
+				{
+					echo('<span class="weui-badge">'.count($a_msg_id).'</span>');
+				}
+                ?>
                 </div>
                 <div class="weui-navbar__item weui-bar__item_on" onclick="location='leavemsg_replied.php'">
                    已回复
@@ -75,6 +116,10 @@ $o_msg->PushOrder ( array ('Date',D) );
         </div>
         <div class="weui-tab__panel" style="padding-top:50px;padding-bottom:0px;">
         <?php 
+	        $o_msg=new Wechat_Wx_User_Leavemsg_View();
+			$o_msg->PushWhere ( array ('&&', 'Date', '>=',date('Y-m-d H:m:s',strtotime($o_bn_basic->GetDateNow()." -10 day"))) ); //10天内的
+			$o_msg->PushWhere ( array ('&&', 'IsReply', '=',1) );
+			$o_msg->PushOrder ( array ('Date',D) );
 			if($o_msg->getAllCount()>0)
 			{				
         		$s_html='';
@@ -141,6 +186,7 @@ $o_msg->PushOrder ( array ('Date',D) );
 	                </a>
 	            	';
 	            }
+			}
 	            ?>
         	<div class="weui-cells__title">共<?php echo(count($a_msg_id))?>条（10天内）</div>
 	        <div class="weui-panel weui-panel_access">        
@@ -151,7 +197,8 @@ $o_msg->PushOrder ( array ('Date',D) );
 	            </div>
 	        </div>
 	        	<?php
-				}else{
+				if (count($a_msg_id)==0)
+				{
 					echo($s_none);
 				}
 				?>

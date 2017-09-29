@@ -61,20 +61,7 @@ $o_msg->PushOrder ( array ('Date',D) );
 	padding-top:5px;
 }
 </style>
-<div class="page">
-    <div class="page__bd" style="height: 100%;">
-    	<div class="weui-tab">
-            <div class="weui-navbar">
-                <div class="weui-navbar__item weui-bar__item_on" onclick="location='leavemsg.php'">
-                    待回复
-                </div>
-                <div class="weui-navbar__item" onclick="location='leavemsg_replied.php'">
-                   已回复
-                </div>
-            </div>
-        </div>
-        <div class="weui-tab__panel" style="padding-top:50px;padding-bottom:0px;">
-        <?php 
+			<?php 
 			if($o_msg->getAllCount()>0)
 			{
 				$s_html='';
@@ -135,7 +122,28 @@ $o_msg->PushOrder ( array ('Date',D) );
 	                </a>
 	            	';
 	            }
+			}
 	            ?>
+<div class="page">
+    <div class="page__bd" style="height: 100%;">
+    	<div class="weui-tab">
+            <div class="weui-navbar">
+                <div class="weui-navbar__item weui-bar__item_on" onclick="location='leavemsg.php'">
+                    待回复
+                <?php 
+                //计算显示提醒的数字                
+				if (count($a_msg_id)>0)
+				{
+					echo('<span class="weui-badge">'.count($a_msg_id).'</span>');
+				}
+                ?>
+                </div>
+                <div class="weui-navbar__item" onclick="location='leavemsg_replied.php'">
+                   已回复
+                </div>
+            </div>
+        </div>
+        <div class="weui-tab__panel" style="padding-top:50px;padding-bottom:0px;">
         	<div class="weui-cells__title">共<?php echo(count($a_msg_id))?>条（10天内）</div>
 	        <div class="weui-panel weui-panel_access">        
 	            <div class="weui-panel__bd">
@@ -145,7 +153,8 @@ $o_msg->PushOrder ( array ('Date',D) );
 	            </div>
 	        </div>
 	        	<?php
-				}else{
+	        	if (count($a_msg_id)==0)
+				{
 					echo($s_none);
 				}
 				?>
