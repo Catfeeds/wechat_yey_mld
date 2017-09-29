@@ -1496,11 +1496,21 @@ class Operate extends Bn_Basic {
 			}
 		}else{
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
-		}
+		}		
 		$o_user=new Base_User_Info($o_temp->getUid(0));
 		sleep(0);
 		//发送回复信息接口
 		$o_leavemsg=new Wechat_Wx_User_Leavemsg_View($this->getPost ( 'Id' ));
+		//判断用户最后一次留言，是否超过了48小时
+		$o_leavemsgs=new Wechat_Wx_User_Leavemsg();
+		$o_leavemsgs->PushWhere ( array ('&&', 'UserId', '=',$o_leavemsg->getUserId()) );
+		$o_leavemsgs->PushWhere ( array ('&&', 'Date', '>=',date('Y-m-d H:m:s',strtotime($this->GetDateNow()." -2 day"))) ); //10天内的
+		$o_leavemsgs->PushOrder ( array ('Date',D) );
+		if($o_leavemsgs->getAllCount()==0)
+		{
+			//已经超过48小时
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'对不起，回复间隔已超48小时，无法回复信息！\');' );
+		}
 		require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';		    
 		$o_token=new accessToken();
 		$data='{
@@ -1527,11 +1537,7 @@ class Operate extends Bn_Basic {
 		{
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1003]\');' );
 			Log::DEBUG("Error,Send Msg to user error,Data=".$menu->errmsg);
-		}
-		$o_leavemsgs=new Wechat_Wx_User_Leavemsg();
-		$o_leavemsgs->PushWhere ( array ('&&', 'UserId', '=',$o_leavemsg->getUserId()) );
-		$o_leavemsgs->PushOrder ( array ('Date',D) );
-		$o_leavemsgs->getAllCount();//按用户发送的最后一条回复
+		}		
 		$o_reply=new Wechat_Wx_User_Leavemsg_Reply();
 		$o_reply->setMsgId($o_leavemsgs->getId(0));//按用户发送的最后一条回复
 		$o_reply->setUid($o_temp->getUid(0));
