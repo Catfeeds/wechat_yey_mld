@@ -15,18 +15,23 @@ $data='{
 		"sub_button": [
 				{
 					"type": "view", 
-                    "name": "考勤记录", 
+                    "name": "考勤记录",
                     "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/stu_checkin.php"
                 },
                 {
 					"type": "view", 
-                    "name": "家长通知", 
+                    "name": "家长通知",
                     "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/notice_list.php"
                 },
                 {
 					"type": "view", 
-                    "name": "微教学", 
+                    "name": "微教学",
                     "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/wei_teach.php"
+                },
+                {
+					"type": "view", 
+                    "name": "家长留言",
+                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/leavemsg.php"
                 }
             ]
 	},

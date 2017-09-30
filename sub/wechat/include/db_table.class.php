@@ -610,6 +610,7 @@ class Wechat_Wx_User_Leavemsg extends CRUD
     protected $Comment;
     protected $Date;
     protected $IsReply;
+    protected $Type;
 
     protected function DefineKey()
     {
@@ -626,6 +627,7 @@ class Wechat_Wx_User_Leavemsg extends CRUD
                     'user_id' => 'UserId',
                     'comment' => 'Comment',
                     'date' => 'Date',
+        			'type' => 'Type',
                     'is_reply' => 'IsReply'
         ));
     }
@@ -642,6 +644,7 @@ class Wechat_Wx_User_Leavemsg_View extends CRUD
     protected $Comment;
     protected $Date;
     protected $IsReply;
+    protected $Type;
 
     protected function DefineKey()
     {
@@ -663,6 +666,7 @@ class Wechat_Wx_User_Leavemsg_View extends CRUD
                     'session_id' => 'SessionId',
                     'comment' => 'Comment',
                     'date' => 'Date',
+        			'type' => 'Type',
                     'is_reply' => 'IsReply'
         ));
     }
@@ -672,7 +676,7 @@ class Wechat_Wx_User_Leavemsg_Reply extends CRUD
     protected $Id;
     protected $MsgId;
     protected $Uid;
-    protected $Date;
+    protected $Date;    
     protected $Comment;
 
     protected function DefineKey()
@@ -738,6 +742,7 @@ class Wechat_Wx_User_Leavemsg_Onboard_View extends CRUD
     protected $ClassName;
     protected $Comment;
     protected $Date;
+    protected $Type;
     protected $IsReply;
 
     protected function DefineKey()
@@ -760,6 +765,7 @@ class Wechat_Wx_User_Leavemsg_Onboard_View extends CRUD
                     'class_name' => 'ClassName',
                     'comment' => 'Comment',
                     'date' => 'Date',
+        			'type' => 'Type',
                     'is_reply' => 'IsReply'
         ));
     }

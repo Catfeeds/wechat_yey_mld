@@ -3,6 +3,7 @@ $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='公众号留言';
 require_once '../header.php';
+require_once 'leavemsg_fun.php';
 $s_none='<div class="weui-footer" style="padding-top:100px;padding-bottom:100px;"><p class="weui-footer__text" style="font-size:1.5em">目前没有可回复消息</p></div>';
 //想判断教师权限，是否为绑定用户
 $o_temp=new Base_User_Wechat();
@@ -134,7 +135,7 @@ if($o_msg->getAllCount()>0)
 		                    </div>
 		                    <div class="weui-media-box__bd">                        
 		                        <div class="weui-media-box__desc" style="float:left">'.$n_name.'</div><div class="weui-media-box__desc" style="float:right">'.$o_bn_basic->GetDateForChinese($o_msg->getDate($i)).'</div>
-		                        <h4 class="weui-media-box__title">'.$o_msg->getComment($i).'</h4>                      
+		                        <h4 class="weui-media-box__title">'.comment_type_switch($o_msg->getComment($i),$o_msg->getType($i)).'</h4>                      
 		                    </div>
 		                </div>
 	            		';
