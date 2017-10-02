@@ -1,4 +1,6 @@
 <?php
+$n_admin=1;
+$n_signup_admin=1;	
 function comment_type_switch($s_comment,$s_type)
 {
 	if ($s_type=='img')

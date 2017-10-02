@@ -103,12 +103,24 @@ $o_msg->PushOrder ( array ('Date',D) );
 	            		$n_name=$o_student->getClassName(0).$s_stu_name.'家长('.$o_student->getParentSex(0).')';
 	            	}else{
 	            		//说明不是绑定用户，那么看是不是该用户有特定角色
-	            		$n_admin=1;
-	            		if ($o_role->getRoleId()!=$n_admin && $o_role->getSecRoleId1()!=$n_admin && $o_role->getSecRoleId2()!=$n_admin && $o_role->getSecRoleId3()!=$n_admin && $o_role->getSecRoleId4()!=$n_admin && $o_role->getSecRoleId5()!=$n_admin)
+	            		$n_name=$o_msg->getNickname($i);            		
+	            		//否则说明有权限回复报名幼儿，那么显示报名幼儿信息
+	            		$o_student=new Student_Info_Wechat_Wiew();
+	            		$o_student->PushWhere ( array ('&&', 'UserId', '=',$o_msg->getUserId($i)) );
+	            		if($o_student->getAllCount()>0)
 	            		{
-	            			continue;
-	            		}
-	            		$n_name=$o_msg->getNickname($i);
+	            			if ($o_role->getRoleId()!=$n_signup_admin && $o_role->getSecRoleId1()!=$n_signup_admin && $o_role->getSecRoleId2()!=$n_signup_admin && $o_role->getSecRoleId3()!=$n_signup_admin && $o_role->getSecRoleId4()!=$n_signup_admin && $o_role->getSecRoleId5()!=$n_signup_admin)
+	            			{
+	            				continue;
+	            			}
+	            			$n_name='报名幼儿：'.$o_student->getName(0).'家长('.$o_student->getParentSex(0).')';	   
+	            		}else{
+	            			if ($o_role->getRoleId()!=$n_admin && $o_role->getSecRoleId1()!=$n_admin && $o_role->getSecRoleId2()!=$n_admin && $o_role->getSecRoleId3()!=$n_admin && $o_role->getSecRoleId4()!=$n_admin && $o_role->getSecRoleId5()!=$n_admin)
+			            	{
+			            		//说明没有回复粉丝的权限
+			            		continue;            			
+			            	} 
+	            		}	            		           		         		
 	            	}	   
 	            	array_push($a_msg_id, $o_msg->getUserId($i));         	
 	            	$s_html.='
