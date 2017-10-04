@@ -1,8 +1,9 @@
 <?php
-$n_admin=1;
-$n_signup_admin=1;	
+$n_admin=1;//可回复公众号粉丝留言
+$n_signup_admin=1;//可回复公众号报名家长留言
 function comment_type_switch($s_comment,$s_type)
 {
+	global $a_smilel;
 	if ($s_type=='img')
 	{
 		return '<div style="
@@ -14,7 +15,104 @@ function comment_type_switch($s_comment,$s_type)
 				background-size:100%; 
 				" onclick="location=\''.RELATIVITY_PATH.$s_comment.'\'"></div>';
 	}else{
+		//对照国籍表情库
+		require_once '../include/emoji.php';
+		$s_comment=emoji_unified_to_html(emoji_softbank_to_unified($s_comment));
+		//按对照表，替换表情
+		foreach ( $a_smilel as $key => $s_value ) {
+			$s_comment=str_replace($key, '<span class="emoji-outer emoji-sizer"><span class="emoji-inner emoji1f604" style="background:url(../images/smiley/smiley_'.$s_value.'37e205.png);background-position:center center !important;background-repeat:no-repeat;background-size:100%;"></span></span>', $s_comment);
+		}
+		$s_comment=str_replace('/:W','[西瓜]',$s_comment);
+		$s_comment=str_replace('/:O','[跳跳]',$s_comment);
+		$s_comment=str_replace('/:@','[哼哼]',$s_comment);
+		$s_comment=str_replace('/::','[哭]',$s_comment);
 		return $s_comment;
 	}
 }
+$a_smilel=array(
+	'/::)'=>'0',
+	'/::~'=>'1',
+	'/::B'=>'2',
+	'/::|'=>'3',
+	'/:8-)'=>'4',
+	'/::<'=>'5',
+	'/::$'=>'6',
+	'/::X'=>'7',
+	'/::Z'=>'8',
+	'/::`('=>'9',
+	'/::-|'=>'10',
+	'/::@'=>'11',
+	'/::P'=>'12',
+	'/::D'=>'13',
+	'/::O'=>'14',
+	'/::('=>'15',
+	'/::Q'=>'18',
+	'/::T'=>'19',
+	'/:,@P'=>'20',
+	'/:,@-D'=>'21',
+	'/::d'=>'22',
+	'/:,@o'=>'23',
+	'/:|-)'=>'25',
+	'/::!'=>'26',
+	'/::L'=>'27',
+	'/::-----'=>'28',
+	'/::,@'=>'29',
+	'/:,@f'=>'30',
+	'/::-S'=>'31',
+	'/:?'=>'32',
+	'/:,@x'=>'33',
+	'/:,@@'=>'34',
+	'/:,@!'=>'36',
+	'/:!!!'=>'37',
+	'/:xx'=>'38',
+	'/:bye'=>'39',
+	'/:wipe'=>'40',
+	'/:dig'=>'41',
+	'/:handclap'=>'42',
+	'/:B-)'=>'44',
+	'/:@/:@---'=>'46',
+	'/::-O'=>'47',
+	'/:-|'=>'48',
+	'/:P-('=>'49',
+	'/::`|'=>'50',
+	'/:X-)'=>'51',
+	'/::*'=>'52',
+	'/:8*'=>'54',
+	'/:pd'=>'55',
+	'/:<W>'=>'56',
+	'/:beer'=>'57',
+	'/:coffee'=>'60',
+	'/:pig'=>'62',
+	'/:rose'=>'63',
+	'/:fade'=>'64',
+	'/:showlove'=>'65',
+	'/:heart'=>'66',
+	'/:break'=>'67',
+	'/:cake'=>'68',
+	'/:bome'=>'70',
+	'/:shit'=>'74',
+	'/:moon'=>'75',
+	'/:sun'=>'76',
+	'/:hug'=>'78',
+	'/:strong'=>'79',
+	'/:weak'=>'80',
+	'/:share'=>'81',
+	'/:v'=>'82',
+	'/:@)'=>'83',
+	'/:jj'=>'84',
+	'/:@@'=>'85',
+	'/:ok'=>'89',
+	'/:jump'=>'92',
+	'/:shake'=>'93',
+	'/:<O>'=>'94',
+	'/:circle'=>'95',
+	'[Hey]'=>'2_04',
+	'[Facepalm]'=>'2_05',
+	'[Smirk]'=>'2_02',
+	'[Smart]'=>'2_06',
+	'[Concerned]'=>'2_12',
+	'[Yeah!]'=>'2_11',
+	'[Packet]'=>'2_09',
+	'[Chick]'=>'2_14'
+);
 ?>

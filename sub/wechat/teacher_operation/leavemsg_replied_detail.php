@@ -23,6 +23,7 @@ if($o_msg->getAllCount()>0)
 	require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
 	$o_bn_basic=new Bn_Basic();
 	?>
+<link href="../css/emoji.css" rel="stylesheet" type="text/css" />
 <style>
 .weui-media-box__desc
 {
@@ -102,15 +103,7 @@ if($o_msg->getAllCount()>0)
 	            	}
 	            	$n_name=$o_student->getClassName(0).$s_stu_name.'家长('.$o_student->getParentSex(0).')';
 	           	}else{
-	           		//说明不是绑定用户，那么看是不是该用户有特定角色
-	            	$n_name=$o_msg->getNickname(0);            		
-	            	//否则说明有权限回复报名幼儿，那么显示报名幼儿信息
-	            	$o_student=new Student_Info_Wechat_Wiew();
-	            	$o_student->PushWhere ( array ('&&', 'UserId', '=',$o_msg->getUserId(0)) );
-	            	if($o_student->getAllCount()>0)
-	            	{
-	            		$n_name='报名幼儿：'.$o_student->getName(0).'家长('.$o_student->getParentSex(0).')';	   
-	            	}
+	           		$n_name=$o_msg->getNickname(0);
 	           	}
         		$s_html='';
         		$n_sum=0;

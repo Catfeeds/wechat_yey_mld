@@ -13,7 +13,7 @@ span.emoji-outer {
 }
 
 span.emoji-inner {
-	background: url('../images/emoji.png');
+	background: url(emoji.png);
 	display: -moz-inline-box;
 	display: inline-block;
 	text-indent: -9999px;
