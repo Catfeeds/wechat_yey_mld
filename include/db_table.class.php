@@ -2344,4 +2344,33 @@ class Student_Onboard_Survey_Options extends CRUD
         ));
     }
 }
+class Student_Onboard_Snapshot extends CRUD
+{
+    protected $Id;
+    protected $TeacherId;
+    protected $StudentId;
+    protected $Date;
+    protected $Url;
+    protected $Type;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_onboard_snapshot';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'teacher_id' => 'TeacherId',
+                    'student_id' => 'StudentId',
+                    'date' => 'Date',
+                    'url' => 'Url',
+                    'type' => 'Type'
+        ));
+    }
+}
 ?>
