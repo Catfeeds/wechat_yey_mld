@@ -2059,7 +2059,7 @@ class Operate_YeInfo extends Bn_Basic {
 	        for($j=0;$j<$n_days;$j++)
 	        {
 	            //出勤率累加：应来人数减去未来人数除以应来人数
-	            $n_rate=$n_rate+(($o_checkingin->getCheckinginSum($j)-$o_checkingin->getAbsenteeismSum($j))/$o_checkingin->getCheckinginSum($j));
+	            $n_rate=$n_rate+($o_checkingin->getCheckinginSum($j)/($o_checkingin->getCheckinginSum($j)+$o_checkingin->getAbsenteeismSum($j)));
 	        }
 	        //累加出勤率除以天数，就是总的出勤率，然后乘以100，为了计算半分比
 	        $n_rate=$n_rate/$n_days*100;
