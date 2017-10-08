@@ -32,7 +32,13 @@ $data='{
 					"type": "view", 
                     "name": "家长留言",
                     "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/leavemsg.php"
+                },
+                {
+					"type": "view", 
+                    "name": "幼儿随拍",
+                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/stu_snapshot.php"
                 }
+                
             ]
 	},
     {	
