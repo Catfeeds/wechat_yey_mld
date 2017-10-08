@@ -157,7 +157,19 @@ $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date-
 			</div>
         	<div style="padding:15px;">
 	    		<a href="javascript:;" class="weui-btn weui-btn_primary" onclick="teacher_stu_checkin()">提交结果</a>
-	    		<a class="weui-btn weui-btn_default" onclick="history.go(-1)">返回</a>
+	    		<?php 
+	    		if ($_GET['back']==0)
+	    		{
+	    			//因为只有一个班级权限，那么就显示关闭，否则显示返回
+	    			?>
+	    			<a class="weui-btn weui-btn_default" onclick="document.addEventListener('WeixinJSBridgeReady', WeixinJSBridge.call('closeWindow'))">关闭</a>
+	    			<?php	
+	    		}else{
+	    			?>
+	    			<a class="weui-btn weui-btn_default" onclick="history.go(-1)">返回</a>
+	    			<?php	
+	    		}	    		
+	    		?>	    		
     		</div>
     	</form>	
         	<?php

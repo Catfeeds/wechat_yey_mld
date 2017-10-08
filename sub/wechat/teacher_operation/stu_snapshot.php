@@ -23,9 +23,10 @@ $s_none='<div class="weui-footer" style="padding-top:100px;"><p class="weui-foot
 	    //如果绑定的班级只有一个，那么直接进入
 	    if(count($a_class_id)==1)
 	    {
-	    	echo "<script>location.href='stu_snapshot_option.php?id=".$a_class_id[0]."'</script>"; 
+	    	echo "<script>location.href='stu_snapshot_option.php?id=".$a_class_id[0]."&back=0'</script>"; 
 	    	exit(0);
-	    }	    
+	    }	
+	    $n_sum=0;    
 		for($i=0;$i<$o_table->getAllCount();$i++)
 		{
 			//如果教师绑定的班级，没有在数组中，那么就是没有权限，则跳过           		
@@ -33,6 +34,7 @@ $s_none='<div class="weui-footer" style="padding-top:100px;"><p class="weui-foot
 	        {
 	        	continue;
 	        }			
+	        $n_sum++;
 			$s_grade_name='';
 			//区分年级
 			switch ($o_table->getGrade($i))
@@ -81,7 +83,7 @@ $s_none='<div class="weui-footer" style="padding-top:100px;"><p class="weui-foot
         		');
 			
 		}
-		if ($i==0)
+		if ($n_sum==0)
         {
         	echo($s_none);
         }

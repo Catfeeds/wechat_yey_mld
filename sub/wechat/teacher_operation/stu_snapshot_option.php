@@ -90,7 +90,19 @@ $s_none='<div class="weui-footer" style="padding-top:100px;"><p class="weui-foot
         		<?php echo($s_html)?>
         	</div>
         	<div style="padding:15px;">
-	    		<a class="weui-btn weui-btn_default" onclick="location='stu_snapshot.php'">返回</a>
+	    		<?php 
+	    		if ($_GET['back']==0)
+	    		{
+	    			//因为只有一个班级权限，那么就显示关闭，否则显示返回
+	    			?>
+	    			<a class="weui-btn weui-btn_default" onclick="document.addEventListener('WeixinJSBridgeReady', WeixinJSBridge.call('closeWindow'))">关闭</a>
+	    			<?php	
+	    		}else{
+	    			?>
+	    			<a class="weui-btn weui-btn_default" onclick="history.go(-1)">返回</a>
+	    			<?php	
+	    		}	    		
+	    		?>
     		</div>
     	</form>	
         	<?php
