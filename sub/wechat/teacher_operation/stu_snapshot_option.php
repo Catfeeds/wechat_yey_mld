@@ -92,16 +92,16 @@ $s_none='<div class="weui-footer" style="padding-top:100px;"><p class="weui-foot
         for($i=0;$i<count($a_info);$i++)
         {
         	$a_temp=$a_info[$i];
+        	$a_imgdate=explode(' ', $a_temp['ImgDate']);
+        	$a_videodate=explode(' ', $a_temp['VideoDate']);
         	$s_html.='
         		<div class="weui-cell weui-cell_access" onclick="submit_task('.$a_temp['StudentId'].')">
 	                <div class="weui-cell__bd">
 	                    <span style="vertical-align: middle">'.$a_temp['Name'].'</span>
-	                    <br>
-					    <span style="font-size:0.7em;color:#999999">性别：'.$a_temp['Sex'].'</span>
 					    <br>
-					    <span style="font-size:0.7em;color:#999999">拍摄照片时间：'.$a_temp['ImgDate'].'</span>
-					    <br>
-					    <span style="font-size:0.7em;color:#999999">拍摄视频时间：'.$a_temp['VideoDate'].'</span>
+					    <span style="font-size:0.7em;color:#999999">照片：'.$a_imgdate[0].'</span>
+					    &nbsp;&nbsp;
+					    <span style="font-size:0.7em;color:#999999">视频：'.$a_videodate[0].'</span>
 	                </div>
 	                <div class="weui-cell__ft"></div>
 	            </div>       
