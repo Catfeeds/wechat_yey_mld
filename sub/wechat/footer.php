@@ -1,5 +1,14 @@
 <?php
-?>
+if(isset($s_creatives))
+{
+	//显示底部创意者
+	echo('
+		<div class="weui-footer">
+            <p class="weui-footer__text">本项功能创意者：'.$s_creatives.'<br/><br/></p>
+        </div>
+	');
+}
+?>		
 		<!--BEGIN dialog1-->
         <div class="js_dialog" id="dialog" style="display: none;">
             <div class="weui-mask"></div>

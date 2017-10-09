@@ -3,6 +3,7 @@ $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
 $s_title='选择随拍幼儿';
+$s_creatives='管理员';
 require_once '../header.php';
 //想判断教师权限，是否为绑定用户
 $o_user=new Base_User_Wechat();
@@ -47,10 +48,37 @@ $s_none='<div class="weui-footer" style="padding-top:100px;"><p class="weui-foot
 				//说明今天缺勤
 				$n_date=99000000000;
 			}
+			$s_img_date='无';
+			$s_video_date='无';
+			//计算幼儿最后一次拍摄照片或者视频时间
+			$o_snap=new Student_Onboard_Snapshot();
+			$o_snap->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId($i)) );
+ 			$o_snap->PushWhere ( array ('&&', 'Url', '<>','') );
+ 			$o_snap->PushWhere ( array ('&&', 'Type', '=','img') );
+			$o_snap->PushOrder ( array ('Date', D) );
+			$o_snap->setStartLine (0); //起始记录
+			$o_snap->setCountLine (1);
+			if ($o_snap->getAllCount()>0)
+			{
+				$s_img_date=$o_snap->getDate(0);
+			}
+			$o_snap=new Student_Onboard_Snapshot();
+			$o_snap->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId($i)) );
+ 			$o_snap->PushWhere ( array ('&&', 'Url', '<>','') );
+ 			$o_snap->PushWhere ( array ('&&', 'Type', '=','video') );
+			$o_snap->PushOrder ( array ('Date', D) );
+			$o_snap->setStartLine (0); //起始记录
+			$o_snap->setCountLine (1);
+			if ($o_snap->getAllCount()>0)
+			{
+				$s_video_date=$o_snap->getDate(0);
+			}
 			$a_temp=array(
 				'StudentId'=>$o_stu->getStudentId($i),
 				'Name'=>$o_stu->getName($i),
 				'Sex'=>$o_stu->getSex($i),
+				'ImgDate'=>$s_img_date,
+				'VideoDate'=>$s_video_date,
 				'Date'=>$n_date
 			);
 			array_push($a_info, $a_temp);
@@ -70,6 +98,10 @@ $s_none='<div class="weui-footer" style="padding-top:100px;"><p class="weui-foot
 	                    <span style="vertical-align: middle">'.$a_temp['Name'].'</span>
 	                    <br>
 					    <span style="font-size:0.7em;color:#999999">性别：'.$a_temp['Sex'].'</span>
+					    <br>
+					    <span style="font-size:0.7em;color:#999999">拍摄照片时间：'.$a_temp['ImgDate'].'</span>
+					    <br>
+					    <span style="font-size:0.7em;color:#999999">拍摄视频时间：'.$a_temp['VideoDate'].'</span>
 	                </div>
 	                <div class="weui-cell__ft"></div>
 	            </div>       

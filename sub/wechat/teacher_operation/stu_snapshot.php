@@ -2,6 +2,7 @@
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='生活随拍';
+$s_creatives='管理员';
 require_once '../header.php';
 //想判断教师权限，是否为绑定用户
 $o_user=new Base_User_Wechat();
