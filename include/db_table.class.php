@@ -2373,4 +2373,63 @@ class Student_Onboard_Snapshot extends CRUD
         ));
     }
 }
+class Student_Onboard_Snapshot_View extends CRUD
+{
+    protected $Id;
+    protected $TeacherId;
+    protected $TeacherName;
+    protected $StudentId;
+    protected $StudentName;
+    protected $Sex;
+    protected $Birthday;
+    protected $DeptId;
+    protected $GradeNumber;
+    protected $ClassNumber;
+    protected $CardId;
+    protected $IdType;
+    protected $UserId;
+    protected $Photo;
+    protected $Nickname;
+    protected $ParentSex;
+    protected $Openid;
+    protected $SessionId;
+    protected $Date;
+    protected $Url;
+    protected $Type;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'student_onboard_snapshot_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'teacher_id' => 'TeacherId',
+                    'teacher_name' => 'TeacherName',
+                    'student_id' => 'StudentId',
+                    'student_name' => 'StudentName',
+                    'sex' => 'Sex',
+                    'birthday' => 'Birthday',
+                    'dept_id' => 'DeptId',
+                    'grade_number' => 'GradeNumber',
+                    'class_number' => 'ClassNumber',
+                    'card_id' => 'CardId',
+                    'id_type' => 'IdType',
+                    'user_id' => 'UserId',
+                    'photo' => 'Photo',
+                    'nickname' => 'Nickname',
+                    'parent_sex' => 'ParentSex',
+                    'openid' => 'Openid',
+                    'session_id' => 'SessionId',
+                    'date' => 'Date',
+                    'url' => 'Url',
+                    'type' => 'Type'
+        ));
+    }
+}
 ?>
