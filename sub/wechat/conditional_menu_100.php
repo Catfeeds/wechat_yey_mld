@@ -52,6 +52,11 @@ $data='{
                     "type": "view", 
                     "name": "出勤请假", 
                     "url": "http://wx.mldyey.com/sub/wechat/parent_operation/askforleave_apply.php" 
+                },
+                { 
+                    "type": "view", 
+                    "name": "随拍随录", 
+                    "url": "http://wx.mldyey.com/sub/wechat/parent_operation/snapshot.php" 
                 }
             ]
 	}],

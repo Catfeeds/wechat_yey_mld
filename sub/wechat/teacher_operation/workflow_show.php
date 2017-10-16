@@ -30,7 +30,7 @@ if (!($o_case->getStateSum()>0))
 			<div class="weui-cell">
 				<div class="weui-cell__bd">
 					<?php 
-						echo($o_temp->getName(0));
+						echo($o_case->getName(0));
 					?>
 				</div>
 			</div>
@@ -39,7 +39,7 @@ if (!($o_case->getStateSum()>0))
 		<div class="weui-cells">
 			<div class="weui-cell">
 				<div class="weui-cell__bd">
-					<?php 
+					<?php
 						echo($o_case->getDate());
 					?>
 				</div>
