@@ -224,7 +224,9 @@ class Bn_Basic {
 				{
 					$s_temp=explode(' ', $s_date);
 					$s_temp=explode(':', $s_temp[1]);
-					return $this->GetWeek(strtotime($s_date)).' '.$s_temp[0].':'.$s_temp[1];
+					$unixTime=is_numeric($unixTime)?$unixTime:strtotime($s_date); 
+					$weekarray=array('日','一','二','三','四','五','六'); 
+					return '星期'.$weekarray[date('w',$unixTime)].' '.$s_temp[0].':'.$s_temp[1];
 				}else{
 					//以上都不对，按中文年月日显示
 					$s_temp=explode(' ', $s_date);
