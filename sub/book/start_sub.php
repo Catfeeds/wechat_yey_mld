@@ -30,7 +30,7 @@ function XmlOutType($xml) {
 	}
 	return $s_html;
 }
-$o_temp = new Book_Info_Stu ();
+$o_temp = new Book_Info_Teacher ();
 $o_temp->PushWhere ( array ('&&', 'Title', '=', '' ) );
 $o_temp->setStartLine ( 0 );
 $o_temp->setCountLine ( 1 );
@@ -42,13 +42,13 @@ if ($n_count > 0) {
 	$s_xml = file_get_contents ( 'http://api.douban.com/book/subject/isbn/' . $o_temp->getIsbn ( 0 ) . '?apikey=0d0c6bd8d5d61a0d2725438a81824e27' );
 	if (XmlOutValue ( $s_xml, '<db:attribute name="title">', '</db:attribute>' ) == '') {
 		//没读出来，跳过
-		$o_temp2 = new Book_Info_Stu ($o_temp->getId(0));
+		$o_temp2 = new Book_Info_Teacher ($o_temp->getId(0));
 		$o_temp2->setTitle('未知');
 		$o_temp2->Save();
 	} else {
 		//写入数据库
 		//先查找有没有这个本书
-		$o_book2 = new Book_Info_Stu ($o_temp->getId(0));
+		$o_book2 = new Book_Info_Teacher ($o_temp->getId(0));
 		$o_book2->setIsbn ( $o_temp->getIsbn ( 0 ) );
 		$o_book2->setTitle ( XmlOutValue ( $s_xml, '<db:attribute name="title">', '</db:attribute>' ) );
 		$o_book2->setPages ( XmlOutValue ( $s_xml, '<db:attribute name="pages">', '</db:attribute>' ) );

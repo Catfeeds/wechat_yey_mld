@@ -48,6 +48,11 @@ $data='{
 					"type": "view", 
                     "name": "工作流程", 
                     "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/workflow_list.php" 
+                },
+                {
+					"type": "view", 
+                    "name": "教师用书", 
+                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/teacher_book_list.php"
                 }
             ]
 	},

@@ -1,7 +1,7 @@
 <?php
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
-$s_title='幼儿图书';
+$s_title='教师用书';
 require_once '../header.php';
 //引入微信JS接口
 require_once RELATIVITY_PATH.'sub/wechat/include/db_table.class.php';
@@ -47,7 +47,7 @@ if ($o_temp->getAllCount()==0)
 }
 $s_search_init='';
 $s_search_text='书名';
-$o_book=new Book_Info_Stu();
+$o_book=new Book_Info_Teacher();
 if ($_GET['key']!='')
 {
 	$o_book->PushWhere(array("&&", "Title", "Like", '%'.$_GET['key'].'%'));
@@ -73,7 +73,7 @@ for($i=0;$i<$o_book->getAllCount();$i++)
 	$n_sum++;
 	array_push($a_isbn, $o_book->getIsbn($i));
 	$s_html.='
-	<a href="stu_book_show.php?id='.$o_book->getId($i).'" class="weui-media-box weui-media-box_appmsg">
+	<a href="teacher_book_show.php?id='.$o_book->getId($i).'" class="weui-media-box weui-media-box_appmsg">
 	                    <div class="weui-media-box__hd">
 	                        <img class="weui-media-box__thumb" src="'.$RELATIVITY_PATH.$o_book->getImg($i).'" alt="">
 	                    </div>
@@ -190,10 +190,10 @@ for($i=0;$i<$o_book->getAllCount();$i++)
         });
         $searchCancel.on('click', function(){
             //window.alert($searchInput.val());
-        	location='stu_book_list.php?key='+$searchInput.val();
+        	location='teacher_book_list.php?key='+$searchInput.val();
         });
         $searchSubmit.on('submit', function(){
-            //location='stu_book_list.php?id=123';
+            //location='teacher_book_list.php?id=123';
         });
     });
     wx.config({
@@ -212,7 +212,7 @@ for($i=0;$i<$o_book->getAllCount();$i++)
 		    success: function (res) {
 		    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
 		    result=result.split(",")
-		    location='stu_book_list.php?isbn='+result[1];
+		    location='teacher_book_list.php?isbn='+result[1];
 		}
 		});
 	}
