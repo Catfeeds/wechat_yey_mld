@@ -42,9 +42,9 @@ if ($o_book->getTitle()=='')
 			<div class="weui-panel__bd">
                 <div class="weui-media-box weui-media-box_text">
                     <h4 class="weui-media-box__title"><?php echo($o_book->getTitle());?></h4>
-                    <p class="weui-media-box__desc">作者：<?php echo($o_book->getTitle());?></p>
-	                <p class="weui-media-box__desc">出版社：<?php echo($o_book->getTitle());?></p>
-	                <p class="weui-media-box__desc">出版时间：<?php echo($o_book->getTitle());?></p>
+                    <p class="weui-media-box__desc">作者：<?php echo($o_book->getAuthor());?></p>
+	                <p class="weui-media-box__desc">出版社：<?php echo($o_book->getPublisher());?></p>
+	                <p class="weui-media-box__desc">出版时间：<?php echo($o_book->getPubdate());?></p>
                 </div>
             </div>
         </div>
