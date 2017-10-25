@@ -136,7 +136,7 @@ for($i=0;$i<$o_book->getAllCount();$i++)
             <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">搜索</a>
         </div>
         <div class="weui-panel weui-panel_access">
-            <div class="weui-panel__hd">幼儿图书列表（共 <?php echo($n_sum)?> 种图书）</div>
+            <div class="weui-panel__hd">图书列表（共 <?php echo($n_sum)?> 种图书）</div>
             <div class="weui-panel__bd">
             	<?php 
             		echo($s_html);
