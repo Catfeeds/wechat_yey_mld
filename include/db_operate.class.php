@@ -282,6 +282,8 @@ abstract class CRUD extends DB_Connect {
 				$s_tmep .= '`' . str_replace ( '.', '`.`', array_search ( $this->A_Order_By [$i] [0], $this->A_RelationMap ) ) . '` ASC,';
 			} else if ($this->A_Order_By [$i] [1] == 'D') {
 				$s_tmep .= '`' . str_replace ( '.', '`.`', array_search ( $this->A_Order_By [$i] [0], $this->A_RelationMap ) ) . '` DESC,';
+			}else if ($this->A_Order_By [$i] [1] == 'R') {//随机排序
+				$s_tmep .= 'rand(),';
 			}
 		}
 		if ($s_tmep != '') {

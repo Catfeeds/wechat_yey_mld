@@ -6,7 +6,7 @@ header ( 'Expires: Thu, 01 Jan 1970 00:00:00 GMT' );
 header ( 'Last-Modified:' . gmdate ( 'D, d M Y H:i:s' ) . ' GMT' );
 header ( 'content-type:text/html; charset=utf-8' );
 require_once RELATIVITY_PATH.'sub/wechat/include/db_table.class.php';
-include RELATIVITY_PATH.'sub/wechat/include/accessToken.class.php';
+require_once RELATIVITY_PATH.'sub/wechat/include/accessToken.class.php';
 //报名页面需要验证是否已经关注微信号，如果没有关注，需要跳转到邀请函，进行二维码扫描。
 $o_token = new accessToken ();
 $s_token = $o_token->getRefreshToken();

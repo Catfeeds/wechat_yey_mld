@@ -5,7 +5,7 @@ $s_title='幼儿图书';
 require_once '../header.php';
 //引入微信JS接口
 require_once RELATIVITY_PATH.'sub/wechat/include/db_table.class.php';
-include RELATIVITY_PATH.'sub/wechat/include/accessToken.class.php';
+require_once RELATIVITY_PATH.'sub/wechat/include/accessToken.class.php';
 //报名页面需要验证是否已经关注微信号，如果没有关注，需要跳转到邀请函，进行二维码扫描。
 $o_token = new accessToken ();
 $s_token = $o_token->getRefreshToken();
@@ -59,8 +59,7 @@ if ($_GET['isbn']!='')
 	$o_book->PushWhere(array("&&", "Isbn", "=", $_GET['isbn']));
 }
 $o_book->PushWhere(array("&&", "InOpen", "<>", '0000-00-00'));
-$o_book->PushOrder ( array ('Pubdate', 'D') );
-$o_book->PushOrder ( array ('Id', 'A') );
+$o_book->PushOrder ( array ('Id', 'R') );//随机排序
 //需要对重复图书去重
 $a_isbn=array();
 $n_sum=0;

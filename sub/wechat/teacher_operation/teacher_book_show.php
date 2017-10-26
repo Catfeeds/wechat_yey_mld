@@ -46,6 +46,9 @@ if ($o_book->getTitle()=='')
 	                <p class="weui-media-box__desc">出版社：<?php echo($o_book->getPublisher());?></p>
 	                <p class="weui-media-box__desc">出版时间：<?php echo($o_book->getPubdate());?></p>
 	                <p class="weui-media-box__desc">图书位置：<?php echo($o_book->getLocation());?></p>
+	                <a style="margin-top:10px;" href="http://search.m.dangdang.com/search.php?cid=0&keyword=<?php echo($o_book->getIsbn());?>" class="weui-btn weui-btn_mini weui-btn_primary">当当</a>
+	                <a style="margin-top:10px;" href="https://www.amazon.cn/gp/aw/s/ref=nb_sb_noss/458-2617695-3884453?k=<?php echo($o_book->getIsbn());?>" class="weui-btn weui-btn_mini weui-btn_primary">亚马逊</a>
+	                <a style="margin-top:10px;" href="https://so.m.jd.com/ware/search.action?keyword=<?php echo($o_book->getIsbn());?>" class="weui-btn weui-btn_mini weui-btn_primary">京东</a>
                 </div>
             </div>
         </div>
