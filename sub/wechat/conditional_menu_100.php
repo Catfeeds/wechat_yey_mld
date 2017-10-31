@@ -57,6 +57,11 @@ $data='{
                     "type": "view", 
                     "name": "随拍随录", 
                     "url": "http://wx.mldyey.com/sub/wechat/parent_operation/snapshot.php" 
+                },
+                { 
+                    "type": "view", 
+                    "name": "幼儿读物", 
+                    "url": "http://wx.mldyey.com/sub/wechat/parent_operation/book_list.php" 
                 }
             ]
 	}],
