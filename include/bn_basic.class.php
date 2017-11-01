@@ -201,6 +201,10 @@ class Bn_Basic {
 		return '星期'.$weekarray[date('w',$unixTime)]; 
 	}
 	public function GetDateForChinese($s_date) {
+		if ($s_date=='0000-00-00' || $s_date=='0000-00-00 00:00:00')
+		{
+			return '';
+		}
 		//先判断是不是今天
 		$o_date = new DateTime ( 'Asia/Chongqing' );
 		$s_temp=explode(' ', $s_date);

@@ -220,4 +220,66 @@ class Book_Info_Teacher extends CRUD
         ));
     }
 }
+class Book_Info_Teacher_Borrow_View extends CRUD
+{
+    protected $Id;
+    protected $BookId;
+    protected $TeacherId;
+    protected $BorrowDate;
+    protected $ReturnDate;
+    protected $TeacherName;
+    protected $Isbn;
+    protected $Title;
+    protected $Img;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'book_info_teacher_borrow_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'book_id' => 'BookId',
+                    'teacher_id' => 'TeacherId',
+                    'borrow_date' => 'BorrowDate',
+                    'return_date' => 'ReturnDate',
+                    'teacher_name' => 'TeacherName',
+                    'isbn' => 'Isbn',
+                    'title' => 'Title',
+                    'img' => 'Img'
+        ));
+    }
+}
+class Book_Info_Teacher_Borrow extends CRUD
+{
+    protected $Id;
+    protected $BookId;
+    protected $TeacherId;
+    protected $BorrowDate;
+    protected $ReturnDate;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'book_info_teacher_borrow';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'book_id' => 'BookId',
+                    'teacher_id' => 'TeacherId',
+                    'borrow_date' => 'BorrowDate',
+                    'return_date' => 'ReturnDate'
+        ));
+    }
+}
 ?>

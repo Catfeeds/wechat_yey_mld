@@ -67,13 +67,66 @@ if ($o_book->getTitle()=='')
                 </div>
             </div>
         </div>
-        <div style="padding:15px;">
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">借阅记录</div>
+			<div class="weui-panel__bd">
+			<?php 
+			$o_borrow_log=new Book_Info_Teacher_Borrow_View();
+			$o_borrow_log->PushWhere ( array ('&&', 'BookId', '=',$o_book->getId()) ); 
+			$o_borrow_log->PushOrder ( array ('BorrowDate', 'A') );
+			for($i=0;$i<$o_borrow_log->getAllCount();$i++)
+			{
+				echo('
+				<div class="weui-media-box weui-media-box_text" style="padding-top:8px;padding-bottom:8px;">
+                	<h4 class="weui-media-box__title" style="font-size:14px;margin-bottom:0px">'.$o_bn_basic->GetDateForChinese($o_borrow_log->getBorrowDate($i)).'&nbsp;&nbsp;&nbsp;&nbsp;'.$o_borrow_log->getTeacherName($i).'老师</h4>
+                </div>
+				');
+			}
+			?>             
+            </div>
+        </div> 
+        <?php 
+	        //如果之前借阅过，那么显示归还图书，否则显示借阅
+	        $o_borrow_log=new Book_Info_Teacher_Borrow();
+	        $o_borrow_log->PushWhere ( array ('&&', 'BookId', '=',$o_book->getId()) ); 
+	        $o_borrow_log->PushWhere ( array ('&&', 'TeacherId', '=',$o_temp->getUid(0)) ); 
+	        $o_borrow_log->PushWhere ( array ('&&', 'ReturnDate', '=','0000-00-00 00:00:00') ); 
+	        $s_funname='WechatTeacherBookBorrow';
+	        $s_button='<a class="weui-btn weui-btn_primary" onclick="teacher_book_borrow()">借阅</a>';
+	        if ($o_borrow_log->getAllCount()>0)
+	        {
+	        	$s_funname='WechatTeacherBookReturn';
+	        	$s_button='<a class="weui-btn weui-btn_warn" onclick="teacher_book_return()">归还图书</a>';
+	        }
+	        
+        ?>
+        <form style="display:none" action="<?php echo($RELATIVITY_PATH)?>sub/book/include/bn_submit.switch.php" id="submit_form" method="post" target="ajax_submit_frame" onsubmit="this.submit()">
+			<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
+			<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
+			<input type="hidden" name="Vcl_FunName" value="<?php echo($s_funname)?>"/>
+			<input type="hidden" name="Vcl_BookId" value="<?php echo($_GET['id'])?>"/>
+		</form>
+        <div style="padding:15px;">  
+        	<?php echo($s_button)?>
 	    	<a class="weui-btn weui-btn_default" onclick="history.go(-1)">返回</a>
 	    </div>
     </div>
 </div>
 <script type="text/javascript">
-
+function teacher_book_borrow()
+{
+	Dialog_Confirm('真的借阅此图书吗？',function(){
+		Common_OpenLoading();
+		document.getElementById("submit_form").submit();	
+	});
+}
+function teacher_book_return()
+{
+	Dialog_Confirm('真的要归还此图书吗？',function(){
+		Common_OpenLoading();
+		document.getElementById("submit_form").submit();	
+	});
+}
 </script>
 <?php
 require_once '../footer.php';
