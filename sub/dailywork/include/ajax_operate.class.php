@@ -428,7 +428,6 @@ class Operate extends Bn_Basic {
 	}
 	private function WorkflowSendAuditNotice($n_role_id,$n_case_id)
 	{
-		return;
 		$o_case_view=new Dailywork_Workflow_Case_View($n_case_id);	
 		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
 		$o_system_setup=new Base_Setup(1);
@@ -468,12 +467,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setKeyword4('');
 			$o_msg->setKeyword5('');
 			$o_msg->setRemark('');
-			//如果Comment为空，那么就没有点击事件了
-			$o_msg->setUrl('');
-			if($this->getPost('Comment')!='')
-			{
-				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/workflow_audit.php?id='.$o_case_view->getId().'');
-			}
+			$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/workflow_audit.php?id='.$o_case_view->getId().'');
 			$o_msg->setKeywordSum(11);
 			$o_msg->Save();
 		}
@@ -563,7 +557,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setOpenId($o_wechat_user->getOpenId(0));
 			$o_msg->setActivityId(0);
 			$o_msg->setSend(0);
-			$o_msg->setFirst('你有一个标题为“'.$o_case_step_view->getAllCount().'”的工作流程被退回！
+			$o_msg->setFirst('你有一个标题为“'.$o_case_step_view->getTitle().'”的工作流程被退回！
 
 退回时间：'.$this->GetDateNow());
 			$o_msg->setKeyword1('工作流程退回修改');

@@ -114,7 +114,12 @@ function OutputList($S_Class,$s_filename) {
 			$objPHPExcel->getActiveSheet()->SetCellValue('N'.$n_row, $o_dept->getIdQualityType  ( $i ));
 			$objPHPExcel->getActiveSheet()->getStyle('O'.$n_row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 			$objPHPExcel->getActiveSheet()->SetCellValue('O'.$n_row, "'".$o_dept->getHCode  ( $i ));
-			$objPHPExcel->getActiveSheet()->SetCellValue('P'.$n_row, $o_dept->getZAdd ( $i ));
+			if($o_dept->getZSame ( $i )=='是')
+			{
+				$objPHPExcel->getActiveSheet()->SetCellValue('P'.$n_row, $o_dept->getHAdd ( $i ));
+			}else{
+				$objPHPExcel->getActiveSheet()->SetCellValue('P'.$n_row, $o_dept->getZAdd ( $i ));
+			}			
 			$objPHPExcel->getActiveSheet()->SetCellValue('Q'.$n_row, $o_dept->getInTime ( $i ));
 			$objPHPExcel->getActiveSheet()->SetCellValue('R'.$n_row, $o_dept->getJiudu ( $i ));
 			$objPHPExcel->getActiveSheet()->SetCellValue('S'.$n_row, $o_dept->getOnly ( $i ) );

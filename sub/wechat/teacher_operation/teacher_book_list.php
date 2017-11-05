@@ -63,14 +63,20 @@ $o_book->PushOrder ( array ('Id', 'R') );//随机排序
 //需要对重复图书去重
 $a_isbn=array();
 $n_sum=0;
+$a_i=array();
 for($i=0;$i<$o_book->getAllCount();$i++)
 {
 	if (in_array($o_book->getIsbn($i),$a_isbn))
 	{
-		continue;
+		//continue;
 	}
 	$n_sum++;
 	array_push($a_isbn, $o_book->getIsbn($i));
+	if ($o_book->getState($i)==1)
+	{
+		array_push($a_i, $i);
+		continue;
+	}
 	$s_html.='
 	<a href="teacher_book_show.php?id='.$o_book->getId($i).'" class="weui-media-box weui-media-box_appmsg">
 	                    <div class="weui-media-box__hd">
@@ -81,6 +87,23 @@ for($i=0;$i<$o_book->getAllCount();$i++)
 	                        <p class="weui-media-box__desc">作者：'.$o_book->getAuthor($i).'</p>
 	                        <p class="weui-media-box__desc">出版社：'.$o_book->getPublisher($i).'</p>
 	                        <p class="weui-media-box__desc">出版时间：'.$o_book->getPubdate($i).'</p>
+	                    </div>
+	                </a>
+	';
+}
+for($i=0;$i<count($a_i);$i++)
+{
+	$s_html.='
+	<a href="teacher_book_show.php?id='.$o_book->getId($a_i[$i]).'" class="weui-media-box weui-media-box_appmsg">
+	                    <div class="weui-media-box__hd">
+	                        <img class="weui-media-box__thumb" src="'.$RELATIVITY_PATH.$o_book->getImg($a_i[$i]).'" alt="">
+	                    </div>
+	                    <div class="weui-media-box__bd">
+	                        <h4 class="weui-media-box__title">'.$o_book->getTitle($a_i[$i]).'</h4>
+	                        <p class="weui-media-box__desc">作者：'.$o_book->getAuthor($a_i[$i]).'</p>
+	                        <p class="weui-media-box__desc">出版社：'.$o_book->getPublisher($a_i[$i]).'</p>
+	                        <p class="weui-media-box__desc">出版时间：'.$o_book->getPubdate($a_i[$i]).'</p>
+	                        <p class="weui-media-box__desc weui-btn weui-btn_mini weui-btn_warn" style="color:#ffffff;display:inline-block">已借出</p>
 	                    </div>
 	                </a>
 	';

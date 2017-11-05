@@ -2,6 +2,7 @@
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='提交工作流程成功';
+$s_creatives='尹陆明';
 require_once '../header.php';
 ?>
     <div class="weui-msg">

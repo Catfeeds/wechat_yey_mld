@@ -3,6 +3,7 @@ $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'sub/dailywork/include/db_table.class.php';
 $s_title='工作流程修改';
+$s_creatives='尹陆明';
 //想判断教师权限，是否为绑定用户
 $o_temp=new Base_User_Wechat();
 $o_temp->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) ); 

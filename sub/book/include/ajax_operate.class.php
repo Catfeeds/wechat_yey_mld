@@ -51,8 +51,11 @@ class Operate extends Bn_Basic {
 		$o_borrow=new Book_Info_Teacher_Borrow();
 		$o_borrow->setBookId($this->getPost ( 'BookId' ));
 		$o_borrow->setTeacherId($n_uid);
+		$o_book->setState(1);
 		$o_borrow->setBorrowDate($this->GetDateNow());
 		$o_borrow->Save();
+		$o_book->setState(1);
+		$o_book->Save();
 		$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'借阅成功！\',function(){parent.location.reload()});' );
 	}
 	public function WechatTeacherBookReturn($n_uid)//微信端事件
@@ -77,6 +80,8 @@ class Operate extends Bn_Basic {
 	    	$o_borrow->setReturnDate($this->GetDateNow());
 	    	$o_borrow->Save();	    	
 	    }
+	    $o_book->setState(0);
+	    $o_book->Save();
 		$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'归还图书成功！\',function(){parent.location.reload()});' );
 	}
 }

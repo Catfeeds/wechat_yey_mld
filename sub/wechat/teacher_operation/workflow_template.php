@@ -139,6 +139,15 @@ require_once '../header.php';
 	</div>
 </div>
 
+<div class="weui-cells__title">请假原因</div>
+<div class="weui-cells">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<input class="weui-input" id="Vcl_%id%" name="Vcl_%id%" placeholder="必填">
+		</div>
+	</div>
+</div>
+
 
 
 

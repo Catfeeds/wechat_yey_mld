@@ -76,9 +76,18 @@ if ($o_book->getTitle()=='')
 			$o_borrow_log->PushOrder ( array ('BorrowDate', 'A') );
 			for($i=0;$i<$o_borrow_log->getAllCount();$i++)
 			{
+				//判断是否已经归还
+				if($o_borrow_log->getReturnDate($i)=='0000-00-00 00:00:00')
+				{
+					//未归还
+					#E64340
+					$s_return_time='<span style="color:#E64340">未归还</span>';
+				}else{
+					$s_return_time=$o_bn_basic->GetDateForChinese($o_borrow_log->getReturnDate($i)).' 归还';
+				}
 				echo('
 				<div class="weui-media-box weui-media-box_text" style="padding-top:8px;padding-bottom:8px;">
-                	<h4 class="weui-media-box__title" style="font-size:14px;margin-bottom:0px">'.$o_bn_basic->GetDateForChinese($o_borrow_log->getBorrowDate($i)).'&nbsp;&nbsp;&nbsp;&nbsp;'.$o_borrow_log->getTeacherName($i).'老师</h4>
+                	<h4 class="weui-media-box__title" style="font-size:14px;margin-bottom:0px">'.$o_bn_basic->GetDateForChinese($o_borrow_log->getBorrowDate($i)).'&nbsp;&nbsp;&nbsp;&nbsp;'.$o_borrow_log->getTeacherName($i).'老师&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$s_return_time.'</h4>
                 </div>
 				');
 			}
@@ -92,7 +101,13 @@ if ($o_book->getTitle()=='')
 	        $o_borrow_log->PushWhere ( array ('&&', 'TeacherId', '=',$o_temp->getUid(0)) ); 
 	        $o_borrow_log->PushWhere ( array ('&&', 'ReturnDate', '=','0000-00-00 00:00:00') ); 
 	        $s_funname='WechatTeacherBookBorrow';
-	        $s_button='<a class="weui-btn weui-btn_primary" onclick="teacher_book_borrow()">借阅</a>';
+	        if($o_book->getState()==1)
+	        {
+	        	//已被借阅
+	        	$s_button='<a class="weui-btn weui-btn_primary" onclick="teacher_book_borrow(1)">借阅</a>';
+	        }else{
+	        	$s_button='<a class="weui-btn weui-btn_primary" onclick="teacher_book_borrow(0)">借阅</a>';
+	        }	        
 	        if ($o_borrow_log->getAllCount()>0)
 	        {
 	        	$s_funname='WechatTeacherBookReturn';
@@ -113,8 +128,13 @@ if ($o_book->getTitle()=='')
     </div>
 </div>
 <script type="text/javascript">
-function teacher_book_borrow()
+function teacher_book_borrow(state)
 {
+	if (state==1)
+	{
+		Dialog_Message('对不起，改图书已被借阅，请等待归还后再借阅。');
+		return;
+	}
 	Dialog_Confirm('真的借阅此图书吗？',function(){
 		Common_OpenLoading();
 		document.getElementById("submit_form").submit();	
