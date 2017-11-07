@@ -25,6 +25,9 @@ if (!($o_table->getUid()>0))
 	font-size:14px !important;
 	line-height:150% !important;;
 }
+.comment img{
+	width:100% !important;
+}
 .comment b{
 	font-size:16px !important;
 }

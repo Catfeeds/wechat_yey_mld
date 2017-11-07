@@ -113,8 +113,8 @@ class Uploader
             $this->stateInfo = $this->getStateInfo("ERROR_CREATE_DIR");
             return;
         } else if (!is_writeable($dirname)) {
-            $this->stateInfo = $this->getStateInfo("ERROR_DIR_NOT_WRITEABLE");
-            return;
+           // $this->stateInfo = $this->getStateInfo("ERROR_DIR_NOT_WRITEABLE");
+           // return;
         }
 		define ( 'RELATIVITY_PATH', '../../../' );
 		require_once RELATIVITY_PATH . 'include/it_include.inc.php';

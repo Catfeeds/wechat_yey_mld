@@ -112,7 +112,7 @@ $o_table->getAllCount();
 <script type="text/javascript">
 var ue = UE.getEditor('editor',{toolbars:[
                                           [ 'bold', 'italic', 'underline', 'strikethrough', 'removeformat','forecolor',
-                                            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify']
+                                            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify','insertimage']
                                    ],iframeCssUrl: 'css/ueditor.css'});
 </script>
 <?php
