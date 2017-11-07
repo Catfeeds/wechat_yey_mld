@@ -35,8 +35,10 @@ require_once RELATIVITY_PATH . 'sub/ye_info/include/db_table.class.php';
 	    	$o_table->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
 	    	$o_table->PushOrder ( array ('StartDate',D) );
 	    	$o_table->setStartLine (0); //起始记录
-			$o_table->setCountLine (5);	    	
-	    	for($i=0;$i<$o_table->getAllCount();$i++)
+			$o_table->setCountLine (5);	
+			$n_count=$o_table->getAllCount();
+			$n_count=$o_table->getCount();
+	    	for($i=0;$i<$n_count;$i++)
 	    	{
 	    		$s_button='';
 	    		//判断是否显示撤销按钮，查找checkin数据库，有无当前日期和班级的记录
