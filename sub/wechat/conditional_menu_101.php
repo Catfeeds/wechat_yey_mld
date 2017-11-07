@@ -53,11 +53,6 @@ $data='{
 					"type": "view", 
                     "name": "教师用书", 
                     "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/teacher_book_list.php"
-                },
-                {
-					"type": "view", 
-                    "name": "我的借阅",
-                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/teacher_book_myborrow.php"
                 }
             ]
 	},

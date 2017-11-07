@@ -123,6 +123,7 @@ if ($o_book->getTitle()=='')
 		</form>
         <div style="padding:15px;">  
         	<?php echo($s_button)?>
+	    	<a class="weui-btn weui-btn_default" href="teacher_book_myborrow.php">我的借阅</a>
 	    	<a class="weui-btn weui-btn_default" onclick="history.go(-1)">返回</a>
 	    </div>
     </div>
