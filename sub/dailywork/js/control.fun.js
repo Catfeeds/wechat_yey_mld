@@ -13,3 +13,10 @@ function payroll_release()
 		$('#submit_form').submit();
 	})
 }
+function recipe_input()
+{
+	dialog_confirm('请注意，此操作需要花费大约5-10分钟！<br/>为确保数据完整，请在结束前不要关闭或刷新本页面。<br/>请耐心等待。',function(){
+		loading_show();
+		$('#submit_form').submit()
+	})
+}

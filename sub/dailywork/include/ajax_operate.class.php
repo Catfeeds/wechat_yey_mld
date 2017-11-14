@@ -821,5 +821,154 @@ class Operate extends Bn_Basic {
 		$o_case_log->Save();
 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'workflow_audit_success.php"');
 	}
+	public function RecipeInput($n_uid)//微信端事件
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if ($_FILES ['Vcl_File'] ['size'] > 0) {
+			mkdir ( RELATIVITY_PATH . 'userdata/recipe', 0777 );
+			$allowpictype = array ('zip');
+			$fileext = strtolower ( trim ( substr ( strrchr ( $_FILES ['Vcl_File'] ['name'], '.' ), 1 ) ) );
+			if (! in_array ( $fileext, $allowpictype )) {
+				$this->setReturn ( 'parent.form_return("dialog_error(\'请上传弋康导出的zip文件！\')");' );
+			}
+			copy ( $_FILES ['Vcl_File'] ['tmp_name'], RELATIVITY_PATH.'userdata/recipe/ekangexport.zip' );
+		}else{
+			$this->setReturn ( 'parent.form_return("dialog_error(\'请上传弋康导出的zip文件！\')");' );
+		}
+	    $db = new MyDB(RELATIVITY_PATH.'userdata/recipe/ekangexport.zip');
+	    $s_result='';
+	    if(!$db){
+	       //$s_result= $db->lastErrorMsg();
+	       $this->setReturn ( 'parent.form_return("dialog_error(\'上传文件不合法！\')");' );
+	    }
+	    //导入食材
+	    $sql ='SELECT * from ek_usefood';
+	    $ret = $db->query($sql);
+	    $a_usefood = new ReflectionClass(Ek_Usefood);
+	    $a_usefood_vals=$a_usefood->getProperties();
+	    $o_temp=new Ek_Usefood();
+	    $o_temp->PushWhere ( array ('&&', 'Foodnum', '<>',0) );
+	    $o_temp->DeletionWhere();
+	    while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
+	    	$o_temp=new Ek_Usefood();
+		    for($i=0;$i<count($a_usefood_vals);$i++)
+			{
+				$s_name=str_replace(' ', '', $a_usefood_vals[$i]);
+				$a_temp= explode('$', $s_name);
+				$a_temp= explode(']', $a_temp[1]);
+				if ($a_temp[0]=='Key')
+				{
+					break;
+				}
+				eval('$o_temp->set'.$a_temp[0].'($row[\''.strtolower($a_temp[0]).'\']);');
+			}
+			$o_temp->Save();
+	    }
+	    //---------
+	    //导入菜谱，只导入最新的食谱
+	    $sql ='SELECT * from ek_recomrecipe ORDER BY `ek_recomrecipe`.`id` DESC ';
+	    $ret = $db->query($sql);
+	    $a_usefood = new ReflectionClass(Ek_Recomrecipe);
+	    $a_usefood_vals=$a_usefood->getProperties();
+	    $o_temp=new Ek_Recomrecipe();
+	    $o_temp->PushWhere ( array ('&&', 'Id', '<>',0) );
+	    $o_temp->DeletionWhere();
+	    $s_food_menu='';
+	    while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
+	    	$o_temp=new Ek_Recomrecipe();
+		    for($i=0;$i<count($a_usefood_vals);$i++)
+			{
+				$s_name=str_replace(' ', '', $a_usefood_vals[$i]);
+				$a_temp= explode('$', $s_name);
+				$a_temp= explode(']', $a_temp[1]);
+				if ($a_temp[0]=='Key')
+				{
+					break;
+				}
+				eval('$o_temp->set'.$a_temp[0].'($row[\''.strtolower($a_temp[0]).'\']);');
+			}
+			$o_temp->Save();
+			$s_food_menu=json_decode($row['recipe']);
+			break;
+	    }
+	    //---------
+	    //导入菜肴
+	    $sql ='SELECT * from ek_cuisine';
+	    $ret = $db->query($sql);
+	    $a_usefood = new ReflectionClass(Ek_Cuisine);
+	    $a_usefood_vals=$a_usefood->getProperties();
+	    $o_food_menu=new Ek_Recomrecipe();
+	    $o_food_menu->getAllCount();
+	    //$o_temp=new Ek_Cuisine();
+	    //$o_temp->PushWhere ( array ('&&', 'Dishnum', '<>',0) );
+	    //$o_temp->DeletionWhere();
+	    while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
+	    	//先查找该菜肴是否在食谱内
+	    	$a_temp2=explode('"'.$row['dishnum'].'"', $o_food_menu->getRecipe(0));
+	    	if (count($a_temp2)>1)
+	    	{
+	    		//查找是否已经存在，如果存在，那么处理，如果不存在，直接插入
+	    		$o_food=new Ek_Cuisine();
+	    		$o_food->PushWhere ( array ('&&', 'Dishnum', '=',$row['dishnum']) );
+	    		if ($o_food->getAllCount()>0)
+	    		{
+	    			//对比两个食物是否一致，如果不一致，那么更新食物组成信息
+	    			$o_temp=new Ek_Cuisine($o_food->getDishnum(0));
+	    			if ($o_temp->getFoodinfo()!=$row['foodinfo'])
+	    			{
+	    				$o_temp->setFoodinfo($row['foodinfo']);
+	    				//删除修改记录
+	    				$o_modify=new Ek_Cuisine_Modify();
+	    				$o_modify->PushWhere ( array ('&&', 'Dishnum', '=',$row['dishnum']) );
+	    				$o_modify->DeletionWhere();
+	    				$o_modify='';
+	    			}
+	    			for($i=0;$i<count($a_usefood_vals);$i++)
+					{
+						$s_name=str_replace(' ', '', $a_usefood_vals[$i]);
+						$a_temp= explode('$', $s_name);
+						$a_temp= explode(']', $a_temp[1]);
+						if ($a_temp[0]=='Dishnum')
+						{
+							continue;
+						}
+						if ($a_temp[0]=='Key')
+						{
+							break;
+						}
+						eval('$o_temp->set'.$a_temp[0].'($row[\''.strtolower($a_temp[0]).'\']);');
+					}
+					$o_temp->Save();
+	    		}else{
+	    			$o_temp=new Ek_Cuisine();
+				    for($i=0;$i<count($a_usefood_vals);$i++)
+					{
+						$s_name=str_replace(' ', '', $a_usefood_vals[$i]);
+						$a_temp= explode('$', $s_name);
+						$a_temp= explode(']', $a_temp[1]);
+						if ($a_temp[0]=='Key')
+						{
+							break;
+						}
+						eval('$o_temp->set'.$a_temp[0].'($row[\''.strtolower($a_temp[0]).'\']);');
+					}
+					$o_temp->Save();
+	    		}	    		
+	    	}	    	
+	    }
+	    //---------	    
+	    $db->close();
+		$this->setReturn ( 'parent.form_return("dialog_success(\'导入弋康食谱成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+	}
+}
+class MyDB extends SQLite3
+{
+	function __construct($s_file)
+	{
+		$this->open($s_file);
+	}
 }
 ?>

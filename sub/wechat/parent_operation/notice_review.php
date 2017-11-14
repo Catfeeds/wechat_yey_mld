@@ -37,6 +37,9 @@ if (!($o_notice->getUid()>0))
 .weui-media-box_text strong{
 	font-size:20px !important;
 }
+.weui-media-box_text img{
+	width:100% !important;
+}
 </style>
      <div class="page__bd">
      <div class="weui-cells__title">通知详情</div>

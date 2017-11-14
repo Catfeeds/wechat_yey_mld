@@ -524,4 +524,262 @@ class Dailywork_Workflow_Main_Vcl extends CRUD
         ));
     }
 }
+class Ek_Cuisine extends CRUD
+{
+    protected $Dishnum;
+    protected $Treetype;
+    protected $Upid;
+    protected $Tsort;
+    protected $Dishname;
+    protected $Trait;
+    protected $Made;
+    protected $Picture;
+    protected $Foodinfo;
+    protected $Cal;
+    protected $Pro;
+    protected $Fat;
+    protected $Ch;
+    protected $Df;
+    protected $Va;
+    protected $Va2;
+    protected $Vb1;
+    protected $Vb2;
+    protected $Vb3;
+    protected $Vc;
+    protected $Ve;
+    protected $Caro;
+    protected $Ca;
+    protected $P;
+    protected $K;
+    protected $Na2;
+    protected $Mg;
+    protected $Fe;
+    protected $Zn;
+    protected $Se;
+    protected $Cu;
+    protected $Mn;
+    protected $I;
+    protected $Creationtime;
+    protected $Altertime;
+    protected $Creator;
+    protected $Alteruser;
+    protected $Delflag;
+
+    protected function DefineKey()
+    {
+        return 'dishnum';
+    }
+    protected function DefineTableName()
+    {
+        return 'ek_cuisine';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'dishnum' => 'Dishnum',
+                    'treetype' => 'Treetype',
+                    'upid' => 'Upid',
+                    'tsort' => 'Tsort',
+                    'dishname' => 'Dishname',
+                    'trait' => 'Trait',
+                    'made' => 'Made',
+                    'picture' => 'Picture',
+                    'foodinfo' => 'Foodinfo',
+                    'cal' => 'Cal',
+                    'pro' => 'Pro',
+                    'fat' => 'Fat',
+                    'ch' => 'Ch',
+                    'df' => 'Df',
+                    'va' => 'Va',
+                    'va2' => 'Va2',
+                    'vb1' => 'Vb1',
+                    'vb2' => 'Vb2',
+                    'vb3' => 'Vb3',
+                    'vc' => 'Vc',
+                    've' => 'Ve',
+                    'caro' => 'Caro',
+                    'ca' => 'Ca',
+                    'p' => 'P',
+                    'k' => 'K',
+                    'na2' => 'Na2',
+                    'mg' => 'Mg',
+                    'fe' => 'Fe',
+                    'zn' => 'Zn',
+                    'se' => 'Se',
+                    'cu' => 'Cu',
+                    'mn' => 'Mn',
+                    'i' => 'I',
+                    'creationtime' => 'Creationtime',
+                    'altertime' => 'Altertime',
+                    'creator' => 'Creator',
+                    'alteruser' => 'Alteruser',
+                    'delflag' => 'Delflag'
+        ));
+    }
+}
+class Ek_Recomrecipe extends CRUD
+{
+    protected $Id;
+    protected $Recipename;
+    protected $Intyear;
+    protected $Intmonth;
+    protected $Cycle;
+    protected $Describe;
+    protected $Recipe;
+    protected $Avgage;
+    protected $Ratio;
+    protected $Islamic;
+    protected $Creationtime;
+    protected $Altertime;
+    protected $Creator;
+    protected $Alteruser;
+    protected $Delflag;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'ek_recomrecipe';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'recipename' => 'Recipename',
+                    'intyear' => 'Intyear',
+                    'intmonth' => 'Intmonth',
+                    'cycle' => 'Cycle',
+                    'describe' => 'Describe',
+                    'recipe' => 'Recipe',
+                    'avgage' => 'Avgage',
+                    'ratio' => 'Ratio',
+                    'islamic' => 'Islamic',
+                    'creationtime' => 'Creationtime',
+                    'altertime' => 'Altertime',
+                    'creator' => 'Creator',
+                    'alteruser' => 'Alteruser',
+                    'delflag' => 'Delflag'
+        ));
+    }
+}
+class Ek_Usefood extends CRUD
+{
+    protected $Foodnum;
+    protected $Foodname;
+    protected $Truename;
+    protected $Usage;
+    protected $Price;
+    protected $Foodpart;
+    protected $Kindname;
+    protected $Picture;
+    protected $Weigth;
+    protected $Water;
+    protected $Cal;
+    protected $Pro;
+    protected $Fat;
+    protected $Ch;
+    protected $Df;
+    protected $Va;
+    protected $Va2;
+    protected $Vb1;
+    protected $Vb2;
+    protected $Vb3;
+    protected $Vc;
+    protected $Ve;
+    protected $Caro;
+    protected $Ca;
+    protected $P;
+    protected $K;
+    protected $Na2;
+    protected $Mg;
+    protected $Fe;
+    protected $Zn;
+    protected $Se;
+    protected $Cu;
+    protected $Mn;
+    protected $I;
+    protected $Cglx;
+    protected $Creationtime;
+    protected $Altertime;
+    protected $Creator;
+    protected $Alteruser;
+    protected $Delflag;
+
+    protected function DefineKey()
+    {
+        return 'foodnum';
+    }
+    protected function DefineTableName()
+    {
+        return 'ek_usefood';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'foodnum' => 'Foodnum',
+                    'foodname' => 'Foodname',
+                    'truename' => 'Truename',
+                    'usage' => 'Usage',
+                    'price' => 'Price',
+                    'foodpart' => 'Foodpart',
+                    'kindname' => 'Kindname',
+                    'picture' => 'Picture',
+                    'weigth' => 'Weigth',
+                    'water' => 'Water',
+                    'cal' => 'Cal',
+                    'pro' => 'Pro',
+                    'fat' => 'Fat',
+                    'ch' => 'Ch',
+                    'df' => 'Df',
+                    'va' => 'Va',
+                    'va2' => 'Va2',
+                    'vb1' => 'Vb1',
+                    'vb2' => 'Vb2',
+                    'vb3' => 'Vb3',
+                    'vc' => 'Vc',
+                    've' => 'Ve',
+                    'caro' => 'Caro',
+                    'ca' => 'Ca',
+                    'p' => 'P',
+                    'k' => 'K',
+                    'na2' => 'Na2',
+                    'mg' => 'Mg',
+                    'fe' => 'Fe',
+                    'zn' => 'Zn',
+                    'se' => 'Se',
+                    'cu' => 'Cu',
+                    'mn' => 'Mn',
+                    'i' => 'I',
+                    'cglx' => 'Cglx',
+                    'creationtime' => 'Creationtime',
+                    'altertime' => 'Altertime',
+                    'creator' => 'Creator',
+                    'alteruser' => 'Alteruser',
+                    'delflag' => 'Delflag'
+        ));
+    }
+}
+class Ek_Cuisine_Modify extends CRUD
+{
+    protected $Id;
+    protected $Dishnum;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'ek_cuisine_modify';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'dishnum' => 'Dishnum'
+        ));
+    }
+}
 ?>
