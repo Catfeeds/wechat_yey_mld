@@ -37,6 +37,7 @@ $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date-
         	$s_checked='checked="checked"';
         	$s_display='display:none';
         	$s_set_type='';
+        	$s_comment='';
         	$o_stu_wechat=new Student_Onboard_Info_Class_Wechat_View($o_stu->getStudentId($i));
         	if ($o_checkin->getAllCount()>0)
         	{
@@ -48,6 +49,7 @@ $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date-
 				{
 					$s_checked='';
 					$s_display='';
+					$s_comment=$o_detail->getComment(0);
 					if ($o_detail->getType(0)=='病假')
 					{
 						$s_set_type='$("#Vcl_Type_'.$o_stu->getStudentId($i).'_1").attr("checked","true");';
@@ -66,6 +68,7 @@ $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date-
 				$o_parent->PushWhere ( array ('&&', 'EndDate', '>=',$s_date) );
 				if ($o_parent->getAllCount()>0)
 				{
+					$s_comment=$o_parent->getComment(0);
 					$s_checked='';
 					$s_display='';
 					if ($o_parent->getType(0)=='病假')
@@ -116,6 +119,14 @@ $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date-
 		                <div class="weui-cell__ft">
 		                    <input value="事假" type="radio" name="Vcl_Type_'.$o_stu->getStudentId($i).'" class="weui-check" id="Vcl_Type_'.$o_stu->getStudentId($i).'_2">
 		                    <span class="weui-icon-checked"></span>
+		                </div>
+		            </label>
+					<label class="weui-cell weui-check__label" for="Vcl_Type_'.$o_stu->getStudentId($i).'_3">	
+		                <div class="weui-cell__bd">
+		                    <p>原因</p>
+		                </div>
+		                <div class="weui-cell__ft">
+							'.$s_comment.'
 		                </div>
 		            </label>
 		        </div> 

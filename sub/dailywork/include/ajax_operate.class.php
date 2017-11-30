@@ -931,7 +931,7 @@ class Operate extends Bn_Basic {
 						$s_name=str_replace(' ', '', $a_usefood_vals[$i]);
 						$a_temp= explode('$', $s_name);
 						$a_temp= explode(']', $a_temp[1]);
-						if ($a_temp[0]=='Dishnum')
+						if ($a_temp[0]=='Dishnum' || $a_temp[0]=='Picture')
 						{
 							continue;
 						}
