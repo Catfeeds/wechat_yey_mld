@@ -963,6 +963,38 @@ class Operate extends Bn_Basic {
 	    $db->close();
 		$this->setReturn ( 'parent.form_return("dialog_success(\'导入弋康食谱成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
 	}
+	public function CuisineDetailUpdate($n_uid)//微信端事件
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_table=new Ek_Cuisine($this->getPost('CuisineId'));
+		if ($o_table->getDishname()=='')
+		{
+			$this->setReturn ( 'parent.form_return("dialog_error(\'非法操作，请与管理员联系！\')");' );
+		}
+		$a_dailing=json_decode($o_table->getFoodinfo());
+		$i=0;
+		$s_new='';
+		foreach ( $a_dailing as $key => $s_member ) {
+			//获取代理名称
+			$s_new.='"'.$key.'":"'.$this->getPost('Dailiang_'.$i).'",';
+			$i++;
+		}	
+		$s_new='{'.substr($s_new,0,strlen($s_new)-1).'}';		
+		$o_table->setFoodinfo($s_new);
+		$o_table->Save();
+		//检查是否已经更新过带量
+		$o_temp=new Ek_Cuisine_Modify();
+		$o_temp->PushWhere ( array ('&&', 'Dishnum', '=',$o_table->getDishnum()) ); 
+		if ($o_temp->getAllCount()==0)
+		{
+			$o_temp=new Ek_Cuisine_Modify();
+			$o_temp->setDishnum($this->getPost('CuisineId'));
+			$o_temp->Save();
+		}
+		$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'带量更新成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'});' );
+	}
 }
 class MyDB extends SQLite3
 {

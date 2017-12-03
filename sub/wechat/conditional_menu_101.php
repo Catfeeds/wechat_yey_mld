@@ -53,6 +53,11 @@ $data='{
 					"type": "view", 
                     "name": "教师用书", 
                     "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/teacher_book_list.php"
+                },
+                {
+					"type": "view", 
+                    "name": "菜肴管理", 
+                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/dailywork_food_list.php"
                 }
             ]
 	},

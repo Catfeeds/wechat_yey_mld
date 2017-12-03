@@ -49,8 +49,8 @@ if($o_role->getAllCount()>0)
                     <div class="weui-media-box__bd">
                         <h4 class="weui-media-box__title">'.$o_role->getFirst($i).'</h4>
                         <p class="weui-media-box__desc" style="display:inherit;">通知时间：'.$o_role->getCreateDate($i).'
-                        <br/>通知类型：'.$o_role->getType($i).'老师
-                        <br/>发送教师：'.$o_role->getUserName($i).'
+                        <br/>通知类型：'.$o_role->getType($i).'
+                        <br/>发送教师：'.$o_role->getUserName($i).'老师
                         <br/>接收对象：'.$o_role->getTargetName($i).'</p>                        
                     </div>
                 </a>
