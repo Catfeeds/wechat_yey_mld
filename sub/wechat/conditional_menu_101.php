@@ -58,6 +58,11 @@ $data='{
 					"type": "view", 
                     "name": "菜肴管理", 
                     "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/dailywork_food_list.php"
+                },
+                {
+					"type": "view", 
+                    "name": "食谱预览", 
+                    "url": "http://wx.mldyey.com/sub/wechat/parent_operation/food_list.php"
                 }
             ]
 	},

@@ -668,6 +668,7 @@ class Ek_Usefood extends CRUD
 {
     protected $Foodnum;
     protected $Foodname;
+    protected $Nickname;
     protected $Truename;
     protected $Usage;
     protected $Price;
@@ -720,6 +721,7 @@ class Ek_Usefood extends CRUD
         return(array(
                     'foodnum' => 'Foodnum',
                     'foodname' => 'Foodname',
+        			'nickname' => 'Nickname',
                     'truename' => 'Truename',
                     'usage' => 'Usage',
                     'price' => 'Price',

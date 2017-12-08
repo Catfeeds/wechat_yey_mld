@@ -15,6 +15,35 @@ if ($o_temp->getAllCount()==0)
 	echo "<script>location.href='access_failed.php'</script>"; 
 	exit(0);
 }
+$o_base_user_role=new Base_User_Role($o_temp->getUid(0));
+//判断权限是否为厨房岗和保健岗位
+$b_admin=false;
+if($o_base_user_role->getRoleId()==68 || $o_base_user_role->getRoleId()==67)
+{
+	$b_admin=true;
+}
+if($o_base_user_role->getSecRoleId1()==68 || $o_base_user_role->getSecRoleId1()==67)
+{
+	$b_admin=true;
+}
+if($o_base_user_role->getSecRoleId2()==68 || $o_base_user_role->getSecRoleId2()==67)
+{
+	$b_admin=true;
+}
+if($o_base_user_role->getSecRoleId3()==68 || $o_base_user_role->getSecRoleId3()==67)
+{
+	$b_admin=true;
+}
+if($o_base_user_role->getSecRoleId4()==68 || $o_base_user_role->getSecRoleId4()==67)
+{
+	$b_admin=true;
+}
+if($o_base_user_role->getSecRoleId5()==68 || $o_base_user_role->getSecRoleId5()==67)
+{
+	$b_admin=true;
+}
+
+
 $o_book=new Ek_Cuisine($_GET['id']);
 if ($o_book->getDishname()=='')
 {
@@ -74,13 +103,20 @@ function getJsApiTicket($s_token) {
 			$s_picture=$RELATIVITY_PATH.$o_book->getPicture();
 		}        
         echo($s_picture);?>" style="width:100%;" alt=""></h1>
-        <div class="upload_btn" onclick="choose_image('<?php echo($s_token)?>')" style="width:100%">
-	    	<img src="images/photo_btn.png" style="width:50%;padding-bottom:20px;margin-left:25%;margin-right:25%"/>
-	    </div>	
-        <div style="padding:15px;padding-top:0px">  
-	    	<a class="weui-btn weui-btn_primary" onclick="cuisine_picture_update('<?php echo($_GET['id'])?>')">更新图片</a>
-	    </div>
-	    <input type="hidden" id="Vcl_Picture" name="Vcl_Picture" value=""/>
+        <?php 
+        if ($b_admin)
+        {
+        	?>
+        	<div class="upload_btn" onclick="choose_image('<?php echo($s_token)?>')" style="width:100%">
+		    	<img src="images/photo_btn.png" style="width:50%;padding-bottom:20px;margin-left:25%;margin-right:25%"/>
+		    </div>	
+	        <div style="padding:15px;padding-top:0px">  
+		    	<a class="weui-btn weui-btn_primary" onclick="cuisine_picture_update('<?php echo($_GET['id'])?>')">更新图片</a>
+		    </div>
+		    <input type="hidden" id="Vcl_Picture" name="Vcl_Picture" value=""/>
+        	<?php
+        }
+        ?>        
     </div>   
 	<div class="page__bd">		
         <form action="<?php echo($RELATIVITY_PATH)?>sub/dailywork/include/bn_submit.switch.php" id="submit_form_dailiang" method="post" target="ajax_submit_frame" onsubmit="this.submit()">
@@ -101,9 +137,32 @@ function getJsApiTicket($s_token) {
 			<div class="weui-cell">
                 <div class="weui-cell__hd"><label class="weui-label"><?php echo($o_temp->getFoodname())?></label></div>
                 <div class="weui-cell__bd">
-                    <input name="Vcl_Dailiang_<?php echo($i)?>" value="<?php echo($s_member)?>" class="weui-input" type="number" pattern="[0-9.]*" placeholder="必填" style="">
+                    <input <?php 
+                    if ($b_admin==false)
+                    {
+                    	echo('disabled="disabled"');
+                    }
+                    ?> name="Vcl_Dailiang_<?php echo($i)?>" value="<?php echo($s_member)?>" class="weui-input" type="number" pattern="[0-9.]*" placeholder="必填">
                 </div>
                 <div class="weui-cell__hd"><label class="weui-label" style="width:40px;text-align:right">克</label></div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd" style="width:125px"><label class="weui-label">&nbsp;&nbsp;&nbsp;&nbsp;别名</label></div>
+                <div class="weui-cell__bd">
+                    <input <?php 
+                    if ($b_admin==false)
+                    {
+                    	echo('disabled="disabled"');
+                    }
+                    ?> name="Vcl_Nickname_<?php echo($i)?>" value="<?php 
+                    if ($o_temp->getNickname()=='')
+                    {
+                    	echo($o_temp->getFoodname());
+                    }else{
+                    	echo($o_temp->getNickname());
+                    }
+                    ?>" class="weui-input" placeholder="必填">
+                </div>
             </div>
 			<?php
 			$i++;
@@ -111,8 +170,15 @@ function getJsApiTicket($s_token) {
 		?>
         </div>		
 		</form>
-        <div style="padding:15px;">  
-	    	<a class="weui-btn weui-btn_primary" onclick="cuisine_detail_update()">更新带量</a>
+        <div style="padding:15px;">
+        <?php 
+        if ($b_admin)
+        {
+        	?>
+        	<a class="weui-btn weui-btn_primary" onclick="cuisine_detail_update()">更新带量</a>
+        	<?php
+        }
+        ?>	    	
 	    	<a class="weui-btn weui-btn_default" onclick="history.go(-1)">返回</a>
 	    </div>
     </div>

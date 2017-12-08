@@ -849,16 +849,30 @@ class Operate extends Bn_Basic {
 	    $ret = $db->query($sql);
 	    $a_usefood = new ReflectionClass(Ek_Usefood);
 	    $a_usefood_vals=$a_usefood->getProperties();
-	    $o_temp=new Ek_Usefood();
-	    $o_temp->PushWhere ( array ('&&', 'Foodnum', '<>',0) );
-	    $o_temp->DeletionWhere();
+	    
+	    //$o_temp=new Ek_Usefood();
+	    //$o_temp->PushWhere ( array ('&&', 'Foodnum', '<>',0) );
+	    //$o_temp->DeletionWhere();
 	    while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
+	    	//查找食材是否存在
+	    	$o_temp=new Ek_Usefood($row['foodnum']);
+	    	if ($o_temp->getFoodname()!='')
+	    	{
+	    		$o_temp->setFoodname($row['foodname']);
+	    		$o_temp->Save();
+	    		continue;
+	    	}	    	
 	    	$o_temp=new Ek_Usefood();
 		    for($i=0;$i<count($a_usefood_vals);$i++)
 			{
 				$s_name=str_replace(' ', '', $a_usefood_vals[$i]);
 				$a_temp= explode('$', $s_name);
 				$a_temp= explode(']', $a_temp[1]);
+				if ($a_temp[0]=='Nickname')
+				{
+					$o_temp->setNickname('');
+					continue;
+				}
 				if ($a_temp[0]=='Key')
 				{
 					break;
@@ -869,7 +883,7 @@ class Operate extends Bn_Basic {
 	    }
 	    //---------
 	    //导入菜谱，只导入最新的食谱
-	    $sql ='SELECT * from ek_recomrecipe ORDER BY `ek_recomrecipe`.`id` DESC ';
+	    $sql ='SELECT * from ek_recomrecipe ORDER BY `ek_recomrecipe`.`recipename` DESC ';
 	    $ret = $db->query($sql);
 	    $a_usefood = new ReflectionClass(Ek_Recomrecipe);
 	    $a_usefood_vals=$a_usefood->getProperties();
@@ -977,8 +991,12 @@ class Operate extends Bn_Basic {
 		$i=0;
 		$s_new='';
 		foreach ( $a_dailing as $key => $s_member ) {
-			//获取代理名称
-			$s_new.='"'.$key.'":"'.$this->getPost('Dailiang_'.$i).'",';
+			//获取带量名称			
+			$s_new.='"'.$key.'":"'.$this->getPost('Dailiang_'.$i).'",';			
+			//设置别名
+			$o_temp=new Ek_Usefood($key);
+			$o_temp->setNickname($this->getPost('Nickname_'.$i));
+			$o_temp->Save();
 			$i++;
 		}	
 		$s_new='{'.substr($s_new,0,strlen($s_new)-1).'}';		
