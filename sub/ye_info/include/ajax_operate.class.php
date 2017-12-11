@@ -2213,8 +2213,16 @@ class Operate_YeInfo extends Bn_Basic {
 	            $n_shidao=$o_checkingin->getCheckinginSum(0)+$n_shidao;
 	        }       
 	    }
+	    //获取预计到园多少人
+	    $o_stu = new Student_Onboard_Info_Class_View();
+	    $n_sum=$o_stu->getAllCount();
+	    $o_parent=new Student_Onboard_Checkingin_Parent();
+	    $o_parent->PushWhere ( array ('&&', 'StartDate', '<=', $this->getPost('date')) );
+	    $o_parent->PushWhere ( array ('&&', 'EndDate', '>=', $this->getPost('date')) );
+	    $n_sum=$n_sum-$o_parent->getAllCount();
+	    
 		$a_result = array (
-					'status' =>'&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-primary">全园实到 '.$n_shidao.' 人</span>'
+					'status' =>'&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-primary">全园实到 '.$n_shidao.' 人</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-primary">预计到园 '.$n_sum.' 人</span>'
 				);
 		echo(json_encode ($a_result));
 	}

@@ -14,6 +14,7 @@ $s_homepage=$o_sys_info->getHomeUrl();
 $o_reminder=new Wechat_Wx_User_Reminder();
 $o_reminder->PushWhere ( array ('&&', 'Send', '=',0) );
 $o_reminder->PushWhere ( array ('&&', 'UserId', '>',0) );
+$o_reminder->PushWhere ( array ('&&', 'OpenId', '<>','') );
 $n_count=$o_reminder->getAllCount();
 if ($n_count>10)
 {

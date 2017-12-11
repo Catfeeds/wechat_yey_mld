@@ -1013,6 +1013,26 @@ class Operate extends Bn_Basic {
 		}
 		$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Success(\'带量更新成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'});' );
 	}
+	public function CuisinePictureUpdate($n_uid)//微信端事件
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_table=new Ek_Cuisine($this->getPost('id'));
+		$ch = curl_init($this->getPost('picture'));
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$str = curl_exec($ch);
+		mkdir ( RELATIVITY_PATH . 'userdata/dailywork', 0777 );
+		mkdir ( RELATIVITY_PATH . 'userdata/dailywork/food', 0777 );
+		$s_file='userdata/dailywork/food/'.$this->getPost('id').'_'.time().'.jpg';
+		file_put_contents(RELATIVITY_PATH.$s_file,$str);
+		$o_table->setPicture($s_file);
+		$o_table->Save();
+		$a_result=array();
+		echo(json_encode ( $a_result ));
+		exit(0);	
+	}
 }
 class MyDB extends SQLite3
 {

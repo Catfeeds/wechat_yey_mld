@@ -8,6 +8,9 @@ $s_none='<div class="weui-footer" style="padding-top:100px;padding-bottom:100px;
 $o_table=new Ek_Recomrecipe();
 $o_table->PushOrder ( array ('Id','D') );
 $o_table->getAllCount();
+$o_onboard=new Student_Onboard_Info_Class_Wechat_View();
+$o_onboard->PushWhere ( array ('&&', 'UserId', '=', $o_wx_user->getId() ) );
+$o_onboard->getAllCount();
 ?>
 
 <style>
@@ -38,6 +41,11 @@ $o_table->getAllCount();
     //循环输出菜谱
     for($i=0;$i<count($a_day);$i++)
     {
+    	if ($a_day[$i]=='早餐' && $o_onboard->getGrade(0)==2)
+    	{
+    		//小班不现实早餐
+    		continue;
+    	}    	
     	$a_temp=$a_food[$i];
     	for($j=0;$j<count($a_html);$j++)
     	{
@@ -52,6 +60,11 @@ $o_table->getAllCount();
     		for($k=0;$k<count($a_temp_2);$k++)
     		{
     			$a_temp_3=$a_temp_2[$k];
+	    		if ($k==1 && $o_onboard->getGrade(0)>2 && $a_day[$i]=='加餐')
+		    	{
+		    		//大班加餐，只显示牛乳(三元牌)
+		    		continue;
+		    	}   			
     			$a_html[$j].='
     			<div class="weui-cell weui-cell_access" onclick="window.open(\'food_list_detail.php?id='.$a_temp_3[0].'\',\'_parent\')">
 	                <div class="weui-cell__bd">
@@ -65,7 +78,7 @@ $o_table->getAllCount();
     }
     for($i=0;$i<count($a_html);$i++)
     {
-    	echo($a_html[$i].'</div>');;
+    	echo($a_html[$i].'</div>');
     }
     ?>
 </div>	
