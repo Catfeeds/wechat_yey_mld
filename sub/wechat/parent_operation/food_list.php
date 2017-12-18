@@ -60,7 +60,7 @@ $o_onboard->getAllCount();
     		for($k=0;$k<count($a_temp_2);$k++)
     		{
     			$a_temp_3=$a_temp_2[$k];
-	    		if ($k==1 && $o_onboard->getGrade(0)>2 && $a_day[$i]=='加餐')
+	    		if ($k>1 && $o_onboard->getGrade(0)>2 && $a_day[$i]=='加餐')
 		    	{
 		    		//大班加餐，只显示牛乳(三元牌)
 		    		continue;

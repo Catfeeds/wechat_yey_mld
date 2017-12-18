@@ -135,8 +135,9 @@ for($i=0;$i<$n_count;$i++)
 	$a_result=json_decode($curlUtil->https_request($s_url, json_encode($data)));
 	if ($a_result->errmsg=='ok')
 	{
-		$o_temp->Save();
+		//$o_temp->Save();
 	}
+	$o_temp->Save();
 }
 echo('Finished');
 ?>

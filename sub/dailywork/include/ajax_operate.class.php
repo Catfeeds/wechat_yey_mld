@@ -889,7 +889,7 @@ class Operate extends Bn_Basic {
 	    $a_usefood_vals=$a_usefood->getProperties();
 	    $o_temp=new Ek_Recomrecipe();
 	    $o_temp->PushWhere ( array ('&&', 'Id', '<>',0) );
-	    $o_temp->DeletionWhere();
+	    //$o_temp->DeletionWhere();
 	    $s_food_menu='';
 	    while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
 	    	$o_temp=new Ek_Recomrecipe();
