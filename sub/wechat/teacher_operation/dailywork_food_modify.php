@@ -95,6 +95,12 @@ function getJsApiTicket($s_token) {
         <h1 class="page__title"><?php echo($o_book->getDishname())?></h1>
     </div>
     <div class="page__bd">
+    	<div class="weui-cells__title">系统编号</div>
+    	<div class="weui-cells">
+	    	<div class="weui-cell">
+	            <div class="weui-cell__hd"><label class="weui-label"><?php echo($o_book->getDishnum())?></label></div>
+	        </div>
+        </div>
     	<div class="weui-cells__title">菜肴图片</div>
     	<h1 class="page__title" style="text-align:center"><img id="picture" src="<?php
 		$s_picture='images/food_default.jpg';
