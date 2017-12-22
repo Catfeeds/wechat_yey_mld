@@ -98,7 +98,7 @@ for($i=0;$i<count($a_2);$i++)
 	                    </div>
 	                    <div class="weui-media-box__bd">
 	                        <h4 class="weui-media-box__title">'.$o_book->getDishname($a_2[$i]).'</h4>
-	                        <p class="weui-media-box__desc">系统编号：'.$o_book->getDishnum($a_1[$i]).'</p>
+	                        <p class="weui-media-box__desc">系统编号：'.$o_book->getDishnum($a_2[$i]).'</p>
 	                        <p class="weui-media-box__desc">带量状态：'.$s_dailiang.'</p>
 	                    </div>
 	                </a>
@@ -126,7 +126,7 @@ for($i=0;$i<count($a_3);$i++)
 	                    </div>
 	                    <div class="weui-media-box__bd">
 	                        <h4 class="weui-media-box__title">'.$o_book->getDishname($a_3[$i]).'</h4>
-	                        <p class="weui-media-box__desc">系统编号：'.$o_book->getDishnum($a_1[$i]).'</p>
+	                        <p class="weui-media-box__desc">系统编号：'.$o_book->getDishnum($a_3[$i]).'</p>
 	                        <p class="weui-media-box__desc">带量状态：'.$s_dailiang.'</p>
 	                    </div>
 	                </a>
