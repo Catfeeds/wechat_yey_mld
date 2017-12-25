@@ -784,4 +784,278 @@ class Ek_Cuisine_Modify extends CRUD
         ));
     }
 }
+class Wechat_Base_User_Info_Awards extends CRUD
+{
+    protected $Id;
+    protected $Uid;
+    protected $Date;
+    protected $Name;
+    protected $Type;
+    protected $Grade;
+    protected $Level;
+    protected $RoleLevel;
+    protected $ApproveDept;
+    protected $IsCertificate;
+    protected $Picture;
+    protected $CreateDate;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_user_info_awards';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'uid' => 'Uid',
+                    'date' => 'Date',
+                    'name' => 'Name',
+                    'type' => 'Type',
+                    'grade' => 'Grade',
+                    'level' => 'Level',
+                    'role_level' => 'RoleLevel',
+                    'approve_dept' => 'ApproveDept',
+                    'is_certificate' => 'IsCertificate',
+                    'picture' => 'Picture',
+                    'create_date' => 'CreateDate'
+        ));
+    }
+}
+class Wechat_Base_User_Info_Base extends CRUD
+{
+    protected $Uid;
+    protected $Name;
+    protected $CardId;
+    protected $Sex;
+    protected $Birthday;
+    protected $Nation;
+    protected $Politics;
+    protected $JoinWorkDate;
+
+    protected function DefineKey()
+    {
+        return 'uid';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_user_info_base';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'uid' => 'Uid',
+                    'name' => 'Name',
+                    'card_id' => 'CardId',
+                    'sex' => 'Sex',
+                    'birthday' => 'Birthday',
+                    'nation' => 'Nation',
+                    'politics' => 'Politics',
+                    'join_work_date' => 'JoinWorkDate'
+        ));
+    }
+}
+class Wechat_Base_User_Info_Education extends CRUD
+{
+    protected $Id;
+    protected $Uid;
+    protected $GraduateDate;
+    protected $EducationType;
+    protected $Education;
+    protected $School;
+    protected $Profession;
+    protected $Length;
+    protected $ProType;
+    protected $CreateDate;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_user_info_education';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'uid' => 'Uid',
+                    'graduate_date' => 'GraduateDate',
+                    'education_type' => 'EducationType',
+                    'education' => 'Education',
+                    'school' => 'School',
+                    'profession' => 'Profession',
+                    'length' => 'Length',
+                    'pro_type' => 'ProType',
+                    'create_date' => 'CreateDate'
+        ));
+    }
+}
+class Wechat_Base_User_Info_Jobtitle extends CRUD
+{
+    protected $Id;
+    protected $Uid;
+    protected $Name;
+    protected $Number;
+    protected $Organization;
+    protected $Date;
+    protected $Picture;
+    protected $CreateDate;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_user_info_jobtitle';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'uid' => 'Uid',
+                    'name' => 'Name',
+                    'number' => 'Number',
+                    'organization' => 'Organization',
+                    'date' => 'Date',
+                    'picture' => 'Picture',
+                    'create_date' => 'CreateDate'
+        ));
+    }
+}
+class Wechat_Base_User_Info_Thesis extends CRUD
+{
+    protected $Id;
+    protected $Uid;
+    protected $Date;
+    protected $Title;
+    protected $BookName;
+    protected $RoleLevel;
+    protected $CreateDate;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_user_info_thesis';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'uid' => 'Uid',
+                    'date' => 'Date',
+                    'title' => 'Title',
+                    'book_name' => 'BookName',
+                    'role_level' => 'RoleLevel',
+                    'create_date' => 'CreateDate'
+        ));
+    }
+}
+class Wechat_Base_User_Info_Training extends CRUD
+{
+    protected $Id;
+    protected $Uid;
+    protected $StartDate;
+    protected $EndDate;
+    protected $Type;
+    protected $Content;
+    protected $Organization;
+    protected $IsCertificate;
+    protected $Picture;
+    protected $CreateDate;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_user_info_training';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'uid' => 'Uid',
+                    'start_date' => 'StartDate',
+                    'end_date' => 'EndDate',
+                    'type' => 'Type',
+                    'content' => 'Content',
+                    'organization' => 'Organization',
+                    'is_certificate' => 'IsCertificate',
+                    'picture' => 'Picture',
+                    'create_date' => 'CreateDate'
+        ));
+    }
+}
+class Wechat_Base_User_Info_Work extends CRUD
+{
+    protected $Id;
+    protected $Uid;
+    protected $StartDate;
+    protected $EndDate;
+    protected $Contant;
+    protected $Role;
+    protected $Type;
+    protected $CreateDate;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_user_info_work';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'uid' => 'Uid',
+                    'start_date' => 'StartDate',
+                    'end_date' => 'EndDate',
+                    'contant' => 'Contant',
+                    'role' => 'Role',
+                    'type' => 'Type',
+                    'create_date' => 'CreateDate'
+        ));
+    }
+}
+class Wechat_Base_User_Info_Tech extends CRUD
+{
+    protected $Id;
+    protected $Uid;
+    protected $Date;
+    protected $Title;
+    protected $RoleLevel;
+    protected $CreateDate;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_user_info_tech';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'uid' => 'Uid',
+                    'date' => 'Date',
+                    'title' => 'Title',
+                    'role_level' => 'RoleLevel',
+                    'create_date' => 'CreateDate'
+        ));
+    }
+}
 ?>

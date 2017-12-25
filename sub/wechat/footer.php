@@ -3,7 +3,7 @@ if(isset($s_creatives))
 {
 	//显示底部创意者
 	echo('
-		<div class="weui-footer">
+		<div class="weui-footer" style="padding-top:10px;">
             <p class="weui-footer__text">本项功能创意者：'.$s_creatives.'<br/><br/></p>
         </div>
 	');
