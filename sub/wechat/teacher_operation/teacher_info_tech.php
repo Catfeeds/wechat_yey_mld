@@ -18,7 +18,14 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
 ?>
 <style>
 <!--
-
+.weui-cell__bd
+{
+	min-width:100px;
+}
+.weui-cell__ft
+{
+	text-align:left;
+}
 -->
 </style>
 <div class="page">

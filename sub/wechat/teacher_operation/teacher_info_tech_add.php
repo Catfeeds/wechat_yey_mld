@@ -31,7 +31,7 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
 		<div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <input id="Vcl_Date" name="Vcl_Date" class="weui-input" type="date" value="">
+                    <input id="Vcl_Date" name="Vcl_Date" class="weui-input" type="date" value="2017-12-12">
                 </div>
             </div>
         </div>

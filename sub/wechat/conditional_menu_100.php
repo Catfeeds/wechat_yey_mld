@@ -62,6 +62,11 @@ $data='{
                     "type": "view", 
                     "name": "幼儿读物", 
                     "url": "http://wx.mldyey.com/sub/wechat/parent_operation/book_list.php" 
+                },
+                {
+					"type": "view", 
+                    "name": "本周菜谱", 
+                    "url": "http://wx.mldyey.com/sub/wechat/parent_operation/food_list.php"
                 }
             ]
 	}],

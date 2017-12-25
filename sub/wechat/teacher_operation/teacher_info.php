@@ -62,6 +62,7 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 <div class="weui-cell__ft"><?php 
                 $o_temp2=new Wechat_Base_User_Info_Education();
                 $o_temp2->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) ); 
+                if ($o_temp2->getAllCount()>0)
                 echo($o_temp2->getAllCount());
                 ?></div>
             </div>
@@ -72,6 +73,7 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 <div class="weui-cell__ft"><?php 
                 $o_temp2=new Wechat_Base_User_Info_Jobtitle();
                 $o_temp2->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) ); 
+                if ($o_temp2->getAllCount()>0)
                 echo($o_temp2->getAllCount());
                 ?></div>
             </div>
@@ -81,7 +83,8 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 </div>
                 <div class="weui-cell__ft"><?php 
                 $o_temp2=new Wechat_Base_User_Info_Training();
-                $o_temp2->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) ); 
+                $o_temp2->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) );
+                if ($o_temp2->getAllCount()>0)
                 echo($o_temp2->getAllCount());
                 ?></div>
             </div>
@@ -92,6 +95,7 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 <div class="weui-cell__ft"><?php 
                 $o_temp2=new Wechat_Base_User_Info_Work();
                 $o_temp2->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) ); 
+                if ($o_temp2->getAllCount()>0)
                 echo($o_temp2->getAllCount());
                 ?></div>
             </div>
@@ -102,6 +106,7 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 <div class="weui-cell__ft"><?php 
                 $o_temp2=new Wechat_Base_User_Info_Awards();
                 $o_temp2->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) ); 
+                if ($o_temp2->getAllCount()>0)
                 echo($o_temp2->getAllCount());
                 ?></div>
             </div>
@@ -112,6 +117,7 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 <div class="weui-cell__ft"><?php 
                 $o_temp2=new Wechat_Base_User_Info_Thesis();
                 $o_temp2->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) ); 
+                if ($o_temp2->getAllCount()>0)
                 echo($o_temp2->getAllCount());
                 ?></div>
             </div>
@@ -122,6 +128,7 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 <div class="weui-cell__ft"><?php 
                 $o_temp2=new Wechat_Base_User_Info_Tech();
                 $o_temp2->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) ); 
+                if ($o_temp2->getAllCount()>0)
                 echo($o_temp2->getAllCount());
                 ?></div>
             </div>

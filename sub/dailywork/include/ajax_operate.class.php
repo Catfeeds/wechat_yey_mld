@@ -915,6 +915,7 @@ class Operate extends Bn_Basic {
 	    $a_usefood = new ReflectionClass(Ek_Cuisine);
 	    $a_usefood_vals=$a_usefood->getProperties();
 	    $o_food_menu=new Ek_Recomrecipe();
+	    $o_food_menu->PushOrder ( array ('Creationtime','D') );
 	    $o_food_menu->getAllCount();
 	    //$o_temp=new Ek_Cuisine();
 	    //$o_temp->PushWhere ( array ('&&', 'Dishnum', '<>',0) );
@@ -1032,21 +1033,6 @@ class Operate extends Bn_Basic {
 		$a_result=array();
 		echo(json_encode ( $a_result ));
 		exit(0);	
-	}
-	public function TeacherInfoTechAdd($n_uid)//微信端事件
-	{
-		if (! ($n_uid > 0)) {
-			$this->setReturn('parent.goto_login()');
-		}
-		sleep(1);
-		$o_table=new Wechat_Base_User_Info_Tech();
-		$o_table->setUid($n_uid);
-		$o_table->setDate($this->getPost('Date'));
-		$o_table->setTitle($this->getPost('Title'));
-		$o_table->setRoleLevel($this->getPost('RoleLevel'));
-		$o_table->setCreateDate($this->GetDateNow());
-		$o_table->Save();
-		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_tech.php?time='.time().'"');
 	}
 }
 class MyDB extends SQLite3

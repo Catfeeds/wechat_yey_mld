@@ -7,7 +7,7 @@ require_once '../header.php';
 require_once RELATIVITY_PATH . 'sub/dailywork/include/db_table.class.php';
 $s_none='<div class="weui-footer" style="padding-top:100px;padding-bottom:100px;"><p class="weui-footer__text" style="font-size:1.5em">目前没有食谱</p></div>';
 $o_table=new Ek_Recomrecipe();
-$o_table->PushOrder ( array ('Id','D') );
+$o_table->PushOrder ( array ('Creationtime','D') );
 $o_table->getAllCount();
 $o_onboard=new Student_Onboard_Info_Class_Wechat_View();
 $o_onboard->PushWhere ( array ('&&', 'UserId', '=', $o_wx_user->getId() ) );
