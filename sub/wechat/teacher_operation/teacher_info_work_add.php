@@ -1,7 +1,7 @@
 <?php
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
-$s_title='添加技术报告';
+$s_title='添加工作业绩';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
 require_once RELATIVITY_PATH . 'sub/dailywork/include/db_table.class.php';
@@ -26,32 +26,47 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
 		<form action="<?php echo($RELATIVITY_PATH)?>sub/dailywork/include/bn_submit.switch.php" id="submit_form" method="post" target="ajax_submit_frame" onsubmit="this.submit()">
 			<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 			<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
-			<input type="hidden" name="Vcl_FunName" value="TeacherInfoTechAdd"/>
-		<div class="weui-cells__title">时间</div>
+			<input type="hidden" name="Vcl_FunName" value="TeacherInfoWorkAdd"/>
+		<div class="weui-cells__title">开始时间</div>
 		<div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <input id="Vcl_Date" name="Vcl_Date" class="weui-input" type="date" placeholder="必填" value="">
+                    <input id="Vcl_StartDate" name="Vcl_StartDate" class="weui-input" type="date" placeholder="必填" value="">
                 </div>
             </div>
         </div>
-        <div class="weui-cells__title">标题</div>
+        <div class="weui-cells__title">结束时间</div>
 		<div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <input id="Vcl_Title" name="Vcl_Title" class="weui-input" type="text" placeholder="必填">
+                    <input id="Vcl_EndDate" name="Vcl_EndDate" class="weui-input" type="date" placeholder="必填" value="">
                 </div>
             </div>
         </div>
-        <div class="weui-cells__title">本人角色或排名</div>
+        <div class="weui-cells__title">工作内容</div>
 		<div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <input id="Vcl_RoleLevel" name="Vcl_RoleLevel" class="weui-input" type="text" placeholder="必填">
+                    <input id="Vcl_Content" name="Vcl_Content" class="weui-input" type="text" placeholder="必填">
                 </div>
             </div>
         </div>
-		
+        <div class="weui-cells__title">本人角色</div>
+		<div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <input id="Vcl_Role" name="Vcl_Role" class="weui-input" type="text" placeholder="必填">
+                </div>
+            </div>
+        </div>
+		<div class="weui-cells__title">业绩类型</div>
+		<div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <input id="Vcl_Type" name="Vcl_Type" class="weui-input" type="text" placeholder="必填">
+                </div>
+            </div>
+        </div>
 		</form>
         <div style="padding:15px;">
         	<a class="weui-btn weui-btn_primary" onclick="add_submit()">提交</a>
@@ -64,24 +79,38 @@ function add_submit()
 {
 	
 	Dialog_Confirm('真的要提交信息吗？<br/>提交后不能修改，请谨慎操作。',function(){
-		if ($('#Vcl_Date').val()=='')
+		if ($('#Vcl_StartDate').val()=='')
 		{
-			Dialog_Message("[时间] 不能为空！",function(){
-				document.getElementById("Vcl_Date").focus()
+			Dialog_Message("[开始时间] 不能为空！",function(){
+				document.getElementById("Vcl_StartDate").focus()
 			})		
 			return
 		}
-		if ($('#Vcl_Title').val()=='')
+		if ($('#Vcl_EndDate').val()=='')
 		{
-			Dialog_Message("[标题] 不能为空！",function(){
-				document.getElementById("Vcl_Title").focus()
+			Dialog_Message("[结束时间] 不能为空！",function(){
+				document.getElementById("Vcl_EndDate").focus()
 			})		
 			return
 		}
-		if ($('#Vcl_RoleLevel').val()=='')
+		if ($('#Vcl_Contant').val()=='')
 		{
-			Dialog_Message("[本人角色或排名] 不能为空！",function(){
-				document.getElementById("Vcl_RoleLevel").focus()
+			Dialog_Message("[工作内容] 不能为空！",function(){
+				document.getElementById("Vcl_Contant").focus()
+			})		
+			return
+		}
+		if ($('#Vcl_Role').val()=='')
+		{
+			Dialog_Message("[本人角色] 不能为空！",function(){
+				document.getElementById("Vcl_Role").focus()
+			})		
+			return
+		}
+		if ($('#Vcl_Type').val()=='')
+		{
+			Dialog_Message("[业绩类型] 不能为空！",function(){
+				document.getElementById("Vcl_Type").focus()
 			})		
 			return
 		}

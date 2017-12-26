@@ -1002,7 +1002,7 @@ class Wechat_Base_User_Info_Work extends CRUD
     protected $Uid;
     protected $StartDate;
     protected $EndDate;
-    protected $Contant;
+    protected $Content;
     protected $Role;
     protected $Type;
     protected $CreateDate;
@@ -1022,7 +1022,7 @@ class Wechat_Base_User_Info_Work extends CRUD
                     'uid' => 'Uid',
                     'start_date' => 'StartDate',
                     'end_date' => 'EndDate',
-                    'contant' => 'Contant',
+                    'content' => 'Content',
                     'role' => 'Role',
                     'type' => 'Type',
                     'create_date' => 'CreateDate'

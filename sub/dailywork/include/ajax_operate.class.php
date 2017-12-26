@@ -1034,6 +1034,73 @@ class Operate extends Bn_Basic {
 		echo(json_encode ( $a_result ));
 		exit(0);	
 	}
+	public function TeacherInfoTechAdd($n_uid)//微信端事件
+ 	{
+ 		if (! ($n_uid > 0)) {
+ 			$this->setReturn('parent.goto_login()');
+ 		}
+ 		sleep(1);
+ 		$o_table=new Wechat_Base_User_Info_Tech();
+ 		$o_table->setUid($n_uid);
+ 		$o_table->setDate($this->getPost('Date'));
+ 		$o_table->setTitle($this->getPost('Title'));
+ 		$o_table->setRoleLevel($this->getPost('RoleLevel'));
+ 		$o_table->setCreateDate($this->GetDateNow());
+ 		$o_table->Save();
+ 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_tech.php?time='.time().'"');
+ 	}
+	public function TeacherInfoThesisAdd($n_uid)//微信端事件
+ 	{
+ 		if (! ($n_uid > 0)) {
+ 			$this->setReturn('parent.goto_login()');
+ 		}
+ 		sleep(1);
+ 		$o_table=new Wechat_Base_User_Info_Thesis();
+ 		$o_table->setUid($n_uid);
+ 		$o_table->setDate($this->getPost('Date'));
+ 		$o_table->setTitle($this->getPost('Title'));
+ 		$o_table->setBookName($this->getPost('BookName'));
+ 		$o_table->setRoleLevel($this->getPost('RoleLevel'));
+ 		$o_table->setCreateDate($this->GetDateNow());
+ 		$o_table->Save();
+ 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_thesis.php?time='.time().'"');
+ 	}
+	public function TeacherInfoWorkAdd($n_uid)//微信端事件
+ 	{
+ 		if (! ($n_uid > 0)) {
+ 			$this->setReturn('parent.goto_login()');
+ 		}
+ 		sleep(1);
+ 		$o_table=new Wechat_Base_User_Info_Work();
+ 		$o_table->setUid($n_uid);
+ 		$o_table->setStartDate($this->getPost('StartDate'));
+ 		$o_table->setEndDate($this->getPost('EndDate'));
+ 		$o_table->setContent($this->getPost('Content'));
+ 		$o_table->setType($this->getPost('Type'));
+ 		$o_table->setRole($this->getPost('Role'));
+ 		$o_table->setCreateDate($this->GetDateNow());
+ 		$o_table->Save();
+ 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_work.php?time='.time().'"');
+ 	}
+	public function TeacherInfoEducationAdd($n_uid)//微信端事件
+ 	{
+ 		if (! ($n_uid > 0)) {
+ 			$this->setReturn('parent.goto_login()');
+ 		}
+ 		sleep(1);
+ 		$o_table=new Wechat_Base_User_Info_Education();
+ 		$o_table->setUid($n_uid);
+ 		$o_table->setGraduateDate($this->getPost('GraduateDate'));
+ 		$o_table->setEducationType($this->getPost('EducationType'));
+ 		$o_table->setEducation($this->getPost('Education'));
+ 		$o_table->setSchool($this->getPost('School'));
+ 		$o_table->setProfession($this->getPost('Profession'));
+ 		$o_table->setLength($this->getPost('Length'));
+ 		$o_table->setProType($this->getPost('ProType'));
+ 		$o_table->setCreateDate($this->GetDateNow());
+ 		$o_table->Save();
+ 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_education.php?time='.time().'"');
+ 	}
 }
 class MyDB extends SQLite3
 {
