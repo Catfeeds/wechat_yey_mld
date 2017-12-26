@@ -73,6 +73,11 @@ $data='{
 					"type": "view", 
                     "name": "工资条", 
                     "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/payroll.php" 
+                },
+                {
+					"type": "view", 
+                    "name": "成长经历", 
+                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/teacher_info.php" 
                 }
             ]
 	}],
