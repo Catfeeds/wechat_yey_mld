@@ -66,7 +66,7 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 echo($o_temp2->getAllCount());
                 ?></div>
             </div>
-            <div class="weui-cell weui-cell_access">
+            <div class="weui-cell weui-cell_access" onclick="location='teacher_info_jobtitle.php'">
                 <div class="weui-cell__bd">
                     <span style="vertical-align: middle">资格职称</span>
                 </div>

@@ -1,0 +1,26 @@
+@CHARSET "UTF-8";
+.upload_btn
+{
+	margin-top:5px;
+	overflow:hidden;
+	width:160px;
+	margin-left:auto;
+	margin-right:auto;
+	}
+.upload_level_photo
+{
+	overflow:hidden;
+	height:150px;
+	width:200px;
+	margin-left:auto;
+	margin-right:auto;
+	border:5px solid #ECECEC;
+}
+.upload_level_photo img
+{
+	width:200px;
+	height:150px;
+	float:left;
+	margin-left:auto;
+	position:absolute;
+}

@@ -1101,6 +1101,35 @@ class Operate extends Bn_Basic {
  		$o_table->Save();
  		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_education.php?time='.time().'"');
  	}
+	public function TeacherInfoJobtitleAdd($n_uid)//微信端事件
+ 	{
+ 		if (! ($n_uid > 0)) {
+ 			$this->setReturn('parent.goto_login()');
+ 		}
+ 		sleep(1);
+ 		$o_table=new Wechat_Base_User_Info_Jobtitle();
+ 		$o_table->setUid($n_uid);
+ 		$o_table->setName($this->getPost('Name'));
+ 		$o_table->setNumber($this->getPost('Number'));
+ 		$o_table->setOrganization($this->getPost('Organization'));
+ 		$o_table->setDate($this->getPost('Year').$this->getPost('Month'));
+ 		if ($this->getPost('Picture')!='')
+		{
+			//开始原级别证书照片
+			$ch = curl_init($this->getPost('Picture'));
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$str = curl_exec($ch);
+			mkdir ( RELATIVITY_PATH . 'userdata/dailywork', 0777 );
+			mkdir ( RELATIVITY_PATH . 'userdata/dailywork/info', 0777 );
+			$s_file='userdata/dailywork/info/'.$n_uid.'_'.time().'.jpg';
+			file_put_contents(RELATIVITY_PATH.$s_file,$str);
+			$o_table->setPicture($s_file);
+		}
+ 		$o_table->setCreateDate($this->GetDateNow());
+ 		$o_table->Save();
+ 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_jobtitle.php?time='.time().'"');
+ 	}
 }
 class MyDB extends SQLite3
 {
