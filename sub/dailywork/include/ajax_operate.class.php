@@ -1115,14 +1115,13 @@ class Operate extends Bn_Basic {
  		$o_table->setDate($this->getPost('Year').$this->getPost('Month'));
  		if ($this->getPost('Picture')!='')
 		{
-			//开始原级别证书照片
 			$ch = curl_init($this->getPost('Picture'));
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$str = curl_exec($ch);
 			mkdir ( RELATIVITY_PATH . 'userdata/dailywork', 0777 );
 			mkdir ( RELATIVITY_PATH . 'userdata/dailywork/info', 0777 );
-			$s_file='userdata/dailywork/info/'.$n_uid.'_'.time().'.jpg';
+			$s_file='userdata/dailywork/info/jobtitle_'.$n_uid.'_'.time().'.jpg';
 			file_put_contents(RELATIVITY_PATH.$s_file,$str);
 			$o_table->setPicture($s_file);
 		}
