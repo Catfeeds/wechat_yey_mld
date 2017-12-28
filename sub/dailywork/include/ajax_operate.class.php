@@ -1129,6 +1129,68 @@ class Operate extends Bn_Basic {
  		$o_table->Save();
  		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_jobtitle.php?time='.time().'"');
  	}
+	public function TeacherInfoTrainingAdd($n_uid)//微信端事件
+ 	{
+ 		if (! ($n_uid > 0)) {
+ 			$this->setReturn('parent.goto_login()');
+ 		}
+ 		sleep(1);
+ 		$o_table=new Wechat_Base_User_Info_Training();
+ 		$o_table->setUid($n_uid);
+ 		$o_table->setStartDate($this->getPost('StartDate'));
+ 		$o_table->setEndDate($this->getPost('EndDate'));
+ 		$o_table->setContent($this->getPost('Content'));
+ 		$o_table->setType($this->getPost('Type'));
+ 		$o_table->setOrganization($this->getPost('Organization'));
+ 		$o_table->setIsCertificate($this->getPost('IsCertificate'));
+ 		if ($this->getPost('Picture')!='' && $this->getPost('IsCertificate')=='是')
+		{
+			$ch = curl_init($this->getPost('Picture'));
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$str = curl_exec($ch);
+			mkdir ( RELATIVITY_PATH . 'userdata/dailywork', 0777 );
+			mkdir ( RELATIVITY_PATH . 'userdata/dailywork/info', 0777 );
+			$s_file='userdata/dailywork/info/training_'.$n_uid.'_'.time().'.jpg';
+			file_put_contents(RELATIVITY_PATH.$s_file,$str);
+			$o_table->setPicture($s_file);
+		}
+ 		$o_table->setCreateDate($this->GetDateNow());
+ 		$o_table->Save();
+ 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_training.php?time='.time().'"');
+ 	}
+	public function TeacherInfoAwardsAdd($n_uid)//微信端事件
+ 	{
+ 		if (! ($n_uid > 0)) {
+ 			$this->setReturn('parent.goto_login()');
+ 		}
+ 		sleep(1);
+ 		$o_table=new Wechat_Base_User_Info_Awards();
+ 		$o_table->setUid($n_uid);
+ 		$o_table->setDate($this->getPost('Date'));
+ 		$o_table->setName($this->getPost('Name'));
+ 		$o_table->setType($this->getPost('Type'));
+ 		$o_table->setGrade($this->getPost('Grade'));
+ 		$o_table->setLevel($this->getPost('Level'));
+ 		$o_table->setRoleLevel($this->getPost('RoleLevel'));
+ 		$o_table->setApproveDept($this->getPost('ApproveDept'));
+ 		$o_table->setIsCertificate($this->getPost('IsCertificate'));
+ 		if ($this->getPost('Picture')!='' && $this->getPost('IsCertificate')=='是')
+		{
+			$ch = curl_init($this->getPost('Picture'));
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$str = curl_exec($ch);
+			mkdir ( RELATIVITY_PATH . 'userdata/dailywork', 0777 );
+			mkdir ( RELATIVITY_PATH . 'userdata/dailywork/info', 0777 );
+			$s_file='userdata/dailywork/info/awards_'.$n_uid.'_'.time().'.jpg';
+			file_put_contents(RELATIVITY_PATH.$s_file,$str);
+			$o_table->setPicture($s_file);
+		}
+ 		$o_table->setCreateDate($this->GetDateNow());
+ 		$o_table->Save();
+ 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_awards.php?time='.time().'"');
+ 	}
 }
 class MyDB extends SQLite3
 {
