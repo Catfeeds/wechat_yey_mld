@@ -2,6 +2,7 @@
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='资格职称';
+$s_creatives='吴丽娟';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
 require_once RELATIVITY_PATH . 'sub/dailywork/include/db_table.class.php';
@@ -45,6 +46,12 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
 	                    <p>资格证名称</p>
 	                </div>
 	                <div class="weui-cell__ft"><?php echo($o_temp2->getName($i))?></div>
+	            </div>
+	            <div class="weui-cell">
+	                <div class="weui-cell__bd">
+	                    <p>类型</p>
+	                </div>
+	                <div class="weui-cell__ft"><?php echo($o_temp2->getType($i))?></div>
 	            </div>
 	            <div class="weui-cell">
 	                <div class="weui-cell__bd">

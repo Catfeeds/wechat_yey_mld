@@ -2,6 +2,7 @@
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='添加获奖情况';
+$s_creatives='吴丽娟';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
 require_once RELATIVITY_PATH . 'sub/dailywork/include/db_table.class.php';
@@ -45,7 +46,12 @@ require_once '../header_upload_images.php';
 		<div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <input id="Vcl_Type" name="Vcl_Type" class="weui-input" type="text" placeholder="必填">
+                	<select class="weui-select" id="Vcl_Type" name="Vcl_Type">
+                    	<option value="">请选择</option>
+                    	<option value="科学技术进步奖">科学技术进步奖</option>
+                    	<option value="发明奖">发明奖</option>
+                    	<option value="自然科学奖">自然科学奖</option>
+	                </select>
                 </div>
             </div>
         </div>
@@ -53,7 +59,14 @@ require_once '../header_upload_images.php';
 		<div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <input id="Vcl_Grade" name="Vcl_Grade" class="weui-input" type="text" placeholder="必填">
+                	<select class="weui-select" id="Vcl_Grade" name="Vcl_Grade">
+                    	<option value="">请选择</option>
+                    	<option value="国家级">国家级</option>
+                    	<option value="省部级">省部级</option>
+                    	<option value="市局级">市局级</option>
+                    	<option value="区县级">区县级</option>
+                    	<option value="校级">校级</option>
+	                </select>
                 </div>
             </div>
         </div>
@@ -61,7 +74,14 @@ require_once '../header_upload_images.php';
 		<div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <input id="Vcl_Level" name="Vcl_Level" class="weui-input" type="text" placeholder="必填">
+                	<select class="weui-select" id="Vcl_Level" name="Vcl_Level">
+                    	<option value="">请选择</option>
+                    	<option value="特等奖">特等奖</option>
+                    	<option value="一等奖">一等奖</option>
+                    	<option value="二等奖">二等奖</option>
+                    	<option value="三等奖">三等奖</option>
+                    	<option value="四等奖">四等奖</option>
+	                </select>
                 </div>
             </div>
         </div>
@@ -136,21 +156,21 @@ function add_submit()
 		}
 		if ($('#Vcl_Type').val()=='')
 		{
-			Dialog_Message("[类别] 不能为空！",function(){
+			Dialog_Message("请选择 [类别] ！",function(){
 				document.getElementById("Vcl_Type").focus()
 			})		
 			return
 		}
 		if ($('#Vcl_Grade').val()=='')
 		{
-			Dialog_Message("[级别] 不能为空！",function(){
+			Dialog_Message("请选择 [级别] ！",function(){
 				document.getElementById("Vcl_Grade").focus()
 			})		
 			return
 		}
 		if ($('#Vcl_Level').val()=='')
 		{
-			Dialog_Message("[等级] 不能为空！",function(){
+			Dialog_Message("请选择 [等级] ！",function(){
 				document.getElementById("Vcl_Level").focus()
 			})		
 			return

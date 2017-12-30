@@ -123,7 +123,7 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
             </div>
             <div class="weui-cell weui-cell_access" onclick="location='teacher_info_tech.php'">
                 <div class="weui-cell__bd">
-                    <span style="vertical-align: middle">技术报告</span>
+                    <span style="vertical-align: middle">学术报告</span>
                 </div>
                 <div class="weui-cell__ft"><?php 
                 $o_temp2=new Wechat_Base_User_Info_Tech();

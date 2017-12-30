@@ -2,6 +2,7 @@
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='添加资格职称';
+$s_creatives='吴丽娟';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
 require_once RELATIVITY_PATH . 'sub/dailywork/include/db_table.class.php';
@@ -30,6 +31,18 @@ require_once '../header_upload_images.php';
             <div class="weui-cell">
                 <div class="weui-cell__bd">
                     <input id="Vcl_Name" name="Vcl_Name" class="weui-input" type="text" placeholder="必填">
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells__title">类型</div>
+		<div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                	<select class="weui-select" id="Vcl_Type" name="Vcl_Type">
+                    	<option value="">请选择</option>
+                    	<option value="从业资格">从业资格</option>
+                    	<option value="专业职称">专业职称</option>
+	                </select>
                 </div>
             </div>
         </div>
@@ -110,6 +123,13 @@ function add_submit()
 		{
 			Dialog_Message("[资格证名称] 不能为空！",function(){
 				document.getElementById("Vcl_Name").focus()
+			})		
+			return
+		}
+		if ($('#Vcl_Type').val()=='')
+		{
+			Dialog_Message("请选择 [类型] ！",function(){
+				document.getElementById("Vcl_Type").focus()
 			})		
 			return
 		}

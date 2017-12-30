@@ -1111,6 +1111,7 @@ class Operate extends Bn_Basic {
  		$o_table->setUid($n_uid);
  		$o_table->setName($this->getPost('Name'));
  		$o_table->setNumber($this->getPost('Number'));
+ 		$o_table->setType($this->getPost('Type'));
  		$o_table->setOrganization($this->getPost('Organization'));
  		$o_table->setDate($this->getPost('Year').$this->getPost('Month'));
  		if ($this->getPost('Picture')!='')

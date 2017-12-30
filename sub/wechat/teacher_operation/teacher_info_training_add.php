@@ -2,6 +2,7 @@
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='添加学习培训';
+$s_creatives='吴丽娟';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
 require_once RELATIVITY_PATH . 'sub/dailywork/include/db_table.class.php';
@@ -45,7 +46,16 @@ require_once '../header_upload_images.php';
 		<div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <input id="Vcl_Type" name="Vcl_Type" class="weui-input" type="text" placeholder="必填">
+                	<select class="weui-select" id="Vcl_Type" name="Vcl_Type">
+                    	<option value="">请选择</option>
+                    	<option value="异地培训">异地培训</option>
+                    	<option value="领域现场">领域现场</option>
+                    	<option value="讲座培训">讲座培训</option>
+                    	<option value="区内观摩">区内观摩</option>
+                    	<option value="市级观摩">市级观摩</option>
+                    	<option value="名师工作室">名师工作室</option>
+                    	<option value="教研组">教研组</option>
+	                </select>
                 </div>
             </div>
         </div>
@@ -120,7 +130,7 @@ function add_submit()
 		}
 		if ($('#Vcl_Type').val()=='')
 		{
-			Dialog_Message("[培训类型] 不能为空！",function(){
+			Dialog_Message("请选择 [培训类型] ！",function(){
 				document.getElementById("Vcl_Type").focus()
 			})		
 			return

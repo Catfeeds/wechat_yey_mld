@@ -3,3 +3,6 @@ ALTER TABLE `wechat_base_user_info_training` CHANGE `picture` `picture` TEXT CHA
 ALTER TABLE `wechat_base_user_info_awards` CHANGE `picture` `picture` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '奖状照片';
 
 已更新到生产环境
+
+ALTER TABLE `wechat_base_user_info_jobtitle` ADD `type` CHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '类型' AFTER `number`;
+未更新到本地虚拟机

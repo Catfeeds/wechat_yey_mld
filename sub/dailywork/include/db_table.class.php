@@ -900,6 +900,7 @@ class Wechat_Base_User_Info_Jobtitle extends CRUD
     protected $Id;
     protected $Uid;
     protected $Name;
+    protected $Type;
     protected $Number;
     protected $Organization;
     protected $Date;
@@ -920,6 +921,7 @@ class Wechat_Base_User_Info_Jobtitle extends CRUD
                     'id' => 'Id',
                     'uid' => 'Uid',
                     'name' => 'Name',
+        			'type' => 'Type',
                     'number' => 'Number',
                     'organization' => 'Organization',
                     'date' => 'Date',
