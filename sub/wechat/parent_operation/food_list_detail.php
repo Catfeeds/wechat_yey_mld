@@ -42,7 +42,7 @@ if ($o_book->getDishname()=='')
         echo($s_picture);?>" style="width:100%;" alt=""></h1>
     </div>   
 	<div class="page__bd">		
-		<div class="weui-cells__title">含量明细</div>
+		<div class="weui-cells__title">主要食材</div>
 		<div class="weui-cells weui-cells_form">
 		<?php 
 		//获取带量
