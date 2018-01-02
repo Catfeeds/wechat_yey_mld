@@ -790,6 +790,7 @@ class Wechat_Base_User_Info_Awards extends CRUD
     protected $Uid;
     protected $Date;
     protected $Name;
+    protected $Category;    
     protected $Type;
     protected $Grade;
     protected $Level;
@@ -814,6 +815,7 @@ class Wechat_Base_User_Info_Awards extends CRUD
                     'uid' => 'Uid',
                     'date' => 'Date',
                     'name' => 'Name',
+        			'category' => 'Category',
                     'type' => 'Type',
                     'grade' => 'Grade',
                     'level' => 'Level',
@@ -835,6 +837,10 @@ class Wechat_Base_User_Info_Base extends CRUD
     protected $Nation;
     protected $Politics;
     protected $JoinWorkDate;
+    protected $Birthplace;
+    protected $Native;
+    protected $InType;
+    protected $InTime;
 
     protected function DefineKey()
     {
@@ -854,7 +860,11 @@ class Wechat_Base_User_Info_Base extends CRUD
                     'birthday' => 'Birthday',
                     'nation' => 'Nation',
                     'politics' => 'Politics',
-                    'join_work_date' => 'JoinWorkDate'
+                    'join_work_date' => 'JoinWorkDate',
+                    'birthplace' => 'Birthplace',
+                    'native' => 'Native',
+                    'in_type' => 'InType',
+                    'in_time' => 'InTime'
         ));
     }
 }
@@ -1004,6 +1014,7 @@ class Wechat_Base_User_Info_Work extends CRUD
     protected $Uid;
     protected $StartDate;
     protected $EndDate;
+    protected $Job;
     protected $Content;
     protected $Role;
     protected $Type;
@@ -1024,6 +1035,7 @@ class Wechat_Base_User_Info_Work extends CRUD
                     'uid' => 'Uid',
                     'start_date' => 'StartDate',
                     'end_date' => 'EndDate',
+        			'job' => 'Job',
                     'content' => 'Content',
                     'role' => 'Role',
                     'type' => 'Type',
@@ -1057,6 +1069,41 @@ class Wechat_Base_User_Info_Tech extends CRUD
                     'title' => 'Title',
                     'role_level' => 'RoleLevel',
                     'create_date' => 'CreateDate'
+        ));
+    }
+}
+class Wechat_Base_User_Info_Project extends CRUD
+{
+    protected $Id;
+    protected $Uid;
+    protected $Name;
+    protected $Level;
+    protected $Role;
+    protected $StartDate;
+    protected $EndDate;
+    protected $Result;
+    protected $CreateDate;
+
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_user_info_project';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'id' => 'Id',
+                    'uid' => 'Uid',
+                    'name' => 'Name',
+                    'level' => 'Level',
+                    'role' => 'Role',
+                    'start_date' => 'StartDate',
+                    'end_date' => 'EndDate',
+                    'result' => 'Result',
+        			'create_date' => 'CreateDate'
         ));
     }
 }

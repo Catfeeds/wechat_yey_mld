@@ -1,7 +1,7 @@
 <?php
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
-$s_title='个人信息';
+$s_title='成长经历';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
 require_once RELATIVITY_PATH . 'sub/dailywork/include/db_table.class.php';
@@ -90,7 +90,7 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
             </div>
             <div class="weui-cell weui-cell_access" onclick="location='teacher_info_work.php'">
                 <div class="weui-cell__bd">
-                    <span style="vertical-align: middle">工作业绩</span>
+                    <span style="vertical-align: middle">工作经历</span>
                 </div>
                 <div class="weui-cell__ft"><?php 
                 $o_temp2=new Wechat_Base_User_Info_Work();
@@ -127,6 +127,17 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 </div>
                 <div class="weui-cell__ft"><?php 
                 $o_temp2=new Wechat_Base_User_Info_Tech();
+                $o_temp2->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) ); 
+                if ($o_temp2->getAllCount()>0)
+                echo($o_temp2->getAllCount());
+                ?></div>
+            </div>
+            <div class="weui-cell weui-cell_access" onclick="location='teacher_info_project.php'">
+                <div class="weui-cell__bd">
+                    <span style="vertical-align: middle">课题立项</span>
+                </div>
+                <div class="weui-cell__ft"><?php 
+                $o_temp2=new Wechat_Base_User_Info_Project();
                 $o_temp2->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) ); 
                 if ($o_temp2->getAllCount()>0)
                 echo($o_temp2->getAllCount());

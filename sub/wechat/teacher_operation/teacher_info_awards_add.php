@@ -42,15 +42,30 @@ require_once '../header_upload_images.php';
                 </div>
             </div>
         </div>
+        <div class="weui-cells__title">种类</div>
+		<div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                	<select class="weui-select" id="Vcl_Category" name="Vcl_Category">
+                    	<option value="">请选择</option>
+                    	<option value="荣誉类">荣誉类</option>
+                    	<option value="评比类">评比类</option>
+	                </select>
+                </div>
+            </div>
+        </div>
         <div class="weui-cells__title">类别</div>
 		<div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
                 	<select class="weui-select" id="Vcl_Type" name="Vcl_Type">
                     	<option value="">请选择</option>
-                    	<option value="科学技术进步奖">科学技术进步奖</option>
-                    	<option value="发明奖">发明奖</option>
-                    	<option value="自然科学奖">自然科学奖</option>
+                    	<option value="评优评先">评优评先</option>
+                    	<option value="论文评选">论文评选</option>
+                    	<option value="课件评选">课件评选</option>
+                    	<option value="玩教具评选">玩教具评选</option>
+                    	<option value="实操评选">实操评选</option>
+                    	<option value="其他">其他</option>
 	                </select>
                 </div>
             </div>
@@ -151,6 +166,13 @@ function add_submit()
 		{
 			Dialog_Message("[项目名称] 不能为空！",function(){
 				document.getElementById("Vcl_EndDate").focus()
+			})		
+			return
+		}
+		if ($('#Vcl_Category').val()=='')
+		{
+			Dialog_Message("请选择 [种类] ！",function(){
+				document.getElementById("Vcl_Category").focus()
 			})		
 			return
 		}

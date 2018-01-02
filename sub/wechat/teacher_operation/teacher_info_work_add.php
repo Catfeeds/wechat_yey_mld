@@ -1,7 +1,7 @@
 <?php
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
-$s_title='添加工作业绩';
+$s_title='添加工作经历';
 $s_creatives='吴丽娟';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
@@ -44,6 +44,14 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 </div>
             </div>
         </div>
+        <div class="weui-cells__title">工作岗位</div>
+		<div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <input id="Vcl_Job" name="Vcl_Job" class="weui-input" type="text" placeholder="必填">
+                </div>
+            </div>
+        </div>
         <div class="weui-cells__title">工作内容</div>
 		<div class="weui-cells">
             <div class="weui-cell">
@@ -60,14 +68,20 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 </div>
             </div>
         </div>
-		<div class="weui-cells__title">业绩类型</div>
+		<div class="weui-cells__title">工作类别</div>
 		<div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <input id="Vcl_Type" name="Vcl_Type" class="weui-input" type="text" placeholder="必填">
+                	<select class="weui-select" id="Vcl_Type" name="Vcl_Type">
+                    	<option value="">请选择</option>
+                    	<option value="管理">管理</option>
+                    	<option value="专技">专技</option>
+                    	<option value="工勤">工勤</option>
+                    	<option value="其他">其他</option>
+	                </select>
                 </div>
             </div>
-        </div>
+        </div>        
 		</form>
         <div style="padding:15px;">
         	<a class="weui-btn weui-btn_primary" onclick="add_submit()">提交</a>
@@ -94,6 +108,13 @@ function add_submit()
 			})		
 			return
 		}
+		if ($('#Vcl_Job').val()=='')
+		{
+			Dialog_Message("[工作岗位] 不能为空！",function(){
+				document.getElementById("Vcl_Contant").focus()
+			})		
+			return
+		}
 		if ($('#Vcl_Contant').val()=='')
 		{
 			Dialog_Message("[工作内容] 不能为空！",function(){
@@ -110,7 +131,7 @@ function add_submit()
 		}
 		if ($('#Vcl_Type').val()=='')
 		{
-			Dialog_Message("[业绩类型] 不能为空！",function(){
+			Dialog_Message("请选择 [业绩类型] ！",function(){
 				document.getElementById("Vcl_Type").focus()
 			})		
 			return

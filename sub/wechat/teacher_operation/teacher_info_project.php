@@ -1,7 +1,7 @@
 <?php
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
-$s_title='工作经历';
+$s_title='课题立项';
 $s_creatives='吴丽娟';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
@@ -33,50 +33,62 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
 <div class="page">
 	<div class="page__bd">
 		<?php 
-		$o_temp2=new Wechat_Base_User_Info_Work();
+		$o_temp2=new Wechat_Base_User_Info_Project();
 		$o_temp2->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) ); 
 		$o_temp2->PushOrder ( array ('CreateDate', 'A') );
         for($i=0;$i<$o_temp2->getAllCount();$i++)
         {
         	?>
         	<div class="weui-cells__title">添加日期：<?php echo($o_temp2->getCreateDate($i))?></div>
-			<div class="weui-cells">
+			<div class="weui-cells weui-form-preview">
 	            <div class="weui-cell">
 	                <div class="weui-cell__bd">
-	                    <p>开始时间</p>
+	                    <p>课题名称</p>
 	                </div>
-	                <div class="weui-cell__ft"><?php echo($o_temp2->getStartDate($i))?></div>
+	                <div class="weui-cell__ft"><?php echo($o_temp2->getName($i))?></div>
 	            </div>
 	            <div class="weui-cell">
 	                <div class="weui-cell__bd">
-	                    <p>结束时间</p>
+	                    <p>课题级别</p>
 	                </div>
-	                <div class="weui-cell__ft"><?php echo($o_temp2->getEndDate($i))?></div>
+	                <div class="weui-cell__ft"><?php echo($o_temp2->getLevel($i))?></div>
 	            </div>
 	            <div class="weui-cell">
 	                <div class="weui-cell__bd">
-	                    <p>工作岗位</p>
-	                </div>
-	                <div class="weui-cell__ft"><?php echo($o_temp2->getJob($i))?></div>
-	            </div>
-	            <div class="weui-cell">
-	                <div class="weui-cell__bd">
-	                    <p>工作内容</p>
-	                </div>
-	                <div class="weui-cell__ft"><?php echo($o_temp2->getContent($i))?></div>
-	            </div>
-	            <div class="weui-cell">
-	                <div class="weui-cell__bd">
-	                    <p>本人角色</p>
+	                    <p>参与角色</p>
 	                </div>
 	                <div class="weui-cell__ft"><?php echo($o_temp2->getRole($i))?></div>
 	            </div>
 	            <div class="weui-cell">
 	                <div class="weui-cell__bd">
-	                    <p>工作类别</p>
+	                    <p>开题时间</p>
 	                </div>
-	                <div class="weui-cell__ft"><?php echo($o_temp2->getType($i))?></div>
+	                <div class="weui-cell__ft"><?php echo($o_temp2->getStartDate($i))?></div>
 	            </div>
+	            <div class="weui-cell">
+	                <div class="weui-cell__bd">
+	                    <p>结题时间</p>
+	                </div>
+	                <div class="weui-cell__ft"><?php 
+	                if($o_temp2->getEndDate($i)!='0000-00-00')
+	                echo($o_temp2->getEndDate($i))?></div>
+	            </div>
+	            <div class="weui-cell">
+	                <div class="weui-cell__bd">
+	                    <p>课题成果</p>
+	                </div>
+	                <div class="weui-cell__ft"><?php echo($o_temp2->getResult($i))?></div>
+	            </div>
+	            <?php 
+	            if ($o_temp2->getStartDate($i)=='0000-00-00' || $o_temp2->getResult($i)=='')
+	            {
+	            	?>
+	            <div class="weui-form-preview__ft">
+	                <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="teacher_info_project_modify.php?id=<?php echo($o_temp2->getId($i));?>">完善信息</a>
+	            </div>
+	            	<?php
+	            }
+	            ?>	            
 	        </div>
         	<?php
         }
@@ -84,7 +96,7 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
         echo($s_none);
 		?>		
         <div style="padding:15px;">
-        	<a class="weui-btn weui-btn_primary" onclick="location='teacher_info_work_add.php'">+ 添加新记录</a>
+        	<a class="weui-btn weui-btn_primary" onclick="location='teacher_info_project_add.php'">+ 添加新记录</a>
 	    	<a class="weui-btn weui-btn_default" onclick="location='teacher_info.php'">返回</a>
 	    </div>
     </div>

@@ -1075,6 +1075,7 @@ class Operate extends Bn_Basic {
  		$o_table->setUid($n_uid);
  		$o_table->setStartDate($this->getPost('StartDate'));
  		$o_table->setEndDate($this->getPost('EndDate'));
+ 		$o_table->setJob($this->getPost('Job'));
  		$o_table->setContent($this->getPost('Content'));
  		$o_table->setType($this->getPost('Type'));
  		$o_table->setRole($this->getPost('Role'));
@@ -1170,6 +1171,7 @@ class Operate extends Bn_Basic {
  		$o_table->setUid($n_uid);
  		$o_table->setDate($this->getPost('Date'));
  		$o_table->setName($this->getPost('Name'));
+ 		$o_table->setCategory($this->getPost('Category'));
  		$o_table->setType($this->getPost('Type'));
  		$o_table->setGrade($this->getPost('Grade'));
  		$o_table->setLevel($this->getPost('Level'));
@@ -1191,6 +1193,47 @@ class Operate extends Bn_Basic {
  		$o_table->setCreateDate($this->GetDateNow());
  		$o_table->Save();
  		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_awards.php?time='.time().'"');
+ 	}
+	public function TeacherInfoProjectAdd($n_uid)//微信端事件
+ 	{
+ 		if (! ($n_uid > 0)) {
+ 			$this->setReturn('parent.goto_login()');
+ 		}
+ 		sleep(1);
+ 		$o_table=new Wechat_Base_User_Info_Project();
+ 		$o_table->setUid($n_uid);
+ 		$o_table->setName($this->getPost('Name'));
+ 		$o_table->setLevel($this->getPost('Level'));
+ 		$o_table->setRole($this->getPost('Role'));
+ 		$o_table->setStartDate($this->getPost('StartDate'));
+ 		$o_table->setEndDate($this->getPost('EndDate'));
+ 		$o_table->setResult($this->getPost('Result'));
+ 		$o_table->setCreateDate($this->GetDateNow());
+ 		$o_table->Save();
+ 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_project.php?time='.time().'"');
+ 	}
+	public function TeacherInfoProjectModify($n_uid)//微信端事件
+ 	{
+ 		if (! ($n_uid > 0)) {
+ 			$this->setReturn('parent.goto_login()');
+ 		}
+ 		sleep(1);
+ 		$o_table=new Wechat_Base_User_Info_Project($this->getPost('Id'));
+ 		if ($o_table->getUid()!=$n_uid)
+ 		{
+ 			//不是本人的，需要退出
+ 			$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_project.php?time='.time().'"');
+ 		}
+ 		if ($o_table->getEndDate()!='0000-00-00' && $o_table->getResult()!='')
+ 		{
+ 			//已经完善过信息的，需要退出
+ 			$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_project.php?time='.time().'"');
+ 		}
+ 		$o_table->setEndDate($this->getPost('EndDate'));
+ 		$o_table->setResult($this->getPost('Result'));
+ 		$o_table->setCreateDate($this->GetDateNow());
+ 		$o_table->Save();
+ 		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_project.php?time='.time().'"');
  	}
 }
 class MyDB extends SQLite3

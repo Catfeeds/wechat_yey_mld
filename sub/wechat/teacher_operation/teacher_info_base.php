@@ -74,6 +74,30 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 <div class="weui-cell__hd"><label class="weui-label"><?php echo($o_teacher_info_base->getJoinWorkDate())?></label></div>
             </div>
         </div>
+        <div class="weui-cells__title">出生地</div>
+		<div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label"><?php echo($o_teacher_info_base->getBirthplace())?></label></div>
+            </div>
+        </div>
+        <div class="weui-cells__title">籍贯</div>
+		<div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label"><?php echo($o_teacher_info_base->getative())?></label></div>
+            </div>
+        </div>
+        <div class="weui-cells__title">人员进入形式</div>
+		<div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label"><?php echo($o_teacher_info_base->getInType())?></label></div>
+            </div>
+        </div>
+        <div class="weui-cells__title">进入本单位时间</div>
+		<div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label"><?php echo($o_teacher_info_base->getInTime())?></label></div>
+            </div>
+        </div>
         <div style="padding:15px;">
 	    	<a class="weui-btn weui-btn_default" onclick="history.go(-1)">返回</a>
 	    </div>
