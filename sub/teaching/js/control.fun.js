@@ -5,6 +5,12 @@ $(function(){
 	    	search_for_wei_teach()   
 	    }  
 	}); 
+	$('#Vcl_KeyH5').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_h5()   
+	    }  
+	}); 
 	$('ins').click(function(){
 		//先获得自己是否选中
 		var parent=this.parentNode
@@ -64,6 +70,18 @@ function search_for_wei_teach()
 	var key=$.cookie(fun+"Key");
 	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value),'');    
 }
+function search_for_h5()
+{
+	var fun='H5Table';
+	var id='Vcl_KeyH5'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value),'');    
+}
 function wei_teach_add_submit()
 {
 	if (document.getElementById("Vcl_Title").value == "") {
@@ -79,6 +97,19 @@ function wei_teach_add_submit()
 		return
 	}	
 	document.getElementById ('Vcl_Comment').value=encodeURIComponent(ue.getContent())
+	document.getElementById('submit_form').submit();
+	loading_show();
+}
+function h5_add_submit()
+{
+	if (document.getElementById("Vcl_Title").value == "") {
+		dialog_message("标题不能为空！")
+		return
+	}
+	if (document.getElementById("Vcl_Video").value == "") {
+		dialog_message("H5页面地址不能为空！")
+		return
+	}	
 	document.getElementById('submit_form').submit();
 	loading_show();
 }
@@ -98,13 +129,40 @@ function wei_teach_delete(id) {
         })
     })
 }
+function h5_delete(id) {
+    dialog_confirm('真的要删除吗？删除后不能恢复，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=H5Delete'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('H5Table')
+        	}        	
+        })
+    })
+}
 function wei_teach_review(id)
 {
 	dialog_message('请使用微信扫描下方二维码进行预览：<br/><br/><img style="width:50%;margin-left:25%" src="wei_teach_review_qrcode.php?id='+id+'"/>');
 }
+function h5_review(id)
+{
+	dialog_message('请使用微信扫描下方二维码进行预览：<br/><br/><img style="width:50%;margin-left:25%" src="h5_review_qrcode.php?id='+id+'"/>');
+}
 function wei_teach_release()
 {	
 	dialog_confirm('确认要发布微教学吗！<br/><br/>确认后：<br/>1. 此微教学将不能被修改。<br/>2. 所有选中班级的幼儿家长将收到微信提醒。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
+		loading_show();
+		$('#submit_form').submit();	
+	})
+}
+function h5_release()
+{	
+	dialog_confirm('确认要发布吗！<br/><br/>确认后：<br/>1. 将不能被修改。<br/>2. 所有选中班级的幼儿家长将收到微信提醒。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
 		loading_show();
 		$('#submit_form').submit();	
 	})

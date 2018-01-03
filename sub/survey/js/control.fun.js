@@ -17,6 +17,24 @@ $(function(){
 	    	search_for_parent_survey_manage_answered()   
 	    }  
 	}); 
+	$('#Vcl_KeyTeacherSurveyManage').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_teacher_survey_manage()   
+	    }  
+	}); 
+	$('#Vcl_KeyTeacherSurveyManageProgress').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_teacher_survey_manage_progress()   
+	    }  
+	}); 
+	$('#Vcl_KeyTeacherSurveyManageAnswered').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_teacher_survey_manage_answered()   
+	    }  
+	}); 
 	$('ins').click(function(){
 		//先获得自己是否选中
 		var parent=this.parentNode
@@ -44,10 +62,34 @@ function search_for_parent_survey_manage_progress()
 	var key=$.cookie(fun+"Key");
 	table_load(fun,item,sort,1,key,encodeURIComponent(document.getElementById(id).value));    
 }
+function search_for_teacher_survey_manage_progress()
+{
+	var fun='TeacherSurveyManageProgress';
+	var id='Vcl_KeyTeacherSurveyManageProgress'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+$.cookie(fun+"Key")+"OtherKey",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,key,encodeURIComponent(document.getElementById(id).value));    
+}
 function search_for_parent_survey_manage_answered()
 {
 	var fun='ParentSurveyManageAnswered';
 	var id='Vcl_KeyParentSurveyManageAnswered'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+$.cookie(fun+"Key")+"OtherKey",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,key,encodeURIComponent(document.getElementById(id).value));    
+}
+function search_for_teacher_survey_manage_answered()
+{
+	var fun='TeacherSurveyManageAnswered';
+	var id='Vcl_KeyTeacherSurveyManageAnswered'
 	$('.small_loading').fadeIn(100);
 	$.cookie(fun+"Page",1);
 	$.cookie(fun+$.cookie(fun+"Key")+"OtherKey",document.getElementById(id).value);
@@ -100,6 +142,18 @@ function search_for_parent_survey_manage()
 	var key=$.cookie(fun+"Key");
 	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value),'');    
 }
+function search_for_teacher_survey_manage()
+{
+	var fun='TeacherSurveyManage';
+	var id='Vcl_KeyTeacherSurveyManage'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value),'');    
+}
 function parent_survey_manage_delete(id) {
     dialog_confirm('真的要删除这个问卷吗？删除后不能恢复，请谨慎操作。',function(){
     	$('.small_loading').fadeIn(100);
@@ -112,6 +166,22 @@ function parent_survey_manage_delete(id) {
         		dialog_error(json.text)
         	}else{
         		table_refresh('ParentSurveyManage')
+        	}        	
+        })
+    })
+}
+function teacher_survey_manage_delete(id) {
+    dialog_confirm('真的要删除这个问卷吗？删除后不能恢复，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=TeacherSurveyManageDelete'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('TeacherSurveyManage')
         	}        	
         })
     })
@@ -132,6 +202,22 @@ function parent_survey_manage_end(id) {
         })
     })
 }
+function teacher_survey_manage_end(id) {
+    dialog_confirm('确认要结束这个问卷吗？<br/><br/>确认后：<br/>1. 所有未进行问卷的对象将不能再答题。<br/>2. 结束后将无法再次开启。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=TeacherSurveyManageEnd'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('TeacherSurveyManage')
+        	}        	
+        })
+    })
+}
 function parent_survey_manage_question_delete(id) {
     dialog_confirm('真的要删除这个问题吗？删除后不能恢复，请谨慎操作。',function(){
     	$('.small_loading').fadeIn(100);
@@ -144,6 +230,22 @@ function parent_survey_manage_question_delete(id) {
         		dialog_error(json.text)
         	}else{
         		table_refresh('ParentSurveyManageQuestion')
+        	}        	
+        })
+    })
+}
+function teacher_survey_manage_question_delete(id) {
+    dialog_confirm('真的要删除这个问题吗？删除后不能恢复，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=TeacherSurveyManageQuestionDelete'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('TeacherSurveyManageQuestion')
         	}        	
         })
     })
@@ -164,6 +266,22 @@ function parent_survey_manage_copy(id) {
         })
     })
 }
+function teacher_survey_manage_copy(id) {
+    dialog_confirm('确认要复制这个问卷吗？<br/><br/>确认后：<br/>1. 将创建一个未发布的问卷副本。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=TeacherSurveyManageCopy'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('TeacherSurveyManage')
+        	}        	
+        })
+    })
+}
 function parent_survey_manage_modify()
 {	
     var val = $('#Vcl_Title').val();
@@ -174,7 +292,42 @@ function parent_survey_manage_modify()
 	loading_show();
 	$('#submit_form').submit();
 }
+function teacher_survey_manage_modify()
+{	
+    var val = $('#Vcl_Title').val();
+    if (val.length == 0) {
+        dialog_message('对不起，问卷标题不能为空！')
+        return
+    }
+	loading_show();
+	$('#submit_form').submit();
+}
 function parent_survey_manage_question_modify()
+{	
+    var val = $('#Vcl_Question').val();
+    if (val.length == 0) {
+        dialog_message('对不起，题目不能为空！')
+        return
+    }
+	if ($('#Vcl_Type').val()=='3' || $('#Vcl_Type').val()=='4')
+	{
+		
+	}else{
+		var val = $('#Vcl_Option_1').val();
+	    if (val.length == 0) {
+	        dialog_message('对不起，选项A不能为空！')
+	        return
+	    }
+	    var val = $('#Vcl_Option_2').val();
+	    if (val.length == 0) {
+	    	dialog_message('对不起，选项B不能为空！')
+	        return
+	    }
+	}    
+	loading_show();
+	$('#submit_form').submit();
+}
+function teacher_survey_manage_question_modify()
 {	
     var val = $('#Vcl_Question').val();
     if (val.length == 0) {
@@ -216,6 +369,23 @@ function parent_survey_manage_release()
 		$('#submit_form').submit();	
 	})
 }
+function teacher_survey_manage_release()
+{	
+    var val = $('#Vcl_First').val();
+    if (val.length == 0) {
+        dialog_message('对不起，微信提醒标题不能为空！')
+        return
+    }
+	var val = $('#Vcl_Remark').val();
+    if (val.length == 0) {
+        dialog_message('对不起，微信提醒内容不能为空！')
+        return
+    }
+	dialog_confirm('确认要发布问卷吗！<br/><br/>确认后：<br/>1. 所有问卷对象将陆续收到微信问卷提醒。<br/>2. 此问卷将不能被修改。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
+		loading_show();
+		$('#submit_form').submit();	
+	})
+}
 function parent_survey_manage_get_progress(id)
 {
 	//window.alert(id);
@@ -224,10 +394,35 @@ function parent_survey_manage_get_progress(id)
 		$('#status').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+json.status);
     })  
 }
+function teacher_survey_manage_get_progress(id)
+{
+	//window.alert(id);
+    var data='Ajax_FunName=TeacherSurveyManageGetProgress&id='+id;//后台方法
+    $.getJSON("include/bn_submit.switch.php",data,function (json){
+		$('#status').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+json.status);
+    })  
+}
 function parent_survey_manage_remember(id) {
     dialog_confirm('确认要发送再次提醒吗！<br/><br/>确认后：<br/>1. 所有未完成问卷的幼儿家长将陆续收到微信问卷提醒。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
     	$('.small_loading').fadeIn(100);
     	var data = 'Ajax_FunName=ParentSurveyManageRemember'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		$('.small_loading').fadeOut(100);
+        		dialog_success(json.text)
+        	}        	
+        })
+    })
+}
+function teacher_survey_manage_remember(id) {
+    dialog_confirm('确认要发送再次提醒吗！<br/><br/>确认后：<br/>1. 所有未完成问卷的教师将陆续收到微信问卷提醒。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=TeacherSurveyManageRemember'; //后台方法
         data = data + '&id=' + id;
         $.getJSON("include/bn_submit.switch.php", data, function (json) {
         	if (json.success==0)
