@@ -21,7 +21,7 @@ CREATE TABLE `survey_teacher_answers` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
   `survey_id` mediumint(8) unsigned NOT NULL COMMENT '问卷编号',
   `user_id` mediumint(8) unsigned NOT NULL COMMENT '微信用户id',
-  `student_id` mediumint(8) unsigned NOT NULL COMMENT '幼儿编号',
+  `uid` mediumint(8) unsigned NOT NULL COMMENT '教师编号',
   `name` char(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '学生姓名',
   `sex` char(5) COLLATE utf8_unicode_ci NOT NULL COMMENT '性别',
   `id_type` char(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '证件类型',
@@ -118,6 +118,8 @@ CREATE TABLE `teaching_h5` (
 --teaching_h5_view--
 select `teaching_h5`.`id` AS `id`,`teaching_h5`.`owner_id` AS `owner_id`,`wechat_base_user_info`.`name` AS `owner_name`,`teaching_h5`.`create_date` AS `create_date`,`teaching_h5`.`release_date` AS `release_date`,`teaching_h5`.`state` AS `state`,`teaching_h5`.`title` AS `title`,`teaching_h5`.`comment` AS `comment`,`teaching_h5`.`video` AS `video`,`teaching_h5`.`icon` AS `icon`,`teaching_h5`.`target` AS `target`,`teaching_h5`.`target_name` AS `target_name`,`teaching_h5`.`visitor_num` AS `visitor_num` from (`teaching_h5` join `wechat_base_user_info` on((`teaching_h5`.`owner_id` = `wechat_base_user_info`.`uid`)));
 
+--wechat_base_user_role_wechat_view--
+select `wechat_base_user_role`.`uid` AS `uid`,`wechat_base_user_info`.`name` AS `name`,`wechat_base_user_role`.`dept_id` AS `dept_id`,`wechat_base_user_role`.`role_id` AS `role_id`,`wechat_base_user_role`.`sec_role_id_1` AS `sec_role_id_1`,`wechat_base_user_role`.`sec_role_id_2` AS `sec_role_id_2`,`wechat_base_user_role`.`sec_role_id_3` AS `sec_role_id_3`,`wechat_base_user_role`.`sec_role_id_4` AS `sec_role_id_4`,`wechat_base_user_role`.`sec_role_id_5` AS `sec_role_id_5`,`wechat_base_user_wechat`.`wechat_id` AS `user_id`,`wechat_wx_user_info`.`photo` AS `photo`,`wechat_wx_user_info`.`nickname` AS `nickname`,`wechat_wx_user_info`.`sex` AS `sex`,`wechat_wx_user_info`.`openid` AS `openid`,`wechat_wx_user_info`.`group_id` AS `group_id`,`wechat_wx_user_info`.`session_id` AS `session_id` from (((`wechat_base_user_wechat` join `wechat_base_user_role` on((`wechat_base_user_role`.`uid` = `wechat_base_user_wechat`.`uid`))) join `wechat_wx_user_info` on((`wechat_base_user_wechat`.`wechat_id` = `wechat_wx_user_info`.`id`))) join `wechat_base_user_info` on((`wechat_base_user_info`.`uid` = `wechat_base_user_role`.`uid`)));
 
 INSERT INTO `wechat_yey_mld`.`wechat_base_module` (`module_id`, `name`, `module`, `explain`, `icon_id`, `path`, `parent_module_id`, `mini_icon_id`, `wait_read_table`) VALUES ('120402', '教师问卷', '204_02_0', '', '1', 'sub/survey/teacher_survey_manage.php', '120400', '1', '');
 

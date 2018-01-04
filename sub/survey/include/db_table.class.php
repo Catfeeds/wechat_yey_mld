@@ -289,7 +289,7 @@ class Survey_Teacher_Answers extends CRUD
     protected $Id;
     protected $SurveyId;
     protected $UserId;
-    protected $StudentId;
+    protected $Uid;
     protected $Name;
     protected $Sex;
     protected $IdType;
@@ -362,7 +362,7 @@ class Survey_Teacher_Answers extends CRUD
                     'id' => 'Id',
                     'survey_id' => 'SurveyId',
                     'user_id' => 'UserId',
-                    'student_id' => 'StudentId',
+                    'uid' => 'Uid',
                     'name' => 'Name',
                     'sex' => 'Sex',
                     'id_type' => 'IdType',

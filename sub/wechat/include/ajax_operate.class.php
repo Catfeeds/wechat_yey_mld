@@ -1556,5 +1556,128 @@ class Operate extends Bn_Basic {
 		}		
 		$this->setReturn ( 'parent.location.reload();' );
 	}
+	public function TeacherSurveyAnswer($n_uid)
+	{
+		if ($n_uid>0)
+		{
+			
+		}else{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
+		}
+		require_once RELATIVITY_PATH . 'sub/survey/include/db_table.class.php';
+		$o_survey=new Survey_Teacher($this->getPost ( 'Id' ));
+		//判断用户是否已经做过此问卷
+		$o_answer=new Survey_Teacher_Answers();
+		$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) ); 
+		$o_answer->PushWhere ( array ('&&', 'UserId', '=',$n_uid) );
+		$o_answer->PushWhere ( array ('&&', 'Uid', '=',$this->getPost ( 'Uid' )) );
+		if ($o_answer->getAllCount()>0)
+		{
+			//已经答题，跳转到完成页面
+			$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."survey_answer_completed.php';" );
+		}
+		//检查问卷状态
+		if($o_survey->getState()=='2')
+		{
+			//跳转到结束页面
+			$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."survey_answer_end.php';" );
+		}
+		if($o_survey->getState()!='1')
+		{
+			//非法访问
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
+		}
+		//检查微信用户是否有权限访问此问卷
+		$o_stu=new Base_User_Role_Wechat_View();
+		$o_stu->PushWhere ( array ('&&', 'UserId', '=',$n_uid) ); 
+		$o_stu->PushWhere ( array ('&&', 'Uid', '=',$this->getPost ( 'Uid' )) );
+		$o_stu->getAllCount();
+		$o_role=new Survey_Teacher();
+		$o_role->PushWhere ( array ('||', 'Id', '=',$o_survey->getId()) ); 
+		$o_role->PushWhere ( array ('&&', 'TargetList', 'like','%"'.$o_stu->getRoleId(0).'"%') );
+		$o_role->PushWhere ( array ('||', 'Id', '=',$o_survey->getId()) ); 
+		$o_role->PushWhere ( array ('&&', 'TargetList', 'like','%"'.$o_stu->getSecRoleId1(0).'"%') );
+		$o_role->PushWhere ( array ('||', 'Id', '=',$o_survey->getId()) ); 
+		$o_role->PushWhere ( array ('&&', 'TargetList', 'like','%"'.$o_stu->getSecRoleId2(0).'"%') );
+		$o_role->PushWhere ( array ('||', 'Id', '=',$o_survey->getId()) ); 
+		$o_role->PushWhere ( array ('&&', 'TargetList', 'like','%"'.$o_stu->getSecRoleId3(0).'"%') );
+		$o_role->PushWhere ( array ('||', 'Id', '=',$o_survey->getId()) ); 
+		$o_role->PushWhere ( array ('&&', 'TargetList', 'like','%"'.$o_stu->getSecRoleId4(0).'"%') );
+		$o_role->PushWhere ( array ('||', 'Id', '=',$o_survey->getId()) ); 
+		$o_role->PushWhere ( array ('&&', 'TargetList', 'like','%"'.$o_stu->getSecRoleId5(0).'"%') );
+		if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1002]\');' );
+			exit(0);
+		}
+		//开始记录核验选项
+	    $o_question=new Survey_Teacher_Questions();
+	    $o_question->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) ); 
+	    $o_question->PushOrder ( array ('Number','A') );   
+	    $a_question_result=array();
+	    for($i=0;$i<$o_question->getAllCount();$i++)
+	    {
+	    	if ($o_question->getType($i)==1)
+	    	{
+	    		//单选
+	    		if ($this->getPost('Question_'.$o_question->getId($i))=='')
+	    		{
+	    			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'“第'.$o_question->getNumber($i).'题”未作答！\');' );
+	    		}
+	    		array_push($a_question_result,$this->getPost('Question_'.$o_question->getId($i)));
+	    	}elseif ($o_question->getType($i)==2){
+	    		//多选
+	    		$a_temp=array();
+	    		$o_option=new Survey_Teacher_Options();
+	    		$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId($i)) ); 
+	    		$o_option->PushOrder ( array ('Number','A') ); 
+	    		for($j=0;$j<$o_option->getAllCount();$j++)
+	    		{
+	    			if ($this->getPost('Option_'.$o_option->getId($j))=='on')
+	    			{
+	    				array_push($a_temp, $o_option->getId($j));
+	    			}
+	    		}
+	    		if (count($a_temp)==0)
+	    		{
+	    			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'“第'.$o_question->getNumber($i).'题”未作答！\');' );
+	    		}
+	    		array_push($a_question_result,$a_temp);
+	    	}elseif ($o_question->getType($i)==3){
+	    		//简述
+	    		if ($this->getPost('Question_'.$o_question->getId($i))=='')
+	    		{
+	    			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'“第'.$o_question->getNumber($i).'题”未作答！\');' );
+	    		}
+	    		array_push($a_question_result,rawurlencode($this->getPost('Question_'.$o_question->getId($i))));
+	    	}else{
+	    		array_push($a_question_result,'');
+	    	}
+	    }
+		//开始保存至答案。
+		$o_answer=new Survey_Teacher_Answers();
+		$o_answer->setSurveyId($o_survey->getId());
+		$o_answer->setUserId($n_uid);
+		$o_answer->setUid($o_stu->getUid(0));
+		$o_answer->setName($o_stu->getName(0));
+		$o_answer->setSex('');
+		$o_answer->setIdType('');
+		$o_answer->setCardId('');
+		$o_answer->setClassName('');
+		$o_answer->setUserName('');
+		$o_answer->setDate($this->GetDateNow());
+		//根据循环结果，保存答案
+		$n_column=1;
+		for($i=0;$i<count($a_question_result);$i++)
+		{
+			eval('$o_answer->setAnswer'.$n_column.'(json_encode($a_question_result[$i]));');
+			$n_column++;
+		}
+		if ($o_answer->Save()==false)
+		{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，服务器忙，请重试！\');' );
+		}
+		$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."survey_answer_completed.php?id=".$o_survey->getId()."';" );
+	}
 }
 ?>

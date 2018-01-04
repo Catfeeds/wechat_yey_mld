@@ -924,8 +924,8 @@ class Operate extends Bn_Basic {
 		}
 		sleep(1);
 		$o_user = new Single_User ( $n_uid );
-		if (!$o_user->ValidModule ( 120401 ))return;//如果没有权限，不返回任何值
-		$o_survey=new Survey($this->getPost('id'));
+		if (!$o_user->ValidModule ( 120402 ))return;//如果没有权限，不返回任何值
+		$o_survey=new Survey_Teacher($this->getPost('id'));
 		$a_target=json_decode($o_survey->getTargetList());
 		if ($o_survey->getState()=='1')
 		{
@@ -959,11 +959,11 @@ class Operate extends Bn_Basic {
 					$o_msg->setSend(0);
 					$o_msg->setFirst($o_survey->getFirst().'
 		
-		通知类型：问卷调查
-		幼儿姓名：'.$o_stu->getName($j));
+通知类型：问卷调查
+幼儿姓名：'.$o_stu->getName($j));
 					$o_msg->setKeyword1($o_stu->getClassName($j));
 					$s_teacher_name=$o_user->getName();
-					$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+					$o_msg->setKeyword2($s_teacher_name.'老师');
 					$o_msg->setKeyword3($this->GetDate());
 					$o_msg->setKeyword4($o_survey->getRemark());
 					$o_msg->setKeyword5('');
@@ -1445,6 +1445,557 @@ class Operate extends Bn_Basic {
 			'text' =>''
 		);
 		echo (json_encode ( $a_general ));
+	}
+	public function TeacherSurveyManageRelease($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120402 ))return;//如果没有权限，不返回任何值
+		//检查问卷对象是否被选择
+		$a_target=array();
+		$s_target_name='';
+		$o_class=new Base_Role();
+		$o_class->PushOrder ( array ('Name','A') );
+		$n_count=$o_class->getAllCount();
+		for($i=0;$i<$n_count;$i++)
+		{
+			if ($this->getPost('Target_'.$o_class->getRoleId($i))=='on')
+			{
+				array_push($a_target, $o_class->getRoleId($i));
+				$s_target_name.=$o_class->getName($i).';';
+			}			
+		}
+		if ($s_target_name=='')
+		{
+			$this->setReturn ( 'parent.form_return("dialog_message(\'对不起，请选择问卷对象！\')");' );
+		}
+		//修正文字发送对象
+		if($n_count==count($a_target))
+		{
+			$s_target_name='全体教职工;';
+		}
+		//保存数据到问卷信息
+		$o_survey=new Survey_Teacher($this->getPost('Id'));
+		if($o_survey->getState()=='0')
+		{
+			//只有未发布的问卷才能往下进行
+			$o_survey->setReleaseDate($this->GetDateNow());
+			$o_survey->setTargetName(substr($s_target_name,0,strlen($s_target_name)-1));
+			$o_survey->setTargetList(json_encode($a_target));
+			$o_survey->setFirst($this->getPost('First'));
+			$o_survey->setRemark($this->getPost('Remark'));
+			$o_survey->setState(1);
+			$o_survey->Save();
+			//根据问卷对象循环发送通知
+			$o_system_setup=new Base_Setup(1);
+			require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+			for($i=0;$i<count($a_target);$i++)
+			{
+				//获取用户列表
+				$o_stu=new Base_User_Role_Wechat_View();
+				$o_stu->PushWhere ( array ('||', 'RoleId', '=',$a_target[$i]) );
+				$o_stu->PushWhere ( array ('||', 'SecRoleId1', '=',$a_target[$i]) );
+				$o_stu->PushWhere ( array ('||', 'SecRoleId2', '=',$a_target[$i]) );
+				$o_stu->PushWhere ( array ('||', 'SecRoleId3', '=',$a_target[$i]) );
+				$o_stu->PushWhere ( array ('||', 'SecRoleId4', '=',$a_target[$i]) );
+				$o_stu->PushWhere ( array ('||', 'SecRoleId5', '=',$a_target[$i]) );
+				for($j=0;$j<$o_stu->getAllCount();$j++)
+				{
+					//添加消息队列
+					$o_msg=new Wechat_Wx_User_Reminder();
+					$o_msg->setUserId($o_stu->getUserId($j));
+					$o_msg->setCreateDate($this->GetDateNow());
+					$o_msg->setSendDate('0000-00-00');
+					$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+					$o_msg->setOpenId($o_stu->getOpenid($j));
+					$o_msg->setActivityId(0);
+					$o_msg->setSend(0);
+					$o_msg->setFirst($this->getPost('First').'
+		
+通知类型：问卷调查
+教师姓名：'.$o_stu->getName($j));
+					$o_msg->setKeyword1($o_stu->getClassName($j));
+					$s_teacher_name=$o_user->getName();
+					$o_msg->setKeyword2($s_teacher_name.'老师');
+					$o_msg->setKeyword3($this->GetDate());
+					$o_msg->setKeyword4($this->getPost('Remark'));
+					$o_msg->setKeyword5('');
+					$o_msg->setRemark('');
+					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/survey_answer.php?id='.$this->getPost('Id').'&uid='.$o_stu->getUid($j));
+					$o_msg->setKeywordSum(10);
+					$o_msg->Save();	
+				}			
+			}
+		}
+		$this->setReturn ( 'parent.form_return("dialog_success(\'发布问卷成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
+	}
+	public function TeacherSurveyManageEnd($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120402 ))return; //如果没有权限，不返回任何值
+		$o_survey = new Survey_Teacher ($this->getPost('id'));
+		if ($o_survey->getState()=='1')
+		{
+			//计算已答人数
+			$o_answer=new Survey_Teacher_Answers();
+			$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
+			$o_survey->setCompletedSum($o_answer->getAllCount());
+			//计算未答人数
+			$a_target=json_decode($o_survey->getTargetList());
+			$o_table=new Base_User_Role_Wechat_View();
+			for($i=0;$i<count($a_target);$i++)
+			{
+				$o_table->PushWhere ( array ('||', 'RoleId', '=',$a_target[$i]) );
+				$o_table->PushWhere ( array ('||', 'SecRoleId1', '=',$a_target[$i]) );
+				$o_table->PushWhere ( array ('||', 'SecRoleId2', '=',$a_target[$i]) );
+				$o_table->PushWhere ( array ('||', 'SecRoleId3', '=',$a_target[$i]) );
+				$o_table->PushWhere ( array ('||', 'SecRoleId4', '=',$a_target[$i]) );
+				$o_table->PushWhere ( array ('||', 'SecRoleId5', '=',$a_target[$i]) );
+			}
+			$n_count = $o_table->getAllCount ();
+			$n_pending=0;
+			for($i = 0; $i < $n_count; $i ++) {
+				//判断是否完成问卷
+				$o_answer=new Survey_Teacher_Answers();
+				$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
+				$o_answer->PushWhere ( array ('&&', 'UserId', '=',$o_table->getUserId($i)) );
+				$o_answer->PushWhere ( array ('&&', 'Uid', '=',$o_table->getUid($i)) );
+				if ($o_answer->getAllCount()==0)
+				{
+					$n_pending++;
+				}
+			}
+			$o_survey->setPendingSum($n_pending);
+			$o_survey->setState(2);
+			$o_survey->setEndDate($this->GetDateNow());
+			$o_survey->Save();
+		}
+		$a_general = array (
+			'success' => 1,
+			'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
+	public function TeacherSurveyManageSummary($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120402 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Survey_Teacher_Questions(); 		
+		$s_id=$this->getPost('key');
+		$o_survey=new Survey_Teacher($s_id);
+		$o_user->PushWhere ( array ('&&', 'SurveyId', '=',$s_id) );
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		//计算答题总人数
+		$o_answer=new Survey_Teacher_Answers();
+		$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$s_id) );
+		$n_answer_sum=$o_answer->getAllCount();
+		$n_number=1;
+		for($i = 0; $i < $n_count; $i ++) {
+			$a_button = array ();
+			$s_type='';
+			$s_number='<span class="label label-success">'.$n_number.'</span>';
+			$s_question='&nbsp;&nbsp;&nbsp;&nbsp;'.$o_user->getQuestion( $i );
+			$s_option='<span class="glyphicon glyphicon-chevron-down"></span>';
+			if ($o_user->getType ( $i )==1)
+			$s_type='单选';
+			if ($o_user->getType ( $i )==2)
+			$s_type='多选';
+			if ($o_user->getType ( $i )==3)
+			{
+				$s_type='简述';
+				//统计简述的答题人数
+				$o_answer=new Survey_Teacher_Answers();
+				$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$s_id) );
+				$o_answer->PushWhere ( array ('&&', 'Answer'.$o_user->getNumber($i), '<>','') );
+				$s_option=$o_answer->getAllCount().' 人';
+				array_push ( $a_button, array ('详情', "location='teacher_survey_manage_summary_detail.php?id=".$o_user->getId($i)."'") );
+			}
+			if ($o_user->getType ( $i )==4)			
+			{
+				$s_type='子标题';
+				$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+				$s_question='<b style="font-size:14px;">'.$o_user->getQuestion( $i ).'</b>';
+				$s_number='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+				$n_number--;	
+			}		
+			array_push ($a_row, array (
+				$s_number,
+				$s_question,
+				$s_type,
+				$s_option,
+				$a_button
+			));
+			//循环读取选项
+			$o_option=new Survey_Teacher_Options();
+			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
+			$o_option->PushOrder ( array ('Id','A') );
+			for($j=0;$j<$o_option->getAllCount();$j++)
+			{
+				$a_button = array ();
+				$o_answer=new Survey_Teacher_Answers();
+				$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$s_id) );
+				$o_answer->PushWhere ( array ('&&', 'Answer'.$o_user->getNumber($i), 'like','%"'.$o_option->getId($j).'"%') );
+				$n_people=$o_answer->getAllCount();
+				$n_rate=round(($n_people/$n_answer_sum)*1000)/10;//结果*1000取整再除以10
+				if($n_rate>0 && $o_survey->getIsAnonymity()==0)
+				{
+					//如果不是匿名，那么显示人群
+					array_push ( $a_button, array ('人群', "location='teacher_survey_manage_summary_people.php?id=".$o_option->getId($j)."'") );
+				}
+				array_push ($a_row, array (
+					'',
+					'',
+					$n_people.'人 ('.$n_rate.'%)',
+					$o_option->getNumber($j).'. '.$o_option->getOption($j),
+					$a_button
+				));
+			}
+			$n_number++;
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'题号', 'Number', 70, 0);
+		$a_title=$this->setTableTitle($a_title,'问题', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'类型', '', 120, 0);
+		$a_title=$this->setTableTitle($a_title,'选项', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 80,0);
+		$this->SendJsonResultForTable($n_allcount,'TeacherSurveyManageSummary', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function TeacherSurveyManageGetProgress($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User($n_uid);
+		if (!$o_user->ValidModule ( 120402 ))return;//如果没有权限，不返回任何值
+		$o_survey = new Survey_Teacher($this->getPost('id'));
+		//获得target的班级list
+		//如果是已结束问卷，那么直接读取结果
+		if($o_survey->getState()==2)
+		{
+			$n_count=$o_survey->getCompletedSum()+$o_survey->getPendingSum();
+			$n_completed=$o_survey->getCompletedSum();
+		}else{
+			$a_target=json_decode($o_survey->getTargetList());
+			$o_table=new Base_User_Role_Wechat_View();
+			for($i=0;$i<count($a_target);$i++)
+			{
+				$o_table->PushWhere ( array ('||', 'RoleId', '=',$a_target[$i]) );
+				$o_table->PushWhere ( array ('||', 'SecRoleId1', '=',$a_target[$i]) );
+				$o_table->PushWhere ( array ('||', 'SecRoleId2', '=',$a_target[$i]) );
+				$o_table->PushWhere ( array ('||', 'SecRoleId3', '=',$a_target[$i]) );
+				$o_table->PushWhere ( array ('||', 'SecRoleId4', '=',$a_target[$i]) );
+				$o_table->PushWhere ( array ('||', 'SecRoleId5', '=',$a_target[$i]) );
+			}
+			$n_count = $o_table->getAllCount ();
+			$n_completed=0;
+			for($i = 0; $i < $n_count; $i ++) {
+				//判断是否完成问卷
+				$o_answer=new Survey_Teacher_Answers();
+				$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
+				$o_answer->PushWhere ( array ('&&', 'UserId', '=',$o_table->getUserId($i)) );
+				$o_answer->PushWhere ( array ('&&', 'Uid', '=',$o_table->getUid($i)) );
+				if ($o_answer->getAllCount()>0)
+				{
+					$n_completed++;
+				}
+			}
+		}		
+		$a_result = array (
+					'status' =>'<span class="label label-success">完成 '.$n_completed.'</span>&nbsp;&nbsp;<span class="label label-warning">未完 '.($n_count-$n_completed).'</span>&nbsp;&nbsp;<span class="label label-primary">完成率 '.sprintf("%.0f", ($n_completed/$n_count)*100).'%</span>'
+				);
+		echo(json_encode ($a_result));
+	}
+	public function TeacherSurveyManageSummaryPeople($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120402 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_option=new Survey_Teacher_Options($this->getPost('key'));
+		$o_question=new Survey_Teacher_Questions($o_option->getQuestionId());
+		$o_table = new Survey_Teacher_Answers();
+		//获得target的班级list
+		$o_table->PushWhere ( array ('&&', 'Answer'.$o_question->getNumber(), 'like','%"'.$o_option->getId().'"%') );
+		$o_table->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_table->setCountLine ( $this->N_PageSize );
+		$n_count = $o_table->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_table->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_table->getAllCount ();//总记录数
+		$n_count = $o_table->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$o_student=new Base_User_Role_Wechat_View($o_table->getUid($i));
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),				
+				$o_table->getName ( $i )
+				));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'教师姓名', 'Name', 0, 80);	
+		$this->SendJsonResultForTable($n_allcount,'TeacherSurveyManageSummaryPeople', 'no', $n_page, $a_title, $a_row);
+	}
+	public function TeacherSurveyManageProgress($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120402 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_survey = new Survey_Teacher($this->getPost('key'));
+		//获得target的班级list
+		$a_target=json_decode($o_survey->getTargetList());
+		$o_table=new Base_User_Role_Wechat_View();
+		for($i=0;$i<count($a_target);$i++)
+		{
+			$o_table->PushWhere ( array ('||', 'RoleId', '=',$a_target[$i]) );
+			if ($this->getPost('other_key')!='')
+			{
+				$o_table->PushWhere ( array ('&&', 'Name', 'like','%'.$this->getPost('other_key').'%') );
+			}
+			$o_table->PushWhere ( array ('||', 'SecRoleId1', '=',$a_target[$i]) );
+			if ($this->getPost('other_key')!='')
+			{
+				$o_table->PushWhere ( array ('&&', 'Name', 'like','%'.$this->getPost('other_key').'%') );
+			}
+			$o_table->PushWhere ( array ('||', 'SecRoleId2', '=',$a_target[$i]) );
+			if ($this->getPost('other_key')!='')
+			{
+				$o_table->PushWhere ( array ('&&', 'Name', 'like','%'.$this->getPost('other_key').'%') );
+			}
+			$o_table->PushWhere ( array ('||', 'SecRoleId3', '=',$a_target[$i]) );
+			if ($this->getPost('other_key')!='')
+			{
+				$o_table->PushWhere ( array ('&&', 'Name', 'like','%'.$this->getPost('other_key').'%') );
+			}
+			$o_table->PushWhere ( array ('||', 'SecRoleId4', '=',$a_target[$i]) );
+			if ($this->getPost('other_key')!='')
+			{
+				$o_table->PushWhere ( array ('&&', 'Name', 'like','%'.$this->getPost('other_key').'%') );
+			}
+			$o_table->PushWhere ( array ('||', 'SecRoleId5', '=',$a_target[$i]) );
+			if ($this->getPost('other_key')!='')
+			{
+				$o_table->PushWhere ( array ('&&', 'Name', 'like','%'.$this->getPost('other_key').'%') );
+			}
+		}
+		$o_table->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_table->setCountLine ( $this->N_PageSize );
+		$n_count = $o_table->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_table->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_table->getAllCount ();//总记录数
+		$n_count = $o_table->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$s_sign_name='';
+			if ($o_table->getDelFlag ( $i )==1)
+			{
+				$s_sign_name=' <span class="label label-danger">取消关注</span>';
+			}
+			$a_button = array ();
+			//判断是否完成问卷
+			$o_answer=new Survey_Teacher_Answers();
+			$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
+			$o_answer->PushWhere ( array ('&&', 'UserId', '=',$o_table->getUserId($i)) );
+			$o_answer->PushWhere ( array ('&&', 'Uid', '=',$o_table->getUid($i)) );
+			if ($o_answer->getAllCount()>0)
+			{
+				$s_sign_name.=' <span class="label label-success"><span class="glyphicon glyphicon-ok"></span></span>';
+				if ($o_survey->getIsAnonymity()==0)
+				{
+					array_push ( $a_button, array ('查看答卷', "location='teacher_survey_manage_progress_sheet.php?id=".$o_answer->getId(0)."'" ) );//删除
+					array_push ( $a_button, array ('打印', "window.open('teacher_survey_manage_progress_pdf.php?id=".$o_answer->getId(0)."','_blank')" ) );//删除
+				}				
+			}	
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),
+				'<img style="width:32px;height:32px;" src="'.$o_table->getPhoto ( $i ).'">',
+				$o_table->getNickname ( $i ).$s_sign_name,
+				$o_table->getName ( $i ),
+				$a_button
+				));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'头像', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'微信昵称', 'Nickname', 0, 0);	
+		$a_title=$this->setTableTitle($a_title,'教师姓名', 'Name', 0, 0);	
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
+		$this->SendJsonResultForTable($n_allcount,'TeacherSurveyManageProgress', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function TeacherSurveyManageRemember($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		sleep(1);
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120401 ))return;//如果没有权限，不返回任何值
+		$o_survey=new Survey_Teacher($this->getPost('id'));
+		$a_target=json_decode($o_survey->getTargetList());
+		if ($o_survey->getState()=='1')
+		{
+			//根据问卷对象循环发送通知
+			$o_system_setup=new Base_Setup(1);
+			require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+			for($i=0;$i<count($a_target);$i++)
+			{
+				//获取用户列表
+				$o_stu=new Base_User_Role_Wechat_View();
+				$o_stu->PushWhere ( array ('||', 'RoleId', '=',$a_target[$i]) );
+				$o_stu->PushWhere ( array ('||', 'SecRoleId1', '=',$a_target[$i]) );
+				$o_stu->PushWhere ( array ('||', 'SecRoleId2', '=',$a_target[$i]) );
+				$o_stu->PushWhere ( array ('||', 'SecRoleId3', '=',$a_target[$i]) );
+				$o_stu->PushWhere ( array ('||', 'SecRoleId4', '=',$a_target[$i]) );
+				$o_stu->PushWhere ( array ('||', 'SecRoleId5', '=',$a_target[$i]) );
+				for($j=0;$j<$o_stu->getAllCount();$j++)
+				{
+					//判断是否已经答题，如果答题那么跳过
+					$o_answer=new Survey_Teacher_Answers();
+					$o_answer->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
+					$o_answer->PushWhere ( array ('&&', 'UserId', '=',$o_stu->getUserId($j)) );
+					$o_answer->PushWhere ( array ('&&', 'Uid', '=',$o_stu->getUid($j)) );
+					if ($o_answer->getAllCount()>0)
+					{
+						continue;
+					}
+					//添加消息队列
+					$o_msg=new Wechat_Wx_User_Reminder();
+					$o_msg->setUserId($o_stu->getUserId($j));
+					$o_msg->setCreateDate($this->GetDateNow());
+					$o_msg->setSendDate('0000-00-00');
+					$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+					$o_msg->setOpenId($o_stu->getOpenid($j));
+					$o_msg->setActivityId(0);
+					$o_msg->setSend(0);
+					$o_msg->setFirst($o_survey->getFirst().'
+		
+通知类型：问卷调查
+教师姓名：'.$o_stu->getName($j));
+					$o_msg->setKeyword1($o_stu->getClassName($j));
+					$s_teacher_name=$o_user->getName();
+					$o_msg->setKeyword2($s_teacher_name.'老师');
+					$o_msg->setKeyword3($this->GetDate());
+					$o_msg->setKeyword4($o_survey->getRemark());
+					$o_msg->setKeyword5('');
+					$o_msg->setRemark('');
+					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/survey_answer.php?id='.$o_survey->getId().'&studentid='.$o_stu->getStudentId($j));
+					$o_msg->setKeywordSum(10);
+					$o_msg->Save();	
+				}			
+			}
+		}	
+		$a_general = array (
+			'success' => 1,
+			'text' =>'再次发送提醒成功！'
+		);
+		echo (json_encode ( $a_general ));
+	}
+	public function TeacherSurveyManageSummaryDetail($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120402 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_question=new Survey_Teacher_Questions($this->getPost('key'));
+		$o_table = new Survey_Teacher_Answers();
+		//获得target的班级list
+		$o_table->PushWhere ( array ('&&', 'Answer'.$o_question->getNumber(), '<>','') );
+		$o_table->PushWhere ( array ('&&', 'SurveyId', '=',$o_question->getSurveyId()) );
+		$o_table->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_table->setCountLine ( $this->N_PageSize );
+		$n_count = $o_table->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_table->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_table->getAllCount ();//总记录数
+		$n_count = $o_table->getCount ();
+		$a_row = array ();		
+		//分为匿名和不匿名
+		$o_survey=new Survey_Teacher($o_table->getSurveyId(0));
+		if ($o_survey->getIsAnonymity()==1)
+		{
+			//匿名
+			for($i = 0; $i < $n_count; $i ++) {	
+				eval('$s_answer=$o_table->getAnswer'.$o_question->getNumber().'($i);');
+				$s_answer=rawurldecode(str_replace('"', '', $s_answer));
+				$o_student=new Base_User_Role_Wechat_View($o_table->getUid($i));	
+				array_push ($a_row, array (
+					($i+1+$this->N_PageSize*($n_page-1)),				
+					$s_answer
+					));
+			}
+			//标题行,列名，排序名称，宽度，最小宽度
+			$a_title = array ();
+			$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 60, 0);
+			$a_title=$this->setTableTitle($a_title,'简述', '', 0, 0);
+		}else{
+			//不匿名
+			for($i = 0; $i < $n_count; $i ++) {	
+				eval('$s_answer=$o_table->getAnswer'.$o_question->getNumber().'($i);');
+				$s_answer=rawurldecode(str_replace('"', '', $s_answer));
+				$o_student=new Base_User_Role_Wechat_View($o_table->getUid($i));	
+				array_push ($a_row, array (
+					($i+1+$this->N_PageSize*($n_page-1)),				
+					$o_table->getName ( $i ),
+					$s_answer
+					));
+			}
+			//标题行,列名，排序名称，宽度，最小宽度
+			$a_title = array ();
+			$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 60, 0);
+			$a_title=$this->setTableTitle($a_title,'教师姓名', 'Name', 0, 0);	
+			$a_title=$this->setTableTitle($a_title,'简述', '', 0, 0);
+		}
+		$this->SendJsonResultForTable($n_allcount,'TeacherSurveyManageSummaryDetail', 'no', $n_page, $a_title, $a_row);		
 	}
 }
 ?>

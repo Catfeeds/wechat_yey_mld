@@ -1,24 +1,24 @@
 <?php
 define ( 'RELATIVITY_PATH', '../../' );
-define ( 'MODULEID', 120401 );
+define ( 'MODULEID', 120402 );
 $O_Session = '';
 require_once RELATIVITY_PATH . 'include/it_include.inc.php';
 
 require_once RELATIVITY_PATH . 'include/bn_user.class.php';
 $O_Session->ValidModuleForPage ( MODULEID );
 require_once RELATIVITY_PATH . 'sub/survey/include/db_table.class.php';
-$o_answer=new Survey_Answers($_GET['id']);
+$o_answer=new Survey_Teacher_Answers($_GET['id']);
 if($o_answer->getName()==null || $o_answer->getName()=='')
 {
 	exit(0);
 }
-$o_survey=new Survey($o_answer->getSurveyId());
+$o_survey=new Survey_Teacher($o_answer->getSurveyId());
 ob_start();
 ?>
 					<div class="answer">
 						<h1>
 							<h4>
-							姓名：<?php echo($o_answer->getName())?>&nbsp;&nbsp;&nbsp;&nbsp;班级：<?php echo($o_answer->getClassName())?>&nbsp;&nbsp;&nbsp;&nbsp;提交时间：<?php echo($o_answer->getDate())?>
+							教师姓名：<?php echo($o_answer->getName())?>&nbsp;&nbsp;&nbsp;&nbsp;提交时间：<?php echo($o_answer->getDate())?>
 							</h4>
 							<?php echo($o_survey->getTitle())?>
 							<h4>
@@ -30,7 +30,7 @@ ob_start();
 						</h1>
 						<?php
 						$n_number=1;
-						$o_question=new Survey_Questions();
+						$o_question=new Survey_Teacher_Questions();
 						$o_question->PushWhere ( array ('&&', 'SurveyId', '=',$o_survey->getId()) );
 						$o_question->PushOrder ( array ('Number', 'A') );
 						for($i=0;$i<$o_question->getAllCount();$i++)
@@ -55,7 +55,7 @@ ob_start();
 								<h2 style="margin-left:20px;border-top: 0px;">'.$n_number.'. '.$o_question->getQuestion($i).'（'.$s_type.'）
 								');
 							}
-							$o_option=new Survey_Options();
+							$o_option=new Survey_Teacher_Options();
 							$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId ( $i )) );
 							$o_option->PushOrder ( array ('Id','A') );
 							if($o_question->getType ( $i )==1)
@@ -133,6 +133,6 @@ $stylesheet = file_get_contents('css/pdf.css');
 $mpdf->WriteHTML($stylesheet,1);	// The parameter 1 tells that this is css/style only and no body/html/text
 $mpdf->WriteHTML($content,2);
 
-$mpdf->Output(iconv ( 'UTF-8', 'gbk','家长问卷.pdf'),'I');
+$mpdf->Output(iconv ( 'UTF-8', 'gbk','教师问卷.pdf'),'I');
 exit;
 ?>

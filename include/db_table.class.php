@@ -570,6 +570,55 @@ class Base_User_Role extends CRUD
                    ));
    }
 }
+class Base_User_Role_Wechat_View extends CRUD
+{
+    protected $Uid;
+    protected $Name;
+    protected $DeptId;
+    protected $RoleId;
+    protected $SecRoleId1;
+    protected $SecRoleId2;
+    protected $SecRoleId3;
+    protected $SecRoleId4;
+    protected $SecRoleId5;
+    protected $UserId;
+    protected $Photo;
+    protected $Nickname;
+    protected $Sex;
+    protected $Openid;
+    protected $GroupId;
+    protected $SessionId;
+
+    protected function DefineKey()
+    {
+        return 'uid';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_user_role_wechat_view';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+                    'uid' => 'Uid',
+                    'name' => 'Name',
+                    'dept_id' => 'DeptId',
+                    'role_id' => 'RoleId',
+                    'sec_role_id_1' => 'SecRoleId1',
+                    'sec_role_id_2' => 'SecRoleId2',
+                    'sec_role_id_3' => 'SecRoleId3',
+                    'sec_role_id_4' => 'SecRoleId4',
+                    'sec_role_id_5' => 'SecRoleId5',
+                    'user_id' => 'UserId',
+                    'photo' => 'Photo',
+                    'nickname' => 'Nickname',
+                    'sex' => 'Sex',
+                    'openid' => 'Openid',
+                    'group_id' => 'GroupId',
+                    'session_id' => 'SessionId'
+        ));
+    }
+}
 //1111111111111111111111111111111111111111111111
 class Base_Cmcc extends CRUD
 {

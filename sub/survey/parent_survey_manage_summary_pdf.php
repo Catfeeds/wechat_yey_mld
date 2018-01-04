@@ -118,6 +118,6 @@ $stylesheet = file_get_contents('css/pdf.css');
 $mpdf->WriteHTML($stylesheet,1);	// The parameter 1 tells that this is css/style only and no body/html/text
 $mpdf->WriteHTML($content,2);
 
-$mpdf->Output(iconv ( 'UTF-8', 'gbk','幼儿信息.pdf'),'I');
+$mpdf->Output(iconv ( 'UTF-8', 'gbk','家长问卷.pdf'),'I');
 exit;
 ?>

@@ -103,3 +103,8 @@ function choose_credential_image(token)
 	    }
 	});
 }
+function survey_answer_submit()
+{
+	Common_OpenLoading();
+	document.getElementById("submit_form").submit();	
+}
