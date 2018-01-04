@@ -46,7 +46,7 @@ require_once '../header_upload_images.php';
 		<div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                	<select class="weui-select" id="Vcl_Category" name="Vcl_Category">
+                	<select class="weui-select" id="Vcl_Category" name="Vcl_Category" onchange="category_change(this)">
                     	<option value="">请选择</option>
                     	<option value="荣誉类">荣誉类</option>
                     	<option value="评比类">评比类</option>
@@ -85,21 +85,23 @@ require_once '../header_upload_images.php';
                 </div>
             </div>
         </div>
-        <div class="weui-cells__title">等级</div>
-		<div class="weui-cells">
-            <div class="weui-cell">
-                <div class="weui-cell__bd">
-                	<select class="weui-select" id="Vcl_Level" name="Vcl_Level">
-                    	<option value="">请选择</option>
-                    	<option value="特等奖">特等奖</option>
-                    	<option value="一等奖">一等奖</option>
-                    	<option value="二等奖">二等奖</option>
-                    	<option value="三等奖">三等奖</option>
-                    	<option value="四等奖">四等奖</option>
-	                </select>
-                </div>
-            </div>
-        </div>
+        <div id="level">
+	        <div class="weui-cells__title">等级</div>
+			<div class="weui-cells">
+	            <div class="weui-cell">
+	                <div class="weui-cell__bd">
+	                	<select class="weui-select" id="Vcl_Level" name="Vcl_Level">
+	                    	<option value="">请选择</option>
+	                    	<option value="特等奖">特等奖</option>
+	                    	<option value="一等奖">一等奖</option>
+	                    	<option value="二等奖">二等奖</option>
+	                    	<option value="三等奖">三等奖</option>
+	                    	<option value="四等奖">四等奖</option>
+		                </select>
+	                </div>
+	            </div>
+	        </div>
+        </div>        
         <div class="weui-cells__title">角色排名</div>
 		<div class="weui-cells">
             <div class="weui-cell">
@@ -190,13 +192,16 @@ function add_submit()
 			})		
 			return
 		}
-		if ($('#Vcl_Level').val()=='')
+		if ($('#Vcl_Category').val()!='荣誉类')
 		{
-			Dialog_Message("请选择 [等级] ！",function(){
-				document.getElementById("Vcl_Level").focus()
-			})		
-			return
-		}
+			if ($('#Vcl_Level').val()=='')
+			{
+				Dialog_Message("请选择 [等级] ！",function(){
+					document.getElementById("Vcl_Level").focus()
+				})		
+				return
+			}
+		}		
 		if ($('#Vcl_RoleLevel').val()=='')
 		{
 			Dialog_Message("[角色排名] 不能为空！",function(){
@@ -222,6 +227,16 @@ function add_submit()
 		Common_OpenLoading();
 		document.getElementById("submit_form").submit();	
 	});
+}
+function category_change(obj)
+{
+	if (obj.value=='荣誉类')
+	{
+		$('#level').hide()
+		$('#Vcl_Level').val('')
+	}else{
+		$('#level').show()
+	}
 }
 function select_iscertificate(obj)
 {

@@ -71,12 +71,19 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
 	                </div>
 	                <div class="weui-cell__ft"><?php echo($o_temp2->getGrade($i))?></div>
 	            </div>
+	            <?php 
+	            if ($o_temp2->getCategory($i)!='荣誉类')
+	            {
+	            	?>
 	            <div class="weui-cell">
 	                <div class="weui-cell__bd">
 	                    <p>等级</p>
 	                </div>
 	                <div class="weui-cell__ft"><?php echo($o_temp2->getLevel($i))?></div>
-	            </div>
+	            </div>	
+	            	<?php
+	            }
+	            ?>	            
 	            <div class="weui-cell">
 	                <div class="weui-cell__bd">
 	                    <p>角色排名</p>

@@ -60,14 +60,6 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
                 </div>
             </div>
         </div>
-        <div class="weui-cells__title">本人角色</div>
-		<div class="weui-cells">
-            <div class="weui-cell">
-                <div class="weui-cell__bd">
-                    <input id="Vcl_Role" name="Vcl_Role" class="weui-input" type="text" placeholder="必填">
-                </div>
-            </div>
-        </div>
 		<div class="weui-cells__title">工作类别</div>
 		<div class="weui-cells">
             <div class="weui-cell">
@@ -119,13 +111,6 @@ function add_submit()
 		{
 			Dialog_Message("[工作内容] 不能为空！",function(){
 				document.getElementById("Vcl_Contant").focus()
-			})		
-			return
-		}
-		if ($('#Vcl_Role').val()=='')
-		{
-			Dialog_Message("[本人角色] 不能为空！",function(){
-				document.getElementById("Vcl_Role").focus()
 			})		
 			return
 		}

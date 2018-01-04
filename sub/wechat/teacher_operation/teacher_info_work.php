@@ -67,12 +67,6 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
 	            </div>
 	            <div class="weui-cell">
 	                <div class="weui-cell__bd">
-	                    <p>本人角色</p>
-	                </div>
-	                <div class="weui-cell__ft"><?php echo($o_temp2->getRole($i))?></div>
-	            </div>
-	            <div class="weui-cell">
-	                <div class="weui-cell__bd">
 	                    <p>工作类别</p>
 	                </div>
 	                <div class="weui-cell__ft"><?php echo($o_temp2->getType($i))?></div>
