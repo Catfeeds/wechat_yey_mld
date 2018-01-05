@@ -262,9 +262,9 @@ class Operate extends Bn_Basic {
 					$o_msg->setOpenId($o_stu->getOpenid($j));
 					$o_msg->setActivityId(0);
 					$o_msg->setSend(0);
-					$o_msg->setFirst('最新发布了一个微视频教学！
-		
-通知类型：微视频教学
+					$o_msg->setFirst('最新发布了一个微视频！
+
+通知类型：微视频
 幼儿姓名：'.$o_stu->getName($j));
 					$o_msg->setKeyword1($o_stu->getClassName($j));
 					$s_teacher_name=$o_user->getName();
@@ -494,7 +494,7 @@ class Operate extends Bn_Basic {
 					$s_teacher_name=$o_user->getName();
 					$o_msg->setKeyword2($s_teacher_name.'老师');
 					$o_msg->setKeyword3($this->GetDate());
-					$o_msg->setKeyword4('点击详情查看。');
+					$o_msg->setKeyword4($this->getPost('Remark'));
 					$o_msg->setKeyword5('');
 					$o_msg->setRemark('');
 					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/teaching_h5_view.php?id='.$this->getPost('Id'));

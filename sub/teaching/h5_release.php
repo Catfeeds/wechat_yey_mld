@@ -52,6 +52,10 @@ if($o_table->getState()!='0')
 	                     		</fieldset>	
 	                     	</div>
 	                     	<div class="item">
+	                     		<label><span class="must">*</span> 摘要：</label>
+	                     		<textarea  name="Vcl_Remark" maxlength="50" id="Vcl_Remark" type="text" style="width:100%" placeholder="必填，不能超过50字" class="form-control" rows="5"/></textarea>
+	                     	</div>
+	                     	<div class="item">
 	                     		<label><span class="must">*</span> 可观看对象（选择那些幼儿家长可以观看这个微海报）：</label>
 	                     		<div style="overflow:hidden">
 	                     			<div class="main_role">

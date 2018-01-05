@@ -163,7 +163,33 @@ function wei_teach_release()
 function h5_release()
 {	
 	dialog_confirm('确认要发布吗！<br/><br/>确认后：<br/>1. 将不能被修改。<br/>2. 所有选中班级的幼儿家长将收到微信提醒。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
+		if (document.getElementById("Vcl_Remark").value == "") {
+			dialog_message("摘要不能为空！")
+			return
+		}
+		if(check_remark(document.getElementById("Vcl_Remark").value)==false)
+		{
+			dialog_message("摘要不能超过50个字！")
+			return
+		}
 		loading_show();
 		$('#submit_form').submit();	
 	})
+}
+function check_remark(fData)
+{
+	var intLength=0 
+    for (var i=0;i<fData.length;i++) 
+    { 
+        if ((fData.charCodeAt(i) < 0) || (fData.charCodeAt(i) > 255)) 
+            intLength=intLength+1
+        else 
+            intLength=intLength+1
+    }
+	if (intLength>80)
+	{
+		return false;
+	}else{
+		return true;
+	}
 }
