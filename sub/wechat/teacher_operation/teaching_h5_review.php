@@ -12,6 +12,6 @@ if ($o_temp->getAllCount()==0)
 	echo "<script>location.href='access_failed.php'</script>"; 
 	exit(0);
 }
-$o_table=new Teaching_Wei_Teach_View($_GET['id']);
+$o_table=new Teaching_H5_View($_GET['id']);
 echo "<script>location.href='".$o_table->getVideo()."'</script>";
 ?>
