@@ -3,7 +3,7 @@ $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 //想判断教师权限，是否为绑定用户
-$s_title='微教学预览';
+$s_title='微视频预览';
 $s_creatives='尹陆明';
 $o_temp=new Base_User_Wechat();
 $o_temp->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) ); 
@@ -45,7 +45,7 @@ require_once '../header.php';
       	<iframe style="margin-top:15px;" frameborder="0" width="100%" src="<?php echo($o_table->getVideo())?>" allowfullscreen></iframe>
     </div>
 	<div style="padding:15px;">
-		<a id="next" class="weui-btn weui-btn_primary" onclick="location='wei_teach.php'">所有微教学</a>
+		<a id="next" class="weui-btn weui-btn_primary" onclick="location='wei_teach.php'">所有微视频</a>
 	</div>
 <script type="text/javascript">
 $('iframe').height(Math.floor($('iframe').width()*9/16));

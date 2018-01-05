@@ -18,14 +18,14 @@ require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
                             {
                             	$o_table=new Teaching_Wei_Teach($_GET['id']);
                             	$s_funname='WeiTeachModify'; 
-                            	echo('修改微教学');
+                            	echo('修改微视频');
 								if($o_table->getTitle()==null || $o_table->getTitle()=='' || $o_table->getState()==1)
 								{
 									echo("<script>location='wei_teach.php'</script>");
 									exit(0);
 								}
                             }else{
-                            	echo('新建微教学');
+                            	echo('新建微视频');
                             }
                             ?>
                             </div>
@@ -84,7 +84,7 @@ require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 							width:100% !important;
 	                     	}
 	                     	</style>
-	                     		<label><span class="must">*</span> 微教学内容简述：</label>
+	                     		<label><span class="must">*</span> 微视频内容简述：</label>
 	                     		<script id="editor" type="text/plain"><?php 
 	                     		if($_GET[id]>0)
 	                     		{

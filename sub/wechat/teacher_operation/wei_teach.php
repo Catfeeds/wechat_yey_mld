@@ -1,11 +1,11 @@
 <?php
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
-$s_title='微教学';
+$s_title='微视频';
 $s_creatives='尹陆明';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
-$s_none='<div class="weui-footer" style="padding-top:100px;padding-bottom:100px;"><p class="weui-footer__text" style="font-size:1.5em">目前没有微教学</p></div>';
+$s_none='<div class="weui-footer" style="padding-top:100px;padding-bottom:100px;"><p class="weui-footer__text" style="font-size:1.5em">目前没有微视频</p></div>';
 //想判断教师权限，是否为绑定用户
 $o_temp=new Base_User_Wechat();
 $o_temp->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) ); 
@@ -37,7 +37,7 @@ if($o_role->getAllCount()>0)
 <div class="page">
     <div class="page__bd">
         <div class="weui-panel weui-panel_access">
-            <div class="weui-panel__hd">微教学列表</div>
+            <div class="weui-panel__hd">微视频列表</div>
             <div class="weui-panel__bd">
             <?php 
             for($i=0;$i<$o_role->getAllCount();$i++)

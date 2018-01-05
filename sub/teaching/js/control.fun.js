@@ -89,7 +89,7 @@ function wei_teach_add_submit()
 		return
 	}
 	if (ue.getContentTxt() == "") {
-		dialog_message("微教学内容简述不能为空！")
+		dialog_message("微视频内容简述不能为空！")
 		return
 	}
 	if (document.getElementById("Vcl_Video").value == "") {
@@ -114,7 +114,7 @@ function h5_add_submit()
 	loading_show();
 }
 function wei_teach_delete(id) {
-    dialog_confirm('真的要删除这个微教学吗？删除后不能恢复，请谨慎操作。',function(){
+    dialog_confirm('真的要删除这个微视频吗？删除后不能恢复，请谨慎操作。',function(){
     	$('.small_loading').fadeIn(100);
     	var data = 'Ajax_FunName=WeiTeachDelete'; //后台方法
         data = data + '&id=' + id;
@@ -155,7 +155,7 @@ function h5_review(id)
 }
 function wei_teach_release()
 {	
-	dialog_confirm('确认要发布微教学吗！<br/><br/>确认后：<br/>1. 此微教学将不能被修改。<br/>2. 所有选中班级的幼儿家长将收到微信提醒。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
+	dialog_confirm('确认要发布微视频吗！<br/><br/>确认后：<br/>1. 此微视频将不能被修改。<br/>2. 所有选中班级的幼儿家长将收到微信提醒。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
 		loading_show();
 		$('#submit_form').submit();	
 	})

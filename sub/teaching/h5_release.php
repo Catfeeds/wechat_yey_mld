@@ -35,7 +35,7 @@ if($o_table->getState()!='0')
 					<div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
                         <div class="caption">
-                        	发布微教学
+                        	发布微海报
                             </div>
                             </div>
                     </div>
@@ -52,7 +52,7 @@ if($o_table->getState()!='0')
 	                     		</fieldset>	
 	                     	</div>
 	                     	<div class="item">
-	                     		<label><span class="must">*</span> 可观看对象（选择那些幼儿家长可以观看这个微教学）：</label>
+	                     		<label><span class="must">*</span> 可观看对象（选择那些幼儿家长可以观看这个微海报）：</label>
 	                     		<div style="overflow:hidden">
 	                     			<div class="main_role">
 										<input type="checkbox"/>	                     		

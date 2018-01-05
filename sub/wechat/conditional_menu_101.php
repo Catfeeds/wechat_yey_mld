@@ -25,7 +25,7 @@ $data='{
                 },
                 {
 					"type": "view", 
-                    "name": "微教学",
+                    "name": "微视频",
                     "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/wei_teach.php"
                 },
                 {

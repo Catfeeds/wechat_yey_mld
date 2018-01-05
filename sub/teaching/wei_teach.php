@@ -21,7 +21,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 ?>
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
-                            <div class="caption">微教学列表</div>
+                            <div class="caption">微视频列表</div>
                             	<div class="row">
 								  <div class="col-lg-6">
 								    <div class="input-group" style="width:300px;" >
@@ -33,7 +33,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  </div>
 								</div>
                                 <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="location='wei_teach_modify.php'">
-                                <span  class="glyphicon glyphicon-plus"></span>&nbsp;新建微教学</button>
+                                <span  class="glyphicon glyphicon-plus"></span>&nbsp;新建微视频</button>
                             </div>
                         <table class="table table-striped">
                             <thead>

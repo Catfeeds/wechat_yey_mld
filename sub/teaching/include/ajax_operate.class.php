@@ -69,7 +69,7 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'序号', '', 0, 40);
 		$a_title=$this->setTableTitle($a_title,'缩略图', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,'建立日期', 'CreateDate', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'微教学标题', 'Title', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'微视频标题', 'Title', 0, 0);
 		$a_title=$this->setTableTitle($a_title,'创建人', 'OwnerName', 0, 60);
 		$a_title=$this->setTableTitle($a_title,'发布日期', '', 0, 90);
 		$a_title=$this->setTableTitle($a_title,'发布对象', '', 150, 0);
@@ -115,7 +115,7 @@ class Operate extends Bn_Basic {
 		}else{
 			$this->setReturn ( 'parent.form_return("dialog_error(\'请选择“封面”文件！\')");' );
 		}
-		$this->setReturn ( 'parent.form_return("dialog_success(\'新建微教学成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
+		$this->setReturn ( 'parent.form_return("dialog_success(\'新建微视频成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
 	}
 	public function getVideoUrl($s_html)
 	{
@@ -161,7 +161,7 @@ class Operate extends Bn_Basic {
 			$o_table->setVideo($this->getVideoUrl($this->getPost('Video')));
 			$o_table->Save();		
 		}		
-		$this->setReturn ( 'parent.form_return("dialog_success(\'修改微教学成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
+		$this->setReturn ( 'parent.form_return("dialog_success(\'修改微视频成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
 	}	
 	public function WeiTeachDelete($n_uid) {
 		if (! ($n_uid > 0)) {
@@ -278,7 +278,7 @@ class Operate extends Bn_Basic {
 					$o_msg->Save();	
 				}			
 			}
-		$this->setReturn ( 'parent.form_return("dialog_success(\'发布微教学成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
+		$this->setReturn ( 'parent.form_return("dialog_success(\'发布微视频成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
 	}
 	public function H5Table($n_uid)
 	{	
@@ -486,9 +486,9 @@ class Operate extends Bn_Basic {
 					$o_msg->setOpenId($o_stu->getOpenid($j));
 					$o_msg->setActivityId(0);
 					$o_msg->setSend(0);
-					$o_msg->setFirst('最新发布了一个玛卡初页！
+					$o_msg->setFirst('最新发布了一个微海报！
 		
-通知类型：微教学
+通知类型：微海报
 幼儿姓名：'.$o_stu->getName($j));
 					$o_msg->setKeyword1($o_stu->getClassName($j));
 					$s_teacher_name=$o_user->getName();

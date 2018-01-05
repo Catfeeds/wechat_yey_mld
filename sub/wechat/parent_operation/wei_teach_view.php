@@ -49,7 +49,7 @@ require_once '../header.php';
       	<iframe style="margin-top:15px;" frameborder="0" width="100%" src="<?php echo($o_table->getVideo())?>" allowfullscreen></iframe>
     </div>
 	<div style="padding:15px;">
-		<a id="next" class="weui-btn weui-btn_primary" onclick="location='wei_teach.php'">所有微教学</a>
+		<a id="next" class="weui-btn weui-btn_primary" onclick="location='wei_teach.php'">所有微视频</a>
 	</div>
 <script type="text/javascript">
 $('iframe').height(Math.floor($('iframe').width()*9/16));
