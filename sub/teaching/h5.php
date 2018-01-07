@@ -33,7 +33,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  </div>
 								</div>
                                 <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="location='h5_modify.php'">
-                                <span  class="glyphicon glyphicon-plus"></span>&nbsp;新建玛卡初页</button>
+                                <span  class="glyphicon glyphicon-plus"></span>&nbsp;新建微海报</button>
                             </div>
                         <table class="table table-striped">
                             <thead>

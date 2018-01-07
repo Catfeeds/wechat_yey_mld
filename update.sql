@@ -2,11 +2,6 @@ INSERT INTO `wechat_yey_mld`.`wechat_base_module` (`module_id`, `name`, `module`
 
 UPDATE `wechat_yey_mld`.`wechat_base_module` SET `icon_id` = '120400', `mini_icon_id` = '120400' WHERE `wechat_base_module`.`module_id` = 120402 LIMIT 1;
 
-UPDATE `wechat_yey_mld`.`wechat_base_module` SET `name` = '微海报' WHERE `wechat_base_module`.`module_id` = 120502 LIMIT 1;
-
-UPDATE `wechat_yey_mld`.`wechat_base_module` SET `name` = '微视频' WHERE `wechat_base_module`.`module_id` = 120501 LIMIT 1;
 
 
 --以上未更新
-
-
