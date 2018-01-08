@@ -1508,23 +1508,23 @@ class Operate extends Bn_Basic {
 					$o_msg->setUserId($o_stu->getUserId($j));
 					$o_msg->setCreateDate($this->GetDateNow());
 					$o_msg->setSendDate('0000-00-00');
-					$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+					$o_msg->setMsgId($this->getWechatSetup('MSGTMP_10'));
 					$o_msg->setOpenId($o_stu->getOpenid($j));
 					$o_msg->setActivityId(0);
 					$o_msg->setSend(0);
 					$o_msg->setFirst($this->getPost('First').'
-		
-通知类型：问卷调查
-教师姓名：'.$o_stu->getName($j));
-					$o_msg->setKeyword1($o_stu->getClassName($j));
-					$s_teacher_name=$o_user->getName();
-					$o_msg->setKeyword2($s_teacher_name.'老师');
-					$o_msg->setKeyword3($this->GetDate());
-					$o_msg->setKeyword4($this->getPost('Remark'));
+
+姓名：'.$o_stu->getName($j).'
+通知时间：'.$this->GetDate().'
+通知人：'.$o_user->getName()	);
+					$o_msg->setKeyword1('教师问卷');		
+					$o_msg->setKeyword2($this->getPost('Remark'));
+					$o_msg->setKeyword3('');
+					$o_msg->setKeyword4('');
 					$o_msg->setKeyword5('');
 					$o_msg->setRemark('');
 					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/survey_answer.php?id='.$this->getPost('Id').'&uid='.$o_stu->getUid($j));
-					$o_msg->setKeywordSum(10);
+					$o_msg->setKeywordSum(11);
 					$o_msg->Save();	
 				}			
 			}
