@@ -197,6 +197,45 @@ class Operate extends Bn_Basic {
 			$o_msg->setKeywordSum(10);
 			$o_msg->Save();
 		}
+		//通知所有园长岗位角色
+		$o_teacher=new Base_User_Role_Wechat_View();
+		$o_teacher->PushWhere ( array ('||', 'RoleId', '=',69) );
+		$o_teacher->PushWhere ( array ('||', 'SecRoleId1', '=',69) );
+		$o_teacher->PushWhere ( array ('||', 'SecRoleId2', '=',69) );
+		$o_teacher->PushWhere ( array ('||', 'SecRoleId3', '=',69) );
+		$o_teacher->PushWhere ( array ('||', 'SecRoleId4', '=',69) );
+		$o_teacher->PushWhere ( array ('||', 'SecRoleId5', '=',69) );
+		for($j=0;$j<$o_teacher->getAllCount();$j++)
+		{
+			//添加消息队列
+			$o_msg=new Wechat_Wx_User_Reminder();
+			$o_msg->setUserId($a_temp[2]);
+			$o_msg->setCreateDate($this->GetDateNow());
+			$o_msg->setSendDate('0000-00-00');
+			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+			$o_msg->setOpenId($a_temp[3]);
+			$o_msg->setActivityId(0);
+			$o_msg->setSend(0);
+			$o_msg->setFirst($this->getPost('First').'
+
+通知类型：'.$this->getPost('Type'));
+			$o_msg->setKeyword1($s_target);
+			$s_teacher_name=$o_user->getName();
+			//$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+			$o_msg->setKeyword2($s_teacher_name.'老师');
+			$o_msg->setKeyword3($this->GetDate());
+			$o_msg->setKeyword4($this->getPost('Remark'));
+			$o_msg->setKeyword5('');
+			$o_msg->setRemark('');
+			//如果Comment为空，那么就没有点击事件了
+			$o_msg->setUrl('');
+			if($this->getPost('Comment')!='')
+			{
+				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/notice_list_review.php?id='.$o_notice->getId().'');
+			}
+			$o_msg->setKeywordSum(10);
+			$o_msg->Save();
+		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发送通知成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
 	}
 	public function SendNoticeSingle($n_uid)
