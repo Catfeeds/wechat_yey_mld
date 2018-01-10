@@ -178,7 +178,6 @@ class Operate extends Bn_Basic {
 			$o_msg->setSend(0);
 			$o_msg->setFirst($this->getPost('First').'
 
-（抄送园长角色）
 通知类型：'.$this->getPost('Type').'
 幼儿姓名：'.$a_temp[0]);
 			$o_msg->setKeyword1($a_temp[1]);
@@ -219,6 +218,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setSend(0);
 			$o_msg->setFirst($this->getPost('First').'
 
+（抄送园长角色）
 通知类型：'.$this->getPost('Type'));
 			$o_msg->setKeyword1($s_target);
 			$s_teacher_name=$o_user->getName();
@@ -232,7 +232,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setUrl('');
 			if($this->getPost('Comment')!='')
 			{
-				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/notice_list_review.php?id='.$o_notice->getId().'');
+				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/notice_review.php?id='.$o_notice->getId().'');
 			}
 			$o_msg->setKeywordSum(10);
 			$o_msg->Save();
@@ -746,7 +746,6 @@ class Operate extends Bn_Basic {
 			$o_msg->setSend(0);
 			$o_msg->setFirst($this->getPost('First').'
 
-（抄送园长角色）
 通知时间：'.$this->GetDate().'
 通知人：'.$o_user->getName()	);
 			$o_msg->setKeyword1($this->getPost('Type'));
@@ -785,6 +784,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setSend(0);
 			$o_msg->setFirst($this->getPost('First').'
 
+（抄送园长角色）
 姓名：'.$o_teacher->getName($j).'
 通知时间：'.$this->GetDate().'
 通知人：'.$o_user->getName()	);
