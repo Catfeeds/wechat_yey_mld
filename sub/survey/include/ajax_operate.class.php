@@ -1383,6 +1383,7 @@ class Operate extends Bn_Basic {
 		$o_survey_new->setCreateDate($this->GetDateNow());
 		$o_survey_new->setTitle('（副本）'.$o_survey->getTitle());
 		$o_survey_new->setComment($o_survey->getComment());
+		$o_survey_new->setIsAnonymity($o_survey->getIsAnonymity());
 	    $o_survey_new->setState(0);
 	    $o_survey_new->setOwnerId($n_uid);
 	    $o_survey_new->Save();
@@ -1920,7 +1921,7 @@ class Operate extends Bn_Basic {
 					$o_msg->setKeyword4('');
 					$o_msg->setKeyword5('');
 					$o_msg->setRemark('');
-					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/survey_answer.php?id='.$this->getPost('Id').'&uid='.$o_stu->getUid($j));
+					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/survey_answer.php?id='.$this->getPost('id').'&uid='.$o_stu->getUid($j));
 					$o_msg->setKeywordSum(11);
 					$o_msg->Save();	
 				}			
