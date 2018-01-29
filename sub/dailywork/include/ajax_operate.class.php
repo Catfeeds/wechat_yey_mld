@@ -1235,6 +1235,55 @@ class Operate extends Bn_Basic {
  		$o_table->Save();
  		$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'teacher_info_project.php?time='.time().'"');
  	}
+	public function TeacherInfoTable($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120603 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Wechat_Base_User_Info_Base(); 
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$a_button = array ();			
+			array_push ( $a_button, array ('详情', "location='teacher_info_detail.php?id=".$o_user->getUid($i)."'" ) );//修改
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),
+				$o_user->getName ( $i ),
+				$o_user->getCardId ( $i ),
+				$o_user->getSex ( $i ),
+				$o_user->getBirthday ( $i ),
+				$o_user->getNation ( $i ),
+				$o_user->getPolitics ( $i ),
+				$a_button
+				));				
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'序号', '', 50, 0);
+		$a_title=$this->setTableTitle($a_title,'姓名', 'Name', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'身份证号', 'CardId', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'性别', 'Sex', 0, 0);		
+		$a_title=$this->setTableTitle($a_title,'出生日期', 'Birthday', 0, 0);	
+		$a_title=$this->setTableTitle($a_title,'民族', 'Nation', 0, 0);		
+		$a_title=$this->setTableTitle($a_title,'政治面貌', 'Politics', 0, 0);		
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
+		$this->SendJsonResultForTable($n_allcount,'TeacherInfoTable', 'yes', $n_page, $a_title, $a_row);
+	}
 }
 class MyDB extends SQLite3
 {
