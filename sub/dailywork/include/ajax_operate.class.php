@@ -1284,6 +1284,57 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
 		$this->SendJsonResultForTable($n_allcount,'TeacherInfoTable', 'yes', $n_page, $a_title, $a_row);
 	}
+	public function WorkflowTable($n_uid)
+	{	
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120604 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Dailywork_Workflow_Case_View(); 
+		$s_key=$this->getPost('key');
+		if ($s_key!='')
+		{
+			$o_user->PushWhere ( array ('&&', 'MainId', '=',$s_key) );				
+		}
+		$o_user->PushWhere ( array ('&&', 'State', '=',100) );	
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$a_button = array ();			
+			array_push ( $a_button, array ('详情', "location='workflow_detail.php?id=".$o_user->getId($i)."'" ) );//修改
+			array_push ($a_row, array (
+				($i+1+$this->N_PageSize*($n_page-1)),
+				$o_user->getTitle ( $i ),
+				$o_user->getDate ( $i ),
+				$o_user->getName ( $i ),
+				$o_user->getCloseDate ( $i ),
+				$a_button
+				));				
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'序号', '', 50, 0);
+		$a_title=$this->setTableTitle($a_title,'名称', 'Title', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'申请日期', 'Date', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'申请人', 'Name', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'完成日期', 'CloseDate', 0, 0);			
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
+		$this->SendJsonResultForTable($n_allcount,'WorkflowTable', 'yes', $n_page, $a_title, $a_row);
+	}
 }
 class MyDB extends SQLite3
 {
