@@ -36,3 +36,13 @@ function cuisine_delete(id) {
         })
     })
 }
+function recipe_modify()
+{
+	var val = $('#Vcl_ChangeId').val();
+    if (val.length == 0) {
+        dialog_message('请选择需要更换的菜肴！')
+        return
+    }
+    loading_show();
+	$('#submit_form').submit();
+}

@@ -1402,7 +1402,7 @@ class Operate extends Bn_Basic {
 			$this->setReturn('parent.goto_login()');
 		}
 		$o_user = new Single_User ( $n_uid );
-		if (!$o_user->ValidModule ( 120601 ))return;//如果没有权限，不返回任何值
+		if (!$o_user->ValidModule ( 120602 ))return;//如果没有权限，不返回任何值
 		$n_page=$this->getPost('page');
 		if ($n_page<=0)$n_page=1;
 		$o_user = new Ek_Recomrecipe(); 
@@ -1420,7 +1420,7 @@ class Operate extends Bn_Basic {
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
 			$a_button = array ();			
-			array_push ( $a_button, array ('详情', "location='workflow_detail.php?id=".$o_user->getId($i)."'" ) );
+			array_push ( $a_button, array ('详情', "location='recipe_detail.php?id=".$o_user->getId($i)."'" ) );
 			array_push ($a_row, array (
 				($i+1+$this->N_PageSize*($n_page-1)),
 				$o_user->getRecipename ( $i ),
@@ -1433,6 +1433,19 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'食谱名称', '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
 		$this->SendJsonResultForTable($n_allcount,'RecipeTable', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function RecipeModify($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120602 ))return; //如果没有权限，不返回任何值
+		$o_table=new Ek_Recomrecipe($this->getPost ( 'Id' ));
+		$o_old=new Ek_Cuisine($this->getPost ( 'CuisineId' ));
+		$o_new=new Ek_Cuisine($this->getPost ( 'ChangeId' ));
+		$o_table->setRecipe(str_replace('"'.$o_old->getDishnum().'","'.$o_old->getDishname().'"','"'.$o_new->getDishnum().'","'.$o_new->getDishname().'"', $o_table->getRecipe()));
+		$o_table->Save();		
+		$this->setReturn ( 'parent.location=\'' . $this->getPost ( 'BackUrl' ) . '\';' );
 	}
 }
 class MyDB extends SQLite3

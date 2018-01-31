@@ -209,7 +209,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  <?php
 								  	if (($i+1)<$o_table->getAllCount())
 								  	{
-								  		echo('<div style="width:100%;margin:10px;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
+								  		echo('<div style="width:96%;margin:10px;margin-left:2%;margin-right:2%;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
 								  	}
 							      }
 							      ?>			      	
@@ -281,7 +281,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  <?php
 								  	if (($i+1)<$o_table->getAllCount())
 								  	{
-								  		echo('<div style="width:100%;margin:10px;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
+								  		echo('<div style="width:96%;margin:10px;margin-left:2%;margin-right:2%;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
 								  	}
 							      }
 							      ?>			      	
@@ -376,7 +376,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  <?php
 								  	if (($i+1)<$o_table->getAllCount())
 								  	{
-								  		echo('<div style="width:100%;margin:10px;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
+								  		echo('<div style="width:96%;margin:10px;margin-left:2%;margin-right:2%;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
 								  	}
 							      }
 							      ?>			      	
@@ -448,7 +448,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  <?php
 								  	if (($i+1)<$o_table->getAllCount())
 								  	{
-								  		echo('<div style="width:100%;margin:10px;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
+								  		echo('<div style="width:96%;margin:10px;margin-left:2%;margin-right:2%;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
 								  	}
 							      }
 							      ?>			      	
@@ -574,7 +574,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  <?php
 								  	if (($i+1)<$o_table->getAllCount())
 								  	{
-								  		echo('<div style="width:100%;margin:10px;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
+								  		echo('<div style="width:96%;margin:10px;margin-left:2%;margin-right:2%;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
 								  	}
 							      }
 							      ?>			      	
@@ -638,7 +638,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  <?php
 								  	if (($i+1)<$o_table->getAllCount())
 								  	{
-								  		echo('<div style="width:100%;margin:10px;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
+								  		echo('<div style="width:96%;margin:10px;margin-left:2%;margin-right:2%;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
 								  	}
 							      }
 							      ?>			      	
@@ -694,7 +694,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  <?php
 								  	if (($i+1)<$o_table->getAllCount())
 								  	{
-								  		echo('<div style="width:100%;margin:10px;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
+								  		echo('<div style="width:96%;margin:10px;margin-left:2%;margin-right:2%;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
 								  	}
 							      }
 							      ?>			      	
@@ -776,7 +776,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								  <?php
 								  	if (($i+1)<$o_table->getAllCount())
 								  	{
-								  		echo('<div style="width:100%;margin:10px;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
+								  		echo('<div style="width:96%;margin:10px;margin-left:2%;margin-right:2%;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
 								  	}
 							      }
 							      ?>			      	

@@ -164,7 +164,7 @@ if (!($o_case->getState()==100))
 											');
 											if (($i+1)<$o_log->getAllCount())
 											{
-												echo('<br/>');
+												echo('<div style="width:96%;margin:10px;margin-left:2%;margin-right:2%;border-color:#DDDDDD;border-top: 1px solid #DDDDDD;"></div>');
 											}
 										}										
 									?>							      		      	
