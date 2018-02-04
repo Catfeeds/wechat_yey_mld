@@ -1679,5 +1679,47 @@ class Operate extends Bn_Basic {
 		}
 		$this->setReturn ( "parent.location.href='".$this->getPost ( 'Url' )."survey_answer_completed.php?id=".$o_survey->getId()."';" );
 	}
+	public function TeacherSendSnapshotTask($n_uid)
+	{
+		if ($n_uid>0)
+		{
+			$o_temp=new Base_User_Wechat();
+			$o_temp->PushWhere ( array ('&&', 'WechatId', '=',$n_uid) ); 
+			if ($o_temp->getAllCount()==0)
+			{
+				$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1002]\');' );
+			}
+		}else{
+			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
+		}
+		$o_table=new Student_Onboard_Snapshot();
+		$o_table->setTeacherId($o_temp->getUid(0));
+		$o_table->setStudentId($this->getPost('StudentId'));
+		$o_table->setDate($this->GetDateNow());
+		$o_table->setUrl('');
+		$o_table->Save();
+		$o_user_wechat=new WX_User_Info($n_uid);  
+		//发送绑定成功通知
+		require_once RELATIVITY_PATH . 'sub/wechat/include/accessToken.class.php';		    
+		$o_token=new accessToken();
+		$curlUtil = new curlUtil();
+		$s_url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$o_token->access_token;
+		$data = array(
+		    	'touser' => $o_user_wechat->getOpenId(), // openid是发送消息的基础
+				'template_id' => $this->getWechatSetup('MSGTMP_10'), // 模板id
+				'url' => '', // 点击跳转地址
+				'topcolor' => '#FF0000', // 顶部颜色
+				'data' => array(
+					'first' => array('value' => '请在十分钟内上传图片或视频。
+'),
+					'keyword1' => array('value' => '教师通知','color'=>'#173177'),
+					'keyword2' => array('value' => '幼儿随拍','color'=>'#173177'),
+					'remark' => array('value' => '')
+				)
+				);
+		$curlUtil->https_request($s_url, json_encode($data));
+		$this->setReturn ( 'parent.close_window();' );
+		
+	}
 }
 ?>
