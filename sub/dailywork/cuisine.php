@@ -22,6 +22,16 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
                             <div class="caption">幼儿菜肴列表</div>
+	                            <div class="row">
+								  <div class="col-lg-6">
+								    <div class="input-group">
+								      <input id="Vcl_KeyCuisine" type="text" class="form-control" placeholder="菜肴名称" value="<?php echo($s_key)?>">
+								      <span class="input-group-btn">
+								        <button class="btn btn-primary" type="button" onclick="search_for_cuisine()"><span  class="glyphicon glyphicon-search"></span></button>
+								      </span>
+								    </div>
+								  </div>
+								</div>
                             </div>
                         <table class="table table-striped">
                             <thead>

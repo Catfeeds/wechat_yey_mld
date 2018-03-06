@@ -1,6 +1,22 @@
 $(function(){
-
+	$('#Vcl_KeyCuisine').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_cuisine()   
+	    }  
+	}); 
 })
+function search_for_cuisine()
+{
+	var fun='CuisineTable';
+	var id='Vcl_KeyCuisine'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value));    
+}
 function payroll_release()
 {	
     var val = $('#Vcl_Date').val();

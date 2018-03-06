@@ -1346,6 +1346,11 @@ class Operate extends Bn_Basic {
 		$n_page=$this->getPost('page');
 		if ($n_page<=0)$n_page=1;
 		$o_user = new Ek_Cuisine(); 
+		$s_key=$this->getPost('key');
+		if ($s_key!='')
+		{
+			$o_user->PushWhere ( array ('&&', 'Dishname', 'like','%'.$s_key.'%') );
+		}
 		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
 		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
 		$o_user->setCountLine ( $this->N_PageSize );
