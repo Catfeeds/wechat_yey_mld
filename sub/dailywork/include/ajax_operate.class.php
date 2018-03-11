@@ -902,6 +902,10 @@ class Operate extends Bn_Basic {
 				{
 					break;
 				}
+				if ($a_temp[0]=='Id')
+				{
+					continue;
+				}
 				eval('$o_temp->set'.$a_temp[0].'($row[\''.strtolower($a_temp[0]).'\']);');
 			}
 			$o_temp->Save();
