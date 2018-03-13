@@ -982,6 +982,7 @@ class Wechat_Base_User_Info_Training extends CRUD
     protected $Organization;
     protected $IsCertificate;
     protected $Picture;
+    protected $Feeling;
     protected $CreateDate;
 
     protected function DefineKey()
@@ -1004,6 +1005,7 @@ class Wechat_Base_User_Info_Training extends CRUD
                     'organization' => 'Organization',
                     'is_certificate' => 'IsCertificate',
                     'picture' => 'Picture',
+        			'feeling' => 'Feeling',
                     'create_date' => 'CreateDate'
         ));
     }

@@ -1148,6 +1148,7 @@ class Operate extends Bn_Basic {
  		$o_table->setContent($this->getPost('Content'));
  		$o_table->setType($this->getPost('Type'));
  		$o_table->setOrganization($this->getPost('Organization'));
+ 		$o_table->setFeeling($this->getPost('Feeling'));
  		$o_table->setIsCertificate($this->getPost('IsCertificate'));
  		if ($this->getPost('Picture')!='' && $this->getPost('IsCertificate')=='是')
 		{

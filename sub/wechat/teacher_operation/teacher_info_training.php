@@ -89,7 +89,13 @@ $o_teacher_info_base=new Wechat_Base_User_Info_Base($o_temp->getUid(0));
 		        </div>
 	            	<?php
 	            }
-	            ?>	            
+	            ?>	 
+	            <div class="weui-cell">
+	                <div class="weui-cell__bd">
+	                    <p>思想感悟</p>
+	                </div>
+	                <div class="weui-cell__ft"><?php echo($o_temp2->getFeeling($i))?></div>
+	            </div>           
 	        </div>
         	<?php
         }

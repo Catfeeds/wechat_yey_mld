@@ -102,6 +102,14 @@ require_once '../header_upload_images.php';
 	        </div>
         </div>
         </div>
+        <div class="weui-cells__title">思想感悟</div>
+		<div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <input id="Vcl_Feeling" name="Vcl_Feeling" class="weui-input" type="text" placeholder="必填">
+                </div>
+            </div>
+        </div>
 		</form>
         <div style="padding:15px;">
         	<a class="weui-btn weui-btn_primary" onclick="add_submit()">提交</a>
@@ -156,7 +164,14 @@ function add_submit()
 				Dialog_Message("请上传证书！")
 				return
 			}
-		}		
+		}	
+		if ($('#Vcl_Feeling').val()=='')
+		{
+			Dialog_Message("[思想感悟] 不能为空！",function(){
+				document.getElementById("Vcl_Feeling").focus()
+			})		
+			return
+		}	
 		Common_OpenLoading();
 		document.getElementById("submit_form").submit();	
 	});

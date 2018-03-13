@@ -371,7 +371,15 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								      	<tr>	
 								      	<?php 
 								      	}
-								      	?>							      					      	
+								      	?>	
+								      	<tr>
+								      		<td>
+								      			<b>思想感悟</b>
+								      		</td>
+								      		<td>
+								      			<?php echo($o_table->getFeeling($i))?>
+								      		</td>
+								      	<tr>						      					      	
 								      </table>
 								  <?php
 								  	if (($i+1)<$o_table->getAllCount())
