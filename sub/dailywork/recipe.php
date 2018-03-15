@@ -5,7 +5,7 @@ $O_Session = '';
 require_once RELATIVITY_PATH . 'include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'head.php';
 $s_fun='RecipeTable';
-$s_item='Id';
+$s_item='Recipename';
 $s_page=1;
 $s_sort='D';
 $s_key='';

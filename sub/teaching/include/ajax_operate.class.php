@@ -540,6 +540,7 @@ class Operate extends Bn_Basic {
 			{
 				$s_state='<span class="label label-success">已发布</span>';
 				array_push ( $a_button, array ('预览', "news_review(".$o_user->getId($i).")" ) );
+				array_push ( $a_button, array ('点击量', "location='news_list.php?id=".$o_user->getId($i)."'" ) );
 			}else{
 				array_push ( $a_button, array ('预览', "news_review(".$o_user->getId($i).")" ) );
 				array_push ( $a_button, array ('修改', "location='news_modify.php?id=".$o_user->getId($i)."'" ) );
@@ -618,6 +619,241 @@ class Operate extends Bn_Basic {
 		$o_table->setTitle($this->getPost('Title'));
 		$o_table->Save();
 		$this->setReturn ( 'parent.form_return("dialog_success(\'修改成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+	}
+	public function NewsListTable($n_uid)
+	{
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120503 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;		
+		$o_user = new Teaching_News_List();
+		$s_key=$this->getPost('key');
+		$o_user->PushWhere ( array ('&&', 'NewsId', '=',$s_key) );
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		$o_news=new Teaching_News($s_key);
+		for($i = 0; $i < $n_count; $i ++) {
+			$a_button = array ();
+			$s_state='<span class="label label-warning">未发布</span>';
+			if($o_news->getState()==1)
+			{
+				
+			}else{
+				array_push ( $a_button, array ('修改', "location='news_list_modify.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('删除', "news_list_delete(".$o_user->getId($i).")" ) );
+			}
+			array_push ($a_row, array (
+					($i+1+$this->N_PageSize*($n_page-1)),
+					'<img style="width:32px;height:32px;" src="../../'.$o_user->getIcon ( $i ).'?'.time().'">',
+					$o_user->getComment ( $i ),
+					$o_user->getVisitorNum ( $i ),
+					$a_button
+			));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'顺序', '', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'缩略图', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'摘要', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'点击量', '', 0, 90);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 0,70);
+		$this->SendJsonResultForTable($n_allcount,'NewsListTable', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function NewsListAdd($n_uid)
+	{
+		sleep(1);
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120503 ))return;//如果没有权限，不返回任何值
+		$o_table=new Teaching_News_List();
+		if ($_FILES ['Vcl_File'] ['size'] > 0) {
+			if ($_FILES ['Vcl_File'] ['size']>(1024*1024))
+			{
+				$this->setReturn ( 'parent.form_return("dialog_error(\'缩略图文件大小不能超过1MB！\')");' );
+			}
+			mkdir ( RELATIVITY_PATH . 'userdata/teaching', 0777 );
+			mkdir ( RELATIVITY_PATH . 'userdata/teaching/news', 0777 );
+			$allowpictype = array ('jpg', 'jpeg', 'gif', 'png' );
+			$fileext = strtolower ( trim ( substr ( strrchr ( $_FILES ['Vcl_File'] ['name'], '.' ), 1 ) ) );
+			if (! in_array ( $fileext, $allowpictype )) {
+				$this->setReturn ( 'parent.form_return("dialog_error(\''.Text::Key('PhotoUploadError').'\')");' );
+			}
+			//保存其他数据
+			$o_table->setComment($this->getPost('Comment'));
+			$o_table->setLink($this->getPost('Link'));
+			$o_table->setNewsId($this->getPost('NewsId'));
+			$o_table->Save();
+			//保存Icon
+			$s_filename=$o_table->getId().'.'.$fileext;
+			$o_table->setIcon ( 'userdata/teaching/news/' . $s_filename );
+			$o_table->Save();
+			copy ( $_FILES ['Vcl_File'] ['tmp_name'], RELATIVITY_PATH . 'userdata/teaching/news/' . $s_filename );
+			
+		}else{
+			$this->setReturn ( 'parent.form_return("dialog_error(\'请选择“缩略图”文件！\')");' );
+		}
+		$this->setReturn ( 'parent.form_return("dialog_success(\'添加新闻成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+	}
+	public function NewsListModify($n_uid)
+	{
+		sleep(1);
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120503 ))return;//如果没有权限，不返回任何值
+		$o_table=new Teaching_News_List($this->getPost('Id'));
+		if ($_FILES ['Vcl_File'] ['size'] > 0) {
+			if ($_FILES ['Vcl_File'] ['size']>(1024*1024))
+			{
+				$this->setReturn ( 'parent.form_return("dialog_error(\'缩略图文件大小不能超过1MB！\')");' );
+			}
+			mkdir ( RELATIVITY_PATH . 'userdata/teaching', 0777 );
+			mkdir ( RELATIVITY_PATH . 'userdata/teaching/news', 0777 );
+			$allowpictype = array ('jpg', 'jpeg', 'gif', 'png' );
+			$fileext = strtolower ( trim ( substr ( strrchr ( $_FILES ['Vcl_File'] ['name'], '.' ), 1 ) ) );
+			if (! in_array ( $fileext, $allowpictype )) {
+				$this->setReturn ( 'parent.form_return("dialog_error(\''.Text::Key('PhotoUploadError').'\')");' );
+			}
+			//保存Icon
+			$s_filename=$o_table->getId().'.'.$fileext;
+			copy ( $_FILES ['Vcl_File'] ['tmp_name'], RELATIVITY_PATH . 'userdata/teaching/news/' . $s_filename );
+		}
+		//保存其他数据
+		$o_table->setComment($this->getPost('Comment'));
+		$o_table->setLink($this->getPost('Link'));
+		$o_table->Save();
+		$this->setReturn ( 'parent.form_return("dialog_success(\'修改新闻成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+	}
+	public function NewsListDelete($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120503 ))return; //如果没有权限，不返回任何值
+		$o_table = new Teaching_News_List($this->getPost('id'));
+		unlink(RELATIVITY_PATH.$o_table->getIcon());
+		$o_table->Deletion();
+		$a_general = array (
+				'success' => 1,
+				'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
+	public function NewsRelease($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120503 ))return;//如果没有权限，不返回任何值
+		//检查问卷对象是否被选择
+		$a_target=array();
+		$s_target_name='';
+		$o_class=new Student_Class();
+		$o_class->PushOrder ( array ('Grade','A') );
+		$o_class->PushOrder ( array ('ClassId','A') );
+		$n_count=$o_class->getAllCount();
+		for($i=0;$i<$n_count;$i++)
+		{
+			if ($this->getPost('Target_'.$o_class->getClassId($i))=='on')
+			{
+				array_push($a_target, $o_class->getClassId($i));
+				//区分年级
+				switch ($o_class->getGrade($i))
+				{
+					case 0:
+						$s_grade_name='半日班';
+						break;
+					case 1:
+						$s_grade_name='托班';
+						break;
+					case 2:
+						$s_grade_name='小班';
+						break;
+					case 3:
+						$s_grade_name='中班';
+						break;
+					case 4:
+						$s_grade_name='大班';
+						break;
+				}
+				$s_target_name.=$o_class->getClassName($i).';';
+			}
+		}
+		if ($s_target_name=='')
+		{
+			$this->setReturn ( 'parent.form_return("dialog_message(\'对不起，请选择可观看对象！\')");' );
+		}
+		//修正文字发送对象
+		if($n_count==count($a_target))
+		{
+			$s_target_name='所有在园幼儿;';
+		}
+		$o_survey=new Teaching_News($this->getPost('Id'));
+		if ($o_survey->getState()=='0')
+		{
+			//只有未发布的问卷才能往下进行
+			$o_survey->setReleaseDate($this->GetDateNow());
+			$o_survey->setTargetName(substr($s_target_name,0,strlen($s_target_name)-1));
+			$o_survey->setTarget(json_encode($a_target));
+			$o_survey->setState(1);
+			$o_survey->Save();
+		}else{
+			$this->setReturn ( 'parent.form_return("dialog_message(\'对不起，您进行了非法操作，请与管理员联系！1001\')");' );
+		}
+		//群发微信提醒
+		$o_system_setup=new Base_Setup(1);
+		require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+		for($i=0;$i<count($a_target);$i++)
+		{
+			//获取用户列表
+			$o_stu=new Student_Onboard_Info_Class_Wechat_View();
+			$o_stu->PushWhere ( array ('&&', 'ClassNumber', '=',$a_target[$i]) );
+			for($j=0;$j<$o_stu->getAllCount();$j++)
+			{
+				//添加消息队列
+				$o_msg=new Wechat_Wx_User_Reminder();
+				$o_msg->setUserId($o_stu->getUserId($j));
+				$o_msg->setCreateDate($this->GetDateNow());
+				$o_msg->setSendDate('0000-00-00');
+				$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+				$o_msg->setOpenId($o_stu->getOpenid($j));
+				$o_msg->setActivityId(0);
+				$o_msg->setSend(0);
+				$o_msg->setFirst('最新发布了一个新闻！
+						
+通知类型：新闻
+幼儿姓名：'.$o_stu->getName($j));
+				$o_msg->setKeyword1($o_stu->getClassName($j));
+				$s_teacher_name=$o_user->getName();
+				$o_msg->setKeyword2($s_teacher_name.'老师');
+				$o_msg->setKeyword3($this->GetDate());
+				$o_msg->setKeyword4($this->getPost('Remark'));
+				$o_msg->setKeyword5('');
+				$o_msg->setRemark('');
+				$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_operation/teaching_news_view.php?id='.$this->getPost('Id'));
+				$o_msg->setKeywordSum(10);
+				$o_msg->Save();
+			}
+		}
+		$this->setReturn ( 'parent.form_return("dialog_success(\'发布成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );
 	}
 }
 

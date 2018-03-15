@@ -6,9 +6,9 @@ require_once RELATIVITY_PATH . 'include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'head.php';
 require_once RELATIVITY_PATH . 'sub/teaching/include/db_table.class.php';
 $s_fun='NewsListTable';
-$s_item='Number';
+$s_item='Id';
 $s_page=1;
-$s_sort='D';
+$s_sort='A';
 $s_key=$_GET['id'];
 if($_COOKIE [$s_fun.'Item'])
 {
@@ -24,8 +24,18 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
                             <div class="caption"><?php echo($o_table->getTitle());?>——新闻列表</div>
-                                <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="location='news_list_modify.php'">
+                            <button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;
+                                margin-top: 0px; outline: medium none;margin-left:10px;" onclick="location='news.php'">
+                                <?php echo(Text::Key('Back'))?></button>
+                            <?php 
+                            if ($o_table->getState()==0)
+                            {
+                            	?>
+                            	<button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="location='news_list_modify.php?news_id=<?php echo($o_table->getId())?>'">
                                 <span  class="glyphicon glyphicon-plus"></span>&nbsp;添加新闻</button>
+                            	<?php
+                            }
+                            ?>                                
                             </div>
                         <table class="table table-striped">
                             <thead>

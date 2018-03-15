@@ -236,3 +236,52 @@ function news_delete(id) {
         })
     })
 }
+function news_list_add_submit()
+{
+	if (document.getElementById("Vcl_Comment").value == "") {
+		dialog_message("新闻摘要不能为空！")
+		return
+	}
+	if (document.getElementById("Vcl_Link").value == "") {
+		dialog_message("新闻地址不能为空！")
+		return
+	}	
+	document.getElementById('submit_form').submit();
+	loading_show();
+}
+function news_list_delete(id) {
+    dialog_confirm('真的要删除吗？删除后不能恢复，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=NewsListDelete'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('NewsListTable')
+        	}        	
+        })
+    })
+}
+function news_release()
+{	
+	dialog_confirm('确认要发布吗！<br/><br/>确认后：<br/>1. 将不能被修改。<br/>2. 所有选中班级的幼儿家长将收到微信提醒。<br/><br/>注：该操作不能撤销，请谨慎操作。',function(){
+		if (document.getElementById("Vcl_Remark").value == "") {
+			dialog_message("摘要不能为空！")
+			return
+		}
+		if(check_remark(document.getElementById("Vcl_Remark").value)==false)
+		{
+			dialog_message("摘要不能超过50个字！")
+			return
+		}
+		loading_show();
+		$('#submit_form').submit();	
+	})
+}
+function news_review(id)
+{
+	dialog_message('请使用微信扫描下方二维码进行预览：<br/><br/><img style="width:50%;margin-left:25%" src="news_review_qrcode.php?id='+id+'"/>');
+}
