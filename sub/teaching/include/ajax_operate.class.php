@@ -853,6 +853,41 @@ class Operate extends Bn_Basic {
 				$o_msg->Save();
 			}
 		}
+		//通知所有园长岗位角色
+		$o_teacher=new Base_User_Role_Wechat_View();
+		$o_teacher->PushWhere ( array ('||', 'RoleId', '=',69) );
+		$o_teacher->PushWhere ( array ('||', 'SecRoleId1', '=',69) );
+		$o_teacher->PushWhere ( array ('||', 'SecRoleId2', '=',69) );
+		$o_teacher->PushWhere ( array ('||', 'SecRoleId3', '=',69) );
+		$o_teacher->PushWhere ( array ('||', 'SecRoleId4', '=',69) );
+		$o_teacher->PushWhere ( array ('||', 'SecRoleId5', '=',69) );
+		for($j=0;$j<$o_teacher->getAllCount();$j++)
+		{
+			//添加消息队列
+			$o_msg=new Wechat_Wx_User_Reminder();
+			$o_msg->setUserId($o_teacher->getUid($j));
+			$o_msg->setCreateDate($this->GetDateNow());
+			$o_msg->setSendDate('0000-00-00');
+			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_09'));
+			$o_msg->setOpenId($o_teacher->getOpenid($j));
+			$o_msg->setActivityId(0);
+			$o_msg->setSend(0);
+			$o_msg->setFirst('最新发布了一个新闻！
+					
+（抄送园长角色）
+通知类型：新闻');
+			$o_msg->setKeyword1($s_target_name);
+			$s_teacher_name=$o_user->getName();
+			//$o_msg->setKeyword2(mb_substr($s_teacher_name,0,1,'utf-8').'老师');
+			$o_msg->setKeyword2($s_teacher_name.'老师');
+			$o_msg->setKeyword3($this->GetDate());
+			$o_msg->setKeyword4($this->getPost('Remark'));
+			$o_msg->setKeyword5('');
+			$o_msg->setRemark('');
+			$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/teacher_operation/teaching_news_review.php?id='.$this->getPost('Id'));
+			$o_msg->setKeywordSum(10);
+			$o_msg->Save();
+		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发布成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );
 	}
 }
