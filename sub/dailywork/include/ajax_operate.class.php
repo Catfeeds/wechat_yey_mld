@@ -888,7 +888,8 @@ class Operate extends Bn_Basic {
 	    $a_usefood = new ReflectionClass(Ek_Recomrecipe);
 	    $a_usefood_vals=$a_usefood->getProperties();
 	    $o_temp=new Ek_Recomrecipe();
-	    $o_temp->PushWhere ( array ('&&', 'Id', '<>',0) );
+	    $o_temp->PushOrder ( array ('Recipename','D') );
+	    $o_temp->getAllCount();
 	    //$o_temp->DeletionWhere();
 	    $s_food_menu='';
 	    while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
@@ -904,7 +905,12 @@ class Operate extends Bn_Basic {
 				}
 				if ($a_temp[0]=='Id')
 				{
-					continue;
+					
+				}
+				if ($a_temp[0]=='Recipename' && $o_temp->getRecipename(0)==$row['recipename'])
+				{
+					//如果遇到名称重复的，那么结束
+					break;
 				}
 				eval('$o_temp->set'.$a_temp[0].'($row[\''.strtolower($a_temp[0]).'\']);');
 			}
