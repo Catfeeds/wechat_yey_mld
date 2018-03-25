@@ -893,7 +893,13 @@ class Operate extends Bn_Basic {
 	    //$o_temp->DeletionWhere();
 	    $s_food_menu='';
 	    while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
-	    	$o_temp=new Ek_Recomrecipe();
+	    	if ($o_temp->getRecipename(0)==$row['recipename'])
+	    	{
+	    		//如果名称相同，那么修改
+	    		$o_temp=new Ek_Recomrecipe($o_temp->getId(0));
+	    	}else{
+	    		$o_temp=new Ek_Recomrecipe();
+	    	}	    	
 		    for($i=0;$i<count($a_usefood_vals);$i++)
 			{
 				$s_name=str_replace(' ', '', $a_usefood_vals[$i]);
@@ -906,12 +912,7 @@ class Operate extends Bn_Basic {
 				if ($a_temp[0]=='Id')
 				{
 					
-				}
-				if ($a_temp[0]=='Recipename' && $o_temp->getRecipename(0)==$row['recipename'])
-				{
-					//如果遇到名称重复的，那么结束
-					break;
-				}
+				}				
 				eval('$o_temp->set'.$a_temp[0].'($row[\''.strtolower($a_temp[0]).'\']);');
 			}
 			$o_temp->Save();
