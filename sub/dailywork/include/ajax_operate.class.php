@@ -1458,9 +1458,8 @@ class Operate extends Bn_Basic {
 		$o_user = new Single_User ( $n_uid );
 		if (! $o_user->ValidModule ( 120602 ))return; //如果没有权限，不返回任何值
 		$o_table=new Ek_Recomrecipe($this->getPost ( 'Id' ));
-		$o_old=new Ek_Cuisine($this->getPost ( 'CuisineId' ));
 		$o_new=new Ek_Cuisine($this->getPost ( 'ChangeId' ));
-		$o_table->setRecipe(str_replace('"'.$o_old->getDishnum().'","'.$o_old->getDishname().'"','"'.$o_new->getDishnum().'","'.$o_new->getDishname().'"', $o_table->getRecipe()));
+		$o_table->setRecipe(str_replace('"'.$this->getPost ( 'Dishnum' ).'","'.$this->getPost ( 'Dishname' ).'"','"'.$o_new->getDishnum().'","'.$o_new->getDishname().'"', $o_table->getRecipe()));
 		$o_table->Save();		
 		$this->setReturn ( 'parent.location=\'' . $this->getPost ( 'BackUrl' ) . '\';' );
 	}

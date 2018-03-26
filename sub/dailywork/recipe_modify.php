@@ -7,7 +7,6 @@ require_once RELATIVITY_PATH . 'head.php';
 require_once RELATIVITY_PATH . 'sub/dailywork/include/db_table.class.php';
 ExportMainTitle(MODULEID,$O_Session->getUid());
 //获取子模块菜单
-$o_table=new Ek_Cuisine($_GET['cuisine_id']);
 ?>
 					<div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
@@ -22,12 +21,13 @@ $o_table=new Ek_Cuisine($_GET['cuisine_id']);
 						<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
 						<input type="hidden" name="Vcl_FunName" value="RecipeModify"/>
 						<input type="hidden" name="Vcl_Id" value="<?php echo($_GET['id'])?>"/>
-						<input type="hidden" name="Vcl_CuisineId" value="<?php echo($_GET['cuisine_id'])?>"/>
+						<input type="hidden" name="Vcl_Dishnum" value="<?php echo($_GET['dishnum'])?>"/>
+						<input type="hidden" name="Vcl_Dishname" value="<?php echo($_GET['dishname'])?>"/>
                     	<div class="sss_form">
 	                     	<div class="item">
 	                     		<label>原菜肴：</label>
 	                     		<fieldset disabled>
-	                     		<input maxlength="20" type="text" style="width:100%" class="form-control" value="<?php echo($o_table->getDishname().'  '.$o_table->getDishnum())?>"/>
+	                     		<input maxlength="20" type="text" style="width:100%" class="form-control" value="<?php echo($_GET['dishname'].'  '.$_GET['dishnum'])?>"/>
 	                     		</fieldset>
 	                     	</div>	
 	                     	<div class="item">

@@ -43,7 +43,7 @@ $a_food=json_decode($o_table->getRecipe());
 							
 						</td>
 						<td>
-							'.$a_temp_3[1].'&nbsp;&nbsp;<span style="color:#999999">'.$a_temp_3[0].'</span>&nbsp;&nbsp;<a title="更换" href="recipe_modify.php?id='.$_GET['id'].'&cuisine_id='.$a_temp_3[0].'"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a> 
+							'.$a_temp_3[1].'&nbsp;&nbsp;<span style="color:#999999">'.$a_temp_3[0].'</span>&nbsp;&nbsp;<a title="更换" href="recipe_modify.php?id='.$_GET['id'].'&dishnum='.$a_temp_3[0].'&dishname='.rawurlencode($a_temp_3[1]).'"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a> 
 						</td>
 					<tr>
 		    		%data%', $a_html[$j]);  			
