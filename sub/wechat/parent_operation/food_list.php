@@ -29,14 +29,16 @@ $o_onboard->getAllCount();
     </div>
     <div class="page__bd">
     <?php
-    $a_week=array('星期一','星期二','星期三','星期四','星期五');
+    $a_week=array('星期一','星期二','星期三','星期四','星期五','星期六','星期日');
     $a_day=array('早餐','加餐','午餐','午点','晚餐');
     $a_html=array(
     	'<div class="weui-cells__title">'.$a_week[0].'</div><div class="weui-cells">',
     	'<div class="weui-cells__title">'.$a_week[1].'</div><div class="weui-cells">',
     	'<div class="weui-cells__title">'.$a_week[2].'</div><div class="weui-cells">',
     	'<div class="weui-cells__title">'.$a_week[3].'</div><div class="weui-cells">',
-    	'<div class="weui-cells__title">'.$a_week[4].'</div><div class="weui-cells">'
+    	'<div class="weui-cells__title">'.$a_week[4].'</div><div class="weui-cells">',
+    	'<div class="weui-cells__title">'.$a_week[5].'</div><div class="weui-cells">',
+    	'<div class="weui-cells__title">'.$a_week[6].'</div><div class="weui-cells">'
     );
     $a_food=json_decode($o_table->getRecipe(0));
     //循环输出菜谱
@@ -51,13 +53,25 @@ $o_onboard->getAllCount();
     	for($j=0;$j<count($a_html);$j++)
     	{
     		$a_temp_2=$a_temp[$j];
-    		$a_html[$j].='    		
-    			<div class="weui-cell">
-	                <div class="weui-cell__bd">
-	                    <p style="text-align:center">'.$a_day[$i].'</p>
-	                </div>
-	            </div>
-    		'; 
+    		if (count($a_temp_2)>0)
+    		{
+    			$a_html[$j].='
+	    			<div class="weui-cell">
+		                <div class="weui-cell__bd">
+		                    <p style="text-align:center">'.$a_day[$i].'</p>
+		                </div>
+		            </div>
+	    		'; 
+    		}else if ($i==0){
+    			//当没有内容的时候，显示“无”
+    			$a_html[$j].='
+	    			<div class="weui-cell">
+		                <div class="weui-cell__bd">
+		                    <p style="text-align:center">无</p>
+		                </div>
+		            </div>
+	    		'; 
+    		}    		
     		for($k=0;$k<count($a_temp_2);$k++)
     		{
     			$a_temp_3=$a_temp_2[$k];
