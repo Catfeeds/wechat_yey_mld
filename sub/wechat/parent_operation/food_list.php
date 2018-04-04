@@ -62,7 +62,7 @@ $o_onboard->getAllCount();
 		                </div>
 		            </div>
 	    		'; 
-    		}else if ($i==0){
+    		}else if ($i==0 || ($o_onboard->getGrade(0)==2 && $i==2)){
     			//当没有内容的时候，显示“无”
     			$a_html[$j].='
 	    			<div class="weui-cell">
@@ -71,7 +71,7 @@ $o_onboard->getAllCount();
 		                </div>
 		            </div>
 	    		'; 
-    		}    		
+    		} 		
     		for($k=0;$k<count($a_temp_2);$k++)
     		{
     			$a_temp_3=$a_temp_2[$k];
