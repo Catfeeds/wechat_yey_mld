@@ -888,18 +888,18 @@ class Operate extends Bn_Basic {
 	    $a_usefood = new ReflectionClass(Ek_Recomrecipe);
 	    $a_usefood_vals=$a_usefood->getProperties();
 	    $o_temp=new Ek_Recomrecipe();
-	    $o_temp->PushOrder ( array ('Recipename','D') );
+	    $o_temp->PushOrder ( array ('Id','D') );
 	    $o_temp->getAllCount();
 	    //$o_temp->DeletionWhere();
 	    $s_food_menu='';
-	    while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
+	    while($row = $ret->fetchArray(SQLITE3_ASSOC) ){	    	
 	    	if ($o_temp->getRecipename(0)==$row['recipename'])
 	    	{
 	    		//如果名称相同，那么修改
 	    		$o_temp=new Ek_Recomrecipe($o_temp->getId(0));
 	    	}else{
-	    		$o_temp=new Ek_Recomrecipe();
-	    	}	    	
+	    		$o_temp=new Ek_Recomrecipe();	    		
+	    	}	   	
 		    for($i=0;$i<count($a_usefood_vals);$i++)
 			{
 				$s_name=str_replace(' ', '', $a_usefood_vals[$i]);
@@ -911,7 +911,7 @@ class Operate extends Bn_Basic {
 				}
 				if ($a_temp[0]=='Id')
 				{
-					
+					continue;
 				}				
 				eval('$o_temp->set'.$a_temp[0].'($row[\''.strtolower($a_temp[0]).'\']);');
 			}
