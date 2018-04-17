@@ -35,6 +35,12 @@ $(function(){
 	    	search_for_teacher_survey_manage_answered()   
 	    }  
 	}); 
+	$('#Vcl_KeyAppraiseManage').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_appraise_manage()   
+	    }  
+	}); 
 	$('ins').click(function(){
 		//先获得自己是否选中
 		var parent=this.parentNode
@@ -435,4 +441,83 @@ function teacher_survey_manage_remember(id) {
         	}        	
         })
     })
+}
+function search_for_appraise_manage()
+{
+	var fun='AppraiseManage';
+	var id='Vcl_KeyAppraiseManage'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+"Key",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,encodeURIComponent(document.getElementById(id).value),'');    
+}
+function appraise_manage_modify()
+{	
+    var val = $('#Vcl_Title').val();
+    if (val.length == 0) {
+        dialog_message('对不起，问卷标题不能为空！')
+        return
+    }
+	loading_show();
+	$('#submit_form').submit();
+}
+function appraise_manage_delete(id) {
+    dialog_confirm('真的要删除这个问卷吗？删除后不能恢复，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=AppraiseManageDelete'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('AppraiseManage')
+        	}        	
+        })
+    })
+}
+function appraise_manage_release(id) {
+	dialog_confirm('真的要发布这个问卷吗？<br/>发布后不能修改，请谨慎操作。',function(){
+		$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=AppraiseManageRelease'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('AppraiseManage')
+        	}      	
+        })
+    })
+}
+function appraise_manage_question_modify()
+{	
+    var val = $('#Vcl_Question').val();
+    if (val.length == 0) {
+        dialog_message('对不起，题目不能为空！')
+        return
+    }
+	if ($('#Vcl_Type').val()=='3' || $('#Vcl_Type').val()=='4')
+	{
+		
+	}else{
+		var val = $('#Vcl_Option_1').val();
+	    if (val.length == 0) {
+	        dialog_message('对不起，选项A不能为空！')
+	        return
+	    }
+	    var val = $('#Vcl_Option_2').val();
+	    if (val.length == 0) {
+	    	dialog_message('对不起，选项B不能为空！')
+	        return
+	    }
+	}    
+	loading_show();
+	$('#submit_form').submit();
 }
