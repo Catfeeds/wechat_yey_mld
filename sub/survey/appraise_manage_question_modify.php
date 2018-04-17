@@ -34,7 +34,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                             if($_GET['questionid']>0)
                             {
                             	$o_table=new Survey_Appraise_Questions($_GET['questionid']);
-                            	$o_parent=new Survey_Appraise($o_table->getSurveyId());
+                            	$o_parent=new Survey_Appraise($o_table->getAppraiseId());
                             	$s_funname='AppraiseManageQuestionModify'; 
                             	echo('修改题目');
 								if($o_parent->getState()!='0')
@@ -63,7 +63,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 	                     		if($_GET['questionid']>0)
 	                     		{
 		                     		$o_temp=new Survey_Appraise_Questions();
-		                     		$o_temp->PushWhere ( array ('&&', 'AppraiseId', '=',$o_table->getId()) );
+		                     		$o_temp->PushWhere ( array ('&&', 'AppraiseId', '=',$o_parent->getId()) );
 		                     		$n_count=$o_temp->getAllCount();
 		                     		for($i=0;$i<$n_count;$i++)
 		                     		{
@@ -173,7 +173,7 @@ $('#Vcl_Number').val('<?php echo($o_table->getNumber())?>');
 	}
 }
 ?>
-change_type(document.getElementById('Vcl_Type'))
+change_type(document.getElementById('Vcl_Type'));
 </script>
 <?php
 require_once RELATIVITY_PATH . 'foot.php';

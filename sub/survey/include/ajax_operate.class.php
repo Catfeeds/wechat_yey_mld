@@ -2033,21 +2033,8 @@ class Operate extends Bn_Basic {
 			if($o_user->getState($i)==1)
 			{
 				$s_state='<span class="label label-success">已发布</span>';
-				array_push ( $a_button, array ('查看统计', "location='parent_survey_manage_summary.php?id=".$o_user->getId($i)."'" ) );
-				array_push ( $a_button, array ('再次提醒', "parent_survey_manage_remember(".$o_user->getId($i).")" ) );
-				array_push ( $a_button, array ('进度详情', "location='parent_survey_manage_progress.php?id=".$o_user->getId($i)."'" ) );
-				array_push ( $a_button, array ('结束问卷', "parent_survey_manage_end(".$o_user->getId($i).")" ) );
-				array_push ( $a_button, array ('复制问卷', "parent_survey_manage_copy(".$o_user->getId($i).")" ) );
-				if ($o_operator->getRoleId()==1)
-				{
-					//如果是超级管理员，那么可以删除
-					array_push ( $a_button, array ('删除', "parent_survey_manage_delete(".$o_user->getId($i).")" ) );
-				}
-			}elseif ($o_user->getState($i)==2){
-				$s_state='<span class="label label-danger">已结束</span>';
-				array_push ( $a_button, array ('查看统计', "location='parent_survey_manage_summary.php?id=".$o_user->getId($i)."'" ) );
-				array_push ( $a_button, array ('查看答卷', "location='parent_survey_manage_answered.php?id=".$o_user->getId($i)."'" ) );//删除
-				array_push ( $a_button, array ('复制问卷', "parent_survey_manage_copy(".$o_user->getId($i).")" ) );
+				array_push ( $a_button, array ('查看原题', "location='appraise_manage_view.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('评价结果', "location='appraise_manage_result.php?id=".$o_user->getId($i)."'" ) );
 				if ($o_operator->getRoleId()==1)
 				{
 					//如果是超级管理员，那么可以删除
@@ -2200,44 +2187,49 @@ class Operate extends Bn_Basic {
 			$s_question='&nbsp;&nbsp;'.$o_user->getQuestion( $i );
 			$s_option='<span class="glyphicon glyphicon-chevron-down"></span>';
 			if ($o_user->getType ( $i )==1)
-				$s_type='单选';
-				if ($o_user->getType ( $i )==2)
-					$s_type='多选';
-					if ($o_user->getType ( $i )==3)
-					{
-						$s_type='简述';
-						$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
-					}
-					if ($o_user->getType ( $i )==4)
-					{
-						$s_type='子标题';
-						$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
-						$s_question='<b style="font-size:14px;">'.$o_user->getQuestion( $i ).'</b>';
-						$s_number='<span class="glyphicon glyphicon glyphicon-minus"></span>';
-						$n_number--;
-					}
-					array_push ($a_row, array (
-							$s_number,
-							'<span style="color:red">*</span>'.$s_question,
-							$s_type,
-							$s_option,
-							$a_button
-					));
-					//循环读取选项
-					$o_option=new Survey_Appraise_Options();
-					$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
-					$o_option->PushOrder ( array ('Id','A') );
-					for($j=0;$j<$o_option->getAllCount();$j++)
-					{
-						array_push ($a_row, array (
-								'',
-								'',
-								'',
-								$o_option->getNumber($j).'. '.$o_option->getOption($j),
-								array ()
-						));
-					}
-					$n_number++;
+			$s_type='单选';
+			if ($o_user->getType ( $i )==2)
+			$s_type='多选';
+			if ($o_user->getType ( $i )==3)
+			{
+				$s_type='简述';
+				$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+			}
+			if ($o_user->getType ( $i )==4)
+			{
+				$s_type='子标题';
+				$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+				$s_question='<b style="font-size:14px;">'.$o_user->getQuestion( $i ).'</b>';
+				$s_number='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+				$n_number--;
+			}
+			$s_ismust='';
+			if ($o_user->getIsMust ( $i )==1)
+			{
+				$s_ismust='<span style="color:red">*</span>';
+			}
+			array_push ($a_row, array (
+					$s_number,
+					$s_ismust.$s_question,
+					$s_type,
+					$s_option,
+					$a_button
+			));
+			//循环读取选项
+			$o_option=new Survey_Appraise_Options();
+			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
+			$o_option->PushOrder ( array ('Id','A') );
+			for($j=0;$j<$o_option->getAllCount();$j++)
+			{
+				array_push ($a_row, array (
+						'',
+						'',
+						'',
+						$o_option->getNumber($j).'. '.$o_option->getOption($j),
+						array ()
+				));
+			}
+			$n_number++;
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
@@ -2275,7 +2267,7 @@ class Operate extends Bn_Basic {
 			$o_question->Save();
 			$this->QuestionSortForAppraise($o_question->getId(), $this->getPost('Number'), $this->getPost('Id'));
 			//循环添加选项
-			$a_number=array('C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T');
+			$a_number=array('','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T');
 			for($i=1;$i<=10;$i++)
 			{
 				if ($this->getPost('Option_'.$i)=='')
@@ -2306,6 +2298,202 @@ class Operate extends Bn_Basic {
 			}
 			$o_focus->Save ();
 		}
+	}
+	public function AppraiseManageQuestionModify($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		sleep(1);
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120403 ))return; //如果没有权限，不返回任何值
+		$o_question=new Survey_Appraise_Questions($this->getPost('QuestionId'));
+		$o_survey = new Survey_Appraise ($o_question->getAppraiseId());
+		if ($o_survey->getState()=='0')
+		{
+			//如果为未发布，才可以更改
+			$o_question->setQuestion($this->getPost('Question'));
+			$o_question->setType($this->getPost('Type'));
+			$o_question->setNumber($this->getPost('Number'));
+			$o_question->setIsMust($this->getPost('IsMust'));
+			$o_question->Save();
+			$this->QuestionSortForAppraise($o_question->getId(), $this->getPost('Number'), $o_question->getAppraiseId());
+			//循环添加选项
+			$o_option=new Survey_Appraise_Options();
+			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId()) );
+			$o_option->DeletionWhere();
+			$a_number=array('','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T');
+			for($i=1;$i<=10;$i++)
+			{
+				if ($this->getPost('Option_'.$i)=='')
+				{
+					break;
+				}
+				$o_option=new Survey_Appraise_Options();
+				$o_option->setQuestionId($o_question->getId());
+				$o_option->setNumber($a_number[$i]);
+				$o_option->setOption($this->getPost('Option_'.$i));
+				$o_option->Save();
+			}
+		}
+		$this->setReturn ( 'parent.form_return("dialog_success(\'修改题目成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+	}
+	public function AppraiseManageQuestionDelete($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120403 ))return; //如果没有权限，不返回任何值
+		$o_question=new Survey_Appraise_Questions($this->getPost('id'));
+		$o_survey = new Survey_Appraise ($o_question->getAppraiseId());
+		if ($o_survey->getState()=='0')
+		{
+			$o_question->Deletion();
+			$o_option=new Survey_Appraise_Options();
+			$o_option->PushWhere ( array ('&&', 'QuestionId', '=', $this->getPost('id') ) );
+			$o_option->DeletionWhere();
+			$this->QuestionSortForAppraise($this->getPost('id'),100, $o_survey->getId());
+		}
+		$a_general = array (
+				'success' => 1,
+				'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
+	public function AppraiseManageView($n_uid)
+	{
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120403 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_user = new Survey_Appraise_Questions();
+		$s_id=$this->getPost('key');
+		$o_survey=new Survey_Appraise($s_id);
+		$o_user->PushWhere ( array ('&&', 'AppraiseId', '=',$s_id) );
+		$o_user->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_user->setCountLine ( $this->N_PageSize );
+		$n_count = $o_user->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_user->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_user->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_user->getAllCount ();//总记录数
+		$n_count = $o_user->getCount ();
+		$a_row = array ();
+		$n_number=1;
+		for($i = 0; $i < $n_count; $i ++) {
+			$a_button = array ();
+			$s_type='';
+			$s_number='<span class="label label-success">'.$n_number.'</span>';
+			$s_question='&nbsp;&nbsp;'.$o_user->getQuestion( $i );
+			$s_option='<span class="glyphicon glyphicon-chevron-down"></span>';
+			if ($o_user->getType ( $i )==1)
+			$s_type='单选';
+			if ($o_user->getType ( $i )==2)
+			$s_type='多选';
+			if ($o_user->getType ( $i )==3)
+			{
+				$s_type='简述';						
+			}
+			if ($o_user->getType ( $i )==4)
+			{
+				$s_type='子标题';
+				$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+				$s_question='<b style="font-size:14px;">'.$o_user->getQuestion( $i ).'</b>';
+				$s_number='<span class="glyphicon glyphicon glyphicon-minus"></span>';
+				$n_number--;
+			}
+			$s_ismust='';
+			if ($o_user->getIsMust ( $i )==1)
+			{
+				$s_ismust='<span style="color:red">*</span>';
+			}
+			array_push ($a_row, array (
+					$s_number,
+					$s_ismust.$s_question,
+					$s_type,
+					$s_option,
+			));
+			//循环读取选项
+			$o_option=new Survey_Appraise_Options();
+			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
+			$o_option->PushOrder ( array ('Id','A') );
+			for($j=0;$j<$o_option->getAllCount();$j++)
+			{
+				$a_button = array ();						
+				array_push ($a_row, array (
+						'',
+						'',
+						'',
+						$o_option->getNumber($j).'. '.$o_option->getOption($j),
+				));
+			}
+			$n_number++;
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,'题号', '', 70, 0);
+		$a_title=$this->setTableTitle($a_title,'问题', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'类型', '', 120, 0);
+		$a_title=$this->setTableTitle($a_title,'选项', '', 0, 0);
+		$this->SendJsonResultForTable($n_allcount,'AppraiseManageView', 'no', $n_page, $a_title, $a_row);
+	}
+	public function AppraiseManageResult($n_uid)
+	{
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120403 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_table = new Survey_Appraise_Answers_View();
+		if ($this->getPost('other_key')!='')
+		{
+			$o_table->PushWhere ( array ('||', 'ClassName', 'like','%'.$this->getPost('other_key').'%') );
+			$o_table->PushWhere ( array ('&&', 'AppraiseId', '=',$this->getPost('key')) );
+		}else{
+			$o_table->PushWhere ( array ('&&', 'AppraiseId', '=',$this->getPost('key')) );
+		}
+		$o_table->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_table->setCountLine ( $this->N_PageSize );
+		$n_count = $o_table->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_table->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_table->getAllCount ();//总记录数
+		$n_count = $o_table->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$a_button = array ();
+			array_push ( $a_button, array ('查看答卷', "location='parent_survey_manage_progress_sheet.php?id=".$o_table->getId($i)."'" ) );//删除
+			array_push ($a_row, array (
+					($i+1+$this->N_PageSize*($n_page-1)),
+					$o_table->getName ( $i ),
+					$o_table->getClassName ( $i ),
+					$o_table->getSex ( $i ),
+					$o_table->getCardId ( $i ),
+					$a_button
+			));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'幼儿姓名', 'Name', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassName', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'性别', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'证件号', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
+		$this->SendJsonResultForTable($n_allcount,'AppraiseManageResult', 'yes', $n_page, $a_title, $a_row);
 	}
 }
 ?>

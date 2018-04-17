@@ -27,7 +27,7 @@ CREATE TABLE `survey_appraise_answers` (
   `appraise_id` mediumint(8) unsigned NOT NULL COMMENT '问卷编号',
   `uid` mediumint(8) unsigned NOT NULL COMMENT '微信用户id',
   `info` text COLLATE utf8_unicode_ci NOT NULL COMMENT '信息',
-  `school_id` mediumint(8) unsigned NOT NULL COMMENT '学校编号',
+  `class_id` mediumint(8) unsigned NOT NULL COMMENT '学校编号',
   `date` datetime NOT NULL COMMENT '答题日期',
   `parameter` text COLLATE utf8_unicode_ci NOT NULL COMMENT '网址参数',
   `suggest` char(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '建议',
@@ -89,73 +89,7 @@ CREATE TABLE `survey_appraise_answers` (
 -- 
 -- Stand-in structure for view `survey_appraise_answers_view`
 -- 
-CREATE TABLE `survey_appraise_answers_view` (
-`id` mediumint(8) unsigned
-,`appraise_id` mediumint(8) unsigned
-,`suggest` char(255)
-,`parameter` text
-,`is_auto` int(1) unsigned
-,`uid` mediumint(8) unsigned
-,`school_id` mediumint(8) unsigned
-,`school_name` char(20)
-,`owner_name` char(20)
-,`appraise_title` char(255)
-,`appraise_state` int(1) unsigned
-,`appraise_type` char(255)
-,`appraise_info` text
-,`info` text
-,`date` datetime
-,`answer_1` text
-,`answer_2` text
-,`answer_3` text
-,`answer_4` text
-,`answer_5` text
-,`answer_6` text
-,`answer_7` text
-,`answer_8` text
-,`answer_9` text
-,`answer_10` text
-,`answer_11` text
-,`answer_12` text
-,`answer_13` text
-,`answer_14` text
-,`answer_15` text
-,`answer_16` text
-,`answer_17` text
-,`answer_18` text
-,`answer_19` text
-,`answer_20` text
-,`answer_21` text
-,`answer_22` text
-,`answer_23` text
-,`answer_24` text
-,`answer_25` text
-,`answer_26` text
-,`answer_27` text
-,`answer_28` text
-,`answer_29` text
-,`answer_30` text
-,`answer_31` text
-,`answer_32` text
-,`answer_33` text
-,`answer_34` text
-,`answer_35` text
-,`answer_36` text
-,`answer_37` text
-,`answer_38` text
-,`answer_39` text
-,`answer_40` text
-,`answer_41` text
-,`answer_42` text
-,`answer_43` text
-,`answer_44` text
-,`answer_45` text
-,`answer_46` text
-,`answer_47` text
-,`answer_48` text
-,`answer_49` text
-,`answer_50` text
-);
+
 -- --------------------------------------------------------
 
 -- 
@@ -213,4 +147,6 @@ INSERT INTO `survey_appraise_info_item` (`id`, `name`, `type`, `number`) VALUES
 (9, '班级', '中小学主题班（队）会', 1),
 (10, '班会主题', '中小学主题班（队）会', 2);
 
+----survey_appraise_answers_view----
+select `survey_appraise_answers`.`id` AS `id`,`survey_appraise_answers`.`appraise_id` AS `appraise_id`,`survey_appraise_answers`.`suggest` AS `suggest`,`survey_appraise_answers`.`parameter` AS `parameter`,`survey_appraise`.`is_auto` AS `is_auto`,`survey_appraise_answers`.`uid` AS `uid`,`wechat_base_user_info`.`name` AS `owner_name`,`survey_appraise`.`title` AS `appraise_title`,`survey_appraise`.`state` AS `appraise_state`,`survey_appraise`.`type` AS `appraise_type`,`survey_appraise`.`info` AS `appraise_info`,`survey_appraise_answers`.`info` AS `info`,`survey_appraise_answers`.`date` AS `date`,`survey_appraise_answers`.`answer_1` AS `answer_1`,`survey_appraise_answers`.`answer_2` AS `answer_2`,`survey_appraise_answers`.`answer_3` AS `answer_3`,`survey_appraise_answers`.`answer_4` AS `answer_4`,`survey_appraise_answers`.`answer_5` AS `answer_5`,`survey_appraise_answers`.`answer_6` AS `answer_6`,`survey_appraise_answers`.`answer_7` AS `answer_7`,`survey_appraise_answers`.`answer_8` AS `answer_8`,`survey_appraise_answers`.`answer_9` AS `answer_9`,`survey_appraise_answers`.`answer_10` AS `answer_10`,`survey_appraise_answers`.`answer_11` AS `answer_11`,`survey_appraise_answers`.`answer_12` AS `answer_12`,`survey_appraise_answers`.`answer_13` AS `answer_13`,`survey_appraise_answers`.`answer_14` AS `answer_14`,`survey_appraise_answers`.`answer_15` AS `answer_15`,`survey_appraise_answers`.`answer_16` AS `answer_16`,`survey_appraise_answers`.`answer_17` AS `answer_17`,`survey_appraise_answers`.`answer_18` AS `answer_18`,`survey_appraise_answers`.`answer_19` AS `answer_19`,`survey_appraise_answers`.`answer_20` AS `answer_20`,`survey_appraise_answers`.`answer_21` AS `answer_21`,`survey_appraise_answers`.`answer_22` AS `answer_22`,`survey_appraise_answers`.`answer_23` AS `answer_23`,`survey_appraise_answers`.`answer_24` AS `answer_24`,`survey_appraise_answers`.`answer_25` AS `answer_25`,`survey_appraise_answers`.`answer_26` AS `answer_26`,`survey_appraise_answers`.`answer_27` AS `answer_27`,`survey_appraise_answers`.`answer_28` AS `answer_28`,`survey_appraise_answers`.`answer_29` AS `answer_29`,`survey_appraise_answers`.`answer_30` AS `answer_30`,`survey_appraise_answers`.`answer_31` AS `answer_31`,`survey_appraise_answers`.`answer_32` AS `answer_32`,`survey_appraise_answers`.`answer_33` AS `answer_33`,`survey_appraise_answers`.`answer_34` AS `answer_34`,`survey_appraise_answers`.`answer_35` AS `answer_35`,`survey_appraise_answers`.`answer_36` AS `answer_36`,`survey_appraise_answers`.`answer_37` AS `answer_37`,`survey_appraise_answers`.`answer_38` AS `answer_38`,`survey_appraise_answers`.`answer_39` AS `answer_39`,`survey_appraise_answers`.`answer_40` AS `answer_40`,`survey_appraise_answers`.`answer_41` AS `answer_41`,`survey_appraise_answers`.`answer_42` AS `answer_42`,`survey_appraise_answers`.`answer_43` AS `answer_43`,`survey_appraise_answers`.`answer_44` AS `answer_44`,`survey_appraise_answers`.`answer_45` AS `answer_45`,`survey_appraise_answers`.`answer_46` AS `answer_46`,`survey_appraise_answers`.`answer_47` AS `answer_47`,`survey_appraise_answers`.`answer_48` AS `answer_48`,`survey_appraise_answers`.`answer_49` AS `answer_49`,`survey_appraise_answers`.`answer_50` AS `answer_50`,`survey_appraise_answers`.`class_id` AS `class_id`,`student_class`.`class_name` AS `class_name` from (((`survey_appraise_answers` join `wechat_base_user_info` on((`survey_appraise_answers`.`uid` = `wechat_base_user_info`.`uid`))) join `survey_appraise` on((`survey_appraise_answers`.`appraise_id` = `survey_appraise`.`id`))) join `student_class` on((`student_class`.`class_id` = `survey_appraise_answers`.`class_id`)))
 

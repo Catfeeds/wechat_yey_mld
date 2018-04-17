@@ -520,7 +520,7 @@ class Survey_Appraise_Answers extends CRUD
 	protected $AppraiseId;
 	protected $Uid;
 	protected $Info;
-	protected $SchoolId;
+	protected $ClassId;
 	protected $Date;
 	protected $Parameter;
 	protected $Suggest;
@@ -590,7 +590,7 @@ class Survey_Appraise_Answers extends CRUD
 				'appraise_id' => 'AppraiseId',
 				'uid' => 'Uid',
 				'info' => 'Info',
-				'school_id' => 'SchoolId',
+				'class_id' => 'ClassId',
 				'parameter' => 'Parameter',
 				'suggest' => 'Suggest',
 				'date' => 'Date',
@@ -704,6 +704,7 @@ class Survey_Appraise_Questions extends CRUD
 	protected $Question;
 	protected $Type;
 	protected $Number;
+	protected $IsMust;
 	
 	protected function DefineKey()
 	{
@@ -720,6 +721,7 @@ class Survey_Appraise_Questions extends CRUD
 				'appraise_id' => 'AppraiseId',
 				'question' => 'Question',
 				'type' => 'Type',
+				'is_must' => 'IsMust',
 				'number' => 'Number'
 		));
 	}
@@ -732,8 +734,8 @@ class Survey_Appraise_Answers_View extends CRUD
 	protected $Parameter;
 	protected $IsAuto;
 	protected $Uid;
-	protected $SchoolId;
-	protected $SchoolName;
+	protected $ClassId;
+	protected $ClassName;
 	protected $OwnerName;
 	protected $AppraiseTitle;
 	protected $AppraiseState;
@@ -809,8 +811,8 @@ class Survey_Appraise_Answers_View extends CRUD
 				'parameter' => 'Parameter',
 				'is_auto' => 'IsAuto',
 				'uid' => 'Uid',
-				'school_id' => 'SchoolId',
-				'school_name' => 'SchoolName',
+				'class_id' => 'ClassId',
+				'class_name' => 'ClassName',
 				'owner_name' => 'OwnerName',
 				'appraise_title' => 'AppraiseTitle',
 				'appraise_state' => 'AppraiseState',

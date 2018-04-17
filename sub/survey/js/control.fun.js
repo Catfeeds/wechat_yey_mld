@@ -521,3 +521,19 @@ function appraise_manage_question_modify()
 	loading_show();
 	$('#submit_form').submit();
 }
+function appraise_manage_question_delete(id) {
+    dialog_confirm('真的要删除这个问题吗？删除后不能恢复，请谨慎操作。',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=AppraiseManageQuestionDelete'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('AppraiseManageQuestion')
+        	}        	
+        })
+    })
+}

@@ -50,7 +50,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 					</script>
 		
 <script>
-//clear_cookie('ParentSurveyManageSummary');//从第一页开始显示
+clear_cookie('AppraiseManageView');//从第一页开始显示
 //clear_cookie('ParentSurveyManageAnswered');//从第一页开始显示
 //clear_cookie('ParentSurveyManageProgress');//从第一页开始显示
 var table='<?php echo($s_fun)?>';
