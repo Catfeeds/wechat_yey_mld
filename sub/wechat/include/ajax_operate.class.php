@@ -1790,7 +1790,7 @@ class Operate extends Bn_Basic {
 					$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'“第'.$o_question->getNumber($i).'题”未作答！\');' );
 				}
 				array_push($a_question_result,$a_temp);
-			}elseif ($o_question->getType($i)==4){
+			}elseif ($o_question->getType($i)==3){
 				//简述
 				if ($this->getPost('Question_'.$o_question->getId($i))=='' && $o_question->getIsMust($i)==1)
 				{

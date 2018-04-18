@@ -33,7 +33,7 @@ if($o_survey->getState()!='1')
 	echo "<script>location.href='access_failed.php'</script>"; 
 	exit(0);
 }
-if((int)$_GET['school_id']>0)
+if((int)$_GET['class_id']>0)
 {
 
 }else{
@@ -43,7 +43,7 @@ if((int)$_GET['school_id']>0)
 //查看这个督学是否已经评价过该项目
 $o_answer=new Survey_Appraise_Answers();
 $o_answer->PushWhere ( array ('&&', 'Uid', '=',$o_temp->getUid(0)) ); 
-$o_answer->PushWhere ( array ('&&', 'Parameter', '=',$_SERVER['QUERY_STRING']) ); 
+$o_answer->PushWhere ( array ('&&', 'ClassId', '=',$_GET['class_id']) ); 
 $o_answer->getAllCount();
 
 
@@ -94,8 +94,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 		<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 		<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
 		<input type="hidden" id="Vcl_FunName" name="Vcl_FunName" value="AppraiseAnswer"/>
-		<input type="hidden" name="Vcl_Parameter" value="<?php echo($_SERVER['QUERY_STRING'])?>"/>
-		<input type="hidden" name="Vcl_SchoolId" value="<?php echo($_GET['school_id'])?>"/>
+		<input type="hidden" name="Vcl_ClassId" value="<?php echo($_GET['class_id'])?>"/>
 		<input type="hidden" name="Vcl_Id" value="<?php echo($_GET['id'])?>"/>
 		<input type="hidden" name="Vcl_AnswerId" value="<?php 
 		if ($o_answer->getAllCount()>0)
@@ -109,17 +108,6 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 	    </div>
 	    <div class="weui-cells__title">评价表基本信息</div>
 	    <div class="weui-cells weui-cells_form">
-	    	<?php 
-	    	$o_dept=new Base_Dept();
-	    	$o_dept->PushWhere ( array ('&&', 'DeptId', '=',$_GET['school_id']) ); 
-	    	$o_dept->getAllCount();
-	    	?>
-	    	<div class="weui-cell">
-	            <div class="weui-cell__hd"><label class="weui-label">学校名称</label></div>
-	            <div class="weui-cell__bd">
-	                <input readonly="readonly" class="weui-input" value="<?php echo($o_dept->getName(0))?>" name="" type="text" placeholder="必填">
-	            </div>
-	        </div>
 	    	<?php 
 	    		$a_vcl=json_decode($o_survey->getInfo());
 	    		for($i=0;$i<count($a_vcl);$i++)
@@ -253,12 +241,6 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 		            </div>
 		        </div>				
 	    		');
-	    	}else{
-	    		//简答
-	    		echo('
-	    		<div class="weui-cells__title sub_title">'.$o_question->getQuestion($i).'</div>	    		
-	    		');
-	    		$n_number--;
 	    	}
 	    	$n_number++;
 	    }

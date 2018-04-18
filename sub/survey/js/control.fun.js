@@ -41,6 +41,12 @@ $(function(){
 	    	search_for_appraise_manage()   
 	    }  
 	}); 
+	$('#Vcl_KeyAppraiseManageResult').keypress(function(event){  
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    if(keycode == '13'){  
+	    	search_for_appraise_manage_result()   
+	    }  
+	}); 	
 	$('ins').click(function(){
 		//先获得自己是否选中
 		var parent=this.parentNode
@@ -96,6 +102,18 @@ function search_for_teacher_survey_manage_answered()
 {
 	var fun='TeacherSurveyManageAnswered';
 	var id='Vcl_KeyTeacherSurveyManageAnswered'
+	$('.small_loading').fadeIn(100);
+	$.cookie(fun+"Page",1);
+	$.cookie(fun+$.cookie(fun+"Key")+"OtherKey",document.getElementById(id).value);
+	var sort=$.cookie(fun+"Sort"); 
+	var item=$.cookie(fun+"Item"); 
+	var key=$.cookie(fun+"Key");
+	table_load(fun,item,sort,1,key,encodeURIComponent(document.getElementById(id).value));    
+}
+function search_for_appraise_manage_result()
+{
+	var fun='AppraiseManageResult';
+	var id='Vcl_KeyAppraiseManageResult'
 	$('.small_loading').fadeIn(100);
 	$.cookie(fun+"Page",1);
 	$.cookie(fun+$.cookie(fun+"Key")+"OtherKey",document.getElementById(id).value);

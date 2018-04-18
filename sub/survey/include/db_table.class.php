@@ -581,7 +581,7 @@ class Survey_Appraise_Answers extends CRUD
 	}
 	protected function DefineTableName()
 	{
-		return 'zhdd_appraise_answers';
+		return 'survey_appraise_answers';
 	}
 	protected function DefineRelationMap()
 	{

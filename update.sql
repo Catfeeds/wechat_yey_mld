@@ -1,4 +1,4 @@
-INSERT INTO `wechat_yey_mld`.`wechat_base_module` (`module_id`, `name`, `module`, `explain`, `icon_id`, `path`, `parent_module_id`, `mini_icon_id`, `wait_read_table`) VALUES ('120403', '评价问卷', '204_02_0', '', '120400', 'sub/survey/appraise_manage.php', '120400', '120400', '');
+INSERT INTO `wechat_yey_mld`.`wechat_base_module` (`module_id`, `name`, `module`, `explain`, `icon_id`, `path`, `parent_module_id`, `mini_icon_id`, `wait_read_table`) VALUES ('120403', '评价问卷', '204_03_0', '', '120400', 'sub/survey/appraise_manage.php', '120400', '120400', '');
 
 
 CREATE TABLE `survey_appraise` (

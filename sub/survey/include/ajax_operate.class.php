@@ -2475,23 +2475,21 @@ class Operate extends Bn_Basic {
 		$a_row = array ();
 		for($i = 0; $i < $n_count; $i ++) {
 			$a_button = array ();
-			array_push ( $a_button, array ('查看答卷', "location='parent_survey_manage_progress_sheet.php?id=".$o_table->getId($i)."'" ) );//删除
+			array_push ( $a_button, array ('查看评价', "location='appraise_manage_result_view.php?id=".$o_table->getId($i)."'" ) );//删除
 			array_push ($a_row, array (
 					($i+1+$this->N_PageSize*($n_page-1)),
-					$o_table->getName ( $i ),
+					$o_table->getDate ( $i ),
 					$o_table->getClassName ( $i ),
-					$o_table->getSex ( $i ),
-					$o_table->getCardId ( $i ),
+					$o_table->getOwnerName ( $i ),
 					$a_button
 			));
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
 		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 0, 40);
-		$a_title=$this->setTableTitle($a_title,'幼儿姓名', 'Name', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'评价日期', '', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassName', 0, 0);
-		$a_title=$this->setTableTitle($a_title,'性别', '', 0, 0);
-		$a_title=$this->setTableTitle($a_title,'证件号', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'评价人', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
 		$this->SendJsonResultForTable($n_allcount,'AppraiseManageResult', 'yes', $n_page, $a_title, $a_row);
 	}
