@@ -2035,6 +2035,7 @@ class Operate extends Bn_Basic {
 				$s_state='<span class="label label-success">已发布</span>';
 				array_push ( $a_button, array ('查看原题', "location='appraise_manage_view.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('评价结果', "location='appraise_manage_result.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('评价统计', "location='appraise_manage_total.php?id=".$o_user->getId($i)."'" ) );
 				if ($o_operator->getRoleId()==1)
 				{
 					//如果是超级管理员，那么可以删除
@@ -2492,6 +2493,54 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'评价人', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
 		$this->SendJsonResultForTable($n_allcount,'AppraiseManageResult', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function AppraiseManageTotal($n_uid)
+	{
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120403 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_table = new Survey_Appraise_Answers_View();
+		$o_table->PushWhere ( array ('&&', 'AppraiseId', '=',$this->getPost('key')) );
+		$o_table->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_table->setCountLine ( $this->N_PageSize );
+		$n_count = $o_table->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_table->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_table->getAllCount ();//总记录数
+		$n_count = $o_table->getCount ();
+		$a_row = array ();
+		$n_class_id='';
+		for($i = 0; $i < $n_count; $i ++) {
+			if ($n_class_id==$o_table->getClassId ( $i ))
+			{
+				continue;
+			}else{
+				$n_class_id=$o_table->getClassId ( $i );
+			}
+			$a_button = array ();
+			array_push ( $a_button, array ('自评PDF', "location='appraise_manage_total_myself_pdf.php?id=".$o_table->getId($i)."'" ) );//删除
+			array_push ( $a_button, array ('互评PDF', "location='appraise_manage_result_pdf.php?id=".$o_table->getId($i)."'" ) );//删除
+			array_push ($a_row, array (
+					($i+1+$this->N_PageSize*($n_page-1)),
+					$o_table->getClassName ( $i ),
+					$a_button
+			));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 80, 0);
+		$a_title=$this->setTableTitle($a_title,'班级名称', '', 0, 0);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 120,0);
+		$this->SendJsonResultForTable($n_allcount,'AppraiseManageTotal', 'yes', $n_page, $a_title, $a_row);
 	}
 }
 ?>

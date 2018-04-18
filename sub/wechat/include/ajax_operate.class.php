@@ -1858,6 +1858,8 @@ class Operate extends Bn_Basic {
 		}
 		$o_answer->setAppraiseId($o_survey->getId());
 		$o_answer->setClassId($this->getPost ( 'ClassId' ));
+		$o_user_role=new Base_User_Role($n_uid);
+		$o_answer->setOwnerClassId($o_user_role->getClassId());
 		$o_answer->setParameter($this->getPost ( 'Parameter' ));
 		$o_answer->setUid($o_stu->getUid(0));
 		$o_answer->setInfo(json_encode($a_info));

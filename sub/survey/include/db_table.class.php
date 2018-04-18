@@ -519,6 +519,7 @@ class Survey_Appraise_Answers extends CRUD
 	protected $Id;
 	protected $AppraiseId;
 	protected $Uid;
+	protected $OwnerClassId;
 	protected $Info;
 	protected $ClassId;
 	protected $Date;
@@ -589,6 +590,7 @@ class Survey_Appraise_Answers extends CRUD
 				'id' => 'Id',
 				'appraise_id' => 'AppraiseId',
 				'uid' => 'Uid',
+				'owner_class_id' => 'OwnerClassId',
 				'info' => 'Info',
 				'class_id' => 'ClassId',
 				'parameter' => 'Parameter',
