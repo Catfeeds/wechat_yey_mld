@@ -59,10 +59,20 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                                 <?php echo(Text::Key('Back'))?></button>                      
                             </div>
                     </div>
-					<div class="answer">
-						
+					<div class="answer">						
 							<h4>
-							评价人：<?php echo($o_answer->getOwnerName())?>&nbsp;&nbsp;&nbsp;&nbsp;班级：<?php echo($o_answer->getClassName())?>&nbsp;&nbsp;&nbsp;&nbsp;提交时间：<?php echo($o_answer->getDate())?>
+							提交时间：<?php echo($o_answer->getDate())?><br/>
+							被评价班级：<?php echo($o_answer->getClassName())?><br/>
+							<?php 
+							$o_appraise=new Survey_Appraise($o_answer->getAppraiseId());
+							$a_column=json_decode($o_appraise->getInfo());
+							$a_val=json_decode($o_answer->getInfo());
+							for($j=0;$j<count($a_column);$j++)
+							{
+								echo(rawurldecode($a_column[$j]).'：'.rawurldecode($a_val[$j]).'<br/>');
+							}
+							?>
+							评价人：<?php echo($o_answer->getOwnerName())?>
 							</h4>
 						<h1>
 							<?php echo($o_survey->getTitle())?>

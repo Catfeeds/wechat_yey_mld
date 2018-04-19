@@ -736,6 +736,7 @@ class Survey_Appraise_Answers_View extends CRUD
 	protected $Parameter;
 	protected $IsAuto;
 	protected $Uid;
+	protected $OwnerClassId;
 	protected $ClassId;
 	protected $ClassName;
 	protected $OwnerName;
@@ -813,6 +814,7 @@ class Survey_Appraise_Answers_View extends CRUD
 				'parameter' => 'Parameter',
 				'is_auto' => 'IsAuto',
 				'uid' => 'Uid',
+				'owner_class_id' => 'OwnerClassId',
 				'class_id' => 'ClassId',
 				'class_name' => 'ClassName',
 				'owner_name' => 'OwnerName',

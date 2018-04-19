@@ -2516,23 +2516,34 @@ class Operate extends Bn_Basic {
 		}
 		$n_allcount = $o_table->getAllCount ();//总记录数
 		$n_count = $o_table->getCount ();
-		$a_row = array ();
+		$a_row = array ();			
 		for($i = 0; $i < $n_count; $i ++) {
+			$a_val=json_decode($o_table->getInfo($i));
 			$a_button = array ();
 			array_push ( $a_button, array ('查看评价', "location='appraise_manage_result_view.php?id=".$o_table->getId($i)."'" ) );//删除
-			array_push ($a_row, array (
-					($i+1+$this->N_PageSize*($n_page-1)),
-					$o_table->getDate ( $i ),
-					$o_table->getClassName ( $i ),
-					$o_table->getOwnerName ( $i ),
-					$a_button
-			));
+			$a_temp=array();			
+			array_push($a_temp, ($i+1+$this->N_PageSize*($n_page-1)));
+			array_push($a_temp,$o_table->getDate ( $i ));
+			array_push($a_temp,$o_table->getClassName ( $i ));
+			for($j=0;$j<count($a_val);$j++)
+			{
+				array_push($a_temp,rawurldecode($a_val[$j]));
+			}
+			array_push($a_temp,$o_table->getOwnerName ( $i ));
+			array_push($a_temp,$a_button);
+			array_push ($a_row, $a_temp);
 		}
 		//标题行,列名，排序名称，宽度，最小宽度
 		$a_title = array ();
 		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 0, 40);
-		$a_title=$this->setTableTitle($a_title,'评价日期', '', 0, 100);
-		$a_title=$this->setTableTitle($a_title,'班级名称', 'ClassName', 0, 0);
+		$a_title=$this->setTableTitle($a_title,'评价日期', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'被评价班级', 'ClassName', 0, 100);
+		$o_appraise=new Survey_Appraise($this->getPost('key'));
+		$a_column=json_decode($o_appraise->getInfo());	
+		for($j=0;$j<count($a_column);$j++)
+		{
+			$a_title=$this->setTableTitle($a_title,rawurldecode($a_column[$j]), '', 0, 0);
+		}
 		$a_title=$this->setTableTitle($a_title,'评价人', '', 0, 80);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
 		$this->SendJsonResultForTable($n_allcount,'AppraiseManageResult', 'yes', $n_page, $a_title, $a_row);

@@ -110,13 +110,14 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 	    <div class="weui-cells weui-cells_form">
 	    	<?php 
 	    		$a_vcl=json_decode($o_survey->getInfo());
+	    		$a_answer=json_decode($o_answer->getInfo(0));
 	    		for($i=0;$i<count($a_vcl);$i++)
 	    		{
 	    			?>
 	    		<div class="weui-cell">
 	                <div class="weui-cell__hd"><label class="weui-label"><?php echo(rawurldecode($a_vcl[$i]))?></label></div>
 	                <div class="weui-cell__bd">
-	                    <input class="weui-input" value="<?php echo(rawurldecode($_GET['info_'.$i]))?>" name="Vcl_Info_<?php echo($i)?>" type="text" placeholder="必填">
+	                    <input class="weui-input" value="<?php echo(rawurldecode($a_answer[$i]))?>" name="Vcl_Info_<?php echo($i)?>" type="text" placeholder="必填">
 	                </div>
 	            </div>	
 	    			<?php

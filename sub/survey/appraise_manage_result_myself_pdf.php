@@ -23,7 +23,18 @@ ob_start();
 							$o_answer->PushWhere ( array ('&&', 'AppraiseId', '=',$_GET['appraise_id']) );
 							$o_answer->PushWhere ( array ('&&', 'ClassId', '=',$_GET['class_id']) );
 							$n_answer_sum=$o_answer->getAllCount();
-							echo($o_answer->getAllCount());
+							//加入检查是否为互评，如果是互评，那么总数要将数据减掉
+							$a_no_socpe=array();
+							for($i=0;$i<$n_answer_sum;$i++)
+							{
+								$a_temp=json_decode($o_answer->getOwnerClassId($i));
+								if (!in_array($o_answer->getClassId($i), $a_temp))
+								{
+									array_push($a_no_socpe, $o_answer->getId($i));
+								}
+							}
+							$n_answer_sum=$n_answer_sum-count($a_no_socpe);
+							echo($n_answer_sum);
 							?> 人&nbsp;&nbsp;&nbsp;&nbsp;班级名称：<?php echo($o_dept->geClasstName())?>
 							</h4>
 							<?php echo($o_survey->getTitle())?>							
@@ -67,6 +78,14 @@ ob_start();
 									$o_answer->PushWhere ( array ('&&', 'ClassId', '=',$_GET['class_id']) );
 									$o_answer->PushWhere ( array ('&&', 'Answer'.$o_question->getNumber($i), 'like','%"'.$o_option->getId($j).'"%') );
 									$n_people=$o_answer->getAllCount();
+									//加入检查是否为互评，如果是互评，那么总数要将数据减掉
+									for($k=0;$k<$n_people;$k++)
+									{
+										if (in_array($o_answer->getId($k), $a_no_socpe))
+										{
+											$n_people--;
+										}
+									}
 									$n_rate=round(($n_people/$n_answer_sum)*1000)/10;//结果*1000取整再除以10
 									echo('
 									<h3>
@@ -87,6 +106,11 @@ ob_start();
 									$n_people=$o_answer->getAllCount();
 									for($j=0;$j<$n_people;$j++)
 									{
+										//加入检查是否为互评，如果是互评，那么总数要将数据减掉
+										if (in_array($o_answer->getId($j), $a_no_socpe))
+										{
+											continue;
+										}
 										eval('$s_value=$o_answer->getAnswer'.$o_question->getNumber($i).'($j);');//获取用户答案
 										$s_value=str_replace('"', '', $s_value);//去掉多余的双引号
 										if (rawurldecode($s_value)=='无')
