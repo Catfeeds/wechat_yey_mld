@@ -2032,15 +2032,22 @@ class Operate extends Bn_Basic {
 			$s_state='<span class="label label-warning">未发布</span>';
 			if($o_user->getState($i)==1)
 			{
-				$s_state='<span class="label label-success">已发布</span>';
+				$s_state='<span class="label label-success">已开放</span>';
 				array_push ( $a_button, array ('查看原题', "location='appraise_manage_view.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('评价结果', "location='appraise_manage_result.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('评价统计', "location='appraise_manage_total.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('关闭', "appraise_manage_close(".$o_user->getId($i).")" ) );
 				if ($o_operator->getRoleId()==1)
 				{
 					//如果是超级管理员，那么可以删除
 					//array_push ( $a_button, array ('删除', "parent_survey_manage_delete(".$o_user->getId($i).")" ) );
 				}
+			}elseif ($o_user->getState($i)==2){
+				$s_state='<span class="label label-danger">已关闭</span>';
+				array_push ( $a_button, array ('查看原题', "location='appraise_manage_view.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('评价结果', "location='appraise_manage_result.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('评价统计', "location='appraise_manage_total.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('开放', "appraise_manage_open(".$o_user->getId($i).")" ) );
 			}else{
 				array_push ( $a_button, array ('修改问卷', "location='appraise_manage_modify.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('编辑题目', "location='appraise_manage_question.php?id=".$o_user->getId($i)."'" ) );
@@ -2125,6 +2132,42 @@ class Operate extends Bn_Basic {
 		if ($o_user->ValidModule ( 120403 )) {
 			$o_table=new Survey_Appraise($this->getPost('id'));
 			$o_table->setIsDeleted(1);
+			$o_table->Save();
+		}
+		$a_general = array (
+				'success' => 1,
+				'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
+	public function AppraiseManageClose($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			//直接退出系统
+			$this->setReturn('parent.goLoginPage()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if ($o_user->ValidModule ( 120403 )) {
+			$o_table=new Survey_Appraise($this->getPost('id'));
+			$o_table->setState(2);
+			$o_table->Save();
+		}
+		$a_general = array (
+				'success' => 1,
+				'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
+	public function AppraiseManageOpen($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			//直接退出系统
+			$this->setReturn('parent.goLoginPage()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if ($o_user->ValidModule ( 120403 )) {
+			$o_table=new Survey_Appraise($this->getPost('id'));
+			$o_table->setState(1);
 			$o_table->Save();
 		}
 		$a_general = array (
@@ -2527,8 +2570,8 @@ class Operate extends Bn_Basic {
 				$n_class_id=$o_table->getClassId ( $i );
 			}
 			$a_button = array ();
-			array_push ( $a_button, array ('自评PDF', "location='appraise_manage_total_myself_pdf.php?id=".$o_table->getId($i)."'" ) );//删除
-			array_push ( $a_button, array ('互评PDF', "location='appraise_manage_result_pdf.php?id=".$o_table->getId($i)."'" ) );//删除
+			array_push ( $a_button, array ('自评PDF', "location='appraise_manage_result_myself_pdf.php?appraise_id=".$o_table->getAppraiseId($i)."&class_id=".$o_table->getClassId($i)."'" ) );//删除
+			array_push ( $a_button, array ('互评PDF', "location='appraise_manage_result_pdf.php?appraise_id=".$o_table->getAppraiseId($i)."&class_id=".$o_table->getClassId($i)."'" ) );//删除
 			array_push ($a_row, array (
 					($i+1+$this->N_PageSize*($n_page-1)),
 					$o_table->getClassName ( $i ),

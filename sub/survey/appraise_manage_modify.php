@@ -63,7 +63,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 									?>
 								</select>
 	                     	</div>
-	                     	<div class="item">
+	                     	<div class="item" style="display:none">
 	                     		<label>是否自动推荐综合评价等级：</label>
 	                     		<select name="Vcl_IsAuto" id="Vcl_IsAuto" class="selectpicker" data-style="btn-default">
 									<option value="0">否</option>

@@ -14,7 +14,7 @@ if ($o_temp->getAllCount()==0)
 	echo "<script>location.href='access_failed.php'</script>"; 
 	exit(0);
 }
-$o_survey=new Survey_Appraise($_GET['id']);
+$o_survey=new Survey_Appraise($_GET['appraise_id']);
 /*
 //判断用户是否已经做过此问卷
 $o_answer=new Survey_Appraise_Answers();
@@ -95,7 +95,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 		<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
 		<input type="hidden" id="Vcl_FunName" name="Vcl_FunName" value="AppraiseAnswer"/>
 		<input type="hidden" name="Vcl_ClassId" value="<?php echo($_GET['class_id'])?>"/>
-		<input type="hidden" name="Vcl_Id" value="<?php echo($_GET['id'])?>"/>
+		<input type="hidden" name="Vcl_Id" value="<?php echo($_GET['appraise_id'])?>"/>
 		<input type="hidden" name="Vcl_AnswerId" value="<?php 
 		if ($o_answer->getAllCount()>0)
 		{
@@ -132,7 +132,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 	    <?php
 	    $n_number=1;
 	    $o_question=new Survey_Appraise_Questions();
-	    $o_question->PushWhere ( array ('&&', 'AppraiseId', '=',$_GET['id']) ); 
+	    $o_question->PushWhere ( array ('&&', 'AppraiseId', '=',$_GET['appraise_id']) ); 
 	    $o_question->PushOrder ( array ('Number','A') );   
 	    for($i=0;$i<$o_question->getAllCount();$i++)
 	    {
@@ -247,6 +247,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 	    ?>
 	    <div style="padding:15px;">
 	    	<a id="next" class="weui-btn weui-btn_primary" onclick="survey_answer_submit()">提交问卷</a>
+	    	<a class="weui-btn weui-btn_default" onclick="history.go(-1)">返回</a>
 	    </div>
 	</form>
 <script>

@@ -18,7 +18,7 @@ if ($o_temp->getAllCount()==0)
 
 $o_role=new Notice_Center_Record_View();
 $o_role->PushWhere ( array ('&&', 'CreateDate', '>=',date('Y-m-d',strtotime($o_bn_base->GetDate()." -30 day"))) ); //30天内的
-$o_role->PushOrder ( array ('CreateDate',D) );
+$o_role->PushOrder ( array ('CreateDate','D') );
 ?>
 <?php 
 if($o_role->getAllCount()>0)

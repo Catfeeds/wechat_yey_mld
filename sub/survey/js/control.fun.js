@@ -514,6 +514,38 @@ function appraise_manage_release(id) {
         })
     })
 }
+function appraise_manage_close(id) {
+    dialog_confirm('真的要关闭这个问卷吗？',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=AppraiseManageClose'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('AppraiseManage')
+        	}        	
+        })
+    })
+}
+function appraise_manage_open(id) {
+    dialog_confirm('真的要开放这个问卷吗？',function(){
+    	$('.small_loading').fadeIn(100);
+    	var data = 'Ajax_FunName=AppraiseManageOpen'; //后台方法
+        data = data + '&id=' + id;
+        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+        	if (json.success==0)
+        	{
+        		$('.small_loading').fadeOut(100);
+        		dialog_error(json.text)
+        	}else{
+        		table_refresh('AppraiseManage')
+        	}        	
+        })
+    })
+}
 function appraise_manage_question_modify()
 {	
     var val = $('#Vcl_Question').val();
