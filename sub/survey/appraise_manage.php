@@ -25,7 +25,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                             	<div class="row">
 								  <div class="col-lg-6">
 								    <div class="input-group" style="width:300px;" >
-								      <input id="Vcl_KeyParentSurveyManage" type="text" class="form-control" placeholder="标题" value="<?php echo($s_key)?>">
+								      <input id="Vcl_KeyAppraiseManage" type="text" class="form-control" placeholder="标题" value="<?php echo($s_key)?>">
 								      <span class="input-group-btn">
 								        <button class="btn btn-primary" type="button" onclick="search_for_appraise_manage()"><span  class="glyphicon glyphicon-search"></span></button>
 								      </span>

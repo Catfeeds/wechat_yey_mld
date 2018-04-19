@@ -64,6 +64,12 @@ $data='{
                     "name": "食谱预览", 
                     "url": "http://wx.mldyey.com/sub/wechat/parent_operation/food_list.php"
                 }
+				,
+                {
+					"type": "view", 
+                    "name": "评价问卷", 
+                    "url": "http://wx.mldyey.com/sub/wechat/teacher_operation/appraise_list.php"
+                }
             ]
 	},
     {	

@@ -35,7 +35,7 @@ ob_start();
 							}
 							$n_answer_sum=$n_answer_sum-count($a_no_socpe);
 							echo($n_answer_sum);
-							?> 人&nbsp;&nbsp;&nbsp;&nbsp;班级名称：<?php echo($o_dept->geClasstName())?>
+							?> 人&nbsp;&nbsp;&nbsp;&nbsp;班级名称：<?php echo($o_dept->getClassName())?>
 							</h4>
 							<?php echo($o_survey->getTitle())?>							
 						</h1>

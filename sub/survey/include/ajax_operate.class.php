@@ -2096,7 +2096,7 @@ class Operate extends Bn_Basic {
 		}
 		$o_table->setInfo ( json_encode ( $a_type) );
 		$o_table->Save();
-		$this->setReturn ( 'parent.form_return("dialog_success(\'新建问卷成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+		$this->setReturn ( 'parent.form_return("dialog_success(\'新建评价问卷成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
 	}
 	public function AppraiseManageModify($n_uid) {
 		if (! ($n_uid > 0)) {
@@ -2120,7 +2120,7 @@ class Operate extends Bn_Basic {
 		$o_table->setInfo ( json_encode ( $a_type) );
 		$o_table->setIsAuto($this->getPost('IsAuto'));
 		$o_table->Save();
-		$this->setReturn ( 'parent.form_return("dialog_success(\'新建问卷成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+		$this->setReturn ( 'parent.form_return("dialog_success(\'修改评价问卷成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );
 	}
 	public function AppraiseManageDelete($n_uid)
 	{
@@ -2581,8 +2581,8 @@ class Operate extends Bn_Basic {
 				$n_class_id=$o_table->getClassId ( $i );
 			}
 			$a_button = array ();
-			array_push ( $a_button, array ('自评PDF', "location='appraise_manage_result_myself_pdf.php?appraise_id=".$o_table->getAppraiseId($i)."&class_id=".$o_table->getClassId($i)."'" ) );//删除
-			array_push ( $a_button, array ('互评PDF', "location='appraise_manage_result_pdf.php?appraise_id=".$o_table->getAppraiseId($i)."&class_id=".$o_table->getClassId($i)."'" ) );//删除
+			array_push ( $a_button, array ('自评PDF', "window.open('appraise_manage_result_myself_pdf.php?appraise_id=".$o_table->getAppraiseId($i)."&class_id=".$o_table->getClassId($i)."','_blank')" ) );//删除
+			array_push ( $a_button, array ('互评PDF', "window.open('appraise_manage_result_pdf.php?appraise_id=".$o_table->getAppraiseId($i)."&class_id=".$o_table->getClassId($i)."','_blank')" ) );//删除
 			array_push ($a_row, array (
 					($i+1+$this->N_PageSize*($n_page-1)),
 					$o_table->getClassName ( $i ),

@@ -19,6 +19,11 @@ if ($o_temp->getAllCount()==0)
 $o_role=new Survey_Appraise();
 $o_role->PushWhere ( array ('&&', 'State', '=',1) ); //30天内的
 $o_role->PushOrder ( array ('CreateDate','D') );
+if ($o_role->getAllCount()==1)
+{
+	echo "<script>location.href='appraise_list_class.php?appraise_id=".$o_role->getId(0)."'</script>";
+	exit(0);
+}
 ?>
 <?php 
 if($o_role->getAllCount()>0)
