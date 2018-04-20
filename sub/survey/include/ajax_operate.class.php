@@ -2034,6 +2034,7 @@ class Operate extends Bn_Basic {
 			{
 				$s_state='<span class="label label-success">已开放</span>';
 				array_push ( $a_button, array ('查看原题', "location='appraise_manage_view.php?id=".$o_user->getId($i)."'" ) );
+				array_push ( $a_button, array ('二维码', "location='appraise_manage_makeqrcode.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('评价结果', "location='appraise_manage_result.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('评价统计', "location='appraise_manage_total.php?id=".$o_user->getId($i)."'" ) );
 				array_push ( $a_button, array ('关闭', "appraise_manage_close(".$o_user->getId($i).")" ) );
@@ -2595,6 +2596,29 @@ class Operate extends Bn_Basic {
 		$a_title=$this->setTableTitle($a_title,'班级名称', '', 0, 0);
 		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 120,0);
 		$this->SendJsonResultForTable($n_allcount,'AppraiseManageTotal', 'yes', $n_page, $a_title, $a_row);
+	}
+	public function AppraiseMakeQrcode($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			//直接退出系统
+			$this->setReturn('parent.goLoginPage()');
+		}
+		sleep(1);
+		$o_user = new Single_User ( $n_uid );
+		if ($o_user->ValidModule ( 120403 )) {
+			$o_table=new Survey_Appraise($this->getPost('Id'));
+			//http://10.189.240.22/wechat_yey/wechat_yey_mld/sub/wechat/teacher_operation/appraise_answer.php?appraise_id=1&class_id=1685&info_0=%E5%A4%A7%E4%BA%94%E7%8F%AD&info_1=30&info_2=%E5%BC%A0%E4%B8%89
+			$s_rul='appraise_id='.$this->getPost('Id');
+			$s_rul.='&class_id='.$this->getPost('ClassId');			
+			$a_vcl=json_decode($o_table->getInfo());
+			for($i=0;$i<count($a_vcl);$i++)
+			{
+				$s_rul.='&info_'.$i.'='.rawurlencode($this->getPost ( 'Info_'.$i ));
+			}			
+		}
+		$this->setReturn('parent.window.open(\''.$this->getPost('Url').'appraise_manage_makeqrcode_view.php?'.$s_rul.'\',\'_blank\');
+		parent.location=\''.$this->getPost('BackUrl').'\';
+		');
 	}
 }
 ?>

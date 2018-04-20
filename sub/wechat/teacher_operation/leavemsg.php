@@ -104,7 +104,7 @@ $o_msg->PushOrder ( array ('Date',D) );
 	            		$n_name=$o_student->getClassName(0).$s_stu_name.'家长('.$o_student->getParentSex(0).')';
 	            	}else{
 	            		//说明不是绑定用户，那么看是不是该用户有特定角色
-	            		$n_admin=1;
+	            		$n_admin=120101;
 	            		if ($o_role->getRoleId()!=$n_admin && $o_role->getSecRoleId1()!=$n_admin && $o_role->getSecRoleId2()!=$n_admin && $o_role->getSecRoleId3()!=$n_admin && $o_role->getSecRoleId4()!=$n_admin && $o_role->getSecRoleId5()!=$n_admin)
 	            		{
 	            			continue;

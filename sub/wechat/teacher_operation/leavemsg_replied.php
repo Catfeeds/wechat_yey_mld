@@ -97,7 +97,7 @@ if ($o_temp->getAllCount()==0)
 	            		}
 	            	}else{
 	            		//说明不是绑定用户，那么看是不是该用户有特定角色
-	            		$n_admin=1;
+	            		$n_admin=120101;
 	            		if ($o_role->getRoleId()!=$n_admin && $o_role->getSecRoleId1()!=$n_admin && $o_role->getSecRoleId2()!=$n_admin && $o_role->getSecRoleId3()!=$n_admin && $o_role->getSecRoleId4()!=$n_admin && $o_role->getSecRoleId5()!=$n_admin)
 	            		{
 	            			continue;
@@ -162,7 +162,7 @@ if ($o_temp->getAllCount()==0)
 	            		
 	            	}else{
 	            		//说明不是绑定用户，那么看是不是该用户有特定角色
-	            		$n_admin=1;
+	            		$n_admin=120101;
 	            		if ($o_role->getRoleId()!=$n_admin && $o_role->getSecRoleId1()!=$n_admin && $o_role->getSecRoleId2()!=$n_admin && $o_role->getSecRoleId3()!=$n_admin && $o_role->getSecRoleId4()!=$n_admin && $o_role->getSecRoleId5()!=$n_admin)
 	            		{
 	            			continue;

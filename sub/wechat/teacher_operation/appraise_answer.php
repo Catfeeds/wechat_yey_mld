@@ -35,7 +35,13 @@ if($o_survey->getState()!='1')
 }
 if((int)$_GET['class_id']>0)
 {
-
+	$o_class=new Student_Class();
+	$o_class->PushWhere ( array ('&&', 'ClassId', '=',$_GET['class_id']) ); 
+	if ($o_class->getAllCount()==0)
+	{
+		echo "<script>location.href='loading_failed.php'</script>";
+		exit(0);
+	}
 }else{
 	echo "<script>location.href='loading_failed.php'</script>";
 	exit(0);
@@ -113,14 +119,22 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 	    		$a_answer=json_decode($o_answer->getInfo(0));
 	    		for($i=0;$i<count($a_vcl);$i++)
 	    		{
-	    			?>
+	    		?>
 	    		<div class="weui-cell">
 	                <div class="weui-cell__hd"><label class="weui-label"><?php echo(rawurldecode($a_vcl[$i]))?></label></div>
 	                <div class="weui-cell__bd">
-	                    <input class="weui-input" value="<?php echo(rawurldecode($a_answer[$i]))?>" name="Vcl_Info_<?php echo($i)?>" type="text" placeholder="必填">
+	                    <input class="weui-input" value="<?php 
+	                    if($o_answer->getAllCount()>0)
+	                    {
+	                    	//如果有答案，那么设置，如果没有答案，用浏览器的参数
+	                    	echo(rawurldecode($a_answer[$i]));
+	                    }else{
+							echo(rawurldecode($_GET['info_'.$i]));
+	                    }
+	                    ?>" name="Vcl_Info_<?php echo($i)?>" type="text" placeholder="必填">
 	                </div>
 	            </div>	
-	    			<?php
+	    		<?php			
 	    		}
 	    	?>  
 	    	<div class="weui-cell">

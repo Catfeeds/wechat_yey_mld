@@ -587,3 +587,13 @@ function appraise_manage_question_delete(id) {
         })
     })
 }
+function appraise_manage_makeqrcode()
+{
+    var val = $('#Vcl_ClassId').val();
+    if (val.length == 0) {
+        dialog_message('请选择班级名称！')
+        return
+    }
+	loading_show();
+	$('#submit_form').submit();
+}
