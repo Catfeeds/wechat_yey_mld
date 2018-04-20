@@ -150,11 +150,11 @@ function uncheck_parent(obj,loop)
 		}
 		if (b==false)
 		{
-			$(father[0]).iCheck('uncheck')//如果并列的选项都未选，那么取消父选项的勾选
+			//$(father[0]).iCheck('uncheck')//如果并列的选项都未选，那么取消父选项的勾选
 		}
 		if (loop)
 		{
-			uncheck_parent(father[0],false)//在往上看一级的父选项
+			//uncheck_parent(father[0],false)//在往上看一级的父选项
 		}
 	} catch (e) {
     }

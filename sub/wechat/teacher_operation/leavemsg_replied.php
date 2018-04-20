@@ -15,6 +15,8 @@ if ($o_temp->getAllCount()==0)
 	echo "<script>location.href='access_failed.php'</script>"; 
 	exit(0);
 }
+require_once RELATIVITY_PATH . 'include/bn_user.class.php';
+$o_user = new Single_User ( $o_temp->getUid(0) );
 ?>
 <link href="../css/emoji.css" rel="stylesheet" type="text/css" />
 <style>
@@ -97,8 +99,7 @@ if ($o_temp->getAllCount()==0)
 	            		}
 	            	}else{
 	            		//说明不是绑定用户，那么看是不是该用户有特定角色
-	            		$n_admin=120101;
-	            		if ($o_role->getRoleId()!=$n_admin && $o_role->getSecRoleId1()!=$n_admin && $o_role->getSecRoleId2()!=$n_admin && $o_role->getSecRoleId3()!=$n_admin && $o_role->getSecRoleId4()!=$n_admin && $o_role->getSecRoleId5()!=$n_admin)
+	            		if (!$o_user->ValidModule ( 120110 ))
 	            		{
 	            			continue;
 	            		}
@@ -162,8 +163,7 @@ if ($o_temp->getAllCount()==0)
 	            		
 	            	}else{
 	            		//说明不是绑定用户，那么看是不是该用户有特定角色
-	            		$n_admin=120101;
-	            		if ($o_role->getRoleId()!=$n_admin && $o_role->getSecRoleId1()!=$n_admin && $o_role->getSecRoleId2()!=$n_admin && $o_role->getSecRoleId3()!=$n_admin && $o_role->getSecRoleId4()!=$n_admin && $o_role->getSecRoleId5()!=$n_admin)
+	            		if (!$o_user->ValidModule ( 120110 ))
 	            		{
 	            			continue;
 	            		}

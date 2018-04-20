@@ -19,6 +19,8 @@ $o_msg=new Wechat_Wx_User_Leavemsg_View();
 $o_msg->PushWhere ( array ('&&', 'IsReply', '=',0) );
 $o_msg->PushWhere ( array ('&&', 'Date', '>=',date('Y-m-d H:m:s',strtotime($o_bn_basic->GetDateNow()." -10 day"))) ); //10天内的
 $o_msg->PushOrder ( array ('Date',D) );
+require_once RELATIVITY_PATH . 'include/bn_user.class.php';
+$o_user = new Single_User ( $o_temp->getUid(0) );
 ?>
 <link href="../css/emoji.css" rel="stylesheet" type="text/css" />
 <style>
@@ -104,11 +106,10 @@ $o_msg->PushOrder ( array ('Date',D) );
 	            		$n_name=$o_student->getClassName(0).$s_stu_name.'家长('.$o_student->getParentSex(0).')';
 	            	}else{
 	            		//说明不是绑定用户，那么看是不是该用户有特定角色
-	            		$n_admin=120101;
-	            		if ($o_role->getRoleId()!=$n_admin && $o_role->getSecRoleId1()!=$n_admin && $o_role->getSecRoleId2()!=$n_admin && $o_role->getSecRoleId3()!=$n_admin && $o_role->getSecRoleId4()!=$n_admin && $o_role->getSecRoleId5()!=$n_admin)
+	            		if (!$o_user->ValidModule ( 120110 ))
 	            		{
 	            			continue;
-	            		}
+	            		}	            			
 	            		$n_name=$o_msg->getNickname($i);
 	            	}	   
 	            	array_push($a_msg_id, $o_msg->getUserId($i));         	
