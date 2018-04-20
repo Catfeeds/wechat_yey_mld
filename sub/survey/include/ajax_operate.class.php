@@ -2616,8 +2616,9 @@ class Operate extends Bn_Basic {
 				$s_rul.='&info_'.$i.'='.rawurlencode($this->getPost ( 'Info_'.$i ));
 			}			
 		}
-		$this->setReturn('parent.window.open(\''.$this->getPost('Url').'appraise_manage_makeqrcode_view.php?'.$s_rul.'\',\'_blank\');
-		parent.location=\''.$this->getPost('BackUrl').'\';
+		$this->setReturn('
+		parent.window.open(\''.$this->getPost('Url').'appraise_manage_makeqrcode_view.php?'.$s_rul.'\',\'_blank\');
+		parent.loading_hide();
 		');
 	}
 }
