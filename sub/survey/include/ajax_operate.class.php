@@ -2055,6 +2055,7 @@ class Operate extends Bn_Basic {
 				array_push ( $a_button, array ('发布问卷', "appraise_manage_release(".$o_user->getId($i).")" ) );
 				array_push ( $a_button, array ('删除', "appraise_manage_delete(".$o_user->getId($i).")" ) );
 			}			
+			array_push ( $a_button, array ('复制问卷', "appraise_manage_copy(".$o_user->getId($i).")" ) );
 			array_push ($a_row, array (
 					($i+1+$this->N_PageSize*($n_page-1)),
 					$o_user->getCreateDate ( $i ),
@@ -2620,6 +2621,50 @@ class Operate extends Bn_Basic {
 		parent.window.open(\''.$this->getPost('Url').'appraise_manage_makeqrcode_view.php?'.$s_rul.'\',\'_blank\');
 		parent.loading_hide();
 		');
+	}
+	public function AppraiseManageCopy($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (! $o_user->ValidModule ( 120401 ))return; //如果没有权限，不返回任何值
+		$o_survey = new Survey_Appraise($this->getPost('id'));
+		//创建问卷
+		$o_survey_new=new Survey_Appraise();
+		$o_survey_new->setCreateDate($this->GetDateNow());
+		$o_survey_new->setTitle('（副本）'.$o_survey->getTitle());
+		$o_survey_new->setComment($o_survey->getComment());
+		$o_survey_new->setState(0);
+		$o_survey_new->setOwnerId($n_uid);
+		$o_survey_new->Save();
+		//循环创建题
+		$o_question=new Survey_Appraise_Questions();
+		$o_question->PushWhere ( array ('&&', 'AppraiseId', '=',$o_survey->getId()) );
+		for($i=0;$i<$o_question->getAllCount();$i++)
+		{
+			$o_temp=new Survey_Appraise_Questions();
+			$o_temp->setAppraiseId($o_survey_new->getId());
+			$o_temp->setQuestion($o_question->getQuestion($i));
+			$o_temp->setType($o_question->getType($i));
+			$o_temp->setNumber($o_question->getNumber($i));
+			$o_temp->Save();
+			//循环选项
+			$o_option=new Survey_Appraise_Options();
+			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId($i)) );
+			for($j=0;$j<$o_option->getAllCount();$j++)
+			{
+				$o_temp2=new Survey_Appraise_Options();
+				$o_temp2->setQuestionId($o_temp->getId());
+				$o_temp2->setOption($o_option->getOption($j));
+				$o_temp2->setNumber($o_option->getNumber($j));
+				$o_temp2->Save();
+			}
+		}
+		$a_general = array (
+				'success' => 1,
+				'text' =>''
+		);
+		echo (json_encode ( $a_general ));
 	}
 }
 ?>
