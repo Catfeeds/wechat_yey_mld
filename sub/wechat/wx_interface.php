@@ -155,7 +155,7 @@ class wechat
 		}else{
 			//新建用户
 			$o_user = new WX_User_Info();
-			$o_user->setOpenId($postObj->FromUserName);
+			$o_user->setOpenId($object->FromUserName);
 			$o_user->setUserName('');
 			$o_user->setCompany('');
 			$o_user->setAddress('');
@@ -215,7 +215,7 @@ class wechat
 		}else{
 			//新建用户
 			$o_user = new WX_User_Info();
-			$o_user->setOpenId($postObj->FromUserName);
+			$o_user->setOpenId($object->FromUserName);
 			$o_user->setUserName('');
 			$o_user->setCompany('');
 			$o_user->setAddress('');
@@ -339,7 +339,7 @@ class wechat
 		}else{
 			//新建用户
 			$o_user = new WX_User_Info();
-			$o_user->setOpenId($postObj->FromUserName);
+			$o_user->setOpenId($object->FromUserName);
 			$o_user->setUserName('');
 			$o_user->setCompany('');
 			$o_user->setAddress('');
