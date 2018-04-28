@@ -256,6 +256,12 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 		            </div>
 		        </div>				
 	    		');
+	    	}else{
+	    		//子标题
+	    		echo('
+	    		<div class="weui-cells__title sub_title">'.$o_question->getQuestion($i).'</div>
+	    		');
+	    		$n_number--;
 	    	}
 	    	$n_number++;
 	    }

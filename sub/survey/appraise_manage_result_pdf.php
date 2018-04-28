@@ -62,9 +62,17 @@ ob_start();
 								$s_type='简述';
 								$s_option='<span class="glyphicon glyphicon glyphicon-minus"></span>';
 							}
-							echo('
+							if ($o_question->getType ( $i )==4)
+							{
+								echo('
+								<h2><b>'.$o_question->getQuestion($i).'</b>
+								');
+								$n_number--;
+							}else{
+								echo('
 								<h2 style="margin-left:20px;border-top: 0px;">'.$n_number.'. '.$o_question->getQuestion($i).'（'.$s_type.'）
 								');
+							}
 							$o_option=new Survey_Appraise_Options();
 							$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId ( $i )) );
 							$o_option->PushOrder ( array ('Number','A') );

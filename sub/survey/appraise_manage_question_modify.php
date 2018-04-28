@@ -93,9 +93,10 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 	                     			<option value="1" selected="selected">单选</option>
         							<option value="2">多选</option>
         							<option value="3">简述</option>
+        							<option value="4">子标题</option>
    								</select>
 	                     	</div>
-	                     	<div class="item">
+	                     	<div class="item" id="is_must">
 	                     		<label>是否必答：</label><br/>
 	                     		<select name="Vcl_IsMust" id="Vcl_IsMust" class="selectpicker" data-style="btn-default">
 	                     			<option value="1" selected="selected">必答</option>
@@ -142,8 +143,12 @@ function change_type(obj)
 	if (obj.value>=3)
 	{
 		$('.option').hide();
+		$('#is_must').hide();
+		$('#Vcl_IsMust').val('0');
 	}else{
 		$('.option').show();
+		$('#is_must').show();
+		$('#Vcl_IsMust').val('1');
 	}
 }
 <?php 
