@@ -1,1 +1,2 @@
-INSERT INTO `wechat_yey_mld`.`wechat_base_module` (`module_id`, `name`, `module`, `explain`, `icon_id`, `path`, `parent_module_id`, `mini_icon_id`, `wait_read_table`) VALUES ('120110', '答复公众号留言', '201_01_1', '', '120100', '', '120101', '120100', '');
+ALTER TABLE `survey_questions` ADD `is_must` INT(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '是否必答' AFTER `number`;
+ALTER TABLE `survey_teacher_questions` ADD `is_must` INT(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '是否必答' AFTER `number`;

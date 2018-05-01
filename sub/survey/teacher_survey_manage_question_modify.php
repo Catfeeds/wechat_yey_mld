@@ -96,6 +96,13 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
         							<option value="4">子标题</option>
    								</select>
 	                     	</div>
+	                     	<div class="item" id="is_must">
+	                     		<label>是否必答：</label><br/>
+	                     		<select name="Vcl_IsMust" id="Vcl_IsMust" class="selectpicker" data-style="btn-default">
+	                     			<option value="1" selected="selected">必答</option>
+									<option value="0">选答</option>
+   								</select>
+	                     	</div>
 	                     	<div class="item option" style="display:none">
 	                     		<label><span class="must">*</span> 选项（请按照顺序填写选项，如果中间有空行，系统将自动舍弃之后的内容）：</label>
 	                     		<div class="input-group">
@@ -107,8 +114,8 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 									<input id="Vcl_Option_2" name="Vcl_Option_2" type="text" placeholder="必填" class="form-control" aria-label="Amount (to the nearest dollar)">
 								</div>
 								<?php 
-								$a_number=array('C','D','E','F','G','H','I','J');
-								for($i=0;$i<8;$i++)
+								$a_number=array('C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T');
+								for($i=0;$i<13;$i++)
 								{
 									?>
 								<div id="<?php echo('option_'.($i+1))?>" class="input-group" style="margin-top:10px;">
@@ -133,11 +140,15 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 <script type="text/javascript">
 function change_type(obj)
 {
-	if (obj.value>=3)
+	if (obj.value==3)
 	{
 		$('.option').hide();
+	}else if(obj.value==4){
+		$('.option').hide();
+		$('#is_must').hide();
 	}else{
 		$('.option').show();
+		$('#is_must').show();
 	}
 }
 <?php 

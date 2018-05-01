@@ -151,11 +151,17 @@ class Operate extends Bn_Basic {
 			$o_question->setType($this->getPost('Type'));
 			$o_question->setNumber($this->getPost('Number'));
 			$o_question->setSurveyId($this->getPost('Id'));
+			if ($this->getPost('Type')=='4')
+			{
+				$o_question->setIsMust(0);
+			}else{
+				$o_question->setIsMust($this->getPost('IsMust'));
+			}
 			$o_question->Save();
 			$this->QuestionSort($o_question->getId(), $this->getPost('Number'), $this->getPost('Id'));
 			//循环添加选项
-			$a_number=array('','A','B','C','D','E','F','G','H','I','J');
-			for($i=1;$i<=10;$i++)
+			$a_number=array('','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T');
+			for($i=1;$i<=15;$i++)
 			{
 				if ($this->getPost('Option_'.$i)=='')
 				{
@@ -185,14 +191,20 @@ class Operate extends Bn_Basic {
 			$o_question->setQuestion($this->getPost('Question'));
 			$o_question->setType($this->getPost('Type'));
 			$o_question->setNumber($this->getPost('Number'));
+			if ($this->getPost('Type')=='4')
+			{
+				$o_question->setIsMust(0);
+			}else{
+				$o_question->setIsMust($this->getPost('IsMust'));
+			}
 			$o_question->Save();
 			$this->QuestionSort($o_question->getId(), $this->getPost('Number'), $o_question->getSurveyId());
 			//循环添加选项
 			$o_option=new Survey_Options();
 			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId()) );
 			$o_option->DeletionWhere();
-			$a_number=array('','A','B','C','D','E','F','G','H','I','J');
-			for($i=1;$i<=10;$i++)
+			$a_number=array('','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T');
+			for($i=1;$i<=15;$i++)
 			{
 				if ($this->getPost('Option_'.$i)=='')
 				{
@@ -377,6 +389,7 @@ class Operate extends Bn_Basic {
     		$o_temp->setQuestion($o_question->getQuestion($i));
     		$o_temp->setType($o_question->getType($i));
     		$o_temp->setNumber($o_question->getNumber($i));
+    		$o_temp->setIsMust($o_question->getIsMust($i));
     		$o_temp->Save();
     		//循环选项
     		$o_option=new Survey_Options();
@@ -428,7 +441,7 @@ class Operate extends Bn_Basic {
 			array_push ( $a_button, array ('删除', "parent_survey_manage_question_delete(".$o_user->getId($i).")"));
 			$s_type='';
 			$s_number='<span class="label label-success">'.$n_number.'</span>';
-			$s_question='&nbsp;&nbsp;&nbsp;&nbsp;'.$o_user->getQuestion( $i );
+			$s_question='&nbsp;&nbsp;'.$o_user->getQuestion( $i );
 			$s_option='<span class="glyphicon glyphicon-chevron-down"></span>';
 			if ($o_user->getType ( $i )==1)
 			$s_type='单选';
@@ -447,9 +460,14 @@ class Operate extends Bn_Basic {
 				$s_number='<span class="glyphicon glyphicon glyphicon-minus"></span>';
 				$n_number--;	
 			}			
+			$s_ismust='';
+			if ($o_user->getIsMust ( $i )==1)
+			{
+				$s_ismust='<span style="color:red">*</span>';
+			}
 			array_push ($a_row, array (
 				$s_number,
-				$s_question,
+				$s_ismust.$s_question,
 				$s_type,
 				$s_option,
 				$a_button
@@ -1219,7 +1237,7 @@ class Operate extends Bn_Basic {
 			array_push ( $a_button, array ('删除', "teacher_survey_manage_question_delete(".$o_user->getId($i).")"));
 			$s_type='';
 			$s_number='<span class="label label-success">'.$n_number.'</span>';
-			$s_question='&nbsp;&nbsp;&nbsp;&nbsp;'.$o_user->getQuestion( $i );
+			$s_question='&nbsp;&nbsp;'.$o_user->getQuestion( $i );
 			$s_option='<span class="glyphicon glyphicon-chevron-down"></span>';
 			if ($o_user->getType ( $i )==1)
 			$s_type='单选';
@@ -1237,10 +1255,15 @@ class Operate extends Bn_Basic {
 				$s_question='<b style="font-size:14px;">'.$o_user->getQuestion( $i ).'</b>';
 				$s_number='<span class="glyphicon glyphicon glyphicon-minus"></span>';
 				$n_number--;	
-			}			
+			}
+			$s_ismust='';
+			if ($o_user->getIsMust ( $i )==1)
+			{
+				$s_ismust='<span style="color:red">*</span>';
+			}
 			array_push ($a_row, array (
 				$s_number,
-				$s_question,
+				$s_ismust.$s_question,
 				$s_type,
 				$s_option,
 				$a_button
@@ -1293,11 +1316,17 @@ class Operate extends Bn_Basic {
 			$o_question->setType($this->getPost('Type'));
 			$o_question->setNumber($this->getPost('Number'));
 			$o_question->setSurveyId($this->getPost('Id'));
+			if ($this->getPost('Type')=='4')
+			{
+				$o_question->setIsMust(0);
+			}else{
+				$o_question->setIsMust($this->getPost('IsMust'));
+			}
 			$o_question->Save();
 			$this->QuestionSortForTeacher($o_question->getId(), $this->getPost('Number'), $this->getPost('Id'));
 			//循环添加选项
-			$a_number=array('','A','B','C','D','E','F','G','H','I','J');
-			for($i=1;$i<=10;$i++)
+			$a_number=array('','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T');
+			for($i=1;$i<=15;$i++)
 			{
 				if ($this->getPost('Option_'.$i)=='')
 				{
@@ -1327,14 +1356,20 @@ class Operate extends Bn_Basic {
 			$o_question->setQuestion($this->getPost('Question'));
 			$o_question->setType($this->getPost('Type'));
 			$o_question->setNumber($this->getPost('Number'));
+			if ($this->getPost('Type')=='4')
+			{
+				$o_question->setIsMust(0);
+			}else{
+				$o_question->setIsMust($this->getPost('IsMust'));
+			}
 			$o_question->Save();
 			$this->QuestionSortForTeacher($o_question->getId(), $this->getPost('Number'), $o_question->getSurveyId());
 			//循环添加选项
 			$o_option=new Survey_Teacher_Options();
 			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId()) );
 			$o_option->DeletionWhere();
-			$a_number=array('','A','B','C','D','E','F','G','H','I','J');
-			for($i=1;$i<=10;$i++)
+			$a_number=array('','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T');
+			for($i=1;$i<=15;$i++)
 			{
 				if ($this->getPost('Option_'.$i)=='')
 				{
@@ -1397,6 +1432,7 @@ class Operate extends Bn_Basic {
     		$o_temp->setQuestion($o_question->getQuestion($i));
     		$o_temp->setType($o_question->getType($i));
     		$o_temp->setNumber($o_question->getNumber($i));
+    		$o_temp->setIsMust($o_question->getIsMust($i));
     		$o_temp->Save();
     		//循环选项
     		$o_option=new Survey_Teacher_Options();
@@ -2307,14 +2343,19 @@ class Operate extends Bn_Basic {
 			$o_question=new Survey_Appraise_Questions();
 			$o_question->setQuestion($this->getPost('Question'));
 			$o_question->setType($this->getPost('Type'));
-			$o_question->setIsMust($this->getPost('IsMust'));
+			if ($this->getPost('Type')=='4')
+			{
+				$o_question->setIsMust(0);
+			}else{
+				$o_question->setIsMust($this->getPost('IsMust'));
+			}			
 			$o_question->setNumber($this->getPost('Number'));
 			$o_question->setAppraiseId($this->getPost('Id'));
 			$o_question->Save();
 			$this->QuestionSortForAppraise($o_question->getId(), $this->getPost('Number'), $this->getPost('Id'));
 			//循环添加选项
 			$a_number=array('','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T');
-			for($i=1;$i<=10;$i++)
+			for($i=1;$i<=20;$i++)
 			{
 				if ($this->getPost('Option_'.$i)=='')
 				{
@@ -2360,7 +2401,12 @@ class Operate extends Bn_Basic {
 			$o_question->setQuestion($this->getPost('Question'));
 			$o_question->setType($this->getPost('Type'));
 			$o_question->setNumber($this->getPost('Number'));
-			$o_question->setIsMust($this->getPost('IsMust'));
+			if ($this->getPost('Type')=='4')
+			{
+				$o_question->setIsMust(0);
+			}else{
+				$o_question->setIsMust($this->getPost('IsMust'));
+			}
 			$o_question->Save();
 			$this->QuestionSortForAppraise($o_question->getId(), $this->getPost('Number'), $o_question->getAppraiseId());
 			//循环添加选项
@@ -2368,7 +2414,7 @@ class Operate extends Bn_Basic {
 			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_question->getId()) );
 			$o_option->DeletionWhere();
 			$a_number=array('','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T');
-			for($i=1;$i<=10;$i++)
+			for($i=1;$i<=20;$i++)
 			{
 				if ($this->getPost('Option_'.$i)=='')
 				{
@@ -2646,6 +2692,7 @@ class Operate extends Bn_Basic {
 			$o_temp->setAppraiseId($o_survey_new->getId());
 			$o_temp->setQuestion($o_question->getQuestion($i));
 			$o_temp->setType($o_question->getType($i));
+			$o_temp->setIsMust($o_question->getIsMust($i));
 			$o_temp->setNumber($o_question->getNumber($i));
 			$o_temp->Save();
 			//循环选项

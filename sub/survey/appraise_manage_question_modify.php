@@ -140,15 +140,15 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 <script type="text/javascript">
 function change_type(obj)
 {
-	if (obj.value>=3)
+	if (obj.value==3)
 	{
 		$('.option').hide();
+	}else if(obj.value==4){
+		$('.option').hide();
 		$('#is_must').hide();
-		$('#Vcl_IsMust').val('0');
 	}else{
 		$('.option').show();
 		$('#is_must').show();
-		$('#Vcl_IsMust').val('1');
 	}
 }
 <?php 

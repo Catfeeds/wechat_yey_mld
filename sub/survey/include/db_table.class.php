@@ -217,6 +217,7 @@ class Survey_Questions extends CRUD
     protected $Question;
     protected $Type;
     protected $Number;
+    protected $IsMust;
 
     protected function DefineKey()
     {
@@ -233,6 +234,7 @@ class Survey_Questions extends CRUD
                     'survey_id' => 'SurveyId',
                     'question' => 'Question',
                     'type' => 'Type',
+        			'is_must' => 'IsMust',
                     'number' => 'Number'
         ));
     }
@@ -429,6 +431,7 @@ class Survey_Teacher_Options extends CRUD
     protected $QuestionId;
     protected $Option;
     protected $Number;
+    protected $IsMust;
 
     protected function DefineKey()
     {
@@ -444,7 +447,8 @@ class Survey_Teacher_Options extends CRUD
                     'id' => 'Id',
                     'question_id' => 'QuestionId',
                     'option' => 'Option',
-                    'number' => 'Number'
+                    'number' => 'Number',
+        			'is_must' => 'IsMust'
         ));
     }
 }

@@ -6,7 +6,7 @@ require_once RELATIVITY_PATH . 'include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'head.php';
 require_once RELATIVITY_PATH . 'sub/survey/include/db_table.class.php';
 $o_table=new Survey_Appraise($_GET['id']);
-if($o_table->getTitle()==null || $o_table->getTitle()=='' || $o_table->getState()!='1')
+if($o_table->getTitle()==null || $o_table->getTitle()=='' || $o_table->getState()<1)
 {
 	//echo("<script>location='appraise_manage.php'</script>");
 	exit(0);
