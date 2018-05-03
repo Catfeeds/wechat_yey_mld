@@ -960,6 +960,43 @@ class Operate extends Bn_Basic {
 		}
 		$this->setReturn ( 'parent.form_return("dialog_success(\'发布成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );
 	}
+	public function SportSaveInputScore($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		//if (! $o_user->ValidModule ( 120503 ))return; //如果没有权限，不返回任何值		
+		//先检查本月是否有成绩
+		$s_date=$this->GetDate();
+		$a_date=explode('-', $s_date);
+		$a_date[1]=(int)$a_date[1];
+		$o_table = new Teaching_Sport_Records();
+		$o_table->PushWhere ( array ('&&', 'Year', '=',$a_date[0]) );
+		$o_table->PushWhere ( array ('&&', 'Month', '=',$a_date[1]) );
+		$o_table->PushWhere ( array ('&&', 'StudentId', '=',$this->getPost('student_id')) );
+		$o_table->PushWhere ( array ('&&', 'ItemId', '=',$this->getPost('item_id')) );
+		if ($o_table->getAllCount()>0)
+		{
+			//覆盖
+			$o_table = new Teaching_Sport_Records($o_table->getId(0));			
+		}else{
+			//新建
+			$o_table = new Teaching_Sport_Records();
+			$o_table->setYear($a_date[0]);
+			$o_table->setMonth($a_date[1]);
+			$o_table->setStudentId($this->getPost('student_id'));
+			$o_table->setItemId($this->getPost('item_id'));
+		}
+		$o_table->setDate($s_date);
+		$o_table->setRecordUid($n_uid);
+		$o_table->setScore($this->getPost('value'));
+		$o_table->Save();
+		$a_general = array (
+				'success' => 1,
+				'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
 }
 
 ?>

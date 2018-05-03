@@ -272,4 +272,113 @@ class Teaching_News_List extends CRUD
 		));
 	}
 }
+class Teaching_Sport_Records extends CRUD
+{
+	protected $Id;
+	protected $StudentId;
+	protected $RecordUid;
+	protected $Year;
+	protected $Month;
+	protected $Date;
+	protected $ItemId;
+	protected $Score;
+	
+	protected function DefineKey()
+	{
+		return 'id';
+	}
+	protected function DefineTableName()
+	{
+		return 'teaching_sport_records';
+	}
+	protected function DefineRelationMap()
+	{
+		return(array(
+				'id' => 'Id',
+				'student_id' => 'StudentId',
+				'record_uid' => 'RecordUid',
+				'year' => 'Year',
+				'month' => 'Month',
+				'date' => 'Date',
+				'item_id' => 'ItemId',
+				'score' => 'Score'
+		));
+	}
+}
+class Teaching_Sport_Item extends CRUD
+{
+	protected $Id;
+	protected $Name;
+	protected $Number;
+	protected $Type;
+	protected $Unit;
+	
+	protected function DefineKey()
+	{
+		return 'id';
+	}
+	protected function DefineTableName()
+	{
+		return 'teaching_sport_item';
+	}
+	protected function DefineRelationMap()
+	{
+		return(array(
+				'id' => 'Id',
+				'name' => 'Name',
+				'number' => 'Number',
+				'type' => 'Type',
+				'unit' => 'Unit'
+		));
+	}
+}
+class Teaching_Sport_Records_View extends CRUD
+{
+	protected $Id;
+	protected $StudentId;
+	protected $StudentName;
+	protected $ClassNumber;
+	protected $ClassName;
+	protected $Grade;
+	protected $RecordUid;
+	protected $TeacherName;
+	protected $ItemUnit;
+	protected $Unit;
+	protected $Year;
+	protected $Month;
+	protected $Date;
+	protected $ItemId;
+	protected $ItemName;
+	protected $Score;
+	
+	protected function DefineKey()
+	{
+		return 'id';
+	}
+	protected function DefineTableName()
+	{
+		return 'teaching_sport_records_view';
+	}
+	protected function DefineRelationMap()
+	{
+		return(array(
+				'id' => 'Id',
+				'student_id' => 'StudentId',
+				'student_name' => 'StudentName',
+				'class_number' => 'ClassNumber',
+				'class_name' => 'ClassName',
+				'grade' => 'Grade',
+				'record_uid' => 'RecordUid',
+				'teacher_name' => 'TeacherName',
+				'item_unit' => 'ItemUnit',
+				'unit' => 'Unit',
+				'year' => 'Year',
+				'month' => 'Month',
+				'date' => 'Date',
+				'item_id' => 'ItemId',
+				'item_name' => 'ItemName',
+				'score' => 'Score'
+		));
+	}
+}
 ?>
