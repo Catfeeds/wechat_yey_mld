@@ -8,8 +8,7 @@ $s_none='<div class="weui-footer" style="padding-top:100px;"><p class="weui-foot
 $o_table=new Student_Onboard_Info_Class_View();
 $o_table->PushWhere ( array ('&&', 'ClassNumber', '=',$_GET['class_id']) );
 $o_table->PushWhere ( array ('&&', 'State', '=',1) );
-$o_table->PushOrder ( array ('Sex', A) );
-$o_table->PushOrder ( array ('Name', A) );
+$o_table->PushOrder ( array ('Name', 'A') );
 $o_item=new Teaching_Sport_Item($_GET['item_id']);
 if (!($o_item->getNumber()>0))
 {
@@ -38,6 +37,7 @@ if($o_table->getAllCount()>0)
 			$o_temp->PushWhere ( array ('&&', 'ItemId', '=',$o_item->getId()) );
 			if ($o_temp->getAllCount()>0)
 			{
+				continue;
 				$s_value=$o_temp->getScore(0);
 			}
 			echo('
@@ -52,6 +52,33 @@ if($o_table->getAllCount()>0)
 		        
 			');
 		}
+		for($i=0;$i<$o_table->getAllCount();$i++)
+		{
+			$s_value='';
+			$o_temp = new Teaching_Sport_Records();
+			$o_temp->PushWhere ( array ('&&', 'Year', '=',$o_date->format ( 'Y' )) );
+			$o_temp->PushWhere ( array ('&&', 'Month', '=',(int)$o_date->format ( 'm' )) );
+			$o_temp->PushWhere ( array ('&&', 'StudentId', '=',$o_table->getStudentId($i)) );
+			$o_temp->PushWhere ( array ('&&', 'ItemId', '=',$o_item->getId()) );
+			if ($o_temp->getAllCount()>0)
+			{
+				$s_value=$o_temp->getScore(0);
+			}else{
+				continue;
+			}
+			echo('
+					
+		            <div class="weui-cell">
+		                <div class="weui-cell__hd"><label class="weui-label">'.$o_table->getName($i).'</label></div>
+		                <div class="weui-cell__bd">
+		                    <input value="'.$s_value.'" onkeyup="save_score(\''.$o_table->getStudentId($i).'\',\''.$o_item->getId().'\',this)" style="text-align:right;color:#3CC51F;" class="weui-input" type="number" pattern="[0-9]*" placeholder="成绩">
+		                </div>
+		                <div class="weui-cell__hd"><label class="weui-label" style="width:80px;text-align:center">'.$o_item->getUnit().'</label></div>
+		            </div>
+					
+			');
+		}
+		
         ?>
         </div>   
     </div>

@@ -36,7 +36,7 @@ if($o_table->getAllCount()>0)
         			$s_url='teaching_sport_input_select_class.php?item_id='.$o_table->getId($i);
         			break;
         		case 'time':
-        			$s_url='teaching_sport_time_start.php?item_id='.$o_table->getId($i);
+        			$s_url='teaching_sport_time_select_class.php?item_id='.$o_table->getId($i);
         			break;
         	}
         	echo('
