@@ -45,7 +45,7 @@ if($o_table->getAllCount()>0)
 		            <div class="weui-cell">
 		                <div class="weui-cell__hd"><label class="weui-label">'.$o_table->getName($i).'</label></div>
 		                <div class="weui-cell__bd">
-		                    <input value="'.$s_value.'" onkeyup="save_score(\''.$o_table->getStudentId($i).'\',\''.$o_item->getId().'\',this)" style="text-align:right;color:#3CC51F;" class="weui-input" type="number" pattern="[0-9]*" placeholder="成绩">
+		                    <input value="'.$s_value.'" onkeyup="save_score(\''.$o_table->getStudentId($i).'\',\''.$o_item->getId().'\',this)" style="text-align:right;color:#3CC51F;" class="weui-input" type="number" pattern="[0-9]*" placeholder="请填写">
 		                </div>
 		                <div class="weui-cell__hd"><label class="weui-label" style="width:80px;text-align:center">'.$o_item->getUnit().'</label></div>
 		            </div>
