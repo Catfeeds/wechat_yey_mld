@@ -971,8 +971,7 @@ class Operate extends Bn_Basic {
 		$a_date=explode('-', $s_date);
 		$a_date[1]=(int)$a_date[1];
 		$o_table = new Teaching_Sport_Records();
-		$o_table->PushWhere ( array ('&&', 'Year', '=',$a_date[0]) );
-		$o_table->PushWhere ( array ('&&', 'Month', '=',$a_date[1]) );
+		$o_table->PushWhere ( array ('&&', 'Date', '=',$this->GetDate()) );
 		$o_table->PushWhere ( array ('&&', 'StudentId', '=',$this->getPost('student_id')) );
 		$o_table->PushWhere ( array ('&&', 'ItemId', '=',$this->getPost('item_id')) );
 		if ($o_table->getAllCount()>0)

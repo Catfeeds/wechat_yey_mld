@@ -26,13 +26,12 @@ if($o_table->getAllCount()>0)
         <div class="weui-cells weui-cells_form">
 	    <?php
 	    $o_date = new DateTime ( 'Asia/Chongqing' );
-	    $o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ) ;
+	    $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ) ;
 		for($i=0;$i<$o_table->getAllCount();$i++)
 		{
 			$s_value='';
 			$o_temp = new Teaching_Sport_Records();
-			$o_temp->PushWhere ( array ('&&', 'Year', '=',$o_date->format ( 'Y' )) );
-			$o_temp->PushWhere ( array ('&&', 'Month', '=',(int)$o_date->format ( 'm' )) );
+			$o_temp->PushWhere ( array ('&&', 'Date', '=',$s_date) );
 			$o_temp->PushWhere ( array ('&&', 'StudentId', '=',$o_table->getStudentId($i)) );
 			$o_temp->PushWhere ( array ('&&', 'ItemId', '=',$o_item->getId()) );
 			if ($o_temp->getAllCount()>0)
@@ -56,8 +55,7 @@ if($o_table->getAllCount()>0)
 		{
 			$s_value='';
 			$o_temp = new Teaching_Sport_Records();
-			$o_temp->PushWhere ( array ('&&', 'Year', '=',$o_date->format ( 'Y' )) );
-			$o_temp->PushWhere ( array ('&&', 'Month', '=',(int)$o_date->format ( 'm' )) );
+			$o_temp->PushWhere ( array ('&&', 'Date', '=',$s_date) );
 			$o_temp->PushWhere ( array ('&&', 'StudentId', '=',$o_table->getStudentId($i)) );
 			$o_temp->PushWhere ( array ('&&', 'ItemId', '=',$o_item->getId()) );
 			if ($o_temp->getAllCount()>0)

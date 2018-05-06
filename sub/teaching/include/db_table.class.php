@@ -312,6 +312,7 @@ class Teaching_Sport_Item extends CRUD
 	protected $Number;
 	protected $Type;
 	protected $Unit;
+	protected $InputType;
 	
 	protected function DefineKey()
 	{
@@ -328,6 +329,7 @@ class Teaching_Sport_Item extends CRUD
 				'name' => 'Name',
 				'number' => 'Number',
 				'type' => 'Type',
+				'input_type' => 'InputType',
 				'unit' => 'Unit'
 		));
 	}
