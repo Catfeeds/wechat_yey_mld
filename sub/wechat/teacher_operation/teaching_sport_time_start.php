@@ -40,8 +40,16 @@ if (!($o_item->getNumber()>0))
 	</div>
 </div>
 <div class="page" id="stu_list" style="display:none">
-    <div class="page__bd">
-    	<div class="weui-cells__title">选择幼儿</div>
+	<div style="width:100%;position:fixed;z-index:999999;background-color:#f8f8f8;">
+		<div class="page__bd">
+			<div class="weui-cells__title" style="margin-top:5px;">当前成绩</div>	
+		</div>
+		<div class="page__hd" style="padding:0px;width:100%;background-color:#ffffff;border-top: 1px solid #EBEBEB;border-bottom: 1px solid #EBEBEB;">	
+	        <h1 id="this_score" class="" style="text-align: center;color:#1AAD19;font-size:2em;"></h1>
+	    </div>
+	</div>	
+    <div class="page__bd" style="">
+    	<div class="weui-cells__title" style="padding-top:88px;margin-top:0px;">选择幼儿</div>
         <div class="weui-cells">
 	    <?php
 	    $o_date = new DateTime ( 'Asia/Chongqing' );
@@ -92,6 +100,9 @@ if (!($o_item->getNumber()>0))
         ?>
         </div>   
     </div>
+    <div style="padding:15px;">
+	  	<a class="weui-btn weui-btn_default" onclick="close_stu()">返回</a>
+	</div>
 </div>	
 <script>
 function save_score(stu_id,item_id,value,name) {
@@ -147,6 +158,7 @@ function record()
 function select_stu(i)
 {
 	$('#timer').hide();
+	$('#this_score').html(a_record[i]+' 秒');
 	$('#stu_list').show();
 	save_value=i;
 }
@@ -160,6 +172,11 @@ function stop()
 function clear_record()
 {
 	location.reload()
+}
+function close_stu()
+{
+	$('#timer').show();
+	$('#stu_list').hide();
 }
 //禁止分享
 document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {WeixinJSBridge.call('hideOptionMenu');});
