@@ -156,7 +156,7 @@ if($_GET['questionid']>0)
 {
 	$o_option=new Survey_Appraise_Options();
 	$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$_GET['questionid']) );
-	$o_option->PushOrder ( array ('Id','A') );
+	$o_option->PushOrder ( array ('Number','A') );
 	for($i=0;$i<$o_option->getAllCount();$i++)
 	{
 		//循环设置选项内容

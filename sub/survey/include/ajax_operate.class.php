@@ -475,7 +475,7 @@ class Operate extends Bn_Basic {
 			//循环读取选项
 			$o_option=new Survey_Options();
 			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
-			$o_option->PushOrder ( array ('Id','A') );
+			$o_option->PushOrder ( array ('Number','A') );
 			for($j=0;$j<$o_option->getAllCount();$j++)
 			{
 				array_push ($a_row, array (
@@ -805,7 +805,7 @@ class Operate extends Bn_Basic {
 			//循环读取选项
 			$o_option=new Survey_Options();
 			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
-			$o_option->PushOrder ( array ('Id','A') );
+			$o_option->PushOrder ( array ('Number','A') );
 			for($j=0;$j<$o_option->getAllCount();$j++)
 			{
 				$a_button = array ();
@@ -1271,7 +1271,7 @@ class Operate extends Bn_Basic {
 			//循环读取选项
 			$o_option=new Survey_Teacher_Options();
 			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
-			$o_option->PushOrder ( array ('Id','A') );
+			$o_option->PushOrder ( array ('Number','A') );
 			for($j=0;$j<$o_option->getAllCount();$j++)
 			{
 				array_push ($a_row, array (
@@ -1686,7 +1686,7 @@ class Operate extends Bn_Basic {
 			//循环读取选项
 			$o_option=new Survey_Teacher_Options();
 			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
-			$o_option->PushOrder ( array ('Id','A') );
+			$o_option->PushOrder ( array ('Number','A') );
 			for($j=0;$j<$o_option->getAllCount();$j++)
 			{
 				$a_button = array ();
@@ -2300,7 +2300,7 @@ class Operate extends Bn_Basic {
 			//循环读取选项
 			$o_option=new Survey_Appraise_Options();
 			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
-			$o_option->PushOrder ( array ('Id','A') );
+			$o_option->PushOrder ( array ('Number','A') );
 			for($j=0;$j<$o_option->getAllCount();$j++)
 			{
 				array_push ($a_row, array (
@@ -2514,7 +2514,7 @@ class Operate extends Bn_Basic {
 			//循环读取选项
 			$o_option=new Survey_Appraise_Options();
 			$o_option->PushWhere ( array ('&&', 'QuestionId', '=',$o_user->getId ( $i )) );
-			$o_option->PushOrder ( array ('Id','A') );
+			$o_option->PushOrder ( array ('Number','A') );
 			for($j=0;$j<$o_option->getAllCount();$j++)
 			{
 				$a_button = array ();						
