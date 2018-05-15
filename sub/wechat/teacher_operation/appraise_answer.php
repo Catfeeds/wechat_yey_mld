@@ -168,7 +168,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 		    	<div class="weui-cells weui-cells_radio">
 		    	');
 	    		$s_answer='';
-	    		if ($o_answer->getAllCount())
+	    		if ($o_answer->getAllCount()>0)
 	    		{
 	    			eval('$s_answer=$o_answer->getAnswer'.$o_question->getNumber($i).'(0);');//获取用户答案
 	    			$s_answer=str_replace('"', '', $s_answer);//去掉多余的双引号
@@ -207,7 +207,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 		    	<div class="weui-cells weui-cells_checkbox">
 		    	');
 	    		$s_answer='';
-	    		if ($o_answer->getAllCount())
+	    		if ($o_answer->getAllCount()>0)
 	    		{
 	    			eval('$s_answer=$o_answer->getAnswer'.$o_question->getNumber($i).'(0);');//获取用户答案
 	    			$s_answer=str_replace('"', '', $s_answer);//去掉多余的双引号
@@ -240,7 +240,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 		    	');
 	    	}else if ($o_question->getType($i)==3){
 	    		$s_answer='';
-	    		if ($o_answer->getAllCount())
+	    		if ($o_answer->getAllCount()>0)
 	    		{
 	    			eval('$s_answer=$o_answer->getAnswer'.$o_question->getNumber($i).'(0);');//获取用户答案
 	    			$s_answer=str_replace('"', '', $s_answer);//去掉多余的双引号

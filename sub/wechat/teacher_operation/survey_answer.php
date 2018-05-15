@@ -173,7 +173,7 @@ if ($o_stu->getAllCount()==0 || $o_role->getAllCount()==0)
 				<div class="weui-cells weui-cells_checkbox" style="margin-top:0px;">
 			        <div class="weui-cell">
 			            <div class="weui-cell__bd">
-			                <input class="weui-input" type="text" name="Vcl_Question_'.$o_question->getId($i).'" placeholder="必填"/>
+			                <input class="weui-input" type="text" name="Vcl_Question_'.$o_question->getId($i).'" placeholder=""/>
 			            </div>
 			        </div>
 		        </div>
