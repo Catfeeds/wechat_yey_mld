@@ -47,7 +47,7 @@ if ($b_login == false) //如果登陆信息，验证用户是否已经注册
 	if ($a_user_info['subscribe']!=1)
 	{
 		//说明没有关注微信,退出
-		echo "<script>location.href='".RELATIVITY_PATH."'sub/wechat/subscription.php'</script>"; 
+		echo "<script>location.href='".RELATIVITY_PATH."sub/wechat/subscription.php'</script>"; 
 		exit(0);
 	}
 	//	

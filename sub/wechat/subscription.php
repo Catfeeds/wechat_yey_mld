@@ -6,7 +6,7 @@ header ( 'Expires: Thu, 01 Jan 1970 00:00:00 GMT' );
 header ( 'Last-Modified:' . gmdate ( 'D, d M Y H:i:s' ) . ' GMT' );
 header ( 'content-type:text/html; charset=utf-8' );
 $s_title='扫码关注';
-require_once '../header.php';
+require_once 'header.php';
 
 ?>
 	<div class="page__hd">
@@ -15,4 +15,4 @@ require_once '../header.php';
     <div style="margin:25%">
     <img src="images/qrcode.jpg" style="width:100%"/>
     </div>
-<?php require_once '../footer.php';?>
+<?php require_once 'footer.php';?>
