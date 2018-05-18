@@ -60,6 +60,12 @@ header ( 'content-type:text/html; charset=utf-8' );
             </div>
             <p class="weui-grid__label">幼儿随拍</p>
         </a>
+        <a href="parent_signup/my_signup.php" class="weui-grid">
+            <div class="weui-grid__icon">
+                <img src="images/ye_operation_icon_test.png" alt="">
+            </div>
+            <p class="weui-grid__label">报名测试</p>
+        </a>
     </div>
 </div>
 </body></html>

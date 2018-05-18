@@ -52,7 +52,7 @@ $data='{
                 { 
                     "type": "view", 
                     "name": "招生报名", 
-                    "url": "http://wx.mldyey.com/sub/wechat/parent_signup/my_signup.php" 
+                    "url": "http://wx.mldyey.com/sub/wechat/parent_signup/my_signup_close.php" 
                 },
                 {
                 	"type":"click",
