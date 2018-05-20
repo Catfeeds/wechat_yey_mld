@@ -1,0 +1,34 @@
+@CHARSET "UTF-8";
+.width1000
+{
+	width:auto;
+	max-width:1000px;
+	min-width:1000px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.width640
+{
+	width:auto;
+	max-width:640px;
+	min-width:640px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.tag{
+	float:left;
+	width:auto;
+	background:white;
+	font-size:16px;
+	padding:10px;
+	margin-right:20px;
+	line-height:22px;
+}
+.tag .btu{
+	float:right;
+	margin-top:15px;
+}
+.tag .btu a{
+	font-size:14px;
+	color:#0099FF;
+}

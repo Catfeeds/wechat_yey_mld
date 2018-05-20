@@ -92,7 +92,9 @@ function OutputList($S_State,$s_filename) {
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '户籍所在街道');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '户籍所在社区');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '户籍是否为集体户');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '户主与幼儿关系');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '幼儿与父母户籍一致');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '幼儿落户时间');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '户籍详细地址');$n_counter++;
 	//现住址信息
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '现住址是否与户籍为同一地址');$n_counter++;
@@ -194,7 +196,9 @@ function OutputList($S_State,$s_filename) {
 			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getHStreet( $i ));$n_counter++;
 			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getHShequ( $i ));$n_counter++;
 			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getHIsGroup( $i ));$n_counter++;
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getHGuanxi( $i ));$n_counter++;
 			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getHIsYizhi( $i ));$n_counter++;
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getHInTime( $i ));$n_counter++;
 			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getHAdd( $i ));$n_counter++;
 		}else{
 			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), '');$n_counter++;

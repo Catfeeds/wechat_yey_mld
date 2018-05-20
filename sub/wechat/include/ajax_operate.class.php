@@ -51,7 +51,7 @@ class Operate extends Bn_Basic {
 		}else{
 			$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，操作错误，请与管理员联系！错误代码：[1001]\');' );
 		}
-		sleep(0);
+		sleep(1);
 		$o_setup=new Admission_Setup(1); 
 		$o_date = new DateTime('Asia/Chongqing');
 		$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d'). ' ' . $o_date->format ( 'H' ) . ':' . $o_date->format ( 'i' ) . ':' . $o_date->format ( 's' );
@@ -603,10 +603,11 @@ class Operate extends Bn_Basic {
 		    }  
 		    $o_stu->setHIsGroup($this->getPost ( 'HIsGroup' ));
 		    $o_stu->setHIsYizhi($this->getPost ( 'HIsYizhi' ));
+		    $o_stu->setHInTime($this->getPost ( 'HInTime' ));
 		    if ($this->getPost ( 'HAdd' )=='')$this->ReturnMsg('户籍信息的 [户籍详细地址] 不能为空！','HAdd');
 		    $o_stu->setHAdd($this->getPost ( 'HAdd' ));
 		    $o_stu->setHOwner('');
-		    $o_stu->setHGuanxi('父母');
+		    $o_stu->setHGuanxi($this->getPost ( 'HGuanxi' ));
 	    }else{
 		    $o_stu->setBirthplace('');
 		    $o_stu->setIdQuality('');

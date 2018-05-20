@@ -303,6 +303,16 @@ function change_z_jiedao(obj)
 	}
 	$('#Vcl_ZShequ').html(s_html);
 }
+function change_h_guanxi(obj)
+{
+	//如果关系为父母，幼儿与父母户籍一致必须选“是”，否则选“是”否
+	if (obj.value=="父母")
+	{
+		$('#h_is_yizhi').hide();
+	}else{
+		$('#h_is_yizhi').show();
+	}
+}
 function change_z_property(obj)
 {
 	if (obj.value=="直系亲属房产")
@@ -566,6 +576,12 @@ function submit_signin(modify)
 				})				
 				return 
 			}
+		}
+		if (document.getElementById("Vcl_HInTime").value == "") {
+			Dialog_Message("户籍信息的 [幼儿落户时间] 不能为空！",function(){
+				document.getElementById("Vcl_HInTime").focus()
+			})			
+			return
 		}
 		if (document.getElementById("Vcl_HAdd").value == "") {
 			Dialog_Message("户籍信息的 [户籍详细地址] 不能为空！",function(){

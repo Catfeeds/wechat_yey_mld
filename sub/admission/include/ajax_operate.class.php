@@ -330,14 +330,17 @@ class Operate extends Bn_Basic {
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
-				    $o_msg->setFirst('如下幼儿初步审核已经通过，请您按时间地点携带核验资料进行信息核验，如错过信息核验视为自行放弃入园资格：');
+				    $o_msg->setFirst('如下幼儿初步审核已经通过，请您按时间地点携带核验资料以及“报名信息登记表”进行信息核验，如错过信息核验视为自行放弃入园资格：');
 				    $o_msg->setKeyword1($o_stu->getStudentId());
 				    $o_msg->setKeyword2($o_stu->getName());
 				    $a_time=$this->getAuditDateAndTime($o_admission_setup->getAuditDate(),$o_admission_setup->getAuditTime());
 				    $o_msg->setKeyword3($a_time[0]);
 				    $o_msg->setKeyword4($a_time[1]);
 				    $o_msg->setKeyword5($o_admission_setup->getAuditAddress());
-				    $o_msg->setRemark('
+				    $o_msg->setRemark('请用电脑访问：
+http://wx.mldyey.com/signup/
+并扫码二维码进行登录，即可打印准“报名信息登记表”。
+
 信息核验注意事项请点击详情查看。');
 				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId().'');
 				    $o_msg->setKeywordSum(5);

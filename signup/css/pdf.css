@@ -1,0 +1,66 @@
+﻿td img
+{
+	display: block;
+	border: none;
+}
+td
+{
+	text-align: center;
+	vertical-align: middle;
+	border-right: solid 1px black;
+	border-bottom: solid 1px black;
+	padding: 0px;
+	height: 30px;
+	line-height: 18px;
+}
+tr
+{
+	font-size: 12px;
+}
+tr.layer td
+{
+	border-bottom: solid 3px black;
+}
+table
+{
+	border-right: solid 0px black;
+	border-bottom: solid 0px black;
+	border-top: solid 0px black;
+	border-left: solid 1px black;
+	width: 100%;
+}
+.title
+{
+	width: 100%;
+	font-size: 25px;
+	font-weight: bold;
+	padding-top: 0px;
+	padding-bottom: 10px;
+	line-height: 30px;
+	text-align: center;
+}
+.license
+{
+	width: 635px;
+	text-align: left;
+	font-size: 14px;
+	padding-bottom: 15px;
+	overflow: hidden;
+}
+.first
+{
+	border-left: solid 1px black;
+}
+.limit td
+{
+	width: 5%;
+	padding: 0px;
+	height: 1px;
+	border: solid 0px black;
+	background-color: Black;
+	border-bottom: solid 0px black;
+}
+body
+{
+	font-family: 宋体;
+}

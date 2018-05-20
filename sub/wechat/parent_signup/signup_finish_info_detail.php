@@ -45,7 +45,11 @@
 				<div class="weui-cell__hd"><label class="weui-label">国籍</label></div>
 				<div class="weui-cell__bd">
 	                <select class="weui-select" id="Vcl_Nationality" name="Vcl_Nationality" onchange="change_nationality(this)">
-	                    <option value="阿尔巴尼亚">阿尔巴尼亚</option>
+	                		<option selected="selected" value="中国">中国</option>
+							<option value="中国香港">中国香港</option>
+							<option value="中国澳门">中国澳门</option>
+							<option value="中国台湾">中国台湾</option>
+	                    	<option value="阿尔巴尼亚">阿尔巴尼亚</option>
 							<option value="阿尔及利亚">阿尔及利亚</option>
 							<option value="阿富汗">阿富汗</option>
 							<option value="阿根廷">阿根廷</option>
@@ -277,11 +281,7 @@
 							<option value="乍得">乍得</option>
 							<option value="直布罗陀">直布罗陀</option>
 							<option value="智利">智利</option>
-							<option value="中非">中非</option>
-							<option selected="selected" value="中国">中国</option>
-							<option value="中国香港">中国香港</option>
-							<option value="中国澳门">中国澳门</option>
-							<option value="中国台湾">中国台湾</option>
+							<option value="中非">中非</option>							
 							<option value="瑙鲁">瑙鲁</option>
 							<option value="梵蒂冈">梵蒂冈</option>
 							<option value="斐济">斐济</option>

@@ -800,6 +800,7 @@ class Student_Info extends CRUD
     protected $FlagFirst;
     protected $HIsGroup;
     protected $HIsYizhi;
+    protected $HInTime;
     protected $SignupPhone;
     protected $SignupPhoneBackup;
     protected $HospitalName;
@@ -933,6 +934,7 @@ class Student_Info extends CRUD
                     'flag_first' => 'FlagFirst',
                     'h_is_group' => 'HIsGroup',
                     'h_is_yizhi' => 'HIsYizhi',
+        			'h_in_time' => 'HInTime',
                     'signup_phone' => 'SignupPhone',
                     'signup_phone_backup' => 'SignupPhoneBackup',
                     'hospital_name' => 'HospitalName',
@@ -957,6 +959,29 @@ class Student_Info extends CRUD
 	{
 		$this->Execute ("insert into `student_onboard_info` select * from `student_info` Where `student_info`.`student_id`=".$n_student_id.";");
 		$this->Execute ("DELETE FROM `student_info` WHERE `student_info`.`student_id`=".$n_student_id.";");	
+	}
+}
+class Student_Info_Print_Login extends CRUD
+{
+	protected $Id;
+	protected $OpenId;
+	protected $SessionId;
+	
+	protected function DefineKey()
+	{
+		return 'id';
+	}
+	protected function DefineTableName()
+	{
+		return 'student_info_print_login';
+	}
+	protected function DefineRelationMap()
+	{
+		return(array(
+				'id' => 'Id',
+				'open_id' => 'OpenId',
+				'session_id' => 'SessionId'
+		));
 	}
 }
 class Student_Graduate_Info extends CRUD
@@ -1959,6 +1984,7 @@ class Student_Info_Wechat_Wiew extends CRUD
     protected $SignupPhoneBackup;
     protected $HIsYizhi;
     protected $HIsGroup;
+    protected $HInTime;
     protected $AuditorName;
 
     protected function DefineKey()
@@ -2089,6 +2115,7 @@ class Student_Info_Wechat_Wiew extends CRUD
                     'signup_phone' => 'SignupPhone',
                     'signup_phone_backup' => 'SignupPhoneBackup',
                     'h_is_yizhi' => 'HIsYizhi',
+        			'h_in_time' => 'HInTime',
         			'auditor_name' => 'AuditorName',
                     'h_is_group' => 'HIsGroup'
         ));
