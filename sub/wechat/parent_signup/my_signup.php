@@ -15,7 +15,7 @@ if($o_stu_wechat->getAllCount()==0)
 		注意事项：
 		</p>
 		<p class="weui-footer__text" style="font-size:1.5em;text-align:left;margin-top:15px;">
-		幼儿报名所使用的微信号既是幼儿招生各阶段通知、验证的唯一号码，也是幼儿入园后家园联系的途径，敬请注意。
+		幼儿报名所使用的微信号既是幼儿园招生各阶段通知、验证的唯一号码，也是幼儿入园后家园联系的途径，敬请注意。
 		</p>
 	</div>
 	<?php

@@ -259,24 +259,30 @@ ob_start();
             </td>
         </tr>        
         <tr style="font-weight:bold">
-        	<td colspan="6" style="font-weight:bold;border-left: solid 1px black;">
+        	<td colspan="7" style="font-weight:bold;border-left: solid 1px black;">
+          现住址与户籍是否一致
+            </td>
+        	<td colspan="5" style="font-weight:bold;">
            现住址房屋属性
             </td>
-            <td colspan="6" style="font-weight:bold">
+            <td colspan="4" style="font-weight:bold">
               产权人
             </td>
-            <td colspan="8" style="font-weight:bold">
+            <td colspan="4" style="font-weight:bold">
                产权人与幼儿关系
             </td>
        </tr>
        <tr style="font-size:12px;">
-            <td colspan="6" style="border-left: solid 1px black;">
-              <?php filter($o_stu->getZProperty())?>
+            <td colspan="7" style="border-left: solid 1px black;">
+              <?php filter($o_stu->getZSame())?>
             </td>
-            <td colspan="6">
+            <td colspan="5">
+          <?php filter($o_stu->getZProperty())?>
+            </td>
+            <td colspan="4">
           <?php filter($o_stu->getZOwner())?>
             </td>
-            <td colspan="8">
+            <td colspan="4">
            <?php filter($o_stu->getZGuanxi())?>
             </td>
         </tr>

@@ -44,13 +44,19 @@ if (isset ( $_COOKIE ['SESSIONID'] )) {//检查是否保存了Session
 var N_Timer=window.setInterval(wechat_get_lgoin_status,3000)
 function wechat_get_lgoin_status() {
     var data = 'Ajax_FunName=WechatLogin'; //后台方法
+    try {
     $.getJSON("include/bn_submit.switch.php?id=<?php echo($S_Session_Id)?>", data, function (json) {
     	if(json.flag==1)
 		{
 			location='signup_info.php';
 		}
     })
+    }catch(e){
+    	window.clearInterval(N_Timer)
+    	location="../browser_error.html"
+    }
 }
+wechat_get_lgoin_status()
 </script>	
 </body>
 </html>
