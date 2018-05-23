@@ -48,6 +48,22 @@ if($o_table->getAllCount()>0)
 			');
         }
         ?>            
+        </div> 
+        <div class="weui-cells__title">选择要查看成绩的体能项目</div>
+        <div class="weui-cells">
+        <?php 
+        for($i=0;$i<$o_table->getAllCount();$i++)
+        {
+        	$s_url='teaching_sport_view_select_class.php?item_id='.$o_table->getId($i);
+        	echo('
+				<div class="weui-cell weui-cell_access" onclick="location=\''.$s_url.'\'">
+	                <div class="weui-cell__bd">'.$o_table->getName($i).'</div>
+	                <div class="weui-cell__ft" style="font-size: 0">
+	                </div>
+	            </div>
+			');
+        }
+        ?>            
         </div>        
     </div>
 </div>	
