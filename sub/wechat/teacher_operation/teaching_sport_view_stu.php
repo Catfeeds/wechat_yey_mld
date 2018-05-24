@@ -114,7 +114,7 @@ if($o_table->getAllCount()>0)
 			if ($o_temp->getAllCount()>2)
 			{
 				$s_result.='<a onclick="$(\'.more_'.$o_table->getId($i).'\').show();$(this).hide()" class="weui-cell weui-cell_link">
-			                	<div class="weui-cell__bd">&nbsp;&nbsp;&nbsp;&nbsp;添加更多</div>
+			                	<div class="weui-cell__bd">&nbsp;&nbsp;&nbsp;&nbsp;查看更多</div>
 			            	</a>';
 			}
 			echo('
