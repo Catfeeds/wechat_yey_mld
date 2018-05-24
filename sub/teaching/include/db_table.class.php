@@ -334,6 +334,33 @@ class Teaching_Sport_Item extends CRUD
 		));
 	}
 }
+class Teaching_Sport_Item_Target extends CRUD
+{
+	protected $Id;
+	protected $ItemId;
+	protected $Age;
+	protected $Sex;
+	protected $Target;
+	
+	protected function DefineKey()
+	{
+		return 'id';
+	}
+	protected function DefineTableName()
+	{
+		return 'teaching_sport_item_target';
+	}
+	protected function DefineRelationMap()
+	{
+		return(array(
+				'id' => 'Id',
+				'item_id' => 'ItemId',
+				'age' => 'Age',
+				'sex' => 'Sex',
+				'target' => 'Target'
+		));
+	}
+}
 class Teaching_Sport_Records_View extends CRUD
 {
 	protected $Id;

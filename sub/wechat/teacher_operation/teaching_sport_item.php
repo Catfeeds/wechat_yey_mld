@@ -49,7 +49,7 @@ if($o_table->getAllCount()>0)
         }
         ?>            
         </div> 
-        <div class="weui-cells__title">选择要查看成绩的体能项目</div>
+        <div class="weui-cells__title">选择要查看本年度成绩的体能项目</div>
         <div class="weui-cells">
         <?php 
         for($i=0;$i<$o_table->getAllCount();$i++)

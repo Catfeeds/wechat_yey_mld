@@ -1,12 +1,75 @@
-ALTER TABLE  `student_info` ADD  `h_in_time` DATE NOT NULL COMMENT  '幼儿落户时间' AFTER  `h_is_yizhi` ;
 
---------student_info_wechat_wiew-----
-select `student_info`.`student_id` AS `student_id`,`student_info`.`state` AS `state`,`student_info`.`name` AS `name`,`student_info`.`sex` AS `sex`,`student_info`.`birthday` AS `birthday`,`student_info`.`nation` AS `nation`,`student_info`.`only` AS `only`,`student_info`.`only_code` AS `only_code`,`student_info`.`is_first` AS `is_first`,`student_info`.`h_code` AS `h_code`,`student_info`.`h_city` AS `h_city`,`student_info`.`h_area` AS `h_area`,`student_info`.`h_street` AS `h_street`,`student_info`.`h_add` AS `h_add`,`student_info`.`id` AS `id`,`student_info`.`id_type` AS `id_type`,`student_info`.`z_city` AS `z_city`,`student_info`.`z_property` AS `z_property`,`student_info`.`z_area` AS `z_area`,`student_info`.`z_street` AS `z_street`,`student_info`.`z_add` AS `z_add`,`student_info`.`illness` AS `illness`,`student_info`.`allergic` AS `allergic`,`student_info`.`dept_id` AS `dept_id`,`student_info`.`grade_number` AS `grade_number`,`student_info`.`class_number` AS `class_number`,`student_info`.`class_name_diy` AS `class_name_diy`,`student_info`.`jiudu` AS `jiudu`,`student_info`.`birthplace` AS `birthplace`,`student_info`.`birthplace_code` AS `birthplace_code`,`student_info`.`id_quality` AS `id_quality`,`student_info`.`id_quality_type` AS `id_quality_type`,`student_info`.`signup_date` AS `signup_date`,`student_info`.`in_time` AS `in_time`,`student_info`.`out_time` AS `out_time`,`student_info`.`is_liushou` AS `is_liushou`,`student_info`.`is_wugong` AS `is_wugong`,`student_info`.`is_canji` AS `is_canji`,`student_info`.`canji_type` AS `canji_type`,`student_info`.`is_jisu` AS `is_jisu`,`student_info`.`is_guer` AS `is_guer`,`student_info`.`is_dibao` AS `is_dibao`,`student_info`.`dibao_code` AS `dibao_code`,`student_info`.`is_zizhu` AS `is_zizhu`,`student_info`.`nationality` AS `nationality`,`student_info`.`gangao` AS `gangao`,`student_info`.`is_lieshi` AS `is_lieshi`,`student_info`.`canji_code` AS `canji_code`,`student_info`.`jiankang` AS `jiankang`,`student_info`.`xuexing` AS `xuexing`,`student_info`.`is_yiwang` AS `is_yiwang`,`student_info`.`is_shoushu` AS `is_shoushu`,`student_info`.`shoushu` AS `shoushu`,`student_info`.`is_yizhi` AS `is_yizhi`,`student_info`.`is_yichuan` AS `is_yichuan`,`student_info`.`is_xiaochuan` AS `is_xiaochuan`,`student_info`.`is_dianxian` AS `is_dianxian`,`student_info`.`is_jingjue` AS `is_jingjue`,`student_info`.`is_xinzangbing` AS `is_xinzangbing`,`student_info`.`is_guomin` AS `is_guomin`,`student_info`.`qitabingshi` AS `qitabingshi`,`student_info`.`beizhu` AS `beizhu`,`student_info`.`h_shequ` AS `h_shequ`,`student_info`.`z_shequ` AS `z_shequ`,`student_info`.`z_same` AS `z_same`,`student_info`.`h_guanxi` AS `h_guanxi`,`student_info`.`z_owner` AS `z_owner`,`student_info`.`h_owner` AS `h_owner`,`student_info`.`z_guanxi` AS `z_guanxi`,`student_info`.`jh_1_connection` AS `jh_1_connection`,`student_info`.`jh_1_is_zhixi` AS `jh_1_is_zhixi`,`student_info`.`jh_1_is_canji` AS `jh_1_is_canji`,`student_info`.`jh_1_name` AS `jh_1_name`,`student_info`.`jh_1_job` AS `jh_1_job`,`student_info`.`jh_1_danwei` AS `jh_1_danwei`,`student_info`.`jh_1_canji_code` AS `jh_1_canji_code`,`student_info`.`jh_1_id_type` AS `jh_1_id_type`,`student_info`.`jh_1_jiaoyu` AS `jh_1_jiaoyu`,`student_info`.`jh_1_id` AS `jh_1_id`,`student_info`.`jh_1_phone` AS `jh_1_phone`,`student_info`.`jh_2_connection` AS `jh_2_connection`,`student_info`.`jh_2_is_zhixi` AS `jh_2_is_zhixi`,`student_info`.`jh_2_is_canji` AS `jh_2_is_canji`,`student_info`.`jh_2_name` AS `jh_2_name`,`student_info`.`jh_2_job` AS `jh_2_job`,`student_info`.`jh_2_danwei` AS `jh_2_danwei`,`student_info`.`jh_2_canji_code` AS `jh_2_canji_code`,`student_info`.`jh_2_id_type` AS `jh_2_id_type`,`student_info`.`jh_2_jiaoyu` AS `jh_2_jiaoyu`,`student_info`.`jh_2_id` AS `jh_2_id`,`student_info`.`jh_2_phone` AS `jh_2_phone`,`student_info`.`jianhu_connection` AS `jianhu_connection`,`student_info`.`jianhu_name` AS `jianhu_name`,`student_info`.`jianhu_phone` AS `jianhu_phone`,`student_info`.`flag_three` AS `flag_three`,`student_info`.`flag_xicheng` AS `flag_xicheng`,`student_info`.`flag_same` AS `flag_same`,`student_info`.`flag_only` AS `flag_only`,`student_info`.`flag_first` AS `flag_first`,`student_info`.`hospital_name` AS `hospital_name`,`student_info`.`class_mode` AS `class_mode`,`student_info`.`compliance` AS `compliance`,`student_info_wechat`.`user_id` AS `user_id`,`wechat_wx_user_info`.`nickname` AS `nickname`,`wechat_wx_user_info`.`openid` AS `open_id`,`wechat_wx_user_info`.`del_flag` AS `del_flag`,`wechat_wx_user_info`.`session_id` AS `session_id`,`wechat_wx_user_info`.`group_id` AS `group_id`,`wechat_wx_user_info`.`photo` AS `photo`,`wechat_wx_user_info`.`sex` AS `parent_sex`,`wechat_wx_user_info`.`user_name` AS `user_name`,`wechat_wx_user_info`.`phone` AS `phone`,`wechat_wx_user_info`.`email` AS `email`,`student_info`.`signup_phone` AS `signup_phone`,`student_info`.`signup_phone_backup` AS `signup_phone_backup`,`student_info`.`h_is_yizhi` AS `h_is_yizhi`,`student_info`.`h_is_group` AS `h_is_group`,`student_info`.`reject` AS `reject`,`student_info`.`auditor_name` AS `auditor_name`,`student_info`.`h_in_time` AS `h_in_time` from ((`student_info` join `student_info_wechat` on((`student_info_wechat`.`student_id` = `student_info`.`student_id`))) join `wechat_wx_user_info` on((`student_info_wechat`.`user_id` = `wechat_wx_user_info`.`id`)));
-
-CREATE TABLE `student_info_print_login` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `open_id` char(255) COLLATE utf8_unicode_ci NOT NULL,
-  `session_id` char(255) COLLATE utf8_unicode_ci NOT NULL,
+CREATE TABLE `teaching_sport_item_target` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `item_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '项目编号',
+  `age` char(50) COLLATE utf8_unicode_ci NOT NULL COMMENT '年龄',
+  `sex` char(50) COLLATE utf8_unicode_ci NOT NULL COMMENT '性别',
+  `target` char(50) COLLATE utf8_unicode_ci NOT NULL COMMENT '目标',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='查询打印报名信息' AUTO_INCREMENT=1
-以上已经更新到生产环境
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='体能测试指标' AUTO_INCREMENT=61 ;
+
+-- 
+-- Dumping data for table `teaching_sport_item_target`
+-- 
+
+INSERT INTO `teaching_sport_item_target` (`id`, `item_id`, `age`, `sex`, `target`) VALUES 
+(1, 5, '6', '女', '7.2-6.1'),
+(2, 5, '6', '男', '6.8-5.8'),
+(3, 5, '5.5', '女', '7.6-6.4'),
+(4, 5, '5.5', '男', '7.3-6.2'),
+(5, 5, '5', '女', '8.0-6.7'),
+(6, 5, '5', '男', '7.6-6.4'),
+(7, 5, '4.5', '女', '8.5-7.0'),
+(8, 5, '4.5', '男', '8.0-6.7'),
+(9, 5, '4', '女', '9.0-7.2'),
+(10, 5, '4', '男', '8.5-6.9'),
+(11, 2, '4', '男', '66-95'),
+(12, 2, '4', '女', '60-89'),
+(13, 2, '4.5', '男', '73-102'),
+(14, 2, '4.5', '女', '68-96'),
+(15, 2, '5', '男', '80-110'),
+(16, 2, '5', '女', '75-88'),
+(17, 2, '5.5', '男', '90-119'),
+(18, 2, '5.5', '女', '82-109'),
+(19, 2, '6', '男', '95-127'),
+(20, 2, '6', '女', '87-116'),
+(21, 3, '4', '男', '40-60'),
+(22, 3, '4', '女', '35-50'),
+(23, 3, '4.5', '男', '45-80'),
+(24, 3, '4.5', '女', '35-55'),
+(25, 3, '5', '男', '55-90'),
+(26, 3, '5', '女', '45-85'),
+(27, 3, '5.5', '男', '60-100'),
+(28, 3, '5.5', '女', '50-85'),
+(29, 3, '6', '男', '70-120'),
+(30, 3, '6', '女', '50-80'),
+(31, 6, '4', '男', '9.1-5.6'),
+(32, 6, '4', '女', '9.5-5.9'),
+(33, 6, '4.5', '男', '8.1-5.3'),
+(34, 6, '4.5', '女', '8.5-5.5'),
+(35, 6, '5', '男', '7.2-5.1'),
+(36, 6, '5', '女', '7.5-5.2'),
+(37, 6, '5.5', '男', '6.8-4.9'),
+(38, 6, '5.5', '女', '6.9-4.9'),
+(39, 6, '6', '男', '6.1-4.4'),
+(40, 6, '6', '女', '6.2-4.6'),
+(41, 1, '4', '男', '85-149'),
+(42, 1, '4', '女', '100-159'),
+(43, 1, '4.5', '男', '80-144'),
+(44, 1, '4.5', '女', '100-129'),
+(45, 1, '5', '男', '76-144'),
+(46, 1, '5', '女', '97-166'),
+(47, 1, '5.5', '男', '76-144'),
+(48, 1, '5.5', '女', '97-167'),
+(49, 1, '6', '男', '71-144'),
+(50, 1, '6', '女', '96-167'),
+(51, 4, '4', '男', '11.5-4.9'),
+(52, 4, '4', '女', '12.2-5.3'),
+(53, 4, '4.5', '男', '9.6-4.3'),
+(54, 4, '4.5', '女', '10.1-4.7'),
+(55, 4, '5', '男', '7.8-3.7'),
+(56, 4, '5', '女', '8.2-4.1'),
+(57, 4, '5.5', '男', '6.7-3.3'),
+(58, 4, '5.5', '女', '7.4-3.6'),
+(59, 4, '6', '男', '5.3-2.7'),
+(60, 4, '6', '女', '6.1-3.0');

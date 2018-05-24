@@ -15,6 +15,64 @@ if (!($o_item->getNumber()>0))
 	echo "<script>location.href='teaching_sport_item.php'</script>";
 	exit(0);
 }
+function get_target($n_item_id,$s_birthday,$s_sex)
+{
+	$o_temp=new Teaching_Sport_Item_Target();
+	$o_temp->PushWhere ( array ('&&', 'ItemId', '=',$n_item_id) );
+	$o_temp->PushWhere ( array ('&&', 'Sex', '=',$s_sex) );
+	$o_temp->PushWhere ( array ('&&', 'Age', '=',ComputeYear::getYear($s_birthday)) );
+	$o_temp->getAllCount();
+	//return ComputeYear::getYear($s_birthday);
+	return $o_temp->getTarget(0);
+}
+class ComputeYear{
+	private static $leapYears = 0;
+	
+	public static function getYear($birthday){
+		$currentDay = new \DateTime();
+		self::getLeapYears($currentDay->format('Y-m-d'),$birthday);
+		$daysDiff = date_diff($currentDay,date_create($birthday));
+		$realDays = $daysDiff->days-self::$leapYears;
+		if($realDays >= 365){
+			$age = floor($realDays/365*10)/10;
+			//return $age;
+			if ($age<round($age))
+			{
+				//说明 年龄超过半岁
+				$age=floor($age)+0.5;
+			}else{
+				$age=floor($age);
+			}
+			return $age;
+		}
+		return 0;
+	}	
+	private static function getLeapYears($currentDay,$birthDay){
+		$currentYear = date('Y',strtotime($currentDay));
+		$currentMonth = date('m',strtotime($currentDay));
+		$birthYear = date('Y',strtotime($birthDay));
+		$birthMonth = date('m',strtotime($birthDay));
+		if($birthMonth > 2){
+			$birthYear += 1;
+		}
+		if($currentMonth < 2){
+			$currentYear += 1;
+		}
+		for($i = $birthYear;$i<=$currentYear;$i++){
+			if(self::checkLeap($i)){
+				self::$leapYears++;
+			}
+		}
+	}	
+	private static function checkLeap($year){
+		$time = mktime(20,20,20,2,1,$year);
+		if (date("t",$time)==29){
+			return true;
+		}else{
+			return false;
+		}
+	}
+};  
 ?>      
 <?php 
 if($o_table->getAllCount()>0)
@@ -22,8 +80,7 @@ if($o_table->getAllCount()>0)
 ?>
 <div class="page">
     <div class="page__bd">
-    	<div class="weui-cells__title">查看<?php echo($o_item->getName())?>成绩</div>
-        <div class="weui-cells weui-cells_form">
+    	<div class="weui-cells__title">查看<?php echo($o_item->getName())?>成绩</div>        
 	    <?php
 	    $o_date = new DateTime ( 'Asia/Chongqing' );
 	    $s_date=$o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ) ;
@@ -31,54 +88,46 @@ if($o_table->getAllCount()>0)
 		{
 			$s_value='';
 			$o_temp = new Teaching_Sport_Records();
-			$o_temp->PushWhere ( array ('&&', 'Date', '=',$s_date) );
+			$o_temp->PushWhere ( array ('&&', 'Date', '>=',$o_date->format ( 'Y' ).'-01-01') );
+			$o_temp->PushWhere ( array ('&&', 'Date', '<=',$o_date->format ( 'Y' ).'-12-31') );
 			$o_temp->PushWhere ( array ('&&', 'StudentId', '=',$o_table->getStudentId($i)) );
 			$o_temp->PushWhere ( array ('&&', 'ItemId', '=',$o_item->getId()) );
-			if ($o_temp->getAllCount()>0)
+			$s_result='';
+			$s_more='';
+			$n_count=$o_temp->getAllCount();
+			if ($n_count>2)
 			{
-				continue;
-				$s_value=$o_temp->getScore(0);
+				$n_count=2;
+			}
+			for($j=0;$j<$n_count;$j++)
+			{
+				$s_result.='<div class="weui-cell">
+				                <div class="weui-cell__hd"><label class="weui-label" style="width:200px;color:#999999;font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getDate($j).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getScore($j).'&nbsp;&nbsp;'.$o_item->getUnit().'</label></div>
+				            </div>';
+			}
+			for($j=2;$j<$o_temp->getAllCount();$j++)
+			{
+				$s_result.='<div class="weui-cell more_'.$o_table->getId($i).'" style="display:none">
+				                <div class="weui-cell__hd"><label class="weui-label" style="width:200px;color:#999999;font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getDate($j).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getScore($j).'&nbsp;&nbsp;'.$o_item->getUnit().'</label></div>
+				            </div>';
+			}
+			if ($o_temp->getAllCount()>2)
+			{
+				$s_result.='<a onclick="$(\'.more_'.$o_table->getId($i).'\').show();$(this).hide()" class="weui-cell weui-cell_link">
+			                	<div class="weui-cell__bd">&nbsp;&nbsp;&nbsp;&nbsp;添加更多</div>
+			            	</a>';
 			}
 			echo('
-				
+				<div class="weui-cells weui-cells_form">
 		            <div class="weui-cell">
 		                <div class="weui-cell__hd"><label class="weui-label">'.$o_table->getName($i).'</label></div>
-		                <div class="weui-cell__bd">
-		                    <input value="'.$s_value.'" onkeyup="save_score(\''.$o_table->getStudentId($i).'\',\''.$o_item->getId().'\',this)" style="text-align:right;color:#3CC51F;" class="weui-input" type="number" pattern="[0-9]*" placeholder="请填写">
-		                </div>
-		                <div class="weui-cell__hd"><label class="weui-label" style="width:80px;text-align:center">'.$o_item->getUnit().'</label></div>
+		                <div class="weui-cell__hd"><label class="weui-label" style="width:200px;text-align:right">'.get_target($o_item->getId(),$o_table->getBirthday($i),$o_table->getSex($i)).' '.$o_item->getUnit().'</label></div>
 		            </div>
-		        
+					'.$s_result.'
+				</div>
 			');
 		}
-		for($i=0;$i<$o_table->getAllCount();$i++)
-		{
-			$s_value='';
-			$o_temp = new Teaching_Sport_Records();
-			$o_temp->PushWhere ( array ('&&', 'Date', '=',$s_date) );
-			$o_temp->PushWhere ( array ('&&', 'StudentId', '=',$o_table->getStudentId($i)) );
-			$o_temp->PushWhere ( array ('&&', 'ItemId', '=',$o_item->getId()) );
-			if ($o_temp->getAllCount()>0)
-			{
-				$s_value=$o_temp->getScore(0);
-			}else{
-				continue;
-			}
-			echo('
-					
-		            <div class="weui-cell">
-		                <div class="weui-cell__hd"><label class="weui-label">'.$o_table->getName($i).'</label></div>
-		                <div class="weui-cell__bd">
-		                    <input value="'.$s_value.'" onkeyup="save_score(\''.$o_table->getStudentId($i).'\',\''.$o_item->getId().'\',this)" style="text-align:right;color:#3CC51F;" class="weui-input" type="number" pattern="[0-9]*" placeholder="成绩">
-		                </div>
-		                <div class="weui-cell__hd"><label class="weui-label" style="width:80px;text-align:center">'.$o_item->getUnit().'</label></div>
-		            </div>
-					
-			');
-		}
-		
         ?>
-        </div>   
     </div>
 </div>	
 	<?php
