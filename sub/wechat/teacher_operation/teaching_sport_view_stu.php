@@ -102,19 +102,25 @@ if($o_table->getAllCount()>0)
 			for($j=0;$j<$n_count;$j++)
 			{
 				$s_result.='<div class="weui-cell">
-				                <div class="weui-cell__hd"><label class="weui-label" style="width:200px;color:#999999;font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getDate($j).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getScore($j).'&nbsp;&nbsp;'.$o_item->getUnit().'</label></div>
+				                <div class="weui-cell__hd" style="width:100%;"><label class="weui-label" style="width:100%;text-align:right;color:#999999;font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getDate($j).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getScore($j).'&nbsp;&nbsp;'.$o_item->getUnit().'</label></div>
+								<div class="weui-cell__ft">
+									<button class="weui-vcode-btn" onclick="sport_delete_score(\''.$o_temp->getId($j).'\',this.parentElement.parentElement)" style="color:red;font-size:14px;height:auto;line-height:14px;width:50px;margin-left:10px;">删除</button>
+								</div>
 				            </div>';
 			}
 			for($j=2;$j<$o_temp->getAllCount();$j++)
 			{
 				$s_result.='<div class="weui-cell more_'.$o_table->getId($i).'" style="display:none">
-				                <div class="weui-cell__hd"><label class="weui-label" style="width:200px;color:#999999;font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getDate($j).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getScore($j).'&nbsp;&nbsp;'.$o_item->getUnit().'</label></div>
+				                <div class="weui-cell__hd" style="width:100%;"><label class="weui-label" style="width:100%;text-align:right;color:#999999;font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getDate($j).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$o_temp->getScore($j).'&nbsp;&nbsp;'.$o_item->getUnit().'</label></div>
+								<div class="weui-cell__ft">
+									<button class="weui-vcode-btn" onclick="sport_delete_score(\''.$o_temp->getId($j).'\',this.parentElement.parentElement)" style="color:red;font-size:14px;height:auto;line-height:14px;width:50px;margin-left:10px;">删除</button>
+								</div>
 				            </div>';
 			}
 			if ($o_temp->getAllCount()>2)
 			{
 				$s_result.='<a onclick="$(\'.more_'.$o_table->getId($i).'\').show();$(this).hide()" class="weui-cell weui-cell_link">
-			                	<div class="weui-cell__bd">&nbsp;&nbsp;&nbsp;&nbsp;更多</div>
+			                	<div class="weui-cell__bd" style="text-align:right">更多&nbsp;&nbsp;&nbsp;&nbsp;</div>
 			            	</a>';
 			}
 			echo('
@@ -138,6 +144,7 @@ if($o_table->getAllCount()>0)
         <div style="padding:15px;">
 	    	<a class="weui-btn weui-btn_default" onclick="history.go(-1)">返回</a>
 	    </div>
+<script type="text/javascript" src="js/function.js"></script>
 <script>
 function save_score(stu_id,item_id,obj) {
 	if(obj.value!='')

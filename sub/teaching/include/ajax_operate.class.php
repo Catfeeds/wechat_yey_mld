@@ -996,6 +996,19 @@ class Operate extends Bn_Basic {
 		);
 		echo (json_encode ( $a_general ));
 	}
+	public function SportDeleteScore($n_uid) {
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		$o_table = new Teaching_Sport_Records($this->getPost('id'));
+		$o_table->Deletion();
+		$a_general = array (
+				'success' => 1,
+				'text' =>''
+		);
+		echo (json_encode ( $a_general ));
+	}
 }
 
 ?>

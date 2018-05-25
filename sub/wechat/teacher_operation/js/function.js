@@ -108,3 +108,13 @@ function survey_answer_submit()
 	Common_OpenLoading();
 	document.getElementById("submit_form").submit();	
 }
+function sport_delete_score(id,obj)
+{
+    Dialog_Confirm('真的要删除成绩吗？',function(){
+    	var data = 'Ajax_FunName=SportDeleteScore'; //后台方法
+        data = data + '&id=' + id;
+        $(obj).hide()
+        $.getJSON("../../../sub/teaching/include/bn_submit.switch.php", data, function (json) {
+        })
+    })
+}
