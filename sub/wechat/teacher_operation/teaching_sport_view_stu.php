@@ -17,10 +17,19 @@ if (!($o_item->getNumber()>0))
 }
 function get_target($n_item_id,$s_birthday,$s_sex)
 {
+	$n_year=ComputeYear::getYear($s_birthday);
+	if ($n_year<3)
+	{
+		$n_year=3;
+	}
+	if ($n_year>6)
+	{
+		$n_year=6;
+	}
 	$o_temp=new Teaching_Sport_Item_Target();
 	$o_temp->PushWhere ( array ('&&', 'ItemId', '=',$n_item_id) );
 	$o_temp->PushWhere ( array ('&&', 'Sex', '=',$s_sex) );
-	$o_temp->PushWhere ( array ('&&', 'Age', '=',ComputeYear::getYear($s_birthday)) );
+	$o_temp->PushWhere ( array ('&&', 'Age', '=',$n_year) );
 	$o_temp->getAllCount();
 	//return ComputeYear::getYear($s_birthday);
 	return $o_temp->getTarget(0);
