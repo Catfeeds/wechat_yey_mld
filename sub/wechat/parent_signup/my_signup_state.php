@@ -55,7 +55,7 @@ switch($o_stu->getState(0))
 		';
 		break;
 	case 2:
-		$s_state='信息核验通过<br/>等待见面';
+		$s_state='信息核验通过<br/>等待入园互动';
 		//读取核验通过提醒，已发消息的最近一条
 		$o_reminder=new Wechat_Wx_User_Reminder();
 		$o_reminder->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
@@ -75,15 +75,15 @@ switch($o_stu->getState(0))
 	                		<span class="weui-form-preview__value">'.$o_reminder->getKeyword2(0).'</span>
             			</div>
             			<div class="weui-form-preview__item">
-	                		<label class="weui-form-preview__label">见面日期</label>
+	                		<label class="weui-form-preview__label">日期</label>
 	                		<span class="weui-form-preview__value">'.$o_reminder->getKeyword3(0).'</span>
             			</div>
             			<div class="weui-form-preview__item">
-	                		<label class="weui-form-preview__label">见面时段</label>
+	                		<label class="weui-form-preview__label">时段</label>
 	                		<span class="weui-form-preview__value">'.$o_reminder->getKeyword4(0).'</span>
             			</div>
             			<div class="weui-form-preview__item">
-	                		<label class="weui-form-preview__label">见面地点</label>
+	                		<label class="weui-form-preview__label">地点</label>
 	                		<span class="weui-form-preview__value">'.$o_reminder->getKeyword5(0).'</span>
             			</div>
      				</div>     				
@@ -170,7 +170,7 @@ switch($o_stu->getState(0))
 function format_remark($s_str)
 {
 	$s_str=str_replace('如需查看幼儿报名信息，请点击详情', '',$s_str);
-	$s_str=str_replace('见面会注意事项请点击详情查看。', '',$s_str);
+	$s_str=str_replace('入园互动注意事项请点击详情查看。', '',$s_str);
 	$s_str=str_replace('幼儿体检注意事项请点击详情查看。', '',$s_str);
 	$s_str=str_replace('幼儿体检注意事项请点击详情查看。', '',$s_str);
 	$s_str=str_replace('公交车站', '<br/>公交车站',$s_str);
@@ -215,9 +215,9 @@ function format_remark($s_str)
                     if ($o_stu->getState(0)==2)
                     {
                     ?>
-                	<h4 class="weui-media-box__title" style="text-align:center;font-size:22px;padding-top:15px;padding-bottom:15px;"><b>见面会注意事项</b></h4>
+                	<h4 class="weui-media-box__title" style="text-align:center;font-size:22px;padding-top:15px;padding-bottom:15px;"><b>入园互动注意事项</b></h4>
                     <h4 class="weui-media-box__title" style="font-size:14px;color:#333333">
-<span style="text-decoration:underline">家长持报名手机及幼儿编号</span>，在规定的时段、地点，有序扫码入园，参加见面会。一名幼儿只能由一名监护人带领参加见面会。
+<span style="text-decoration:underline">家长持报名手机及幼儿编号</span>，在规定的时段、地点，有序扫码入园，参加入园互动。一名幼儿只能由一名监护人带领参加入园互动。
 					</h4>
 					<?php 
                     }

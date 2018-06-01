@@ -81,10 +81,10 @@ if ($o_stu->getState(0)>2)
 		        </div>
 		    </div>
 	    </div>
-	    <div class="weui-cells__title">见面结果选项</div>
+	    <div class="weui-cells__title">入园互动结果选项</div>
 	    <?php 
 	    $o_item=new Student_Info_Meet_Item();
-	    $o_item->PushWhere ( array ('&&', 'Type', '=','幼儿见面') ); 
+	    $o_item->PushWhere ( array ('&&', 'Type', '=','入园互动') ); 
 	    $o_item->PushOrder ( array ('Number','A') );   
 	    for($i=0;$i<$o_item->getAllCount();$i++)
 	    {	    	
@@ -143,7 +143,7 @@ if ($o_stu->getState(0)>2)
 	        </div>
         </div>
 	    <div style="padding:15px;">
-	    	<a id="next" class="weui-btn weui-btn_primary" onclick="meet_submit()">提交见面结果</a>
+	    	<a id="next" class="weui-btn weui-btn_primary" onclick="meet_submit()">提交入园互动结果</a>
 	    	<a id="next" class="weui-btn weui-btn_default" onclick="location='meet_search.php?'+Date.parse(new Date())">取消</a>
 	    </div>
 	</form>

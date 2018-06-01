@@ -134,19 +134,19 @@ function OutputList($S_State,$s_filename) {
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), $o_question->getText($i));$n_counter++;
 	}
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '核验备注');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '见面时段');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '入园互动时段');$n_counter++;
 	//如果是3，已见面，那么要添加相应的列
 	if($S_State>=3)
 	{
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '幼儿见面审核员');$n_counter++;
+		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '入园互动审核员');$n_counter++;
 		$o_item=new Student_Info_Meet_Item();
-		$o_item->PushWhere ( array ('&&', 'Type', '=','幼儿见面') ); 
+		$o_item->PushWhere ( array ('&&', 'Type', '=','入园互动') ); 
 	    $o_item->PushOrder ( array ('Number','A') );
 	    for($i=0;$i<$o_item->getAllCount();$i++)
 	    {
 	    	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), $o_item->getType($i).'-'.$o_item->getName($i));$n_counter++;
 	    }
-	    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1),'幼儿见面-备注');$n_counter++;
+	    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1),'入园互动-备注');$n_counter++;
 	    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '家长见面审核员');$n_counter++;
 		$o_item=new Student_Info_Meet_Item();
 		$o_item->PushWhere ( array ('&&', 'Type', '=','家长见面') ); 

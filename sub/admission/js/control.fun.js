@@ -224,7 +224,7 @@ function audit_select_submit()
 	}
 	document.getElementById('Vcl_FunName').value='SendMeetNotice';
 	document.getElementById('Vcl_StuId').value=arrayToJson(a_data)
-	dialog_confirm("确认通知选中幼儿监护人吗？<br/><br/>确认后：<br/>1. 幼儿监护人的微信将收到见面通知。<br/>2. 选中的幼儿报名信息将会进入“<b>等待见面</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
+	dialog_confirm("确认通知选中幼儿监护人吗？<br/><br/>确认后：<br/>1. 幼儿监护人的微信将收到入园互动通知。<br/>2. 选中的幼儿报名信息将会进入“<b>等待见面</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
 }
 function health_select_submit()
 {

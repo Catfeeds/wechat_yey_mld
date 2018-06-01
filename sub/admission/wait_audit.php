@@ -43,7 +43,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                                 <button id="user_add_btn" type="button" class="btn btn-danger" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="select_submit_reject()">
                                 <span  class="glyphicon glyphicon glyphicon-remove"></span>&nbsp;不通过</button>
                                 <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="audit_select_submit()">
-                                <span  class="glyphicon glyphicon-ok"></span>&nbsp;发送见面通知</button>
+                                <span  class="glyphicon glyphicon-ok"></span>&nbsp;发送入园互动通知</button>
                             </div>
                         <table class="table table-striped">
                             <thead>

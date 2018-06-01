@@ -57,7 +57,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                     		}
                     	?>
                     		<div class="item">
-	                     		<label>幼儿见面时段 ：</label>
+	                     		<label>入园互动时段 ：</label>
 	                     	</div>
                     	<?php 
                     		$o_table=new Admission_Time();

@@ -383,7 +383,7 @@ http://wx.mldyey.com/signup/
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
-				    $o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，如错过见面视为自行放弃入园资格：');
+				    $o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加入园互动，如错过入园互动视为自行放弃入园资格：');
 				    $o_msg->setKeyword1($o_stu->getStudentId());
 				    $o_msg->setKeyword2($o_stu->getName());
 				    $a_time=$this->getMeetDateAndTime($o_admission_setup->getMeetDate(), $o_admission_setup->getMeetTime());
@@ -391,7 +391,7 @@ http://wx.mldyey.com/signup/
 				    $o_msg->setKeyword4($a_time[1]);
 				    $o_msg->setKeyword5($o_admission_setup->getMeetAddress());
 				    $o_msg->setRemark('
-见面会注意事项请点击详情查看。');
+入园互动会注意事项请点击详情查看。');
 				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId().'');
 				    $o_msg->setKeywordSum(5);
 				    $o_msg->Save();
@@ -402,7 +402,7 @@ http://wx.mldyey.com/signup/
 	}
 	private function getMeetDateAndTime($s_date,$s_time)
 	{
-		//读取见面设置
+		//读取入园互动设置
 		$o_table=new Admission_Time();
 		$o_table->PushWhere ( array ('&&', 'Type', '=', 'meet' ) );
 		$o_table->PushOrder ( array ('Id', 'A' ) );
@@ -419,7 +419,7 @@ http://wx.mldyey.com/signup/
 	}
 	private function getAuditDateAndTime($s_date,$s_time)
 	{
-		//读取见面设置
+		//读取入园互动设置
 		$o_table=new Admission_Time();
 		$o_table->PushWhere ( array ('&&', 'Type', '=', 'Audit' ) );
 		$o_table->PushOrder ( array ('Id', 'A' ) );
@@ -436,7 +436,7 @@ http://wx.mldyey.com/signup/
 	}
 	private function getHealthDateAndTime($s_datetime)
 	{
-		//读取见面设置
+		//读取入园互动设置
 		$o_table=new Admission_Time();
 		$o_table->PushWhere ( array ('&&', 'Type', '=', 'Health' ) );
 		$o_table->PushOrder ( array ('Id', 'A' ) );
@@ -483,7 +483,7 @@ http://wx.mldyey.com/signup/
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
-				    $o_msg->setFirst('如下幼儿已经通过幼儿见面，请您按时间地点携带幼儿进行体检，如错过体检视为自行放弃入园资格：');
+				    $o_msg->setFirst('如下幼儿已经通过入园互动，请您按时间地点携带幼儿进行体检，如错过体检视为自行放弃入园资格：');
 				    $o_msg->setKeyword1($o_stu->getStudentId());//幼儿编号
 				    $o_msg->setKeyword2($o_stu->getName());//幼儿姓名
 				    $o_msg->setKeyword3($this->getHealthDateAndTime($o_admission_setup->getHealthTime()));//体检时间
@@ -621,7 +621,7 @@ http://wx.mldyey.com/signup/
 		$a_title=$this->setTableTitle($a_title,'证件信息', 'IdType', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'监护人', 'Jh1Name', 0, 100);
 		$a_title=$this->setTableTitle($a_title,'备用电话', '', 0, 80);
-		$a_title=$this->setTableTitle($a_title,'见面审核员', '', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'入园互动审核员', '', 0, 80);
 		$this->SendJsonResultForTable($n_allcount,'MeetResultTable', 'no', $n_page, $a_title, $a_row);
 	}
 	public function InfoWaitTable($n_uid)
@@ -803,7 +803,7 @@ http://wx.mldyey.com/signup/
         	$o_temp->setSum($this->getPost('Sum_'.$o_table->getId($i)));
         	$o_temp->Save();
         }
-		$this->setReturn ( 'parent.form_return("dialog_success(\'保存见面时段设置成功。\')");' );
+		$this->setReturn ( 'parent.form_return("dialog_success(\'保存入园互动时段设置成功。\')");' );
 	}
 	public function SignupReject($n_uid)
 	{	

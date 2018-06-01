@@ -16,8 +16,8 @@ require_once '../header.php';
         }elseif ($_GET['id']==2)
         {
         	?>
-        	<h2 class="weui-msg__title">未通知见面</h2>
-            <p class="weui-msg__desc">请注意，您搜索的幼儿，没有见面资格。</p>
+        	<h2 class="weui-msg__title">未通知入园互动</h2>
+            <p class="weui-msg__desc">请注意，您搜索的幼儿，没有入园互动资格。</p>
         	<?php
         }else{
         	?>

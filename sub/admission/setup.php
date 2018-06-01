@@ -77,15 +77,15 @@ $o_admission_setup=new Admission_Setup(1);
 	                     		<input name="Vcl_AuditAddress" maxlength="50" id="Vcl_AuditAddress" type="text" style="width:100%" placeholder="必填" class="form-control"/>
 	                     	</div>
 	                     	<div class="item">
-	                     		<label><span class="must">*</span> 幼儿见面日期：</label>
+	                     		<label><span class="must">*</span> 入园互动日期：</label>
 		                     	<input name="Vcl_MeetDate" maxlength="50" id="Vcl_MeetDate" type="text" style="width:100%" placeholder="必填" class="form-control"/>
 	                     	</div>
 	                     	<div class="item">
-	                     		<label><span class="must">*</span> 幼儿见面时段：</label>
+	                     		<label><span class="must">*</span> 入园互动时段：</label>
 	                     		<input name="Vcl_MeetTime" maxlength="50" id="Vcl_MeetTime" type="text" style="width:100%" placeholder="必填" class="form-control"/>
 	                     	</div> 
 	                     	<div class="item">
-	                     		<label><span class="must">*</span> 幼儿见面地点：</label>
+	                     		<label><span class="must">*</span> 入园互动地点：</label>
 	                     		<input name="Vcl_MeetAddress" maxlength="50" id="Vcl_MeetAddress" type="text" style="width:100%" placeholder="必填" class="form-control"/>
 	                     	</div>  
 	                     	<div class="item">

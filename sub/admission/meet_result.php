@@ -28,7 +28,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading">
-                            <div class="caption">幼儿见面结果列表</div>
+                            <div class="caption">入园互动结果列表</div>
                             <div class="row">
 								  <div class="col-lg-6">
 								    <div class="input-group" style="width:300px;" >

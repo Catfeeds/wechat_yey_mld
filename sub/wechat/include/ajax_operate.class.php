@@ -895,7 +895,7 @@ class Operate extends Bn_Basic {
 				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId(), // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
-					'first' => array('value' => '如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，如错过见面视为自行放弃入园资格：
+					'first' => array('value' => '如下幼儿信息核验已经通过，请按时段地点携带幼儿参加入园互动，如错过入园互动视为自行放弃入园资格：
 '),
 					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
@@ -903,7 +903,7 @@ class Operate extends Bn_Basic {
 					'keyword4' => array('value' => $s_meet_time,'color'=>'#173177'),
 					'keyword5' => array('value' => $o_admission_setup->getMeetAddress(),'color'=>'#173177'),
 					'remark' => array('value' => '
-见面会注意事项请点击详情查看。')
+入园互动会注意事项请点击详情查看。')
 				)
 				);
 			$curlUtil->https_request($s_url, json_encode($data));
@@ -916,7 +916,7 @@ class Operate extends Bn_Basic {
 			$o_msg->setOpenId($o_parent->getOpenId());
 			$o_msg->setActivityId(0);
 			$o_msg->setSend(1);
-			$o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加见面，如错过见面视为自行放弃入园资格：');
+			$o_msg->setFirst('如下幼儿信息核验已经通过，请按时段地点携带幼儿参加入园互动，如错过入园互动视为自行放弃入园资格：');
 			$o_msg->setKeyword1($o_stu->getStudentId());
 			$o_msg->setKeyword2($o_stu->getName());
 			$o_msg->setKeyword3($s_meet_date);
@@ -1040,7 +1040,7 @@ class Operate extends Bn_Basic {
 		//填写见面结果
 		$a_result=array();
 		$o_item=new Student_Info_Meet_Item();
-		$o_item->PushWhere ( array ('&&', 'Type', '=','幼儿见面') ); 
+		$o_item->PushWhere ( array ('&&', 'Type', '=','入园互动') ); 
 	    $o_item->PushOrder ( array ('Number','A') );
 	    for($i=0;$i<$o_item->getAllCount();$i++)
 	    {
@@ -1048,7 +1048,7 @@ class Operate extends Bn_Basic {
 	    }
 	    if (count($a_result)==0)
 	    {
-	    	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'对不起，请选择见面结果！\');' );
+	    	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Message(\'对不起，请选择入园互动结果！\');' );
 	    }
 	    $o_stu->setMeetAuditorId($o_stu_wechat->getUid(0));
 	    $o_stu->setMeetAuditorName($o_stu_wechat->getName(0));

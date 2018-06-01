@@ -1,7 +1,7 @@
 <?php
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
-$s_title='幼儿见面入场验证';
+$s_title='入园互动入场验证';
 require_once '../header.php';
 $b_ticket=false;
 //验证学生信息是否在该用户名下
@@ -22,7 +22,7 @@ if ($b_ticket)
     <div class="weui-msg">
         <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
         <div class="weui-msg__text-area">
-            <h2 class="weui-msg__title">幼儿见面入场通过<br/>
+            <h2 class="weui-msg__title">入园互动入场通过<br/>
             <span style="font-size:32px;">时段：<?php 
         require_once RELATIVITY_PATH.'include/bn_basic.class.php';
 		$o_bn_base=new Bn_Basic();
@@ -33,7 +33,7 @@ if ($b_ticket)
 		$o_reminder->getAllCount();
 		echo($o_reminder->getKeyword4(0));
             ?></span></h2>
-            <p class="weui-msg__desc">您好，请入场进行幼儿见面</p>
+            <p class="weui-msg__desc">您好，请入场进行入园互动</p>
         </div>
     </div>
     <div class="weui-cells__title">幼儿报名信息</div>
@@ -68,8 +68,8 @@ if ($b_ticket)
     <div class="weui-msg">
         <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
         <div class="weui-msg__text-area">
-            <h2 class="weui-msg__title">没有幼儿见面入场资格</h2>
-            <p class="weui-msg__desc">对不起，您没有幼儿见面入场资格</p>
+            <h2 class="weui-msg__title">没有入园互动入场资格</h2>
+            <p class="weui-msg__desc">对不起，您没有入园互动入场资格</p>
         </div>
     </div>
     <div style="padding:15px;">

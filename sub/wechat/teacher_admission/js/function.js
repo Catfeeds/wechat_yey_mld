@@ -13,7 +13,7 @@ function audit_reject()
 }
 function meet_submit()
 {
-	Dialog_Confirm("真的要提交见面结果吗？",function(){
+	Dialog_Confirm("真的要提交入园互动结果吗？",function(){
 		Common_OpenLoading();
 		document.getElementById("submit_form").submit();
 	})
