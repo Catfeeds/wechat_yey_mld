@@ -3,7 +3,13 @@ $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='我的幼儿报名';
 require_once '../header.php';
-
+//想判断教师权限，是否为绑定用户
+$o_temp=new Base_User_Wechat_View();
+$o_temp->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) );
+if ($o_temp->getAllCount()==0)
+{
+	exit(0);
+}
 //验证学生信息是否在该用户名下
 $o_stu_wechat=new Student_Info_Wechat_Wiew();
 $o_stu_wechat->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) ); 
