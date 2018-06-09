@@ -206,7 +206,7 @@ function format_remark($s_str)
                     ?>
                 	<h4 class="weui-media-box__title" style="text-align:center;font-size:22px;padding-top:15px;padding-bottom:15px;"><b>信息核验注意事项</b></h4>
                     <h4 class="weui-media-box__title" style="font-size:14px;color:#333333">
-<span style="text-decoration:underline">家长持报名手机及幼儿编号</span>，在规定的时段、地点，有序进行信息核验。家长请务必携带自行打印的“报名信息登记表”和相关证件原件、复印件，即：：户口本、幼儿身份证、出生证、房产证或租赁合同（能证明房主与幼儿的关系）、幼儿预防接种证、其他特殊证明（如烈士子女证明等）。
+<span style="text-decoration:underline">家长持报名手机及幼儿编号</span>，在规定的时段、地点，有序进行信息核验。家长请务必携带自行打印的“报名信息登记表”和相关证件原件、复印件，即：户口本、出生证、房产证或租赁合同（能证明房主与幼儿的关系）、幼儿预防接种证、其他特殊证明（如烈士子女证明等）。
 					</h4>
 					<?php 
                     }
