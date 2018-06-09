@@ -330,7 +330,7 @@ class Operate extends Bn_Basic {
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
-				    $o_msg->setFirst('如下幼儿初步审核已经通过，请您按时间地点携带核验资料以及“报名信息登记表”进行信息核验，如错过信息核验视为自行放弃入园资格：');
+				    $o_msg->setFirst('如下幼儿初步审核已经通过，请您按时间地点携带核验资料原件、复印件以及“报名登记表”进行信息核验，如错过信息核验视为自行放弃入园资格：');
 				    $o_msg->setKeyword1($o_stu->getStudentId());
 				    $o_msg->setKeyword2($o_stu->getName());
 				    $a_time=$this->getAuditDateAndTime($o_admission_setup->getAuditDate(),$o_admission_setup->getAuditTime());
@@ -339,9 +339,9 @@ class Operate extends Bn_Basic {
 				    $o_msg->setKeyword5($o_admission_setup->getAuditAddress());
 				    $o_msg->setRemark('请用电脑访问：
 http://wx.mldyey.com/signup/
-并扫码二维码进行登录，即可打印准“报名信息登记表”。
+并扫码二维码进行登录，即可打印“报名信息登记表”。
 
-信息核验注意事项请点击详情查看。');
+信息核验资料及注意事项请点击详情查看。');
 				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId().'');
 				    $o_msg->setKeywordSum(5);
 				    $o_msg->Save();
@@ -391,7 +391,7 @@ http://wx.mldyey.com/signup/
 				    $o_msg->setKeyword4($a_time[1]);
 				    $o_msg->setKeyword5($o_admission_setup->getMeetAddress());
 				    $o_msg->setRemark('
-入园互动会注意事项请点击详情查看。');
+入园互动注意事项请点击详情查看。');
 				    $o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId().'');
 				    $o_msg->setKeywordSum(5);
 				    $o_msg->Save();
@@ -483,7 +483,7 @@ http://wx.mldyey.com/signup/
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
-				    $o_msg->setFirst('如下幼儿已经通过入园互动，请您按时间地点携带幼儿进行体检，如错过体检视为自行放弃入园资格：');
+				    $o_msg->setFirst('如下幼儿已经通过入园互动环节，请您按时间地点携带幼儿进行体检，如错过体检视为自行放弃入园资格：');
 				    $o_msg->setKeyword1($o_stu->getStudentId());//幼儿编号
 				    $o_msg->setKeyword2($o_stu->getName());//幼儿姓名
 				    $o_msg->setKeyword3($this->getHealthDateAndTime($o_admission_setup->getHealthTime()));//体检时间

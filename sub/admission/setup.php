@@ -65,7 +65,7 @@ $o_admission_setup=new Admission_Setup(1);
                 					</div>
 	                     	</div>
 	                     	<div class="item">
-	                     		<label><span class="must">*</span> 信息核验日期：</label>
+	                     		<label><span class="must">*</span> 信息核验通知日期：</label>
 		                     	<input name="Vcl_AuditDate" maxlength="50" id="Vcl_AuditDate" type="text" style="width:100%" placeholder="必填" class="form-control"/>
 	                     	</div>
 	                     	<div class="item">

@@ -810,7 +810,7 @@
 		        	<div class="weui-cell">
 						<div class="weui-cell__hd"><label class="weui-label" style="width:150px;">户主与幼儿关系</label></div>
 						<div class="weui-cell__bd">
-			                <select class="weui-select finish_info" id="Vcl_HGuanxi" name="Vcl_HGuanxi">
+			                <select class="weui-select" id="Vcl_HGuanxi" name="Vcl_HGuanxi">
 			                    <option selected="selected" value="父母">父母</option>
 		                        <option value="祖父母或外祖父母">祖父母或外祖父母</option>
 		                        <option value="其他">其他</option>

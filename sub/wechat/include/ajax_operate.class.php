@@ -113,7 +113,7 @@ class Operate extends Bn_Basic {
 				'keyword4' => array('value' => $o_stu->getId(),'color'=>'#173177'),
 				'keyword5' => array('value' => $o_stu->getSignupDate(),'color'=>'#173177'),
 				'remark' => array('value' => '
-请您于2017年6月14日17:00前关注报名状态。谢谢。
+请您于'.$o_setup->getAuditDate().'前关注报名状态。谢谢。
 				
 如需修改幼儿报名信息，请点击详情。')
 			)
@@ -903,7 +903,7 @@ class Operate extends Bn_Basic {
 					'keyword4' => array('value' => $s_meet_time,'color'=>'#173177'),
 					'keyword5' => array('value' => $o_admission_setup->getMeetAddress(),'color'=>'#173177'),
 					'remark' => array('value' => '
-入园互动会注意事项请点击详情查看。')
+入园互动注意事项请点击详情查看。')
 				)
 				);
 			$curlUtil->https_request($s_url, json_encode($data));
