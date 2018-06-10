@@ -16,7 +16,7 @@ $b_login=false;
 $n_uid=0;
 $S_Session_Id= $_COOKIE ['SESSIONID'];
 if (isset ( $_COOKIE ['SESSIONID'] )) {//检查是否保存了Session
-	setcookie ( 'SESSIONID', '3d59f6e26cfad634d627a305730e5f45',0 ,'/','',false,true);
+	//setcookie ( 'SESSIONID', '3d59f6e26cfad634d627a305730e5f45',0 ,'/','',false,true);
 	$S_Session_Id= $_COOKIE ['SESSIONID'];
 	$o_user = new WX_User_Info ();
 	$o_user->PushWhere ( array ('&&', 'SessionId', '=',$S_Session_Id) );	if ($o_user->getAllCount () > 0) {
@@ -70,34 +70,29 @@ if ($b_login == false) //如果登陆信息，验证用户是否已经注册
 		//----------------------------------
 		$o_user->Save();
 		$b_login=true;
-	}else{		//如果不在用户数据内，需要添加数据
-		$o_user = new WX_User_Info ();
-		$o_user->PushWhere ( array ('&&', 'OpenId', '=', $openId ) );
-		if ($o_user->getAllCount()==0)
+	}else{		//如果不在用户数据内，需要添加数据，并将用户归到荷兰旅游专家的子账号里。
+		$o_user = new WX_User_Info();
+		$o_user->setOpenId($openId);
+		require_once RELATIVITY_PATH . 'include/bn_basic.class.php';
+		$o_bn_basic=new Bn_Basic();
+		$o_user->setPhoto($a_user_info['headimgurl']);
+		$o_user->setNickname($o_bn_basic->FilterEmoji($a_user_info['nickname']));
+		if ($a_user_info['sex']==2)
 		{
-			//如果不在用户数据内，需要添加数据，并将用户归到荷兰旅游专家的子账号里。
-			$o_user = new WX_User_Info();
-			$o_user->setOpenId($openId);
-	        require_once RELATIVITY_PATH . 'include/bn_basic.class.php';  
-	        $o_bn_basic=new Bn_Basic();
-	        $o_user->setPhoto($a_user_info['headimgurl']);
-			$o_user->setNickname($o_bn_basic->FilterEmoji($a_user_info['nickname']));
-			if ($a_user_info['sex']==2)
-			{
-				$o_user->setSex('女');
-			}else{
-				$o_user->setSex('男');
-			}
-			$o_user->setDelFlag(0);
-			$o_user->setUserName('');
-			$o_user->setCompany('');
-			$o_user->setAddress('');
-			$o_user->setDeptJob('');
-			$o_user->setPhone('');
-			$o_user->setEmail('');
-			$o_user->Save();
+			$o_user->setSex('女');
+		}else{
+			$o_user->setSex('男');
 		}
-		$n_uid=0;
+		$o_user->setDelFlag(0);
+		$o_user->setUserName('');
+		$o_user->setCompany('');
+		$o_user->setAddress('');
+		$o_user->setDeptJob('');
+		$o_user->setPhone('');
+		$o_user->setEmail('');
+		$o_user->Save();
+		$b_login=true;
+		$n_uid=$o_user->getId();
 	}
 }
 if ($b_login == false)

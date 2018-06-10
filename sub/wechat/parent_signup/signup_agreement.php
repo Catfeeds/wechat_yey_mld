@@ -14,7 +14,7 @@ if ($o_temp->getAllCount()==0)
  	<div class="page__hd" style="padding:15px;">
         <h1 class="page__title" style="font-size:25px;text-align:center;padding-top:20px;padding-bottom:15px;">报名须知</h1>
         <p class="page__desc" style="color:#666666;font-size:16px;">
-根据北京市西城区有关幼儿园招生工作的精神，现对我园2018年招生工作公告如下：<br/><br/>
+根据北京市西城区教委招生工作指示精神，现对我园2018年招生工作公告如下：<br/><br/>
 一、招生范围：<br/>
 2012年9月1日—2013年8月31日  大班插班：10名<br/>
 2013年9月1日—2014年8月31日  中班插班：10名<br/>
