@@ -1,4 +1,8 @@
+<script type="text/javascript">
+	location='my_signup.php';
+</script>
 <?php
+exit(0);
 $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='我的幼儿报名';

@@ -53,18 +53,25 @@ class Operate extends Bn_Basic {
 		}
 		sleep(1);
 		$o_setup=new Admission_Setup(1); 
-		$o_date = new DateTime('Asia/Chongqing');
-		$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d'). ' ' . $o_date->format ( 'H' ) . ':' . $o_date->format ( 'i' ) . ':' . $o_date->format ( 's' );
-		if (strtotime($s_date)<strtotime($o_setup->getSignupStart()))
+		//判断教师权限，是否为绑定用户
+		$o_temp=new Base_User_Wechat();
+		$o_temp->PushWhere ( array ('&&', 'WechatId', '=',$n_uid) );
+		if ($o_temp->getAllCount()==0)
 		{
-			$this->ReturnMsg('报名开始时间为：'.$o_setup->getSignupStart().' ，请在有效日期内进行报名，谢谢合作。','Name');
-		}
-		if (strtotime($s_date)>strtotime($o_setup->getSignupEnd()))
-		{
-			$this->ReturnMsg('对不起，报名截止时间为：'.$o_setup->getSignupStart().' ，谢谢合作。','Name');
+			//对于绑定的教师，不受报名时间限制。
+			$o_date = new DateTime('Asia/Chongqing');
+			$s_date=$o_date->format('Y') . '-' . $o_date->format('m') . '-' . $o_date->format('d'). ' ' . $o_date->format ( 'H' ) . ':' . $o_date->format ( 'i' ) . ':' . $o_date->format ( 's' );
+			if (strtotime($s_date)<strtotime($o_setup->getSignupStart()))
+			{
+				$this->ReturnMsg('报名开始时间为：'.$o_setup->getSignupStart().' ，请在有效日期内进行报名，谢谢合作。','Name');
+			}
+			if (strtotime($s_date)>strtotime($o_setup->getSignupEnd()))
+			{
+				$this->ReturnMsg('对不起，报名截止时间为：'.$o_setup->getSignupStart().' ，谢谢合作。','Name');
+			}
 		}
 		$o_stu=new Student_Info();
-		$this->CheckId($n_uid);//验证ID是否有重复
+		$this->CheckId();//验证ID是否有重复
 		if ($this->getPost ( 'Name' )=='')$this->ReturnMsg('基本信息的 [幼儿姓名] 不能为空！','Name');
 		$o_stu->setName($this->getPost ( 'Name' ));
 		$o_stu->setSignupDate($this->GetDate());

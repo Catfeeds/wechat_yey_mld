@@ -3,13 +3,6 @@ $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='报名信息登记';
 require_once '../header.php';
-//想判断教师权限，是否为绑定用户
-$o_temp=new Base_User_Wechat_View();
-$o_temp->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) );
-if ($o_temp->getAllCount()==0)
-{
-	exit(0);
-}
 ?>
 	<form action="../include/bn_submit.switch.php" id="submit_form_checkid" method="post" target=ajax_submit_frame>
 		<input type="hidden" name="Vcl_FunName" value="CheckId"/>

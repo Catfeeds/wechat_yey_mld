@@ -3,13 +3,6 @@ $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='报名须知';
 require_once '../header.php';
-//想判断教师权限，是否为绑定用户
-$o_temp=new Base_User_Wechat_View();
-$o_temp->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) );
-if ($o_temp->getAllCount()==0)
-{
-	exit(0);
-}
 ?>
  	<div class="page__hd" style="padding:15px;">
         <h1 class="page__title" style="font-size:25px;text-align:center;padding-top:20px;padding-bottom:15px;">报名须知</h1>
@@ -47,6 +40,9 @@ if ($o_temp->getAllCount()==0)
     </div>
     <div style="padding:15px;">
     	<?php 
+    	//判断教师权限，是否为绑定用户
+    	$o_teacher=new Base_User_Wechat();
+    	$o_teacher->PushWhere ( array ('&&', 'WechatId', '=',$o_wx_user->getId()) );
     	//判断是否为合法报名时段
 		$o_setup=new Admission_Setup(1); 
 		$o_date = new DateTime('Asia/Chongqing');
@@ -58,21 +54,33 @@ if ($o_temp->getAllCount()==0)
 		 <a id="next" href="signup_form.php" class="weui-btn weui-btn_primary" style="display:none">已阅读并同意</a>
 		 <a onclick="document.addEventListener('WeixinJSBridgeReady', WeixinJSBridge.call('closeWindow'));" class="weui-btn weui-btn_default">不同意</a>
 		 <?php 
+		}elseif ($o_teacher->getAllCount()>0)
+		{
+			?>
+			<a class="weui-btn weui-btn_disabled weui-btn_primary"><span>20</span> 已阅读并同意</a>
+		 	<a id="next" href="signup_form.php" class="weui-btn weui-btn_primary" style="display:none">已阅读并同意</a>
+		 	<a onclick="document.addEventListener('WeixinJSBridgeReady', WeixinJSBridge.call('closeWindow'));" class="weui-btn weui-btn_default">不同意</a>
+			<?php
 		}
 		 ?>
 	</div>
 <script>
 $(function(){
-<?php 
-if (strtotime($s_date)<strtotime($o_setup->getSignupStart()))
+<?php
+if ($o_teacher->getAllCount()==0)
 {
-	echo('Dialog_Message("报名开始时间为：<br/>'.$o_setup->getSignupStart().' <br/>请在有效日期内进行报名。",function(){location=\'my_signup.php\'});
+	//对于绑定的教师，不受报名时间限制。
+	if (strtotime($s_date)<strtotime($o_setup->getSignupStart()))
+	{
+		echo('Dialog_Message("报名开始时间为：<br/>'.$o_setup->getSignupStart().' <br/>请在有效日期内进行报名。",function(){location=\'my_signup.php\'});
 	');
+	}
+	if (strtotime($s_date)>strtotime($o_setup->getSignupEnd()))
+	{
+		echo('Dialog_Message("报名已截止，截止时间：<br/>'.$o_setup->getSignupEnd().' ",function(){location=\'my_signup.php\'});');
+	}
 }
-if (strtotime($s_date)>strtotime($o_setup->getSignupEnd()))
-{
-	echo('Dialog_Message("报名已截止，截止时间：<br/>'.$o_setup->getSignupEnd().' ",function(){location=\'my_signup.php\'});');
-}
+
 ?>
 });
 count_down(21)
