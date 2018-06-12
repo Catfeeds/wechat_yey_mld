@@ -125,13 +125,13 @@ if ($o_stu->getState(0)>1)
 		<div class="weui-cells weui-cells_checkbox" style="margin-top:0px;">
 	        <div class="weui-cell">
 	            <div class="weui-cell__bd">
-	                <input class="weui-input" type="text" id="Vcl_AuditRemark" name="Vcl_AuditRemark" placeholder="核验不通过时，必填"/>
+	                <input class="weui-input" type="text" id="Vcl_AuditRemark" name="Vcl_AuditRemark" placeholder="选填"/>
 	            </div>
 	        </div>
         </div>
 	    <div style="padding:15px;">
-	    	<a id="next" class="weui-btn weui-btn_primary" onclick="audit_approve()">通过核验</a>
-	    	<a id="next" class="weui-btn weui-btn_default" onclick="audit_reject()">核验不通过</a>
+	    	<a style="display:none" id="next" class="weui-btn weui-btn_primary" onclick="audit_approve()">通过核验</a>
+	    	<a id="next" class="weui-btn weui-btn_primary" onclick="audit_reject()">提交</a>
 	    </div>
 	</form>
 <script type="text/javascript" src="<?php echo(RELATIVITY_PATH.'sub/wechat/parent_signup/')?>js/function.js"></script>

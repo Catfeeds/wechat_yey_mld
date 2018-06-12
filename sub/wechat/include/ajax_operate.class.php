@@ -1012,13 +1012,15 @@ class Operate extends Bn_Basic {
 	    		array_push($a_question_result,rawurlencode($s_temp));
 	    	}
 	    }
-	    $o_stu->setAuditOption(json_encode($a_question_result));	    
+	    $o_stu->setAuditOption(json_encode($a_question_result));	
+	    $o_stu->setAuditRemark($this->getPost ( 'AuditRemark' ));
+	    /*
 	    if ($this->getPost ( 'AuditRemark' )=='')
 	    {
 	    	$this->setReturn ( 'parent.Common_CloseDialog();parent.Dialog_Error(\'对不起，核验不通过时，核验备注不能为空！\');' );
 	    }else{
 	    	$o_stu->setAuditRemark($this->getPost ( 'AuditRemark' ));
-	    }   
+	    }*/
 		$o_stu->Save();	
 	   	$this->setReturn ( 'parent.location="'.$this->getPost ( 'Url' ).'audit_search.php?"+Date.parse(new Date())');
 	}
