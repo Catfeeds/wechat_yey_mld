@@ -165,6 +165,7 @@ if($_GET['questionid']>0)
 ?>
 $('#Vcl_Question').val('<?php echo($o_table->getQuestion())?>');
 $('#Vcl_Type').val('<?php echo($o_table->getType())?>');
+$('#Vcl_IsMust').val('<?php echo($o_table->getIsMust())?>');
 $('#Vcl_Number').val('<?php echo($o_table->getNumber())?>');
 <?php 
 }else{

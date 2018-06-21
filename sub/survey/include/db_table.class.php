@@ -458,6 +458,7 @@ class Survey_Teacher_Questions extends CRUD
     protected $SurveyId;
     protected $Question;
     protected $Type;
+    protected $IsMust;
     protected $Number;
 
     protected function DefineKey()
@@ -475,6 +476,7 @@ class Survey_Teacher_Questions extends CRUD
                     'survey_id' => 'SurveyId',
                     'question' => 'Question',
                     'type' => 'Type',
+        			'is_must' => 'IsMust',
                     'number' => 'Number'
         ));
     }
