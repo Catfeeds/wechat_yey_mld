@@ -40,6 +40,8 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 								</div>
 								<button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="window.open('output_all.php?state=1','_blank')">
                                 <span  class="glyphicon glyphicon-floppy-save"></span>&nbsp;导出全部</button>
+                                <button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="location='wait_audit_send_notice.php'">
+                                <span  class="glyphicon glyphicon-envelope"></span>&nbsp;群发通知</button>
                                 <button id="user_add_btn" type="button" class="btn btn-danger" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="select_submit_reject()">
                                 <span  class="glyphicon glyphicon glyphicon-remove"></span>&nbsp;不通过</button>
                                 <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="audit_select_submit()">

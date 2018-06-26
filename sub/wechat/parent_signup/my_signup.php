@@ -3,6 +3,8 @@ $RELATIVITY_PATH='../../../';
 require_once '../include/it_include.inc.php';
 $s_title='我的幼儿报名';
 require_once '../header.php';
+require_once RELATIVITY_PATH.'include/bn_basic.class.php';
+$o_bn_base=new Bn_Basic();
 //验证学生信息是否在该用户名下
 $o_stu_wechat=new Student_Info_Wechat_Wiew();
 $o_stu_wechat->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) ); 
@@ -59,6 +61,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        <div class="weui-form-preview__item">
 	            <label class="weui-form-preview__label">当前状态</label>
 	        <?php 
+	        $s_add_html='';
 	        $s_html='';
 	        $s_button='';
 	        //状态
@@ -82,9 +85,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        		}
 	        		break;
-	        	case 1:
-	        		$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待信息核验，请查阅状态详情</span>';
-	        		$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
+	        	case 1:	        		
 	        		if($o_stu_wechat->getReject($i)==1)
 	        		{
 	        			if ($o_stu_wechat->getAuditorName ( $i )=='')
@@ -92,8 +93,32 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        				$s_html='<span class="weui-form-preview__value" style="color:#d9534f">未参加信息核验，失去入园资格</span>';
 	        			}else{
 	        				$s_html='<span class="weui-form-preview__value" style="color:#d9534f">信息核验未通过，失去入园资格</span>';
-	        			}	        			
+	        			}
 	        			$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
+	        		}else{
+	        			//判断是否有通知存在。
+	        			$o_reminder=new Wechat_Wx_User_Reminder();
+	        			$o_reminder->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
+	        			$o_reminder->PushWhere ( array ('&&', 'First', 'Like','%'.$o_stu_wechat->getStudentId($i).'%') );
+	        			$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=','等待信息核验') );
+	        			$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_bn_base->getWechatSetup('MSGTMP_11')) );
+	        			$o_reminder->PushOrder(array('Id','D'));
+	        			if ($o_reminder->getAllCount()>0)
+	        			{
+	        				$s_first=str_replace('幼儿编号：'.$o_stu_wechat->getStudentId($i), '', $o_reminder->getFirst(0));
+	        				$s_first=str_replace('幼儿姓名：'.$o_stu_wechat->getName($i), '', $s_first);
+	        				$s_add_html='
+							<div class="weui-form-preview__item">
+					           <label class="weui-form-preview__label">报名通知</label>
+					            <span class="weui-form-preview__value" style="text-align:left;color:#FFA200">'.$s_first.'</span>
+					        </div>
+							';
+	        				$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待信息核验</span>';
+	        				$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
+	        			}else{
+	        				$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待信息核验，请查阅状态详情</span>';
+	        				$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
+	        			}
 	        		}
 	        		break;
 	        	case 2:
@@ -135,6 +160,7 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        echo($s_html);
 	        ?>
 	        </div>
+	        <?php echo($s_add_html)?>
         </div>
         <div class="weui-form-preview__ft">
          	<?php echo($s_button)?>

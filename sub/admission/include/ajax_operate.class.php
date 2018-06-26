@@ -937,6 +937,50 @@ http://wx.mldyey.com/signup/
 			$this->setReturn ( 'parent.location="'.$this->getPost('Url').'admission_assign_result.php?text='.rawurlencode($s_result).'"' );
 		}
 	}
+	public function WaitAuditSendNotice($n_uid)
+	{
+		sleep(1);
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120102 ))return;//如果没有权限，不返回任何值
+		//获取目标人群
+		$o_student = new Student_Info_Wechat_Wiew(); 
+		$o_student->PushWhere ( array ('&&', 'State', '=',1) );
+		//$o_student->PushWhere ( array ('&&', 'Reject', '=',0) );
+		$o_student->PushWhere ( array ('&&', 'GradeNumber', '=',0) );
+		$o_student->PushWhere ( array ('&&', 'ClassNumber', '=',0) );
+		for($i=0;$i<$o_student->getAllCount();$i++)
+		{
+			$o_system_setup=new Base_Setup(1);
+			//循环写入消息队列
+			require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
+			$o_msg=new Wechat_Wx_User_Reminder();
+			$o_msg->setUserId($o_student->getUserId($i));
+			$o_msg->setCreateDate($this->GetDateNow());
+			$o_msg->setSendDate('0000-00-00');
+			$o_msg->setMsgId($this->getWechatSetup('MSGTMP_11'));
+			$o_msg->setOpenId($o_student->getOpenId($i));
+			$o_msg->setActivityId(0);
+			$o_msg->setSend(0);
+			$o_msg->setFirst($this->getPost('First').'
+					
+幼儿编号：'.$o_student->getStudentId($i).'
+幼儿姓名：'.$o_student->getName($i));
+			$o_msg->setKeyword1('等待信息核验');
+			$o_msg->setKeyword2($this->GetDateNow());
+			$o_msg->setKeyword3('');
+			$o_msg->setKeyword4('');
+			$o_msg->setKeyword5('');
+			$o_msg->setRemark('查看报名状态，请点击详情。');
+			//如果Comment为空，那么就没有点击事件了
+			$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup.php');
+			$o_msg->setKeywordSum(2);
+			$o_msg->Save();
+		}
+		$this->setReturn ( 'parent.form_return("dialog_success(\'发送通知成功！\',function(){\\parent.location=\''.$this->getPost('BackUrl').'\'})");' );
+	}
 }
 
 ?>
