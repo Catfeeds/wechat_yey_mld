@@ -42,7 +42,7 @@ function send_notice()
 		dialog_message("通知内容不能超过50个字！")
 		return
 	}
-	dialog_confirm("确认要群发通知吗？<br/><br/>确认后：<br/>所有当前列表中的报名家长将陆续收到微信通知。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
+	dialog_confirm("确认要群发通知吗？<br/><br/>确认后：<br/>所有等待信息核验的报名家长将陆续收到微信通知。<br/><br/>注：该操作不能撤销，请谨慎操作。",function (){document.getElementById('submit_form').submit();loading_show();});
 }
 function check_remark(fData)
 {
