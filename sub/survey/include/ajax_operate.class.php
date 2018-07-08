@@ -2713,5 +2713,55 @@ class Operate extends Bn_Basic {
 		);
 		echo (json_encode ( $a_general ));
 	}
+	public function TeacherSurveyManageAnswered($n_uid)
+	{
+		$this->N_PageSize= 50;
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User ( $n_uid );
+		if (!$o_user->ValidModule ( 120402 ))return;//如果没有权限，不返回任何值
+		$n_page=$this->getPost('page');
+		if ($n_page<=0)$n_page=1;
+		$o_table = new Survey_Teacher_Answers();
+		if ($this->getPost('other_key')!='')
+		{
+			$o_table->PushWhere ( array ('||', 'Name', 'like','%'.$this->getPost('other_key').'%') );
+			$o_table->PushWhere ( array ('&&', 'SurveyId', '=',$this->getPost('key')) );
+		}else{
+			$o_table->PushWhere ( array ('&&', 'SurveyId', '=',$this->getPost('key')) );
+		}
+		$o_table->PushOrder ( array ($this->getPost('item'), $this->getPost('sort') ) );
+		$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize ); //起始记录
+		$o_table->setCountLine ( $this->N_PageSize );
+		$n_count = $o_table->getAllCount ();
+		if (($this->N_PageSize * ($n_page - 1)) >= $n_count) {
+			$n_page = ceil ( $n_count / $this->N_PageSize );
+			$o_table->setStartLine ( ($n_page - 1) * $this->N_PageSize );
+			$o_table->setCountLine ( $this->N_PageSize );
+		}
+		$n_allcount = $o_table->getAllCount ();//总记录数
+		$n_count = $o_table->getCount ();
+		$a_row = array ();
+		for($i = 0; $i < $n_count; $i ++) {
+			$o_student=new Student_Onboard_Info($o_table->getStudentId($i));
+			$a_button = array ();
+			array_push ( $a_button, array ('查看答卷', "location='teacher_survey_manage_progress_sheet.php?id=".$o_table->getId($i)."'" ) );//删除
+			array_push ( $a_button, array ('打印', "window.open('teacher_survey_manage_progress_pdf.php?id=".$o_table->getId($i)."','_blank')" ) );//删除
+			array_push ($a_row, array (
+					($i+1+$this->N_PageSize*($n_page-1)),
+					$o_table->getDate ( $i ),
+					$o_table->getName ( $i ),
+					$a_button
+			));
+		}
+		//标题行,列名，排序名称，宽度，最小宽度
+		$a_title = array ();
+		$a_title=$this->setTableTitle($a_title,Text::Key('Number'), '', 0, 40);
+		$a_title=$this->setTableTitle($a_title,'答卷日期', 'Name', 0, 80);
+		$a_title=$this->setTableTitle($a_title,'教师姓名', 'ClassName', 0, 0);
+		$a_title=$this->setTableTitle($a_title,Text::Key('Operation'), '', 90,0);
+		$this->SendJsonResultForTable($n_allcount,'TeacherSurveyManageAnswered', 'yes', $n_page, $a_title, $a_row);
+	}
 }
 ?>
