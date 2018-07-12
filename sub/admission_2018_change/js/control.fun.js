@@ -301,26 +301,3 @@ function setup_modify()
 	loading_show();
 	$('#submit_form').submit();
 }
-function select_submit_xuzhi()
-{
-	var a_data=[];
-	for(var i=0;i<$('tbody input[type=checkbox]').length;i++)
-	{
-		obj=$('tbody input[type=checkbox]')[i]
-		if (obj.checked)
-		{
-			a_data.push(obj.value);
-		}
-	}
-	if(a_data.length==0)
-	{
-		dialog_message("请先选择报名信息！")
-		return
-	}
-	document.getElementById('Vcl_StuId').value=arrayToJson(a_data)
-	dialog_confirm("真的要发送交送家长须知通知吗？<br/><br/>确认后：幼儿监护人将收到微信消息。",function (){
-		document.getElementById('Vcl_FunName').value='SendXuzhiNotice';
-		document.getElementById('submit_form').submit();
-		loading_show();
-	});
-}

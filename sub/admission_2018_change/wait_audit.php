@@ -22,7 +22,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 					<form action="include/bn_submit.switch.php" id="submit_form" method="post" target="submit_form_frame">
 						<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
 						<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
-						<input type="hidden" id="Vcl_FunName" name="Vcl_FunName" value="SendHealthNotice"/>
+						<input type="hidden" id="Vcl_FunName" name="Vcl_FunName" value="SignupReject"/>
 						<input type="hidden" name="Vcl_StuId" id="Vcl_StuId"/>
 					</form>
                     <div class="panel panel-default sss_sub_table">
@@ -42,12 +42,10 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
                                 <span  class="glyphicon glyphicon-floppy-save"></span>&nbsp;导出全部</button>
                                 <button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="location='wait_audit_send_notice.php'">
                                 <span  class="glyphicon glyphicon-envelope"></span>&nbsp;群发通知</button>
-                                <button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="select_submit_xuzhi()">
-                                <span  class="glyphicon glyphicon-envelope"></span>&nbsp;发送家长须知</button>
                                 <button id="user_add_btn" type="button" class="btn btn-danger" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="select_submit_reject()">
                                 <span  class="glyphicon glyphicon glyphicon-remove"></span>&nbsp;不通过</button>
-                                <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="meet_select_submit()">
-                                <span  class="glyphicon glyphicon-ok"></span>&nbsp;发送体检通知</button>
+                                <button id="user_add_btn" type="button" class="btn btn-success" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="audit_select_submit()">
+                                <span  class="glyphicon glyphicon-ok"></span>&nbsp;发送入园互动通知</button>
                             </div>
                         <table class="table table-striped">
                             <thead>

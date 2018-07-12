@@ -110,14 +110,35 @@ for($i=0;$i<$o_stu_wechat->getAllCount();$i++)
 	        				$s_add_html='
 							<div class="weui-form-preview__item">
 					           <label class="weui-form-preview__label">报名通知</label>
-					            <span class="weui-form-preview__value" style="text-align:left;color:#FFA200">'.$s_first.'</span>
+					           <span class="weui-form-preview__value" style="text-align:left;color:#FFA200">'.$s_first.'</span>
 					        </div>
 							';
 	        				$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待信息核验</span>';
 	        				$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
 	        			}else{
-	        				$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待信息核验，请查阅状态详情</span>';
-	        				$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
+	        				$o_reminder=new Wechat_Wx_User_Reminder();
+	        				$o_reminder->PushWhere ( array ('&&', 'UserId', '=',$o_wx_user->getId()) );
+	        				$o_reminder->PushWhere ( array ('&&', 'First', 'Like','%'.$o_stu_wechat->getStudentId($i).'%') );
+	        				$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=','送交家长须知') );
+	        				$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_bn_base->getWechatSetup('MSGTMP_11')) );
+	        				$o_reminder->PushOrder(array('Id','D'));
+	        				if ($o_reminder->getAllCount()>0)
+	        				{
+	        					$s_first=str_replace('幼儿编号：'.$o_stu_wechat->getStudentId($i), '', $o_reminder->getFirst(0));
+	        					$s_first=str_replace('幼儿姓名：'.$o_stu_wechat->getName($i), '', $s_first);
+	        					$s_first=str_replace('如下幼儿', '以上幼儿', $s_first);
+	        					$s_add_html='
+								<div class="weui-form-preview__item">
+						           <label class="weui-form-preview__label">报名通知</label>
+						           <span class="weui-form-preview__value" style="text-align:left;color:#FFA200">'.$s_first.'<br/>'.$o_reminder->getRemark(0).'</span>
+						        </div>
+								';
+	        					$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">完成信息核验，打印送交家长须知</span>';
+	        					$s_button='<a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
+	        				}else{
+	        					$s_html='<span class="weui-form-preview__value" style="color:#1AAD19">等待信息核验，请查阅状态详情1</span>';
+	        					$s_button='<a href="my_signup_state.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_primary">状态详情</a><a href="signup_modify.php?id='.$o_stu_wechat->getStudentId($i).'" class="weui-form-preview__btn weui-form-preview__btn_default">幼儿信息</a>';
+	        				}	        				
 	        			}
 	        		}
 	        		break;

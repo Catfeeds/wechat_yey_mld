@@ -131,8 +131,6 @@ class Operate extends Bn_Basic {
 			if ($o_user->getAuditorName ( $i )!='')
 			{
 				$s_remark=$o_user->getAuditorName ( $i ).'<br/><span style="color:#999999">备注：'.$o_user->getAuditRemark ( $i ).'</span>';
-			}else{
-				$s_remark='<span style="color:#999999">备注：'.$o_user->getAuditRemark ( $i ).'</span>';
 			}
 			array_push ($a_row, array (
 				'<input style="margin-top:0px;" type="checkbox" value="' . $o_user->getStudentId ( $i ) . '" checked="checked"/>',
@@ -459,14 +457,14 @@ http://wx.mldyey.com/signup/
 			$this->setReturn('parent.goto_login()');
 		}		
 		$o_user = new Single_User ( $n_uid );
-		if (!$o_user->ValidModule ( 120102 ))return;//如果没有权限，不返回任何值
+		if (!$o_user->ValidModule ( 120104 ))return;//如果没有权限，不返回任何值
 		$a_data=json_decode($_POST['Vcl_StuId']);
 		$o_admission_setup=new Admission_Setup(1);
 		$o_system_setup=new Base_Setup(1);
 		for($i=0;$i<count($a_data);$i++)
 		{
 			$o_stu=new Student_Info($a_data[$i]);
-			if ($o_stu->getState()==3 || $o_stu->getState()==1)
+			if ($o_stu->getState()==3)
 			{
 				$o_stu->setState(4);
 				$o_stu->setReject(0);
@@ -485,7 +483,7 @@ http://wx.mldyey.com/signup/
 				    $o_msg->setOpenId($o_wechat_user->getOpenId($j));
 				    $o_msg->setActivityId(0);
 				    $o_msg->setSend(0);
-				    $o_msg->setFirst('如下幼儿已经通过信息核验，请您按时间地点携带幼儿进行体检，如错过体检视为自行放弃入园资格：');
+				    $o_msg->setFirst('如下幼儿已经通过入园互动环节，请您按时间地点携带幼儿进行体检，如错过体检视为自行放弃入园资格：');
 				    $o_msg->setKeyword1($o_stu->getStudentId());//幼儿编号
 				    $o_msg->setKeyword2($o_stu->getName());//幼儿姓名
 				    $o_msg->setKeyword3($this->getHealthDateAndTime($o_admission_setup->getHealthTime()));//体检时间
@@ -501,59 +499,7 @@ http://wx.mldyey.com/signup/
 				}				
 			}
 		}
-		$this->setReturn ( 'parent.form_return("dialog_success(\'发送体检通知成功！\',function(){parent.table_refresh(\'WaitAuditTable\')})");' );
-	}
-	public function SendXuzhiNotice($n_uid)
-	{
-		sleep(1);
-		if (! ($n_uid > 0)) {
-			$this->setReturn('parent.goto_login()');
-		}
-		$o_user = new Single_User ( $n_uid );
-		if (!$o_user->ValidModule ( 120102 ))return;//如果没有权限，不返回任何值
-		$a_data=json_decode($_POST['Vcl_StuId']);
-		$o_admission_setup=new Admission_Setup(1);
-		$o_system_setup=new Base_Setup(1);
-		for($i=0;$i<count($a_data);$i++)
-		{
-			$o_stu=new Student_Info($a_data[$i]);
-			if ($o_stu->getState()==3 || $o_stu->getState()==1)
-			{
-				$o_stu->setAuditRemark ( '★'.str_replace('★', '', $o_stu->getAuditRemark()));
-				$o_stu->Save();
-				//获取幼儿关联的微信
-				$o_student=new Student_Info_Wechat_Wiew();
-				$o_student->PushWhere ( array ('&&', 'StudentId', '=',$o_stu->getStudentId()) );
-				for($j=0;$j<$o_student->getAllCount();$j++)
-				{
-					//循环写入消息队列
-					require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
-					$o_msg=new Wechat_Wx_User_Reminder();
-					$o_msg->setUserId($o_student->getUserId($i));
-					$o_msg->setCreateDate($this->GetDateNow());
-					$o_msg->setSendDate('0000-00-00');
-					$o_msg->setMsgId($this->getWechatSetup('MSGTMP_11'));
-					$o_msg->setOpenId($o_student->getOpenId($i));
-					$o_msg->setActivityId(0);
-					$o_msg->setSend(0);
-					$o_msg->setFirst('如下幼儿已经完成信息核验，请您访问 http://wx.mldyey.com/jzxz 使用报名微信扫描二维码，仔细阅读并打印家长须知。
-							
-幼儿编号：'.$o_student->getStudentId($i).'
-幼儿姓名：'.$o_student->getName($i));
-					$o_msg->setKeyword1('送交家长须知');
-					$o_msg->setKeyword2($this->GetDateNow());
-					$o_msg->setKeyword3('');
-					$o_msg->setKeyword4('');
-					$o_msg->setKeyword5('');
-					$o_msg->setRemark('请您于7月15日17:00前，将打印的入园须知填写完整，交到幼儿园本部传达室，过期视同放弃入园资格。');
-					//如果Comment为空，那么就没有点击事件了
-					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup.php');
-					$o_msg->setKeywordSum(2);
-					$o_msg->Save();
-				}
-			}
-		}
-		$this->setReturn ( 'parent.form_return("dialog_success(\'发送家长须知成功！\',function(){parent.table_refresh(\'WaitAuditTable\')})");' );
+		$this->setReturn ( 'parent.form_return("dialog_success(\'发送体检通知成功！\',function(){parent.table_refresh(\'MeetResultTable\')})");' );
 	}
 	public function SendFinishInfoNotice($n_uid)
 	{	
