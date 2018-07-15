@@ -1941,10 +1941,10 @@ class Operate_YeInfo extends Bn_Basic {
 	       	 	$n_shi=0;
 	            if($o_checkingin->getAbsenteeismSum(0)==0)
 	            {
-	                $s_absenteeism='0';
+	                $s_absenteeism='0';	               
 	            }else{
 	                $s_absenteeism=$o_checkingin->getAbsenteeismSum(0);
-	                array_push ( $a_button, array ('查看详情', "location='ye_checkingin_detail.php?id=".$o_checkingin->getId(0)."'" ) );//查看
+	                array_push ( $a_button, array ('缺勤详情', "location='ye_checkingin_detail.php?id=".$o_checkingin->getId(0)."'" ) );//查看
 	            }
 	            $s_total=$o_checkingin->getCheckinginSum(0)+$o_checkingin->getAbsenteeismSum(0);
 	            $n_shidao=$o_checkingin->getCheckinginSum(0);
@@ -1969,6 +1969,8 @@ class Operate_YeInfo extends Bn_Basic {
 	            		$n_shi++;
 	            	}       	
 	            }  
+	        }else{
+	        	array_push ( $a_button, array ('考勤补录', "location='ye_checkingin_makeup.php?classid=".$o_user->getClassId($i)."&date=".$this->getPost('key')."'" ) );//查看
 	        }	     
 	        if (($n_bing+$n_shi)!=$s_absenteeism)   
 	        {
@@ -2225,6 +2227,123 @@ class Operate_YeInfo extends Bn_Basic {
 					'status' =>'&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-primary">全园实到 '.$n_shidao.' 人</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-primary">预计到园 '.$n_sum.' 人</span>'
 				);
 		echo(json_encode ($a_result));
+	}
+	public function YeCheckinginMakeup($n_uid)
+	{
+		if (! ($n_uid > 0)) {
+			$this->setReturn('parent.goto_login()');
+		}
+		$o_user = new Single_User($n_uid);
+		if (!$o_user->ValidModule ( 120208 ))return; //如果没有权限，不返回任何值
+		//开始记录考勤
+		//1.先检查今天的考勤是否存在。
+		$o_checkingin=new Student_Onboard_Checkingin();
+		$o_checkingin->PushWhere ( array ('&&', 'ClassId', '=',$this->getPost('ClassId')) );
+		$o_checkingin->PushWhere ( array ('&&', 'Date', '=',$this->getPost('Date')) );
+		if ($o_checkingin->getAllCount()>0)
+		{
+			//更新
+			$o_checkingin=new Student_Onboard_Checkingin($o_checkingin->getId(0));
+		}else{
+			//新建
+			$o_checkingin=new Student_Onboard_Checkingin();
+			$o_checkingin->setClassId($this->getPost('ClassId'));
+			$o_checkingin->setDate($this->getPost('Date'));
+			$o_checkingin->setModifyDate($this->GetDateNow());
+			$o_checkingin->Save();
+		}
+		//2. 统计人数，所有被录取的人数
+		$a_in=array();
+		$a_out=array();
+		$o_system_setup=new Base_Setup(1);
+		$o_signup=new Student_Onboard_Info_Class_View();
+		$o_signup->PushWhere ( array ('&&', 'ClassNumber', '=',$this->getPost('ClassId')) );
+		$o_signup->PushWhere ( array ('&&', 'State', '=',1) );
+		for($i=0;$i<$o_signup->getAllCount();$i++)
+		{
+			//先清除所有考勤数据
+			$o_detail=new Student_Onboard_Checkingin_Detail();
+			$o_detail->PushWhere ( array ('&&', 'CheckId', '=',$o_checkingin->getId()) );
+			$o_detail->PushWhere ( array ('&&', 'StudentId', '=',$o_signup->getStudentId($i)) );
+			for($j=0;$j<$o_detail->getAllCount();$j++)
+			{
+				$o_temp=new Student_Onboard_Checkingin_Detail($o_detail->getId($j));
+				$o_temp->Deletion();
+				$o_temp='';
+			}
+		}
+		//重新记录考勤
+		for($i=0;$i<$o_signup->getAllCount();$i++)
+		{
+			if ($this->getPost('StudentId_'.$o_signup->getStudentId($i))=='on')
+			{
+				array_push($a_in, $o_signup->getStudentId($i));
+				//查找之前的考勤，如果有，删除
+				$o_detail=new Student_Onboard_Checkingin_Detail();
+				$o_detail->PushWhere ( array ('&&', 'CheckId', '=',$o_checkingin->getId()) );
+				$o_detail->PushWhere ( array ('&&', 'StudentId', '=',$o_signup->getStudentId($i)) );
+				for($j=0;$j<$o_detail->getAllCount();$j++)
+				{
+					$o_temp=new Student_Onboard_Checkingin_Detail($o_detail->getId($j));
+					$o_temp->Deletion();
+				}
+			}else{
+				array_push($a_out, $o_signup->getStudentId($i));
+				//未出勤，那么查看数据库是否已经记录数据，如果记录，那么跳过
+				$o_detail=new Student_Onboard_Checkingin_Detail();
+				$o_detail->PushWhere ( array ('&&', 'CheckId', '=',$o_checkingin->getId()) );
+				$o_detail->PushWhere ( array ('&&', 'StudentId', '=',$o_signup->getStudentId($i)) );
+				if ($o_detail->getAllCount()==0)
+				{
+					//需要记录数据库
+					$o_detail=new Student_Onboard_Checkingin_Detail();
+					$o_detail->setCheckId($o_checkingin->getId());
+					$o_detail->setStudentId($o_signup->getStudentId($i));
+					//查找家长输入的请假申请，如果有，提取类型与原因，如果没有，那么建立一条新的，让家长补充
+					$o_stu=new Student_Onboard_Info_Class_Wechat_View($o_signup->getStudentId($i));
+					$o_parent=new Student_Onboard_Checkingin_Parent();
+					$o_parent->PushWhere ( array ('&&', 'UserId', '=',$o_stu->getUserId()) );
+					$o_parent->PushWhere ( array ('&&', 'StudentId', '=',$o_signup->getStudentId($i)) );
+					$o_parent->PushWhere ( array ('&&', 'StartDate', '<=',$this->getPost('Date')) );
+					$o_parent->PushWhere ( array ('&&', 'EndDate', '>=',$this->getPost('Date')) );
+					$o_parent->PushOrder ( array ('Date', D) );
+					if ($o_parent->getAllCount()>0)
+					{
+						//如果老师选择了请假类型，以老师的为准
+						$o_detail->setType($o_parent->getType(0));
+						if($this->getPost('Type_'.$o_signup->getStudentId($i))!='')
+						{
+							$o_detail->setType($this->getPost('Type_'.$o_signup->getStudentId($i)));
+						}						
+					}else{
+						//新建一条记录，让家长填写
+						$o_parent=new Student_Onboard_Checkingin_Parent();
+						$o_parent->setUserId($o_stu->getUserId());
+						$o_parent->setStudentId($o_signup->getStudentId($i));
+						$o_parent->setStartDate($this->getPost('Date'));
+						$o_parent->setEndDate($this->getPost('Date'));//开始日期加上天数
+						$o_parent->setType('');
+						//如果老师选择了请假类型，以老师的为准
+						if($this->getPost('Type_'.$o_signup->getStudentId($i))!='')
+						{
+							$o_detail->setType($this->getPost('Type_'.$o_signup->getStudentId($i)));
+							$o_parent->setType($this->getPost('Type_'.$o_signup->getStudentId($i)));
+						}
+						$o_parent->setComment('补录考勤');
+						$o_parent->Save();
+					}
+					$o_detail->setComment('补录考勤');
+					$o_detail->Save();
+				}
+			}
+		}
+		$o_checkingin->setAbsenteeismStu(json_encode($a_out));
+		$o_checkingin->setAbsenteeismSum(count($a_out));
+		$o_checkingin->setCheckinginSum(count($a_in));
+		$o_checkingin->setOwnerId($n_uid);
+		$o_checkingin->setActive(1);
+		$o_checkingin->Save();
+		$this->setReturn ( 'parent.location=\''.$this->getPost('Url').'ye_checkingin.php\'');
 	}
 }
 

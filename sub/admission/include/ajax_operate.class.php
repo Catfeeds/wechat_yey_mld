@@ -529,17 +529,17 @@ http://wx.mldyey.com/signup/
 					//循环写入消息队列
 					require_once RELATIVITY_PATH . 'sub/wechat/include/db_table.class.php';
 					$o_msg=new Wechat_Wx_User_Reminder();
-					$o_msg->setUserId($o_student->getUserId($i));
+					$o_msg->setUserId($o_student->getUserId($j));
 					$o_msg->setCreateDate($this->GetDateNow());
 					$o_msg->setSendDate('0000-00-00');
 					$o_msg->setMsgId($this->getWechatSetup('MSGTMP_11'));
-					$o_msg->setOpenId($o_student->getOpenId($i));
+					$o_msg->setOpenId($o_student->getOpenId($j));
 					$o_msg->setActivityId(0);
 					$o_msg->setSend(0);
 					$o_msg->setFirst('如下幼儿已经完成信息核验，请您访问 http://wx.mldyey.com/jzxz 使用报名微信扫描二维码，仔细阅读并打印家长须知。
 							
-幼儿编号：'.$o_student->getStudentId($i).'
-幼儿姓名：'.$o_student->getName($i));
+幼儿编号：'.$o_student->getStudentId($j).'
+幼儿姓名：'.$o_student->getName($j));
 					$o_msg->setKeyword1('送交家长须知');
 					$o_msg->setKeyword2($this->GetDateNow());
 					$o_msg->setKeyword3('');

@@ -23,7 +23,7 @@ ExportMainTitle(MODULEID,$O_Session->getUid());
 
                     <div class="panel panel-default sss_sub_table">
                         <div class="panel-heading" style="overflow: inherit; height: 43px;">
-							         <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" style="width:200px;float:left" data-link-format="yyyy-mm-dd">
+							         <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" style="width:160px;float:left" data-link-format="yyyy-mm-dd">
                     					<input onchange="checkingin_change_date(this)" class="form-control" value="<?php echo($s_key);?>" size="16" type="text" id="Vcl_Date" name="Vcl_Date" readonly style="background-color:white">
 										<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 					</div>
