@@ -545,7 +545,7 @@ http://wx.mldyey.com/signup/
 					$o_msg->setKeyword3('');
 					$o_msg->setKeyword4('');
 					$o_msg->setKeyword5('');
-					$o_msg->setRemark('请您于7月15日17:00前，将打印的入园须知填写完整，交到幼儿园本部传达室，过期视同放弃入园资格。');
+					$o_msg->setRemark('请您于7月17日17:00前，将打印的入园须知填写完整，交到幼儿园本部传达室，过期视同放弃入园资格。');
 					//如果Comment为空，那么就没有点击事件了
 					$o_msg->setUrl($o_system_setup->getHomeUrl().'sub/wechat/parent_signup/my_signup.php');
 					$o_msg->setKeywordSum(2);
