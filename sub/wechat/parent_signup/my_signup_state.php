@@ -242,7 +242,7 @@ function format_remark($s_str)
                     ?>
                 	<h4 class="weui-media-box__title" style="text-align:center;font-size:22px;padding-top:15px;padding-bottom:15px;"><b>注意事项</b></h4>
                     <h4 class="weui-media-box__title" style="font-size:14px;color:#333333">
-家长您好：请于2017年8月4日早9:00到北京市西城区马连道党群活动服务中心（地址：北京市西城区广外街道红莲南路57-2号）参加马连道幼儿园新生家长学校“育儿有道，做合格家长”培训，请您务必准时参加。（监护人参加不带幼儿）
+家长您好：请于2018年8月22日早8:50到北京市西城区马连道党群活动服务中心（地址：北京市西城区广外街道红莲南路57-2号）参加马连道幼儿园新生家长学校“育儿有道，助推儿童健康成长”培训，请您务必准时参加。（监护人参加不带幼儿）
 					</h4>
 					<?php 
                     }

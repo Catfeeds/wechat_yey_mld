@@ -403,14 +403,14 @@ class Operate extends Bn_Basic {
 				'url' => $o_sysinfo->getHomeUrl().'sub/wechat/parent_signup/my_signup_state.php?id='.$o_stu->getStudentId(), // 点击跳转地址
 				'topcolor' => '#FF0000', // 顶部颜色
 				'data' => array(
-					'first' => array('value' => '您所报名的如下幼儿已经被我园录取，请家长按时参加幼儿园家长学校培训，未能按时参加培训视为自动放弃入园资格。
+					'first' => array('value' => '您所报名的如下幼儿已经被我园录取，请家长按时参加幼儿园家长学校培训。
 '),
 					'keyword1' => array('value' => $o_stu->getStudentId(),'color'=>'#173177'),
 					'keyword2' => array('value' => $o_stu->getName(),'color'=>'#173177'),
 					'keyword3' => array('value' => $o_stu->getIdType(),'color'=>'#173177'),
 					'keyword4' => array('value' => $o_stu->getId(),'color'=>'#173177'),
 					'keyword5' => array('value' => $o_stu->getClassMode(),'color'=>'#173177'),
-					'remark' => array('value' => '培训时间：2017年8月4日 09:00
+					'remark' => array('value' => '培训时间：2018年8月22日 早8:50
 培训地点：北京市西城区红莲南路57-2号。马连道党群活动服务中心。
 				
 注意事项请点击详情查看。')
