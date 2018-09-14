@@ -46,9 +46,14 @@ $o_onboard->getAllCount();
     {
     	if ($a_day[$i]=='早餐' && $o_onboard->getGrade(0)==2)
     	{
-    		//小班不现实早餐
+    		//小班不显示早餐
     		continue;
-    	}    	
+    	}   
+    	if ($a_day[$i]=='晚餐' && $o_onboard->getGrade(0)==2)
+    	{
+    		//小班不显示晚餐餐
+    		continue;
+    	}   
     	$a_temp=$a_food[$i];
     	for($j=0;$j<count($a_html);$j++)
     	{
@@ -77,9 +82,14 @@ $o_onboard->getAllCount();
     			$a_temp_3=$a_temp_2[$k];
 	    		if ($k>1 && $o_onboard->getGrade(0)>2 && $a_day[$i]=='加餐')
 		    	{
-		    		//大班加餐，只显示牛乳(三元牌)
+		    		//大班中班加餐只显示前两项
 		    		continue;
-		    	}   			
+		    	}
+		    	if ($k>2 && $o_onboard->getGrade(0)>2 && $a_day[$i]=='午点')
+		    	{
+		    		//大班中班午点只显示前三项
+		    		continue;
+		    	}
     			$a_html[$j].='
     			<div class="weui-cell weui-cell_access" onclick="window.open(\'food_list_detail.php?id='.$a_temp_3[0].'\',\'_parent\')">
 	                <div class="weui-cell__bd">
