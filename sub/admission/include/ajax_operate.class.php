@@ -916,6 +916,7 @@ http://wx.mldyey.com/signup/
 			}
 			$n_student_id='';
 			//第二步，添加到采集系统中
+			
 			$a_result=$o_operate->UploadToAddStuInfoForAssignClass($o_signup,$this->getPost('ClassId'));
 			if ($a_result->Flag==1)
 			{
@@ -954,6 +955,7 @@ http://wx.mldyey.com/signup/
 			$o_onboard->setState(1);
 			$o_onboard->setGradeNumber($o_class->getGrade());
 			$o_onboard->setClassNumber($this->getPost('ClassId'));
+			$o_onboard->setInTime($this->GetDate());
 			$o_onboard->Save();			
 			//发送入园问卷调查			
 			$o_stu=new Student_Onboard_Info_Class_Wechat_View();

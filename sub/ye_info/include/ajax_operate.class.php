@@ -923,6 +923,8 @@ class Operate_YeInfo extends Bn_Basic {
 		$o_stu=$this->setStuInfo($o_stu);
 		//请求接口并接收返回的StudentId
 		$o_stu->setStudentId($this->UploadToAddAndModifyStuInfo());
+		$o_date = new DateTime ( 'Asia/Chongqing' );
+		$o_stu->setInTime($o_date->format ( 'Y' ) . '-' . $o_date->format ( 'm' ) . '-' . $o_date->format ( 'd' ));
 		$o_stu->setState(2);
 		$o_stu->Save();
 		$this->setReturn ( 'parent.form_return("dialog_success(\'添加幼儿信息成功！\',function(){parent.location=\''.$this->getPost('BackUrl').'\'})");' );	
