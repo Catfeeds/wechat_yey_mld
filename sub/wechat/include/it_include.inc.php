@@ -16,7 +16,7 @@ $b_login=false;
 $n_uid=0;
 $S_Session_Id= $_COOKIE ['SESSIONID'];
 if (isset ( $_COOKIE ['SESSIONID'] )) {//检查是否保存了Session
-	setcookie ( 'SESSIONID', '4aaed6ee0f00630497b9cd9dc771e927',0 ,'/','',false,true);
+	//setcookie ( 'SESSIONID', '4aaed6ee0f00630497b9cd9dc771e927',0 ,'/','',false,true);
 	$S_Session_Id= $_COOKIE ['SESSIONID'];
 	$o_user = new WX_User_Info ();
 	$o_user->PushWhere ( array ('&&', 'SessionId', '=',$S_Session_Id) );	if ($o_user->getAllCount () > 0) {
@@ -27,8 +27,10 @@ if (isset ( $_COOKIE ['SESSIONID'] )) {//检查是否保存了Session
 	}
 } else {
 	//如果Sessionid不存在，说明第一次打开，跳转到index页面去获得Sessionid
-	$url='http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
-	echo ('<script>location=\''.RELATIVITY_PATH.'sub/wechat/index.php?url='.$url.'\'</script>');
+	$s_url = isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] ? 'https' : 'http';
+	$s_url .= '://';
+	$s_url= $s_url . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
+	echo ('<script>location=\''.RELATIVITY_PATH.'sub/wechat/index.php?url='.$s_url.'\'</script>');
 	exit ( 0 );
 }
 if ($b_login == false) //如果登陆信息，验证用户是否已经注册
@@ -97,7 +99,10 @@ if ($b_login == false) //如果登陆信息，验证用户是否已经注册
 }
 if ($b_login == false)
 {
-	echo ('<script type="text/javascript">location=\''.$_SERVER['PHP_SELF'].'\'</script>');
+	$s_url = isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] ? 'https' : 'http';
+	$s_url .= '://';
+	$s_url= $s_url . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
+	echo ('<script type="text/javascript">location=\''.$s_url.'\'</script>');
 	exit ( 0 );
 }	
 $o_wx_user=new WX_User_Info($n_uid);
