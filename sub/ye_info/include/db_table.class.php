@@ -6,13 +6,16 @@ class Student_Onboard_Checkingin extends CRUD
     protected $Id;
     protected $Active;
     protected $OwnerId;
+    protected $GradeNumber;
+    protected $GradeName;
     protected $ClassId;
+    protected $ClassName;
     protected $Date;
     protected $ModifyDate;
     protected $AbsenteeismStu;
     protected $AbsenteeismSum;
     protected $CheckinginSum;
-
+    
     protected function DefineKey()
     {
         return 'id';
@@ -24,15 +27,18 @@ class Student_Onboard_Checkingin extends CRUD
     protected function DefineRelationMap()
     {
         return(array(
-                    'id' => 'Id',
-                    'active' => 'Active',
-                    'owner_id' => 'OwnerId',
-                    'class_id' => 'ClassId',
-                    'date' => 'Date',
-                    'modify_date' => 'ModifyDate',
-                    'absenteeism_stu' => 'AbsenteeismStu',
-                    'absenteeism_sum' => 'AbsenteeismSum',
-                    'checkingin_sum' => 'CheckinginSum'
+            'id' => 'Id',
+            'active' => 'Active',
+            'owner_id' => 'OwnerId',
+            'grade_number' => 'GradeNumber',
+            'grade_name' => 'GradeName',
+            'class_id' => 'ClassId',
+            'class_name' => 'ClassName',
+            'date' => 'Date',
+            'modify_date' => 'ModifyDate',
+            'absenteeism_stu' => 'AbsenteeismStu',
+            'absenteeism_sum' => 'AbsenteeismSum',
+            'checkingin_sum' => 'CheckinginSum'
         ));
     }
 }
@@ -82,6 +88,7 @@ class Student_Onboard_Checkingin_Detail extends CRUD
     protected $Id;
     protected $CheckId;
     protected $StudentId;
+    protected $Name;
     protected $Type;
     protected $Comment;
 
@@ -99,6 +106,7 @@ class Student_Onboard_Checkingin_Detail extends CRUD
                     'id' => 'Id',
                     'check_id' => 'CheckId',
                     'student_id' => 'StudentId',
+                    'name' => 'Name',
                     'type' => 'Type',
                     'comment' => 'Comment'
         ));

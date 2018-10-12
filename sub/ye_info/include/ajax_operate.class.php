@@ -1633,9 +1633,32 @@ class Operate_YeInfo extends Bn_Basic {
 			$o_checkingin=new Student_Onboard_Checkingin($o_checkingin->getId(0));
 		}else{
 			//新建
+		    $o_class=new Student_Class($this->getPost('ClassId'));
+		    $s_grade_name='';
+		    switch ($o_class->getGrade())
+		    {
+		        case 0:
+		            $s_grade_name='半日班';
+		            break;
+		        case 1:
+		            $s_grade_name='托班';
+		            break;
+		        case 2:
+		            $s_grade_name='小班';
+		            break;
+		        case 3:
+		            $s_grade_name='中班';
+		            break;
+		        case 4:
+		            $s_grade_name='大班';
+		            break;
+		    }
 			$o_checkingin=new Student_Onboard_Checkingin();
-			$o_checkingin->setClassId($this->getPost('ClassId'));
-			$o_checkingin->setDate($this->GetDate());
+			$o_checkingin->setGradeNumber($o_class->getGrade());
+			$o_checkingin->setGradeName($s_grade_name);
+			$o_checkingin->setClassId($o_class->getClassId());
+			$o_checkingin->setClassName($o_class->getClassName());
+			$o_checkingin->setDate($this->getPost('Date'));
 			$o_checkingin->setModifyDate($this->GetDateNow());
 			$o_checkingin->Save();
 		}		
@@ -1686,6 +1709,7 @@ class Operate_YeInfo extends Bn_Basic {
 					$o_detail=new Student_Onboard_Checkingin_Detail();
 					$o_detail->setCheckId($o_checkingin->getId());
 					$o_detail->setStudentId($o_signup->getStudentId($i));
+					$o_detail->setName($o_signup->getName($i));
 					//查找家长输入的请假申请，如果有，提取类型与原因，如果没有，那么建立一条新的，让家长补充
 					$o_stu=new Student_Onboard_Info_Class_Wechat_View($o_signup->getStudentId($i));
 					$o_parent=new Student_Onboard_Checkingin_Parent();
@@ -2247,9 +2271,32 @@ class Operate_YeInfo extends Bn_Basic {
 			//更新
 			$o_checkingin=new Student_Onboard_Checkingin($o_checkingin->getId(0));
 		}else{
+		    $o_class=new Student_Class($this->getPost('ClassId'));
+		    $s_grade_name='';
+		    switch ($o_class->getGrade())
+		    {
+		        case 0:
+		            $s_grade_name='半日班';
+		            break;
+		        case 1:
+		            $s_grade_name='托班';
+		            break;
+		        case 2:
+		            $s_grade_name='小班';
+		            break;
+		        case 3:
+		            $s_grade_name='中班';
+		            break;
+		        case 4:
+		            $s_grade_name='大班';
+		            break;
+		    }
 			//新建
 			$o_checkingin=new Student_Onboard_Checkingin();
-			$o_checkingin->setClassId($this->getPost('ClassId'));
+			$o_checkingin->setGradeNumber($o_class->getGrade());
+			$o_checkingin->setGradeName($s_grade_name);
+			$o_checkingin->setClassId($o_class->getClassId());
+			$o_checkingin->setClassName($o_class->getClassName());
 			$o_checkingin->setDate($this->getPost('Date'));
 			$o_checkingin->setModifyDate($this->GetDateNow());
 			$o_checkingin->Save();
@@ -2301,6 +2348,7 @@ class Operate_YeInfo extends Bn_Basic {
 					$o_detail=new Student_Onboard_Checkingin_Detail();
 					$o_detail->setCheckId($o_checkingin->getId());
 					$o_detail->setStudentId($o_signup->getStudentId($i));
+					$o_detail->setName($o_signup->getName($i));
 					//查找家长输入的请假申请，如果有，提取类型与原因，如果没有，那么建立一条新的，让家长补充
 					$o_stu=new Student_Onboard_Info_Class_Wechat_View($o_signup->getStudentId($i));
 					$o_parent=new Student_Onboard_Checkingin_Parent();
