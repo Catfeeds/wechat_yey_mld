@@ -1658,7 +1658,7 @@ class Operate_YeInfo extends Bn_Basic {
 			$o_checkingin->setGradeName($s_grade_name);
 			$o_checkingin->setClassId($o_class->getClassId());
 			$o_checkingin->setClassName($o_class->getClassName());
-			$o_checkingin->setDate($this->getPost('Date'));
+			$o_checkingin->setDate($this->GetDate());
 			$o_checkingin->setModifyDate($this->GetDateNow());
 			$o_checkingin->Save();
 		}		
