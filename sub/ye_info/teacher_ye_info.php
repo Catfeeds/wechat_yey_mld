@@ -129,10 +129,10 @@ function set_btu_state(class_id)
 	if (class_id!='')
 	{
 		//显示导出按钮
-		$('.output').css('display','black');
+		$('.output').show();
 	}else{
 		//不显示导出按钮
-		$('.output').css('display','none');
+		$('.output').hide();
 	}
 }
 var table='<?php echo($s_fun)?>';
