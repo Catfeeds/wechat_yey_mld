@@ -155,7 +155,7 @@ class wechat
 		}else{
 			//新建用户
 			$o_user = new WX_User_Info();
-			$o_user->setOpenId($object->FromUserName);
+			$o_user->setOpenId($postObj->FromUserName);
 			$o_user->setUserName('');
 			$o_user->setCompany('');
 			$o_user->setAddress('');
@@ -215,7 +215,7 @@ class wechat
 		}else{
 			//新建用户
 			$o_user = new WX_User_Info();
-			$o_user->setOpenId($object->FromUserName);
+			$o_user->setOpenId($postObj->FromUserName);
 			$o_user->setUserName('');
 			$o_user->setCompany('');
 			$o_user->setAddress('');
@@ -339,7 +339,7 @@ class wechat
 		}else{
 			//新建用户
 			$o_user = new WX_User_Info();
-			$o_user->setOpenId($object->FromUserName);
+			$o_user->setOpenId($postObj->FromUserName);
 			$o_user->setUserName('');
 			$o_user->setCompany('');
 			$o_user->setAddress('');
@@ -380,13 +380,14 @@ class wechat
 		$o_date = new DateTime ( 'Asia/Chongqing' );
 		$s_filename=$o_date->format ( 'U' ).'.mp3';
 		file_put_contents(RELATIVITY_PATH.'userdata/mp_comment/voice/'.$s_filename,$str);
+		/*
 		$o_msg=new Wechat_Wx_User_Leavemsg();
 		$o_msg->setUserId($n_user_id);
 		$o_msg->setComment('userdata/mp_comment/voice/'.$s_filename);
 		$o_msg->setDate($o_bn_basic->GetDateNow());
 		$o_msg->setType('voice');
 		$o_msg->Save();
-    	return '';
+    	return '';*/
     }
 
     //接收视频消息
@@ -681,6 +682,20 @@ class wechat
 	//获取参数二维码信息
     function getMessageFromQr($postObj,$sceneId){    	
     	//为了个性化菜单能够马上刷新，需要立刻将用户设置标签
+        $a_sceneId=explode('_', $sceneId);
+        if ($a_sceneId[0]=='signup')
+        {
+            //调用报名接口
+            require_once 'include/accessToken.class.php';
+            $o_util=new curlUtil();
+            $s_return=$o_util->https_request('http://58.128.189.247/xchyey_signup/admin/sub/api/wechat_signup.php?openid='.$postObj->FromUserName.'&data='.$sceneId);
+            if($s_return==1)
+            {
+                return $this->transmitText($postObj,'报名成功！');
+            }else{
+                return $this->transmitText($postObj,'报名失败！请重新扫码或与幼儿园联系！'); 
+            }
+        }
     	if($sceneId>1000)
     	{
     		$activity = new WX_Activity();
