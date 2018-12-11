@@ -4,6 +4,11 @@ require_once '../include/it_include.inc.php';
 $s_title='问卷调查';
 require_once '../header.php';
 require_once RELATIVITY_PATH . 'sub/survey/include/db_table.class.php';
+if ($_GET['studentid']=='')
+{
+	echo "<script>window.alert('对不起，数据加载失败，请关闭后重试！');</script>";
+	exit(0);
+}
 $o_survey=new Survey($_GET['id']);
 //判断用户是否已经做过此问卷
 $o_answer=new Survey_Answers();
