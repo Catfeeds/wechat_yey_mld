@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+.alert{
+	border-radius: 0px;
+	margin-bottom:0px;
+	border-top:0px;
+}
+.alert strong{
+	font-size:16px;
+}
+.alert p{
+	line-height:20px;
+}
+.sss_main_sub_top{
+	display:none;
+}
+.sss_main .sss_main_sub .sss_main_sub_nav{
+	background-color: #ffffff;
+	border-top: 0px;
+}
+.close {
+    display: inline-block;
+    margin-top: 0;
+    margin-right: 0;
+    width: 9px;
+    height: 9px;
+    background-repeat: no-repeat!important;
+    text-indent: -10000px;
+    outline: 0;
+    background-image: url(../images/remove-icon-small.png)!important;
+}

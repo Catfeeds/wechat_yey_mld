@@ -9,7 +9,7 @@ header ( 'content-type:text/html; charset=utf-8' );
 require_once RELATIVITY_PATH . 'include/bn_session.class.php';
 $O_Session = new Session ();
 require_once 'ajax_operate.class.php';
-$o_operate = new Operate_Admission ();
+$o_operate = new Operate ();
 $s_command = str_replace ( ';', '', $_POST['Vcl_FunName'] );
 if ($s_command=='')
 {

@@ -450,11 +450,15 @@ img
 {
 	margin-right:-8px;
 	min-width:6px;
-	width:6px;
 	min-height:6px;
 	background-color:#F43531;
 	padding:0px;
-	float:right
+	float:right;
+	width:auto;
+	padding:3px;
+	padding-left:5px;
+	padding-right:6px;
+	margin-left:2px;
 }
 /*Table*/
 .sss_main .sss_main_sub .sss_sub_table

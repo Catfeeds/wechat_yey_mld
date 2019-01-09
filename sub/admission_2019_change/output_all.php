@@ -1,5 +1,5 @@
 <?php
-//error_reporting(0);
+error_reporting(0);
 define ( 'RELATIVITY_PATH', '../../' );
 define ( 'MODULEID', 120100 );
 $O_Session = '';
@@ -72,8 +72,6 @@ function OutputList($S_State,$s_filename) {
 	// Add some data
 	$objPHPExcel->setActiveSheetIndex(0);
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '编号');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '志愿顺序');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '报名年级');$n_counter++;	
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '姓名');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '身份证类型');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '身份证号码');$n_counter++;
@@ -83,6 +81,7 @@ function OutputList($S_State,$s_filename) {
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '民族');$n_counter++;
 	//健康信息
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '总体健康状况');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '预防接种医院');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '是否有以往病史');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '以往病史');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '是否有过敏史');$n_counter++;
@@ -111,32 +110,22 @@ function OutputList($S_State,$s_filename) {
 	//第一监护人信息
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人与幼儿关系');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人姓名');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人证件类型');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人证件号码');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人是否是直系亲属');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人职业状况');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人教育程度');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人联系电话');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人工作单位');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人是否残疾');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人残疾证号');$n_counter++;
 	//第二监护人信息
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人与幼儿关系');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人姓名');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人证件类型');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人证件号码');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人是否是直系亲属');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人职业状况');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人教育程度');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人联系电话');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人工作单位');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人是否残疾');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第一法定监护人残疾证号');$n_counter++;
-	//其他信息
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '其他监护人关系');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '其他监护人姓名');$n_counter++;
-	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '其他监护人联系电话');$n_counter++;
-	//班级信息	
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第二法定监护人与幼儿关系');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第二法定监护人姓名');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第二法定监护人职业状况');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第二法定监护人教育程度');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '第二法定监护人工作单位');$n_counter++;
+	//联系信息
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '监护人手机号');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '家庭固定电话');$n_counter++;
+	//班级信息
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '报名班级类型');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '是否服从班级类型调剂');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '信息核验时段');$n_counter++;
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '信息核验员');$n_counter++;
 	$o_question=new Student_Audit_Question();
 	$o_question->PushOrder ( array ('Number','A') );   
@@ -145,6 +134,31 @@ function OutputList($S_State,$s_filename) {
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), $o_question->getText($i));$n_counter++;
 	}
 	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '核验备注');$n_counter++;
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '入园互动时段');$n_counter++;
+	//如果是3，已见面，那么要添加相应的列
+	if($S_State>=3)
+	{
+		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '入园互动审核员');$n_counter++;
+		$o_item=new Student_Info_Meet_Item();
+		$o_item->PushWhere ( array ('&&', 'Type', '=','入园互动') ); 
+	    $o_item->PushOrder ( array ('Number','A') );
+	    for($i=0;$i<$o_item->getAllCount();$i++)
+	    {
+	    	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), $o_item->getType($i).'-'.$o_item->getName($i));$n_counter++;
+	    }
+	    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1),'入园互动-备注');$n_counter++;
+	    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '家长见面审核员');$n_counter++;
+		$o_item=new Student_Info_Meet_Item();
+		$o_item->PushWhere ( array ('&&', 'Type', '=','家长见面') ); 
+	    $o_item->PushOrder ( array ('Number','A') );
+	    $n_temp=$i+2;
+	    for($i=0;$i<$o_item->getAllCount();$i++)
+	    {
+	    	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), $o_item->getType($i).'-'.$o_item->getName($i));$n_counter++;
+	    }
+	    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1),'家长见面-备注');$n_counter++;
+	}
+	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,1), '体检时段');$n_counter++;
 	$o_dept = new Student_Info ();
 	$o_dept->PushWhere ( array ('&&', 'State', '=', $S_State ) );
 	$o_dept->PushOrder ( array ('StudentId', 'A' ) );
@@ -154,11 +168,10 @@ function OutputList($S_State,$s_filename) {
 		$n_row=$i+2;
 		//基本信息
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getStudentId ( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getCompliance( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getClassMode( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getName ( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getIdType ( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValueExplicit(get_column_number($n_counter,$n_row),$o_dept->getId ( $i ), PHPExcel_Cell_DataType::TYPE_STRING);$n_counter++;
+		$objPHPExcel->getActiveSheet()->getStyle(get_column_number($n_counter,$n_row))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+		$objPHPExcel->getActiveSheet()->setCellValue(get_column_number($n_counter,$n_row),"'".$o_dept->getId ( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getSex ( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getBirthday ( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getNationality( $i ));$n_counter++;
@@ -170,6 +183,7 @@ function OutputList($S_State,$s_filename) {
 		}
 		//健康信息
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJiankang ( $i ) );$n_counter++;
+		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getHospitalName( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getIsYiwang ( $i ) );$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getIllness ( $i ) );$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getIsGuomin ( $i ) );$n_counter++;
@@ -218,32 +232,32 @@ function OutputList($S_State,$s_filename) {
 		//第一监护人信息
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh1Connection( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh1Name( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh1IdType( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValueExplicit(get_column_number($n_counter,$n_row), $o_dept->getJh1Id( $i ),PHPExcel_Cell_DataType::TYPE_STRING);$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh1IsZhixi( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh1Job( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh1Jiaoyu( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValueExplicit(get_column_number($n_counter,$n_row), $o_dept->getJh1Phone( $i ),PHPExcel_Cell_DataType::TYPE_STRING);$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh1Danwei( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh1IsCanji( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh1CanjiCode( $i ));$n_counter++;
 		//第二监护人信息
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh2Connection( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh2Name( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh2IdType( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValueExplicit(get_column_number($n_counter,$n_row), $o_dept->getJh2Id( $i ),PHPExcel_Cell_DataType::TYPE_STRING);$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh2IsZhixi( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh2Job( $i ));$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh2Jiaoyu( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValueExplicit(get_column_number($n_counter,$n_row), $o_dept->getJh2Phone( $i ),PHPExcel_Cell_DataType::TYPE_STRING);$n_counter++;
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh2Danwei( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh2IsCanji( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJh2CanjiCode( $i ));$n_counter++;
-		//其他监护人
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJianhuConnection( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getJianhuName( $i ));$n_counter++;
-		$objPHPExcel->getActiveSheet()->SetCellValueExplicit(get_column_number($n_counter,$n_row), $o_dept->getJianhuPhone( $i ),PHPExcel_Cell_DataType::TYPE_STRING);$n_counter++;
-		//信息核验信息
+		//联系信息
+		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getSignupPhone( $i ));$n_counter++;
+		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getSignupPhoneBackup( $i ));$n_counter++;
+		//附加信息信息		
+		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getClassMode( $i ));$n_counter++;
+		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getCompliance( $i ));$n_counter++;
+		//查找消息提醒的信息核验提醒
+		$o_reminder=new Wechat_Wx_User_Reminder();
+		$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=', $o_dept->getStudentId( $i ) ) );
+		$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_setup_audit->getValue()) );
+		$o_reminder->PushOrder ( array ('Id', 'D' ) );
+		if ($o_reminder->getAllCount()>0)
+		{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_reminder->getKeyword3(0).' '.$o_reminder->getKeyword4(0));$n_counter++;
+		}else{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), '无');$n_counter++;
+		}	
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getAuditorName( $i ));$n_counter++;
 		$a_option=json_decode($o_dept->getAuditOption( $i ));
 		if (count($a_option)>0)
@@ -259,10 +273,55 @@ function OutputList($S_State,$s_filename) {
 			}
 		}	
 		$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_dept->getAuditRemark( $i ));$n_counter++;
+		//查找见面提醒的信息核验提醒
+		$o_reminder=new Wechat_Wx_User_Reminder();
+		$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=', $o_dept->getStudentId( $i ) ) );
+		$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_setup_meet->getValue()) );
+		$o_reminder->PushOrder ( array ('Id', 'D' ) );
+		if ($o_reminder->getAllCount()>0)
+		{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_reminder->getKeyword3(0).' '.$o_reminder->getKeyword4(0));$n_counter++;
+		}else{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), '无');$n_counter++;
+		}
+		if($S_State>=3)
+		{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),$o_dept->getMeetAuditorName( $i ));$n_counter++;
+			//读取幼儿的见面结果
+			$a_result=json_decode($o_dept->getMeetItem($i));
+		    for($j=0;$j<count($a_result);$j++)
+		    {
+		    	$a_temp=$a_result[$j];
+		    	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),$a_temp->value);$n_counter++;	
+		    }
+		    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),$o_dept->getMeetRemark($i));$n_counter++;
+		    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),$o_dept->getMeetParentAuditorName( $i ));$n_counter++;
+			//读取幼儿的见面结果
+			$a_result=json_decode($o_dept->getMeetParentItem($i));
+		    for($j=0;$j<count($a_result);$j++)
+		    {
+		    	$a_temp=$a_result[$j];
+		    	$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),$a_temp->value);$n_counter++;	    	
+		    }
+		    $objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row),$o_dept->getMeetParentRemark($i));$n_counter++;
+		}
+		//查找体检提醒的信息核验提醒
+		$o_reminder=new Wechat_Wx_User_Reminder();
+		$o_reminder->PushWhere ( array ('&&', 'Keyword1', '=', $o_dept->getStudentId( $i ) ) );
+		$o_reminder->PushWhere ( array ('&&', 'MsgId', '=',$o_setup_health->getValue()) );
+		$o_reminder->PushOrder ( array ('Id', 'D' ) );
+		if ($o_reminder->getAllCount()>0)
+		{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), $o_reminder->getKeyword3(0).' '.$o_reminder->getKeyword4(0));$n_counter++;
+		}else{
+			$objPHPExcel->getActiveSheet()->SetCellValue(get_column_number($n_counter,$n_row), '无');$n_counter++;
+		}
 	}	
 	$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
 	$objWriter->save(iconv ( 'UTF-8',getEncode(),$s_filename));
 	return;
+
+
 }
 	function getEncode()
 	{
