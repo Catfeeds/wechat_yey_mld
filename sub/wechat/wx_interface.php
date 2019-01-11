@@ -688,12 +688,26 @@ class wechat
             //调用报名接口
             require_once 'include/accessToken.class.php';
             $o_util=new curlUtil();
-            $s_return=$o_util->https_request('http://58.128.189.247/xchyey_signup/admin/sub/api/wechat_signup.php?openid='.$postObj->FromUserName.'&data='.$sceneId);
+            require_once RELATIVITY_PATH.'sub/admission/include/ajax_operate.class.php';
+            $o_operate = new Operate_Admission();
+            $s_return=$o_util->https_request($o_operate->S_Url.'wechat_signup.php?openid='.$postObj->FromUserName.'&license='.$o_operate->S_License.'&data='.$sceneId);
             if($s_return==1)
             {
                 return $this->transmitText($postObj,'报名成功！');
             }else{
                 return $this->transmitText($postObj,'报名失败！请重新扫码或与幼儿园联系！'); 
+            }
+        }
+        if ($a_sceneId[0]=='supplement')
+        {
+            require_once RELATIVITY_PATH.'sub/admission/include/ajax_operate.class.php';
+            $o_operate = new Operate_Admission();
+            $s_result=$o_operate->AllowAreaSupplement($a_sceneId[1],$a_sceneId[2],$postObj->FromUserName);
+            if($s_result==1)
+            {
+                return $this->transmitText($postObj,'恭喜您，允许信息核验成功！1分钟后，您将收到信息核验相关信息，请耐心等待！');
+            }else{
+                return $this->transmitText($postObj,$s_result);
             }
         }
     	if($sceneId>1000)

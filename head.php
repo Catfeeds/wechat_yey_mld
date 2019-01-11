@@ -134,12 +134,6 @@ $o_setup=new Base_Setup(1);
         <li><a href="javascript:;" onclick="logout()" aria-hidden="true" style="outline: medium none;padding:8px 25px;font-size:12px;border-top: 1px solid #D9D9D9"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;&nbsp;<?php echo(Text::Key('Logout'))?></a></li>
     </ul>
 </div>
-<div class="sss_top_mail" onclick="location=RootPath+'sub/msg/index.php'" data-placement="bottom" data-toggle="tooltip" title="<?php echo(Text::Key('SystemMessage'))?>">
-    <span class="glyphicon glyphicon-envelope"></span><div class="badge up" id="mail_number"></div>
-</div>
-<div class="sss_top_mail sss_top_chat">
-    <span class="glyphicon glyphicon-comment"></span><div class="badge up" id="chat_number"></div>
-</div>
 </nav>
     <div style="height: 50px">
     </div>

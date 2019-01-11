@@ -251,39 +251,48 @@ class Base_Role extends CRUD
 //1111111111111111111111111111111111111111111111
 class Base_Setup extends CRUD
 {
-   protected $Id;
-   protected $Version;
-   protected $UpdateUrl;
-   protected $SystemName;
-   protected $Footer;
-   protected $HomeUrl;
-   protected $Logo;
-   protected $XcyeCollectKey;
-   protected $XcyeCollectLicense;
-   protected $XcyeCollectUrl;
-
-   protected function DefineKey()
-   {
-      return 'id';
-   }
-   protected function DefineTableName()
-   {
-      return 'wechat_base_setup';
-   }
-   protected function DefineRelationMap()
-   {
-      return(array('id' => 'Id',
-      'version' => 'Version',
-      'logo' => 'Logo',
-      'update_url' => 'UpdateUrl',
-      'system_name' => 'SystemName',
-      'footer' => 'Footer',
-      'xcye_collect_key' => 'XcyeCollectKey',
-      'xcye_collect_license' => 'XcyeCollectLicense',
-      'xcye_collect_url' => 'XcyeCollectUrl',
-      'home_url' => 'HomeUrl'
-                   ));
-   }
+    protected $Id;
+    protected $Version;
+    protected $UpdateDate;
+    protected $Logo;
+    protected $UpdateUrl;
+    protected $SystemName;
+    protected $Footer;
+    protected $HomeUrl;
+    protected $CupNumber;
+    protected $XcyeCollectKey;
+    protected $XcyeCollectLicense;
+    protected $XchyeySignupLicense;
+    protected $XcyeCollectUrl;
+    protected $XchyeySignupUrl;
+    
+    protected function DefineKey()
+    {
+        return 'id';
+    }
+    protected function DefineTableName()
+    {
+        return 'wechat_base_setup';
+    }
+    protected function DefineRelationMap()
+    {
+        return(array(
+            'id' => 'Id',
+            'version' => 'Version',
+            'update_date' => 'UpdateDate',
+            'logo' => 'Logo',
+            'update_url' => 'UpdateUrl',
+            'system_name' => 'SystemName',
+            'footer' => 'Footer',
+            'home_url' => 'HomeUrl',
+            'cup_number' => 'CupNumber',
+            'xcye_collect_key' => 'XcyeCollectKey',
+            'xcye_collect_license' => 'XcyeCollectLicense',
+            'xchyey_signup_license' => 'XchyeySignupLicense',
+            'xcye_collect_url' => 'XcyeCollectUrl',
+            'xchyey_signup_url' => 'XchyeySignupUrl'
+        ));
+    }
 }
 //1111111111111111111111111111111111111111111111
 class Base_System_Msg extends CRUD

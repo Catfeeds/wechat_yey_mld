@@ -9,7 +9,12 @@
 
 TRUNCATE TABLE  `student_info_wechat`;
 
-UPDATE `wechat_base_module` SET `wait_read_table`='Admission' WHERE (`module_id`='120100');
+UPDATE `wechat_base_setup` SET `system_name`='幼儿管理平台' WHERE (`id`='1');
+
+ALTER TABLE  `wechat_base_setup` ADD  `xchyey_signup_license` CHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT  '西城幼儿园报名平台许可证号' AFTER  `xcye_collect_license` ;
+
+ALTER TABLE  `wechat_base_setup` ADD  `xchyey_signup_url` CHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT  '西城幼儿报名平台接口地址' AFTER  `xcye_collect_url` ;
+
 
 CREATE TABLE `student_info` (
   `student_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,

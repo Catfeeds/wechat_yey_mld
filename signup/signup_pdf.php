@@ -71,7 +71,7 @@ ob_start();
 <div align="center" style="padding-top:30px;">
     <div class="title">西城区马连道幼儿园报名信息登记表</div>
     <br/>
-    <div style="padding-bottom:5px;"><strong>报名编号：</strong><?php filter($o_stu->getStudentId())?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>所报班别：</strong><?php filter($o_stu->getClassMode())?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>服从班级类型调剂：</strong><?php filter($o_stu->getCompliance())?></div>
+    <div style="padding-bottom:5px;"><strong>报名编号：</strong><?php filter($o_stu->getStudentId())?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>所报班别：</strong><?php filter($o_stu->getClassMode())?></div>
     <table align="center" border="0" cellpadding="0" cellspacing="0" style="border-left: solid 0px black;margin-top:-20px;">
 <!--
         <tr style="font-weight:bold;font-size:16px;">
@@ -148,22 +148,16 @@ ob_start();
             <td colspan="4" style="font-weight:bold;border-left: solid 1px black;">
            证件类型
             </td>
-            <td colspan="8" style="font-weight:bold;">
+            <td colspan="16" style="font-weight:bold;">
            证件号码
-            </td>
-            <td colspan="8" style="font-weight:bold;">
-         接种医院
             </td>
         </tr>
         <tr style="font-size:12px;" class="layer">
             <td colspan="4" style="border-left: solid 1px black;">
            <?php filter($o_stu->getIdType())?>
             </td>
-            <td colspan="8">
+            <td colspan="16">
            <?php filter($o_stu->getId())?>
-            </td>
-            <td colspan="8">
-           <?php filter($o_stu->getHospitalName())?>
             </td>
         </tr>
         <tr style="font-weight:bold">
@@ -303,7 +297,7 @@ ob_start();
         </tr>
         <tr style="font-weight:bold">
             <td rowspan="4" colspan="4" style="border-bottom: solid 3px black;font-weight:bold;border-left: solid 1px black;">
-           第一法定监护人
+           法定监护人
             </td>
             <td colspan="2" style="font-weight:bold">
                关系
@@ -327,24 +321,30 @@ ob_start();
             </td>
         </tr>
         <tr style="font-weight:bold">
-            <td colspan="6" style="font-weight:bold;">
+            <td colspan="5" style="font-weight:bold;">
                教育程度
             </td>
-            <td colspan="12" style="font-weight:bold">
-           工作单位
+            <td colspan="6" style="font-weight:bold;">
+               工作单位
+            </td>
+            <td colspan="5" style="font-weight:bold">
+           		联系电话
             </td>
         </tr>
         <tr style="font-size:12px;" class="layer">
-            <td colspan="6" style="">
+            <td colspan="5" style="">
                <?php filter($o_stu->getJh1Jiaoyu())?>
             </td>
-            <td colspan="12">
+            <td colspan="6">
            <?php filter($o_stu->getJh1Danwei())?>
+            </td>
+            <td colspan="5">
+           <?php filter($o_stu->getJh1Phone())?>
             </td>
         </tr>    
         <tr style="font-weight:bold">
             <td rowspan="4" colspan="4" style="border-bottom: solid 3px black;font-weight:bold;border-left: solid 1px black;">
-           第二法定监护人
+           法定监护人
             </td>
             <td colspan="2" style="font-weight:bold">
                关系
@@ -368,35 +368,27 @@ ob_start();
             </td>
         </tr>
         <tr style="font-weight:bold">
-            <td colspan="6" style="font-weight:bold;">
+            <td colspan="5" style="font-weight:bold;">
                教育程度
             </td>
-            <td colspan="12" style="font-weight:bold">
-           工作单位
+            <td colspan="6" style="font-weight:bold;">
+               工作单位
+            </td>
+            <td colspan="5" style="font-weight:bold">
+           		联系电话
             </td>
         </tr>
         <tr style="font-size:12px;" class="layer">
-            <td colspan="6" style="">
+            <td colspan="5" style="">
                <?php filter($o_stu->getJh2Jiaoyu())?>
             </td>
-            <td colspan="12">
+            <td colspan="6">
            <?php filter($o_stu->getJh2Danwei())?>
             </td>
+            <td colspan="5">
+           <?php filter($o_stu->getJh2Phone())?>
+            </td>
         </tr>  
-        <tr style="font-weight:bold" class="layer">
-            <td colspan="4" style="font-weight:bold;border-left: solid 1px black;">
-              移动电话
-            </td>
-            <td colspan="6" style="font-weight:normal;font-size:12px;">
-           <?php filter($o_stu->getSignupPhone ());?>
-            </td>
-            <td colspan="4" style="font-weight:bold;">
-              固定电话
-            </td>
-            <td colspan="6" style="font-weight:normal;font-size:12px;">
-           <?php filter($o_stu->getSignupPhoneBackup());?>
-            </td>
-        </tr> 
         <tr style="font-weight:bold">
             <td colspan="20" style="height:200px;border-left: solid 1px black;text-align:right;padding-right:120px;vertical-align:bottom;padding-bottom:20px;">
           		 家长签字:

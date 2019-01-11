@@ -1,10 +1,10 @@
 <?php
 define ( 'RELATIVITY_PATH', '../../' );
-define ( 'MODULEID', 120109);
+define ( 'MODULEID', 120107);
 $O_Session = '';
 require_once RELATIVITY_PATH . 'include/it_include.inc.php';
 require_once RELATIVITY_PATH . 'head.php';
-$s_fun='WaitingDispatchTable';
+$s_fun='WaitingSupplementTable';
 $s_item='Id';
 $s_page=1;
 $s_sort='A';
@@ -31,26 +31,19 @@ $a_result=json_decode($s_result,true);
 if ($a_result["errcode"]==0 && $s_result!='' && $_COOKIE [$s_fun.'Note']!='close')
 {
     ?>
-    <div class="alert alert-info">
+    <div class="alert alert-danger">
     	<button type="button" class="close" data-dismiss="alert" aria-hidden="true" onclick="closeNote(this,'<?php echo($s_fun)?>Note')"></button>
-		<strong>分班说明</strong>
+		<strong>操作时间段</strong>
 		<br/><br/>
-		<p> 选择幼儿信息后，可以将幼儿分配至“选择分配班级”内的班级中，一旦分班成功，幼儿信息将自动移动至“幼儿管理”模块，请谨慎操作。</p>
+		<p> 补录开始时间：<b><?php echo($a_result["supplement_start_date"])?></b><br/>补录结束时间：<b><?php echo($a_result["supplement_stop_date"])?></b><br/><br/>注：等待补录报名列表内为报名状态：“不允许核验”、“核验不通过”、“未录取”的报名记录。如果幼儿被其他幼儿园允许体检或录取，那么该幼儿报名记录将从此列表中消失。 </p>
 	</div>
     <?php
 }
 ?>
 					<link rel="stylesheet" type="text/css" href="css/style.css"/>
-					<form action="include/bn_submit.switch.php" id="submit_form" method="post" target="submit_form_frame">
-						<input type="hidden" name="Vcl_Url" value="<?php echo(str_replace ( substr( $_SERVER['PHP_SELF'] , strrpos($_SERVER['PHP_SELF'] , '/')+1 ), '', $_SERVER['PHP_SELF']))?>"/>
-						<input type="hidden" name="Vcl_BackUrl" value="<?php echo($_SERVER['HTTP_REFERER'])?>"/>
-						<input type="hidden" id="Vcl_FunName" name="Vcl_FunName" value=""/>
-						<input type="hidden" name="Vcl_RejectReason" id="Vcl_RejectReason"/>
-						<input type="hidden" name="Vcl_Id" id="Vcl_Id"/>
-					</form>
                     <div class="panel panel-default sss_sub_table">
-                        <div class="panel-heading" style="overflow: inherit; height: 43px;">
-                            <div class="caption">报名列表（已录取，等待分班）</div>
+                        <div class="panel-heading">
+                            <div class="caption">报名列表（等待补录）</div>
                             	<div class="row">
 								  <div class="col-lg-6">
 								    <div class="input-group" style="width:300px;" >
@@ -83,48 +76,6 @@ if ($a_result["errcode"]==0 && $s_result!='' && $_COOKIE [$s_fun.'Note']!='close
 								    </div>
 								  </div>
 								</div>								
-								<button id="user_add_btn" type="button" class="btn btn-primary" aria-hidden="true" style="float: right;outline: medium none;margin-left:10px;" onclick="output(7)">
-                                <span  class="glyphicon glyphicon-floppy-save"></span>&nbsp;导出全部</button>
-                                <div id="assign" style="width: 180px;float:right">
-                            	<select id="Vcl_ClassId"  name="Vcl_ClassId" class="selectpicker" data-style="btn-default" onchange="select_submit_assign_class(this)">
-									<option value="">选择分配的班级</option>
-									<?php 
-									$o_table = new Student_Class();
-									$o_table->PushOrder ( array ('Grade', A ) );
-									$o_table->PushOrder ( array ('ClassId','A') );
-									for($i = 0; $i < $o_table->getAllCount(); $i ++) {
-										$s_grade_name='';
-										switch ($o_table->getGrade($i))
-										{
-											case 0:
-												$s_grade_name='半日班';
-													break;
-											case 1:
-												$s_grade_name='托班';
-													break;
-											case 2:
-												$s_grade_name='小班';
-												break;
-											case 3:
-												$s_grade_name='中班';
-												break;
-											case 4:
-												$s_grade_name='大班';
-												break;
-										}
-										$o_temp = new Student_Onboard_Info();
-										$o_temp->PushWhere ( array ('&&', 'Sex', '=', '女') );
-										$o_temp->PushWhere ( array ('&&', 'ClassNumber', '=', $o_table->getClassId($i) ) );
-										$n_count_girl = $o_temp->getAllCount ();
-										$o_temp = new Student_Onboard_Info();
-										$o_temp->PushWhere ( array ('&&', 'Sex', '=', '男') );
-										$o_temp->PushWhere ( array ('&&', 'ClassNumber', '=', $o_table->getClassId($i) ) );
-										$n_count_boy = $o_temp->getAllCount ();
-										echo('<option value="'.$o_table->getClassId($i).'">'.$s_grade_name.'-'.$o_table->getClassName($i).'(女:'.$n_count_girl.' 男:'.$n_count_boy.')</option>');
-									}
-									?>
-								</select>
-							</div>
                             </div>
                         <table class="table table-striped">
                             <thead>
@@ -142,6 +93,40 @@ if ($a_result["errcode"]==0 && $s_result!='' && $_COOKIE [$s_fun.'Note']!='close
 		
 <script>
     var table='<?php echo($s_fun)?>';
+    function allow(id,name,state)
+	{
+		var title='';
+		var comment='';
+		if (state==2)
+		{
+			var title='确认幼儿“<b>'+name+'”</b>允许信息核验吗？';
+			var comment='确认后：<br/>1. 幼儿监护人的微信将收到信息核验通知。<br/>2. 选中的幼儿报名信息将会进入“<b>待发体检通知</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：该操作不能撤销，请谨慎操作。';
+		}
+		if (state==4)
+		{
+			var title='确认幼儿“<b>'+name+'”</b>允许体检吗？';
+			var comment='确认后：<br/>1. 幼儿监护人的微信将收到允许体检通知。<br/>2. 选中的幼儿报名信息将会进入“<b>等待录取</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：该操作不能撤销，请谨慎操作。';
+		}
+		if (state==6)
+		{
+			var title='确认录取幼儿“<b>'+name+'”</b>吗？';
+			var comment='确认后：<br/>1. 幼儿监护人的微信将收到录取通知。<br/>2. 选中的幼儿报名信息将会进入“<b>等待分班</b>”模块。<br/>3. 本页面将会被刷新。<br/><br/>注：该操作不能撤销，请谨慎操作。';
+		}
+		dialog_confirm(title+'<br/><br/>'+comment,function(){
+			loading_show();
+	    	var data = 'Ajax_FunName=AllowSupplement'; //后台方法
+	        data = data + '&Id=' + id;
+	        $.getJSON("include/bn_submit.switch.php", data, function (json) {
+	        	loading_hide();
+	        	if (json.success==0)
+	        	{
+	        		dialog_error(json.text)
+	        	}else{
+		        	dialog_success('操作成功，点击“确定”继续！',function(){location.reload();});
+	        	}  
+	        })
+	    })
+	}
 </script>
 <?php
 require_once RELATIVITY_PATH . 'foot.php';
